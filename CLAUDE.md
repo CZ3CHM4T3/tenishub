@@ -162,7 +162,24 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   jen statické). **Middleware zpevněn** (`getUser` v try/catch → výpadek Supabase neshodí web na 500; matcher vyřazuje
   robots.txt/sitemap.xml). Base URL přes `NEXT_PUBLIC_SITE_URL` (fallback tenishub.cz). **`DEPLOY.md`** = návod na Vercel
   (dočasná adresa, env, Supabase Auth URL, RUN-ALL.sql). SSR načítání dat funguje až na Vercelu (lokálně síť blokovaná).
-  Další SEO krok: překlopit `/trener/[id]` a `/areal/[id]` na server-fetch (SSR) + generateMetadata + JSON-LD + městské landing stránky.
+  Další SEO krok: ✅ HOTOVO — `/trener/[id]` a `/areal/[id]` jsou SSR (server-fetch v `src/lib/supabase/data.ts`,
+  force-dynamic, fallback na klienta) + generateMetadata + JSON-LD; městské landingy `/tenis/[mesto]` (CITIES slug)
+  + odkazy v patičce + v sitemapě. Ověřeno naživo (sitemap ~430 URL).
+- **FUNKČNÍ SLUŽBY (bod 1–4 z launch plánu, nasazeno):**
+  - **Bod 1 Samospráva** (`samosprava.sql`): v `/ucet` komponenta `ProviderCard` — trenér/areál si po registraci/převzetí
+    spravuje kartu (jméno, typ, město, bio, kontakt, **cena+ceník** přes `services`, **fotka** přes Supabase Storage
+    bucket `photos`). Veřejný profil ukazuje fotku+reálný ceník. Areál má `reservation_url` (odkaz na vlastní rez. systém).
+  - **Bod 2 Recenze v2** (`recenze-v2.sql`): 5 kategorií (r_skill/r_kids/r_comm/r_progress/r_value) + `status` moderace;
+    veřejně jen `approved`; trigger počítá rating jen ze schválených; admin sekce „Recenze ke schválení".
+  - **Bod 3 Zprávy** (`zpravy.sql`): tabulka `messages` (jména denormalizovaná, profiles nejsou veřejné), stránka
+    `/zpravy` (inbox+chat, polling 15s), „Napsat zprávu" na profilu je ZDARMA (ne HUB+), v `/ucet` odznak nepřečtených.
+    E-mailové notifikace = TODO (potřebují provider, např. Resend). Unclaimed bez ownera → modal „profil nikdo nespravuje".
+  - **Bod 4 Sparring v2** (`sparring-v2.sql`): kritéria (age/play_type/gender/handedness/surface), „Moje sparring karta"
+    v /sparring (publish→zeď+pin na mapě), filtry, přímý kontakt přes `messages` (zdarma).
+- **RUN ORDER nových SQL (po RUN-ALL.sql, jednotlivě):** samosprava.sql, recenze-v2.sql, zpravy.sql, sparring-v2.sql.
+  Pozn.: messaging/booking přístup = ZDARMA kvůli likviditě (paywall pocit pryč); platit se bude až za prokázané nástroje.
+- **Čeká (P1+):** bod 5 reálná rezervace (kalendář; platba GoPay 🔑), bod 6 admin analytika+konverze+feedback dotazník,
+  profil hráče závodního + žebříčky/turnaje, e-mail notifikace (Resend 🔑), dashboard areálu, video-analýza.
 - **Sekce „Pro koho"** na homepage = persona explorer: 8 person (`PERSONAS` v page.tsx, viz `docs/PORADCI-funkce.md`),
   každá má příslib + 4 funkce + CTA prolinkované na /trener, /mapa, /areal.
 - POZOR: nespouštět `npm run build`, když běží `npm run dev` (sdílí `.next` → rozbije dev: „Cannot read
