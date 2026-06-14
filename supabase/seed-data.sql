@@ -1,0 +1,16 @@
+-- ============================================================
+-- TenisHub — DEMO SEED (ZRUŠENO / NESPOUŠTĚT)
+-- ============================================================
+-- Tento soubor dříve plnil mapu VYMYŠLENÝMI specialisty a areály a začínal
+-- příkazem TRUNCATE (smazal by vše). Na pokyn majitele jdou na mapu jen REÁLNÉ
+-- subjekty, které se samy veřejně inzerují.
+--
+-- Nahrazeno:
+--   - supabase/cleanup-demo.sql        → smaže vymyšlené demo z databáze
+--   - supabase/claimable.sql           → model neověřených ("blank") profilů + opt-out
+--   - supabase/unclaimed-providers.sql → reální trenéři, fyzio a kluby (status 'unclaimed')
+--
+-- Záměrně prázdné, aby nešlo omylem smazat ostrá data.
+-- ============================================================
+
+-- (žádné příkazy)

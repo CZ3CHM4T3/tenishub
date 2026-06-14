@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jiří Novák — tenisový trenér · TenisHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green-d:#1a2a21;--green:#22382c;--green-2:#2c4a39;--green-ink:#13201a;--gold:#c8a24c;--gold-l:#e0c277;--silver:#c6cdd0;--silver-d:#9aa3a6;--ink:#1b2620;--muted:#788780;--bg:#fff;--soft:#f5f8f5;--line:#e9eee9;--shadow:0 24px 56px -24px rgba(20,40,30,.35);--shadow-s:0 10px 26px -12px rgba(20,40,30,.22);}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--soft);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+a{text-decoration:none;color:inherit}
+.wrap{width:min(1100px,92%);margin:0 auto}
+svg.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:'Sora';font-weight:600;font-size:.95rem;padding:.85rem 1.4rem;border-radius:12px;border:0;cursor:pointer;transition:.25s}
+.btn svg{width:1.05em;height:1.05em;stroke-width:2}
+.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#22150a}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 26px -10px rgba(200,162,76,.7)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-2)}
+.btn-out{background:#fff;color:var(--green);border:1.5px solid var(--line)}.btn-out:hover{border-color:var(--green)}
+
+header{background:#405c43;color:#fff;padding:.5rem 0;position:sticky;top:0;z-index:50}
+header .bar{display:flex;align-items:center;justify-content:space-between}
+.brand{display:inline-flex;align-items:center;gap:.55rem;font-family:'Sora';font-weight:800;font-size:1.12rem}
+.brand .mark{height:30px}.brand .t{color:var(--silver)}.brand .h{color:var(--gold)}.brand .cz{color:var(--silver-d);font-size:.72em}
+.back{font-size:.85rem;color:#cfe0d4}.back:hover{color:var(--gold-l)}
+
+/* hero */
+.phero{background:linear-gradient(160deg,var(--green),var(--green-d));color:#fff;padding:2.4rem 0 2rem;position:relative;overflow:hidden}
+.phero::before{content:"";position:absolute;right:-5%;top:-40%;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(200,162,76,.16),transparent 60%)}
+.phero .row{display:flex;gap:1.6rem;align-items:flex-end;position:relative;flex-wrap:wrap}
+.avatar{width:120px;height:120px;border-radius:24px;background:linear-gradient(135deg,#cdd6cd,#9fb0a4);flex:none;border:3px solid rgba(255,255,255,.2);display:grid;place-items:center;color:#5c6b62;font-family:'Sora';font-weight:700;font-size:2.2rem;box-shadow:var(--shadow)}
+.phero .who{flex:1;min-width:240px}
+.phero .verif{display:inline-flex;align-items:center;gap:.4rem;background:rgba(200,162,76,.18);border:1px solid rgba(200,162,76,.5);color:var(--gold-l);font-size:.76rem;font-weight:600;padding:.28rem .7rem;border-radius:100px;margin-bottom:.5rem}
+.phero h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.phero .typ{color:#cdd9cf;margin-top:.3rem;font-size:1rem}
+.phero .rate{display:flex;align-items:center;gap:.6rem;margin-top:.7rem}
+.phero .stars{color:var(--gold-l);letter-spacing:.1em}
+.phero .rate b{font-family:'Sora';font-size:1.1rem}.phero .rate span{color:#a7b6ab;font-size:.86rem}
+.phero .acts{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.2rem}
+
+/* contact strip */
+.contacts{display:flex;gap:1.5rem;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem 1.3rem;margin-top:-1.3rem;position:relative;box-shadow:var(--shadow-s)}
+.contacts a{display:inline-flex;align-items:center;gap:.55rem;font-size:.9rem;color:var(--green);font-weight:500}
+.contacts a:hover{color:var(--gold)}
+.contacts .ci{width:34px;height:34px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--green-2)}
+
+/* layout */
+.body{display:grid;grid-template-columns:1fr 340px;gap:2rem;padding:2.4rem 0 4rem;align-items:start}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.6rem;box-shadow:var(--shadow-s);margin-bottom:1.4rem}
+.card h2{font-size:1.2rem;color:var(--green);margin-bottom:.9rem}
+.card p{color:#46544c;font-size:.96rem;line-height:1.6}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{font-size:.78rem;font-weight:600;font-family:'Sora';background:var(--soft);color:var(--green);padding:.35rem .8rem;border-radius:100px}
+
+/* calendar */
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.cal-head .leg{font-size:.76rem;color:var(--muted)}
+.cal-head .leg b{color:var(--gold)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem}
+.day{text-align:center}
+.day .dh{font-size:.72rem;color:var(--muted);font-weight:600;margin-bottom:.5rem}
+.day .dh b{display:block;font-family:'Sora';font-size:1.05rem;color:var(--green)}
+.slot{display:block;width:100%;font-family:'Sora';font-weight:600;font-size:.8rem;padding:.5rem .2rem;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--green);cursor:pointer;margin-bottom:.4rem;transition:.18s}
+.slot:hover{border-color:var(--gold);background:#fffdf5}
+.slot.taken{background:var(--soft);color:#b9c2bb;border-color:transparent;cursor:not-allowed;text-decoration:line-through}
+.slot.booked{background:var(--green);color:#fff;border-color:var(--green)}
+@media(max-width:760px){.week{grid-template-columns:repeat(4,1fr)}}
+
+/* sidebar booking */
+.side{position:sticky;top:5rem}
+.bcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.5rem;box-shadow:var(--shadow)}
+.price{font-family:'Sora';font-weight:800;font-size:2rem;color:var(--green)}
+.price small{font-size:.9rem;color:var(--muted);font-weight:500}
+.bcard .ln{display:flex;justify-content:space-between;font-size:.88rem;color:#46544c;padding:.5rem 0;border-bottom:1px dashed var(--line)}
+.bcard .ln:last-of-type{border:0}
+.note{font-size:.78rem;color:var(--muted);margin-top:.8rem;text-align:center}
+
+/* reviews */
+.rev{display:flex;gap:.9rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.rev:last-child{border:0}
+.rev .ra{width:40px;height:40px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-family:'Sora';font-weight:700;color:var(--green-2);flex:none}
+.rev .rn{font-weight:600;font-size:.92rem;color:var(--green)}
+.rev .rs{color:var(--gold);font-size:.8rem}
+.rev p{font-size:.9rem;color:#46544c;margin-top:.2rem}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(19,32,26,.55);backdrop-filter:blur(4px);display:none;place-items:center;z-index:100;padding:1rem}
+.ov.on{display:grid}
+.modal{background:#fff;border-radius:20px;width:min(420px,100%);padding:1.8rem;box-shadow:var(--shadow);animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:none}}
+.modal h3{font-size:1.3rem;color:var(--green);margin-bottom:.3rem}
+.modal .sub{color:var(--muted);font-size:.9rem;margin-bottom:1.2rem}
+.fld{margin-bottom:.9rem}.fld label{display:block;font-size:.8rem;font-weight:600;color:var(--green);margin-bottom:.3rem}
+.fld input,.fld textarea{width:100%;padding:.8rem .9rem;border:1px solid var(--line);border-radius:11px;font-family:inherit;font-size:.95rem;background:var(--soft)}
+.fld input:focus,.fld textarea:focus{outline:0;border-color:var(--gold);background:#fff}
+.frow{display:flex;gap:.7rem}
+.summary{background:var(--soft);border-radius:12px;padding:1rem;margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center}
+.summary .s1{font-family:'Sora';font-weight:600;color:var(--green)}
+.summary .s2{font-family:'Sora';font-weight:800;color:var(--green);font-size:1.3rem}
+.stripe-badge{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.76rem;color:var(--muted);margin-top:.9rem}
+.success{text-align:center;padding:1rem 0}
+.success .ok{width:64px;height:64px;border-radius:50%;background:#e6f3ea;color:#2e7d4f;display:grid;place-items:center;font-size:2rem;margin:0 auto 1rem}
+.x{position:absolute;top:1rem;right:1.2rem;background:none;border:0;font-size:1.4rem;color:var(--muted);cursor:pointer}
+@media(max-width:860px){.body{grid-template-columns:1fr}.side{position:static}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap"><div class="bar">
+  <a href="mapa.html" class="brand"><img src="assets/logo.png" alt="TenisHub" style="height:40px;width:auto;display:block"></a>
+  <a href="mapa.html" class="back">← Zpět na mapu</a>
+</div></div></header>
+
+<!-- PROFILE HERO -->
+<section class="phero"><div class="wrap"><div class="row">
+  <div class="avatar">JN</div>
+  <div class="who">
+    <span class="verif">✓ Ověřený trenér</span>
+    <h1>Jiří Novák</h1>
+    <div class="typ">Tenisový trenér · II. třída · Praha 6</div>
+    <div class="rate"><span class="stars">★★★★★</span> <b>4,9</b> <span>(37 hodnocení)</span></div>
+  </div>
+  <div class="acts">
+    <button class="btn btn-gold" onclick="open_('mMsg')"><svg class="ic"><path d="M4 5h16v12H7l-3 3z"/></svg> Napsat zprávu</button>
+  </div>
+</div></div></section>
+
+<div class="wrap">
+  <div class="contacts">
+    <a href="tel:+420721028503"><span class="ci"><svg class="ic"><path d="M5 4h3.5l1.8 4.5-2.3 1.7a13 13 0 006.8 6.8l1.7-2.3 4.5 1.8V20a2 2 0 01-2 2A18 18 0 013 6a2 2 0 012-2z"/></svg></span> +420 721 028 503</a>
+    <a href="mailto:jiri.novak@email.cz"><span class="ci"><svg class="ic"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg></span> jiri.novak@email.cz</a>
+    <a href="#" target="_blank"><span class="ci"><svg class="ic"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></span> www.tenisnovak.cz</a>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="wrap"><div class="body">
+  <div class="main">
+    <div class="card">
+      <h2>O mně</h2>
+      <p>Tenisu se věnuji přes 20 let, z toho 12 jako trenér. Specializuji se na děti od 5 let i dospělé hobby hráče — technika úderů, hra a radost z pohybu. Trénuji na kurtech v Praze 6, v zimě v hale.</p>
+      <div class="tags"><span class="tag">Děti od 5 let</span><span class="tag">Dospělí</span><span class="tag">Technika</span><span class="tag">Kondice</span><span class="tag">Čeština / English</span></div>
+    </div>
+
+    <div class="card">
+      <div class="cal-head">
+        <h2 style="margin:0">Volné hodiny</h2>
+        <span class="leg"><b>●</b> volné · klikni a rezervuj</span>
+      </div>
+      <div class="week" id="week"></div>
+    </div>
+
+    <div class="card">
+      <h2>Recenze (37)</h2>
+      <div class="rev"><div class="ra">PM</div><div><div class="rn">Petra M. <span class="rs">★★★★★</span></div><p>Syn se na tréninky moc těší, Jirka je trpělivý a děti ho zbožňují.</p></div></div>
+      <div class="rev"><div class="ra">TK</div><div><div class="rn">Tomáš K. <span class="rs">★★★★★</span></div><p>Za půl roku se mi výrazně zlepšil servis. Doporučuji.</p></div></div>
+      <div class="rev"><div class="ra">LH</div><div><div class="rn">Lucie H. <span class="rs">★★★★☆</span></div><p>Skvělý přístup, jen občas těžko hledá volný termín — je vytížený.</p></div></div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <div class="bcard">
+      <div class="price">500 Kč <small>/ 55 min</small></div>
+      <div style="margin:1rem 0">
+        <div class="ln"><span>Individuální lekce</span><span>500 Kč</span></div>
+        <div class="ln"><span>Ve dvojici (za osobu)</span><span>300 Kč</span></div>
+        <div class="ln"><span>Skupina 4 hráči</span><span>220 Kč</span></div>
+      </div>
+      <button class="btn btn-gold" style="width:100%" onclick="document.getElementById('week').scrollIntoView({behavior:'smooth'})">Vybrat termín →</button>
+      <button class="btn btn-out" style="width:100%;margin-top:.6rem" onclick="open_('mMsg')">Napsat zprávu</button>
+      <div class="note">Platba kartou online · zdarma storno 24 h předem</div>
+    </div>
+  </aside>
+</div></div>
+
+<!-- MESSAGE MODAL -->
+<div class="ov" id="mMsg"><div class="modal" style="position:relative">
+  <button class="x" onclick="close_('mMsg')">×</button>
+  <h3>Napsat Jiřímu</h3><div class="sub">Odpoví vám zpravidla do 24 hodin.</div>
+  <div class="fld"><label>Vaše jméno</label><input placeholder="Jméno a příjmení"></div>
+  <div class="fld"><label>Zpráva</label><textarea rows="3" placeholder="Dobrý den, měl bych zájem o lekce pro syna (8 let)…"></textarea></div>
+  <button class="btn btn-green" style="width:100%" onclick="open_('mSent')">Odeslat zprávu</button>
+</div></div>
+<div class="ov" id="mSent"><div class="modal"><div class="success"><div class="ok">✓</div><h3>Zpráva odeslána</h3><p class="sub" style="margin-top:.4rem">Jiří se vám brzy ozve. (Náhled — na ostrém webu zpráva dorazí trenérovi.)</p><button class="btn btn-green" style="width:100%" onclick="close_('mSent');close_('mMsg')">Hotovo</button></div></div></div>
+
+<!-- BOOKING MODAL -->
+<div class="ov" id="mBook"><div class="modal" style="position:relative">
+  <button class="x" onclick="close_('mBook')">×</button>
+  <h3>Rezervace lekce</h3><div class="sub">Individuální tenisová lekce s Jiřím Novákem</div>
+  <div class="summary"><div class="s1" id="bookSlot">—</div><div class="s2">500 Kč</div></div>
+  <button class="btn btn-gold" style="width:100%" onclick="close_('mBook');open_('mPay')">Zaplatit kartou →</button>
+  <button class="btn btn-out" style="width:100%;margin-top:.6rem" onclick="confirmBooking()">Rezervovat, zaplatím na místě</button>
+</div></div>
+
+<!-- PAYMENT MODAL (Stripe prototype) -->
+<div class="ov" id="mPay"><div class="modal" style="position:relative">
+  <button class="x" onclick="close_('mPay')">×</button>
+  <h3>Platba kartou</h3><div class="sub" id="paySlot">—</div>
+  <div class="fld"><label>Číslo karty</label><input placeholder="1234 1234 1234 1234" inputmode="numeric"></div>
+  <div class="frow"><div class="fld" style="flex:1"><label>Platnost</label><input placeholder="MM / RR"></div><div class="fld" style="flex:1"><label>CVC</label><input placeholder="123"></div></div>
+  <div class="fld"><label>Jméno na kartě</label><input placeholder="Jan Novák"></div>
+  <button class="btn btn-gold" style="width:100%" onclick="confirmBooking()">Zaplatit 500 Kč</button>
+  <div class="stripe-badge">🔒 Zabezpečeno přes <b>Stripe</b></div>
+</div></div>
+
+<!-- SUCCESS -->
+<div class="ov" id="mDone"><div class="modal"><div class="success"><div class="ok">✓</div><h3>Rezervováno!</h3><p class="sub" id="doneTxt" style="margin-top:.4rem"></p><button class="btn btn-green" style="width:100%" onclick="close_('mDone')">Hotovo</button></div></div></div>
+
+<script>
+function open_(id){document.getElementById(id).classList.add('on')}
+function close_(id){document.getElementById(id).classList.remove('on')}
+document.querySelectorAll('.ov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('on')})});
+
+// build week
+var days=[['Po',9],['Út',10],['St',11],['Čt',12],['Pá',13],['So',14],['Ne',15]];
+var times=['8:00','9:00','16:00','17:00','18:00'];
+var pat=[ [1,0,1,1,0],[1,1,0,1,1],[0,1,1,0,1],[1,0,1,1,1],[1,1,0,1,0],[0,0,1,1,0],[0,0,0,0,0] ];
+var week=document.getElementById('week'),chosen={el:null,txt:''};
+days.forEach(function(d,di){
+  var col=document.createElement('div');col.className='day';
+  var h='<div class="dh">'+d[0]+'<b>'+d[1]+'. 6.</b></div>';
+  col.innerHTML=h;
+  times.forEach(function(t,ti){
+    var av=pat[di][ti];
+    var b=document.createElement('button');b.className='slot'+(av?'':' taken');b.textContent=t;
+    if(av){b.onclick=function(){chosen={el:b,txt:d[0]+' '+d[1]+'. 6. v '+t};document.getElementById('bookSlot').textContent=chosen.txt;document.getElementById('paySlot').textContent='Lekce '+chosen.txt;open_('mBook');};}
+    col.appendChild(b);
+  });
+  week.appendChild(col);
+});
+function confirmBooking(){close_('mBook');close_('mPay');
+  if(chosen.el){chosen.el.classList.remove('slot');chosen.el.classList.add('slot','booked');chosen.el.textContent='✓';chosen.el.onclick=null;}
+  document.getElementById('doneTxt').textContent='Lekce '+chosen.txt+' je rezervovaná. Potvrzení přišlo na e-mail. (Náhled — na ostrém webu proběhne platba přes Stripe a zápis do kalendáře.)';
+  open_('mDone');
+}
+</script>
+</body>
+</html>

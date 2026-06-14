@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" font-family="'Sora','Segoe UI',Arial,sans-serif">
+  <defs>
+    <linearGradient id="sil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f2"/><stop offset=".5" stop-color="#c2c9cc"/><stop offset="1" stop-color="#8c9598"/></linearGradient>
+    <linearGradient id="gld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#edd07f"/><stop offset=".5" stop-color="#c8a24c"/><stop offset="1" stop-color="#9c7322"/></linearGradient>
+  </defs>
+  <!-- mark -->
+  <g transform="translate(8,8)">
+    <polygon points="3,74 17,74 35,12 21,12" fill="url(#sil)"/>
+    <polygon points="91,74 77,74 59,12 73,12" fill="url(#sil)"/>
+    <rect x="29" y="12" width="36" height="12" rx="1.5" fill="url(#gld)"/>
+    <rect x="40" y="22" width="14" height="52" rx="1.5" fill="url(#gld)"/>
+  </g>
+  <!-- wordmark -->
+  <text x="120" y="62" font-size="46" font-weight="800" letter-spacing="1">
+    <tspan fill="#9aa3a6">TENIS</tspan><tspan fill="#c8a24c">HUB</tspan><tspan fill="#9aa3a6" font-size="22" dy="0">.cz</tspan>
+  </text>
+</svg>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TenisHub.cz — návrh designu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green-d:#1a2a21;--green:#22382c;--green-2:#2c4a39;--green-ink:#13201a;
+  --gold:#c8a24c;--gold-l:#e0c277;--silver:#c6cdd0;--silver-d:#9aa3a6;
+  --ink:#1b2620;--muted:#6f7d77;--bg:#ffffff;--soft:#f4f7f4;--line:#e6ece6;
+  --shadow:0 26px 60px -24px rgba(20,40,30,.4);--shadow-s:0 10px 26px -12px rgba(20,40,30,.28);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+a{text-decoration:none;color:inherit}img{display:block;max-width:100%}
+.wrap{width:min(1200px,92%);margin:0 auto}
+svg.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rv{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.16,.85,.3,1),transform .9s cubic-bezier(.16,.85,.3,1)}
+.rv.l{transform:translateX(-60px)}.rv.r{transform:translateX(60px)}.rv.z{transform:scale(.93) translateY(20px)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:'Sora';font-weight:600;font-size:.98rem;padding:.9rem 1.7rem;border-radius:12px;transition:.28s cubic-bezier(.3,1.1,.5,1);cursor:pointer;border:0}
+.btn svg{width:1.1em;height:1.1em;stroke-width:2}
+.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#22150a}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 30px -12px rgba(200,162,76,.7)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1.5px solid rgba(255,255,255,.32);backdrop-filter:blur(6px)}
+.btn-ghost:hover{border-color:var(--gold-l);color:var(--gold-l)}
+.eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:'Sora';font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:.74rem;color:var(--gold)}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--gold)}
+
+/* wordmark */
+.brand{display:inline-flex;align-items:center}
+.brand-logo{height:50px;width:auto;display:block}
+
+/* progress */
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));width:0;z-index:120;transition:width .1s linear}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:.55rem 0;transition:.35s;background:#405c43;box-shadow:0 2px 18px rgba(0,0,0,.18)}
+header.solid{padding:.35rem 0;box-shadow:0 4px 22px rgba(0,0,0,.3)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.menu{display:flex;gap:2rem;font-size:.94rem;font-weight:500;color:#dfe7e0}
+.menu a{opacity:.82;transition:.2s}.menu a:hover{opacity:1;color:var(--gold-l)}
+.nav-r{display:flex;align-items:center;gap:1rem}
+.login{font-size:.9rem;color:#dfe7e0;font-weight:500}.login:hover{color:var(--gold-l)}
+.burger{display:none;background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer}
+@media(max-width:880px){.menu,.login{display:none}.burger{display:block}}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;color:#fff;overflow:hidden;padding:7rem 0 2rem}
+.hero-bg{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(120% 80% at 80% 0%,rgba(200,162,76,.16),transparent 55%),
+  radial-gradient(90% 70% at 0% 100%,rgba(44,74,57,.8),transparent 60%),
+  linear-gradient(160deg,var(--green) 0%,var(--green-d) 60%,var(--green-ink) 100%)}
+.hero-grid{position:absolute;inset:0;z-index:-1;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:54px 54px;mask-image:radial-gradient(80% 80% at 50% 30%,#000,transparent 80%)}
+.hero h1{font-size:clamp(2.5rem,6.4vw,4.7rem);font-weight:800;max-width:16ch;letter-spacing:-.04em;margin:1.3rem 0 1.1rem}
+.hero h1 .g{background:linear-gradient(120deg,var(--gold-l),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:clamp(1.02rem,1.6vw,1.22rem);color:#c7d3ca;max-width:52ch}
+
+/* role rozcestník */
+.roles{margin-top:2.4rem}
+.roles .lbl{font-size:.82rem;color:#9fb0a4;font-weight:600;margin-bottom:.9rem;letter-spacing:.04em}
+.role-row{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem}
+.role{position:relative;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.2rem 1rem;cursor:pointer;transition:.28s cubic-bezier(.3,1.1,.5,1);text-align:left}
+.role:hover{background:rgba(255,255,255,.09);transform:translateY(-5px);border-color:rgba(200,162,76,.5)}
+.role.on{background:linear-gradient(160deg,rgba(200,162,76,.22),rgba(200,162,76,.06));border-color:var(--gold)}
+.role .ic-b{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.1);color:var(--gold-l);display:grid;place-items:center;font-size:1.2rem;margin-bottom:.7rem;transition:.28s}
+.role.on .ic-b{background:var(--gold);color:var(--green-ink)}
+.role b{font-family:'Sora';font-weight:600;font-size:.98rem;color:#fff;display:block}
+.role span{font-size:.76rem;color:#a7b6ab}
+.role-out{margin-top:1.3rem;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;min-height:54px}
+.role-out .msg{font-family:'Sora';font-weight:500;font-size:1.05rem;color:var(--gold-l)}
+@media(max-width:880px){.role-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -4%;padding:0 4% .5rem}.role-row::-webkit-scrollbar{display:none}.role{flex:0 0 60%;scroll-snap-align:start}}
+
+/* live stats bar */
+.livebar{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.1);margin-top:2.6rem;padding-top:1.6rem;display:flex;gap:2.4rem;flex-wrap:wrap;align-items:center}
+.stat .n{font-family:'Sora';font-weight:800;font-size:clamp(1.5rem,3vw,2.1rem);color:#fff;line-height:1}
+.stat .n .plus{color:var(--gold)}
+.stat .l{font-size:.8rem;color:#9fb0a4;margin-top:.25rem}
+.live-pill{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;color:#cfe0d4;font-weight:600;background:rgba(255,255,255,.06);padding:.5rem .9rem;border-radius:100px;border:1px solid rgba(255,255,255,.12)}
+.live-pill .dot{width:8px;height:8px;border-radius:50%;background:#5fd17a;box-shadow:0 0 0 0 rgba(95,209,122,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(95,209,122,.5)}70%{box-shadow:0 0 0 9px rgba(95,209,122,0)}100%{box-shadow:0 0 0 0 rgba(95,209,122,0)}}
+.scrollcue{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.2em;color:rgba(255,255,255,.5);animation:bob 2.4s infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+
+/* SECTION base */
+.sec{padding:clamp(4.5rem,10vh,7.5rem) 0}
+.sec h2{font-size:clamp(2rem,4.6vw,3.2rem);color:var(--green);margin:.6rem 0 1rem}
+.sec .lead{color:var(--muted);font-size:1.05rem;max-width:560px}
+
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem}
+.step{background:#fff;border:1px solid var(--line);border-radius:20px;padding:2rem;box-shadow:var(--shadow-s);transition:.3s}
+.step:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.step .ic-b{width:54px;height:54px;border-radius:14px;background:var(--soft);color:var(--green-2);display:grid;place-items:center;font-size:1.4rem;margin-bottom:1.1rem}
+.step .num{font-family:'Sora';font-weight:700;font-size:.8rem;color:var(--gold);letter-spacing:.1em}
+.step h3{font-size:1.3rem;color:var(--green);margin:.3rem 0 .5rem}
+.step p{color:var(--muted);font-size:.95rem}
+
+/* map teaser */
+.maps{background:linear-gradient(160deg,var(--green),var(--green-d));color:#fff;position:relative;overflow:hidden}
+.maps .grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.maps h2{color:#fff}
+.maps .lead{color:#bccabf}
+.mapbox{position:relative;aspect-ratio:4/3;border-radius:22px;background:
+  radial-gradient(circle at 30% 40%,rgba(200,162,76,.12),transparent 40%),
+  linear-gradient(160deg,#24382c,#18271f);border:1px solid rgba(255,255,255,.12);overflow:hidden}
+.pin{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--gold);transform:rotate(-45deg);box-shadow:0 0 0 0 rgba(200,162,76,.5);animation:ping 2.6s infinite}
+.pin::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--green-ink)}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(200,162,76,.5)}70%{box-shadow:0 0 0 16px rgba(200,162,76,0)}100%{box-shadow:0 0 0 0 rgba(200,162,76,0)}}
+
+/* live feed */
+.feed{background:var(--soft)}
+.feed-list{margin-top:2rem;display:flex;flex-direction:column;gap:.7rem;max-width:640px}
+.fitem{display:flex;align-items:center;gap:.9rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1.1rem;box-shadow:var(--shadow-s);animation:slidein .5s cubic-bezier(.16,.85,.3,1)}
+@keyframes slidein{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+.fitem .fic{width:38px;height:38px;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-size:1.1rem;flex:none}
+.fitem b{font-size:.94rem;color:var(--green);font-weight:600}
+.fitem span{font-size:.8rem;color:var(--muted)}
+.fitem .ago{margin-left:auto;font-size:.74rem;color:var(--silver-d);white-space:nowrap}
+
+/* CTA */
+.cta{background:linear-gradient(160deg,var(--green-2),var(--green-d));color:#fff;text-align:center}
+.cta h2{color:#fff}
+.cta p{color:#bccabf;max-width:34ch;margin:1rem auto 2rem}
+
+/* footer */
+footer{background:var(--green-ink);color:#9fb0a4;padding:3.5rem 0 2rem}
+footer .grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem}
+footer h4{color:#fff;margin-bottom:.9rem;font-size:1rem}
+footer a:hover{color:var(--gold-l)}
+footer .links{display:flex;flex-direction:column;gap:.45rem;font-size:.92rem}
+footer .copy{border-top:1px solid rgba(255,255,255,.1);margin-top:2.2rem;padding-top:1.3rem;font-size:.8rem;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+.flag{position:fixed;bottom:0;left:0;right:0;z-index:110;background:var(--green-ink);color:#cfe0d4;font-size:.78rem;padding:.5rem 1rem;text-align:center}
+.flag b{color:var(--gold-l)}.flag button{background:none;border:0;color:#fff;cursor:pointer;opacity:.6;margin-left:.5rem}
+
+@media(max-width:880px){.steps,.maps .grid,footer .grid{grid-template-columns:1fr}.livebar{gap:1.4rem}}
+</style>
+</head>
+<body>
+
+<svg style="display:none"><defs>
+  <symbol id="i-coach" viewBox="0 0 24 24"><circle cx="9" cy="13" r="5.2"/><path d="M14 11.2l6-1-1 3-4.4.4"/><path d="M9 7.8V5h3.4"/></symbol>
+  <symbol id="i-parent" viewBox="0 0 24 24"><circle cx="8" cy="6" r="2.5"/><path d="M4 20v-3a4 4 0 018 0v3"/><circle cx="16.5" cy="9" r="2"/><path d="M13.5 20v-2.5a3 3 0 016 0V20"/></symbol>
+  <symbol id="i-player" viewBox="0 0 24 24"><ellipse cx="10" cy="9" rx="5" ry="6" transform="rotate(-40 10 9)"/><path d="M13.6 13.6 19 19"/><circle cx="18.4" cy="6.4" r="1.7"/></symbol>
+  <symbol id="i-club" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M12 5v14M3 12h18"/></symbol>
+  <symbol id="i-physio" viewBox="0 0 24 24"><path d="M6.5 6v12M3.5 9v6M17.5 6v12M20.5 9v6M6.5 12h11"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</defs></svg>
+
+<div class="progress" id="prog"></div>
+
+<header id="hdr">
+  <div class="wrap"><div class="bar">
+    <a href="#" class="brand"><img src="assets/logo.png" alt="TenisHub" class="brand-logo"></a>
+    <nav class="menu"><a href="#how">Jak to funguje</a><a href="mapa.html">Mapa</a><a href="#feed">Komunita</a><a href="#">Ceník</a></nav>
+    <div class="nav-r"><a href="#" class="login">Přihlásit se</a><a href="#cta" class="btn btn-gold">Vstoupit zdarma</a><button class="burger">☰</button></div>
+  </div></div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="eyebrow rv">Páteř českého tenisu</div>
+    <h1 class="rv d1">Celý český tenis<br><span class="g">na jednom místě.</span></h1>
+    <p class="sub rv d2">Trenéři, kurty, akademie, fyzio i komunita. Najdi, rezervuj, zaplať — nebo získej klienty a naplň kurty.</p>
+
+    <div class="roles rv d3">
+      <div class="lbl">Kdo jste? Vyberte a uvidíte, co pro vás máme:</div>
+      <div class="role-row" id="roleRow">
+        <div class="role on" data-link="profil-trener.html" data-msg="Získej klienty, kalendář, platby a méně administrativy." data-cta="Chci klienty"><div class="ic-b"><svg class="ic"><use href="#i-coach"/></svg></div><b>Trenér</b><span>klienti &amp; nástroje</span></div>
+        <div class="role" data-link="mapa.html" data-msg="Najdi ověřeného trenéra, kurt i sparring — a měj klid." data-cta="Najít trenéra"><div class="ic-b"><svg class="ic"><use href="#i-parent"/></svg></div><b>Rodič</b><span>jistota &amp; pohodlí</span></div>
+        <div class="role" data-link="mapa.html" data-msg="Sparring, turnaje, žebříčky a tvůj profil na jednom místě." data-cta="Najít sparring"><div class="ic-b"><svg class="ic"><use href="#i-player"/></svg></div><b>Hráč</b><span>sparring &amp; výsledky</span></div>
+        <div class="role" data-link="dashboard-areal.html" data-msg="Naplň kurty, získej členy a trenéry do areálu." data-cta="Spravovat areál"><div class="ic-b"><svg class="ic"><use href="#i-club"/></svg></div><b>Klub / areál</b><span>obsazenost</span></div>
+        <div class="role" data-link="profil-trener.html" data-msg="Získej tenisové klienty a buď vidět jako specialista." data-cta="Můj profil"><div class="ic-b"><svg class="ic"><use href="#i-physio"/></svg></div><b>Fyzio &amp; fitness</b><span>noví klienti</span></div>
+      </div>
+      <div class="role-out">
+        <span class="msg" id="roleMsg">Získej klienty, kalendář, platby a méně administrativy.</span>
+        <a href="profil-trener.html" class="btn btn-gold" id="roleCta">Chci klienty <svg class="ic"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+
+    <div class="livebar rv d4">
+      <div class="live-pill"><span class="dot"></span><span id="online">38</span> lidí online</div>
+      <div class="stat"><div class="n"><span class="count" data-to="2540">0</span></div><div class="l">členů</div></div>
+      <div class="stat"><div class="n"><span class="count" data-to="320">0</span></div><div class="l">trenérů &amp; specialistů</div></div>
+      <div class="stat"><div class="n"><span class="count" data-to="145">0</span></div><div class="l">kurtů &amp; areálů</div></div>
+      <div class="stat"><div class="n"><span class="count" data-to="18400">0</span></div><div class="l">návštěv tento měsíc</div></div>
+    </div>
+  </div>
+  <div class="scrollcue">SCROLL ↓</div>
+</section>
+
+<!-- HOW -->
+<section class="sec" id="how">
+  <div class="wrap">
+    <span class="eyebrow rv">Jak to funguje</span>
+    <h2 class="rv">Tři kroky, ať jste kdokoli</h2>
+    <div class="steps">
+      <div class="step rv z d1"><div class="ic-b"><svg class="ic"><use href="#i-search"/></svg></div><div class="num">01</div><h3>Najdi</h3><p>Trenéra, kurt, areál, fyzio nebo sparring partnera — v mapě po celé ČR, s recenzemi.</p></div>
+      <div class="step rv z d2"><div class="ic-b"><svg class="ic"><use href="#i-cal"/></svg></div><div class="num">02</div><h3>Rezervuj</h3><p>Vyber termín v kalendáři a rovnou se přihlas. Žádné SMS, žádné domlouvání.</p></div>
+      <div class="step rv z d3"><div class="ic-b"><svg class="ic"><use href="#i-card"/></svg></div><div class="num">03</div><h3>Zaplať &amp; hraj</h3><p>Zaplať online a hotovo. Profíci dostanou klienta, ty máš vše na jednom místě.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="sec maps" id="map">
+  <div class="wrap"><div class="grid">
+    <div class="rv l">
+      <span class="eyebrow">Mapa</span>
+      <h2>Trenéři a specialisté po celé ČR</h2>
+      <p class="lead">Ověřené profily trenérů, fyzioterapeutů, kondičních trenérů, škol a areálů — s kontakty, recenzemi a volnými termíny.</p>
+      <div style="margin-top:1.6rem"><a href="mapa.html" class="btn btn-gold">Prozkoumat mapu <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+    </div>
+    <div class="mapbox rv r" id="mapbox"></div>
+  </div></div>
+</section>
+
+<!-- LIVE FEED -->
+<section class="sec feed" id="feed">
+  <div class="wrap">
+    <span class="eyebrow rv">Živě</span>
+    <h2 class="rv">Právě teď na TenisHubu</h2>
+    <p class="lead rv">Komunita žije — noví trenéři, rezervace, recenze a dotazy v reálném čase.</p>
+    <div class="feed-list" id="feedList"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec cta" id="cta">
+  <div class="wrap">
+    <span class="eyebrow rv" style="justify-content:center;display:flex">Pojďme na to</span>
+    <h2 class="rv">Přidej se k českému tenisu</h2>
+    <p class="rv d1">Vstup zdarma, prémiové funkce pro ty, kdo to s tenisem myslí vážně.</p>
+    <a href="#" class="btn btn-gold rv d2">Vstoupit zdarma <svg class="ic"><use href="#i-arrow"/></svg></a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="brand" style="font-size:1.5rem"><span class="t">TENIS</span><span class="h">HUB</span><span class="cz">.cz</span></span>
+        <p style="max-width:340px;font-size:.92rem;margin-top:.8rem">Páteř českého tenisu. Najdi, rezervuj, hraj — nebo získej klienty a naplň kurty.</p>
+      </div>
+      <div><h4>Pro koho</h4><div class="links"><a href="#">Trenéři</a><a href="#">Rodiče &amp; hráči</a><a href="#">Kluby &amp; areály</a><a href="#">Fyzio &amp; fitness</a></div></div>
+      <div><h4>TenisHub</h4><div class="links"><a href="#how">Jak to funguje</a><a href="#map">Mapa</a><a href="#feed">Komunita</a><a href="#">Ceník</a></div></div>
+    </div>
+    <div class="copy"><span>© 2026 TenisHub.cz</span><span>Návrh designu · obsah doplníme</span></div>
+  </div>
+</footer>
+
+<div class="flag" id="flag">🎾 <b>Návrh designu TenisHub</b> — barvy dle loga (zelená/zlatá/stříbro) · rozcestník podle role · živé statistiky <button onclick="document.getElementById('flag').style.display='none'">✕</button></div>
+
+<script>
+// progress + nav
+var hdr=document.getElementById('hdr'),prog=document.getElementById('prog');
+addEventListener('scroll',function(){var h=document.body.scrollHeight-innerHeight;prog.style.width=(scrollY/h*100)+'%';scrollY>30?hdr.classList.add('solid'):hdr.classList.remove('solid');});
+// reveal
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+// count-up
+var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target,to=+el.dataset.to,s=performance.now();
+(function t(now){var p=Math.min((now-s)/1500,1),ea=1-Math.pow(1-p,3);el.textContent=Math.round(to*ea).toLocaleString('cs-CZ');if(p<1)requestAnimationFrame(t);else el.dataset.val=to;})(s);cio.unobserve(el);}});},{threshold:.6});
+document.querySelectorAll('.count').forEach(function(el){cio.observe(el);});
+// role switch
+var row=document.getElementById('roleRow');
+row.addEventListener('click',function(e){var c=e.target.closest('.role');if(!c)return;
+  row.querySelectorAll('.role').forEach(function(r){r.classList.remove('on')});c.classList.add('on');
+  document.getElementById('roleMsg').textContent=c.dataset.msg;
+  var cta=document.getElementById('roleCta');cta.href=c.dataset.link;
+  cta.innerHTML=c.dataset.cta+' <svg class="ic"><use href="#i-arrow"/></svg>';
+});
+// live stats tick
+setInterval(function(){var o=document.getElementById('online');o.textContent=Math.max(20,(+o.textContent)+(Math.random()<.5?-1:1)*(Math.random()<.3?2:1));},3200);
+setInterval(function(){var el=document.querySelector('.count[data-to="2540"]');if(el&&el.dataset.val){el.dataset.val=(+el.dataset.val)+1;el.textContent=(+el.dataset.val).toLocaleString('cs-CZ');el.animate([{color:'#e0c277'},{color:'#fff'}],{duration:900});}},6000);
+// map pins
+(function(){var box=document.getElementById('mapbox');var pos=[[20,30],[40,55],[55,25],[68,60],[30,70],[80,40],[50,80],[72,20],[35,42],[60,48]];
+pos.forEach(function(p,i){var d=document.createElement('div');d.className='pin';d.style.left=p[0]+'%';d.style.top=p[1]+'%';d.style.animationDelay=(i*0.25)+'s';box.appendChild(d);});})();
+// live feed
+(function(){
+  var pool=[
+    {i:'🎾',b:'Nový trenér v mapě',s:'Brno · II. třída'},
+    {i:'📅',b:'Rezervace kurtu',s:'Praha 6 · 18:00'},
+    {i:'👋',b:'Nový člen',s:'rodič · Plzeň'},
+    {i:'🏟️',b:'Nový areál',s:'Hradec Králové'},
+    {i:'⭐',b:'Nová recenze trenéra',s:'Olomouc · ★★★★★'},
+    {i:'💬',b:'Dotaz v komunitě',s:'přestupy a registrace'},
+    {i:'🤝',b:'Sparring domluven',s:'Liberec · zítra 17:00'},
+    {i:'🧑‍⚕️',b:'Nový fyzioterapeut',s:'České Budějovice'}
+  ];
+  var list=document.getElementById('feedList'),agos=['právě teď','před 1 min','před 3 min','před 6 min','před 9 min'];
+  function render(arr){list.innerHTML='';arr.forEach(function(x,idx){var el=document.createElement('div');el.className='fitem';
+    el.innerHTML='<div class="fic">'+x.i+'</div><div><b>'+x.b+'</b><br><span>'+x.s+'</span></div><span class="ago">'+agos[Math.min(idx,4)]+'</span>';list.appendChild(el);});}
+  var cur=pool.slice(0,5);render(cur);
+  setInterval(function(){var n=pool[Math.floor(Math.random()*pool.length)];cur.unshift(n);cur=cur.slice(0,5);render(cur);},3500);
+})();
+</script>
+</body>
+</html>
