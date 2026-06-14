@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound, Mail } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
@@ -24,6 +24,7 @@ export default function AccountPage() {
   const [name, setName] = useState(""); const [city, setCity] = useState(""); const [phone, setPhone] = useState("");
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [unread, setUnread] = useState(0);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -39,6 +40,8 @@ export default function AccountPage() {
     if (p.data) { setProfile(p.data); setName(p.data.full_name ?? ""); setCity(p.data.city ?? ""); setPhone(p.data.phone ?? ""); }
     setMembership((m.data as Membership) ?? null);
     setBookings((b.data as Booking[]) ?? []);
+    const un = await supabase.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
+    setUnread(un.count ?? 0);
     setLoading(false);
   }, [router]);
 
@@ -97,6 +100,14 @@ export default function AccountPage() {
 
       <div className="wrap acct-wrap">
         <h1 className="acct-h1">Můj účet</h1>
+
+        {/* ZPRÁVY (nevyřízená pošta) */}
+        <Link href="/zpravy" className="acct-card msgs-link">
+          <span className="msgs-ic"><Mail size={20} /></span>
+          <span className="msgs-txt"><b>Zprávy</b><span>{unread > 0 ? `${unread} nepřečtených — někdo ti napsal` : "Tvoje konverzace s trenéry a hráči"}</span></span>
+          {unread > 0 && <span className="chat-badge">{unread}</span>}
+          <span className="msgs-arr">→</span>
+        </Link>
 
         {/* ČLENSTVÍ */}
         <div className={`acct-card member-card${membership ? " on" : ""}`}>

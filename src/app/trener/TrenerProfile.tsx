@@ -31,10 +31,10 @@ export type Spec = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
   phone: string | null; email: string | null; website: string | null;
   price_from: number | null; verified: boolean; rating: number | null; reviews_count: number | null;
-  status?: string | null; source?: string | null; photo_url?: string | null;
+  status?: string | null; source?: string | null; photo_url?: string | null; owner_id?: string | null;
 };
 
-type Modal = null | "msg" | "sent" | "book" | "pay" | "done" | "auth" | "member" | "claim" | "claimSent" | "remove" | "removeSent";
+type Modal = null | "msg" | "sent" | "book" | "pay" | "done" | "auth" | "member" | "claim" | "claimSent" | "remove" | "removeSent" | "noowner";
 
 export default function TrenerProfile({ spec }: { spec?: Spec }) {
   const [modal, setModal] = useState<Modal>(null);
@@ -53,6 +53,8 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   const [rmReason, setRmReason] = useState("");
   const [claimBusy, setClaimBusy] = useState(false);
   const [dbServices, setDbServices] = useState<{ name: string; price_czk: number; duration_min: number }[]>([]);
+  const [msgText, setMsgText] = useState("");
+  const [msgBusy, setMsgBusy] = useState(false);
 
   // ceník z DB (reálné položky, které si trenér nastavil)
   useEffect(() => {
@@ -159,11 +161,24 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
     setModal("removeSent");
   };
 
-  // zprávy trenérovi = členská funkce
+  // zprávy trenérovi = ZDARMA (jen přihlášení), drží likviditu
   const openMsg = () => {
     if (!userId) { setModal("auth"); return; }
-    if (!hasMember) { setModal("member"); return; }
     setModal("msg");
+  };
+
+  const sendMessage = async () => {
+    if (!spec) { setModal("sent"); return; }        // demo /trener
+    if (!userId) { setModal("auth"); return; }
+    if (!spec.owner_id) { setModal("noowner"); return; }
+    if (!msgText.trim()) return;
+    setMsgBusy(true);
+    const supabase = createClient();
+    await supabase.from("messages").insert({
+      from_id: userId, to_id: spec.owner_id, from_name: userName || "Hráč",
+      to_name: spec.name, specialist_id: spec.id, body: msgText.trim(),
+    });
+    setMsgBusy(false); setMsgText(""); setModal("sent");
   };
 
   // data z DB, nebo demo model
@@ -381,10 +396,9 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           <div className="modal">
             <button className="x" onClick={() => setModal(null)}>×</button>
             <h3>Napsat — {firstName}</h3>
-            <div className="msub">Odpoví vám zpravidla do 24 hodin.</div>
-            <div className="fld"><label>Vaše jméno</label><input placeholder="Jméno a příjmení" /></div>
-            <div className="fld"><label>Zpráva</label><textarea rows={3} placeholder="Dobrý den, měl bych zájem o lekce pro syna (8 let)…" /></div>
-            <button className="btn btn-green" style={{ width: "100%" }} onClick={() => setModal("sent")}>Odeslat zprávu</button>
+            <div className="msub">Zpráva dorazí do schránky na TenisHubu. Odpoví vám zpravidla do 24 hodin.</div>
+            <div className="fld"><label>Zpráva</label><textarea rows={3} value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="Dobrý den, měl bych zájem o lekce pro syna (8 let)…" /></div>
+            <button className="btn btn-green" style={{ width: "100%" }} onClick={sendMessage} disabled={msgBusy}>{msgBusy ? "Odesílám…" : "Odeslat zprávu"}</button>
           </div>
         </div>
       )}
@@ -395,9 +409,24 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             <div className="success">
               <div className="ok">✓</div>
               <h3>Zpráva odeslána</h3>
-              <p className="msub" style={{ marginTop: ".4rem" }}>{firstName} se vám brzy ozve. (Náhled — na ostrém webu zpráva dorazí trenérovi.)</p>
-              <button className="btn btn-green" style={{ width: "100%" }} onClick={() => setModal(null)}>Hotovo</button>
+              <p className="msub" style={{ marginTop: ".4rem" }}>{firstName} se vám ozve. Konverzaci najdete v sekci <Link href="/zpravy" style={{ color: "var(--gold)", fontWeight: 700 }}>Zprávy</Link>.</p>
+              <Link href="/zpravy" className="btn btn-green" style={{ width: "100%" }}>Přejít do zpráv</Link>
+              <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={() => setModal(null)}>Zavřít</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {modal === "noowner" && (
+        <div className="ov on" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
+          <div className="modal">
+            <button className="x" onClick={() => setModal(null)}>×</button>
+            <h3>Profil zatím nikdo nespravuje</h3>
+            <div className="msub">
+              Tenhle profil vznikl z veřejných zdrojů a specialista si ho ještě nepřevzal, takže mu přes
+              TenisHub nelze napsat. {web ? <>Zkus kontakt na webu <b>{web}</b>.</> : "Zkus ho najít přes web nebo veřejné kontakty."}
+            </div>
+            <button className="btn btn-out" style={{ width: "100%" }} onClick={() => setModal(null)}>Zavřít</button>
           </div>
         </div>
       )}

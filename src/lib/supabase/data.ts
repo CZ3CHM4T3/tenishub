@@ -16,7 +16,7 @@ export type SpecRow = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
   phone: string | null; email: string | null; website: string | null;
   price_from: number | null; verified: boolean; rating: number | null; reviews_count: number | null;
-  status?: string | null; source?: string | null; venue_id?: string | null; photo_url?: string | null;
+  status?: string | null; source?: string | null; venue_id?: string | null; photo_url?: string | null; owner_id?: string | null;
 };
 export type VenueRow = {
   id: string; name: string; city: string | null; description: string | null;
