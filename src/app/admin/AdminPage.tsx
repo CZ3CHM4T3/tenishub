@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag } from "lucide-react";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star } from "lucide-react";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -13,6 +13,7 @@ type Booking = { id: string; customer_id: string | null; starts_at: string; pric
 type NamedRef = { name: string | null } | null;
 type Claim = { id: string; status: string; created_at: string; user_id: string; message: string | null; specialists: NamedRef; venues: NamedRef };
 type Removal = { id: string; status: string; created_at: string; email: string | null; reason: string | null; specialists: NamedRef; venues: NamedRef };
+type Review = { id: string; created_at: string; author_name: string | null; rating: number; body: string | null; r_skill: number | null; r_kids: number | null; r_comm: number | null; r_progress: number | null; r_value: number | null; specialists: NamedRef };
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const fmtT = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -27,6 +28,7 @@ export default function AdminPage() {
   const [venueCount, setVenueCount] = useState(0);
   const [claims, setClaims] = useState<Claim[]>([]);
   const [removals, setRemovals] = useState<Removal[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -44,6 +46,7 @@ export default function AdminPage() {
       supabase.from("claim_requests").select("id,status,created_at,user_id,message,specialists(name),venues(name)").eq("status", "pending").order("created_at", { ascending: false }),
       supabase.from("removal_requests").select("id,status,created_at,email,reason,specialists(name),venues(name)").eq("status", "open").order("created_at", { ascending: false }),
     ]);
+    const rv = await supabase.from("reviews").select("id,created_at,author_name,rating,body,r_skill,r_kids,r_comm,r_progress,r_value,specialists(name)").eq("status", "pending").order("created_at", { ascending: false });
     setProfiles((p.data as Profile[]) ?? []);
     setMemberships((m.data as Membership[]) ?? []);
     setBookings((b.data as Booking[]) ?? []);
@@ -51,6 +54,7 @@ export default function AdminPage() {
     setVenueCount(vc.count ?? 0);
     setClaims((cl.data as unknown as Claim[]) ?? []);
     setRemovals((rm.data as unknown as Removal[]) ?? []);
+    setReviews((rv.data as unknown as Review[]) ?? []);
     setLoading(false);
   }, [router]);
 
@@ -105,6 +109,12 @@ export default function AdminPage() {
     setBusy(id);
     const supabase = createClient();
     await supabase.rpc("resolve_removal", { req_id: id });
+    await load(); setBusy(null);
+  };
+  const moderateReview = async (id: string, status: "approved" | "rejected") => {
+    setBusy(id);
+    const supabase = createClient();
+    await supabase.from("reviews").update({ status }).eq("id", id);
     await load(); setBusy(null);
   };
 
@@ -235,6 +245,42 @@ export default function AdminPage() {
           )}
           <p className="member-note" style={{ marginTop: "0.8rem" }}>
             „Skrýt profil" profil okamžitě stáhne z webu i mapy. Žádosti vyřizuj co nejdříve (GDPR).
+          </p>
+        </div>
+
+        {/* RECENZE KE SCHVÁLENÍ */}
+        <div className="acct-card">
+          <div className="acct-card-head"><Star size={20} /><h2>Recenze ke schválení ({reviews.length})</h2></div>
+          {reviews.length === 0 ? (
+            <p className="member-note">Žádné čekající recenze.</p>
+          ) : (
+            <div className="admin-scroll">
+              <table className="admin-table">
+                <thead><tr><th>Specialista</th><th>Autor</th><th>Hodnocení</th><th>Text</th><th>Akce</th></tr></thead>
+                <tbody>
+                  {reviews.map((r) => (
+                    <tr key={r.id}>
+                      <td><b>{r.specialists?.name || "—"}</b></td>
+                      <td>{r.author_name || "—"}</td>
+                      <td>
+                        <span className="member-badge">{r.rating}/5</span>
+                        <div style={{ fontSize: "0.74rem", color: "var(--muted)", marginTop: 3 }}>
+                          odb {r.r_skill ?? "–"} · děti {r.r_kids ?? "–"} · kom {r.r_comm ?? "–"} · přínos {r.r_progress ?? "–"} · cena {r.r_value ?? "–"}
+                        </div>
+                      </td>
+                      <td style={{ maxWidth: 280 }}>{r.body || "—"}</td>
+                      <td className="admin-actions">
+                        <button onClick={() => moderateReview(r.id, "approved")} disabled={busy === r.id}>Schválit</button>
+                        <button className="danger" onClick={() => moderateReview(r.id, "rejected")} disabled={busy === r.id}>Zamítnout</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <p className="member-note" style={{ marginTop: "0.8rem" }}>
+            Recenze schvalujeme my kvůli objektivitě — zveřejní se až po „Schválit".
           </p>
         </div>
 

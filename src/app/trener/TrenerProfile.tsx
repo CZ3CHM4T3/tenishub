@@ -45,7 +45,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   const [hasMember, setHasMember] = useState(false);
   const [saving, setSaving] = useState(false);
   const [dbReviews, setDbReviews] = useState<{ id: string; author_name: string | null; rating: number; body: string | null }[]>([]);
-  const [rStars, setRStars] = useState(5);
+  const [cats, setCats] = useState({ skill: 5, kids: 5, comm: 5, progress: 5, value: 5 });
   const [rBody, setRBody] = useState("");
   const [rBusy, setRBusy] = useState(false);
   const [rDone, setRDone] = useState(false);
@@ -95,12 +95,15 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
     if (!userId) { setModal("auth"); return; }
     if (!spec) return;
     setRBusy(true);
+    const overall = Math.round((cats.skill + cats.kids + cats.comm + cats.progress + cats.value) / 5);
     const supabase = createClient();
     await supabase.from("reviews").insert({
-      specialist_id: spec.id, author_id: userId, author_name: userName || "Hráč", rating: rStars, body: rBody,
+      specialist_id: spec.id, author_id: userId, author_name: userName || "Hráč",
+      rating: overall, r_skill: cats.skill, r_kids: cats.kids, r_comm: cats.comm,
+      r_progress: cats.progress, r_value: cats.value, body: rBody,
     });
-    setRBusy(false); setRBody(""); setRStars(5); setRDone(true);
-    setTimeout(() => setRDone(false), 2500);
+    setRBusy(false); setRBody(""); setCats({ skill: 5, kids: 5, comm: 5, progress: 5, value: 5 }); setRDone(true);
+    setTimeout(() => setRDone(false), 4000);
     await loadReviews();
   };
 
@@ -326,13 +329,21 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
 
                   <form className="rev-form" onSubmit={submitReview}>
                     <div className="rev-form-head">Napsat recenzi</div>
-                    <div className="rev-stars">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <button type="button" key={n} className={n <= rStars ? "on" : ""} onClick={() => setRStars(n)} aria-label={`${n} hvězd`}>★</button>
+                    <div className="rev-cats">
+                      {([["skill", "Odbornost"], ["kids", "Přístup k dětem"], ["comm", "Komunikace a spolehlivost"], ["progress", "Přínos / posun"], ["value", "Cena / hodnota"]] as const).map(([key, label]) => (
+                        <div className="rev-cat" key={key}>
+                          <span className="rev-cat-l">{label}</span>
+                          <span className="rev-stars">
+                            {[1, 2, 3, 4, 5].map((n) => (
+                              <button type="button" key={n} className={n <= cats[key] ? "on" : ""} onClick={() => setCats({ ...cats, [key]: n })} aria-label={`${label} ${n}`}>★</button>
+                            ))}
+                          </span>
+                        </div>
                       ))}
                     </div>
-                    <textarea rows={2} value={rBody} onChange={(e) => setRBody(e.target.value)} placeholder="Jak ses cítil/a na lekci?" />
-                    <button className="btn btn-green" disabled={rBusy} type="submit">{rBusy ? "Odesílám…" : rDone ? "✓ Děkujeme!" : userId ? "Přidat recenzi" : "Přihlásit se a hodnotit"}</button>
+                    <textarea rows={2} value={rBody} onChange={(e) => setRBody(e.target.value)} placeholder="Napiš pár vět o své zkušenosti…" />
+                    {rDone && <div className="rev-thanks">✓ Děkujeme! Recenzi zveřejníme po schválení.</div>}
+                    <button className="btn btn-green" disabled={rBusy} type="submit">{rBusy ? "Odesílám…" : userId ? "Odeslat recenzi" : "Přihlásit se a hodnotit"}</button>
                   </form>
                 </>
               )}

@@ -356,6 +356,11 @@
 .cenik-add { margin-top: 0.2rem; }
 .card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
 @media (max-width: 520px) { .cenik-row { grid-template-columns: 1fr 70px 60px 36px; } }
+/* Recenze v2 — kategorie */
+.rev-cats { display: grid; gap: 0.4rem; margin: 0.4rem 0 0.7rem; }
+.rev-cat { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+.rev-cat-l { font-size: 0.9rem; color: var(--green-2); }
+.rev-thanks { background: rgba(44,74,59,0.08); color: var(--green); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
 .claim-banner { display: flex; gap: 1rem; align-items: flex-start; background: #fff; border: 1.5px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 16px; padding: 1.2rem 1.4rem; margin: 1.4rem 0; box-shadow: 0 8px 26px rgba(40,50,30,0.08); }
 .claim-banner .cb-ic { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(200,162,76,0.16); color: var(--gold-l); }
 .claim-banner .cb-txt b { font-family: var(--font-jakarta), sans-serif; font-size: 1.05rem; color: var(--green); }
