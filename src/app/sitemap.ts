@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { CITIES, citySlug } from "@/lib/cities";
 
 // Dynamická sitemapa: statické stránky + všechny veřejné profily z DB.
 // force-dynamic → negeneruje se při buildu (kde je síť blokovaná), ale za běhu
@@ -17,6 +18,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/sparring`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/soukromi`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/prihlaseni`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    ...CITIES.map((c) => ({
+      url: `${base}/tenis/${citySlug(c[0])}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
   ];
 
   try {

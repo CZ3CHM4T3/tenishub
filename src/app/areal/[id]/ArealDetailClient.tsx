@@ -18,11 +18,13 @@ const KIND_LABEL: Record<string, string> = { coach: "Trenér", physio: "Fyzio", 
 
 type Modal = null | "claim" | "claimSent" | "remove" | "removeSent";
 
-export default function ArealDetailClient({ id }: { id: string }) {
-  const [venue, setVenue] = useState<Venue | null>(null);
-  const [courts, setCourts] = useState<Court[]>([]);
-  const [trainers, setTrainers] = useState<Trainer[]>([]);
-  const [state, setState] = useState<"loading" | "ok" | "missing">("loading");
+type Initial = { venue: Venue; courts: Court[]; trainers: Trainer[] };
+
+export default function ArealDetailClient({ id, initial }: { id: string; initial?: Initial }) {
+  const [venue, setVenue] = useState<Venue | null>(initial?.venue ?? null);
+  const [courts, setCourts] = useState<Court[]>(initial?.courts ?? []);
+  const [trainers, setTrainers] = useState<Trainer[]>(initial?.trainers ?? []);
+  const [state, setState] = useState<"loading" | "ok" | "missing">(initial ? "ok" : "loading");
   const [userId, setUserId] = useState<string | null>(null);
   const [modal, setModal] = useState<Modal>(null);
   const [rmEmail, setRmEmail] = useState("");
@@ -32,20 +34,24 @@ export default function ArealDetailClient({ id }: { id: string }) {
   useEffect(() => {
     const supabase = createClient();
     (async () => {
-      const [v, c, t, u] = await Promise.all([
+      // přihlášení potřebujeme vždy (kvůli claim tlačítkům)
+      const { data: u } = await supabase.auth.getUser();
+      setUserId(u.user?.id ?? null);
+      // data o areálu máme buď ze serveru (SSR), nebo je dotáhneme klientsky
+      if (initial) return;
+      const [v, c, t] = await Promise.all([
         supabase.from("venues").select("*").eq("id", id).maybeSingle(),
         supabase.from("courts").select("name,indoor,surface").eq("venue_id", id),
         supabase.from("specialists").select("id,name,kind").eq("venue_id", id).neq("status", "hidden"),
-        supabase.auth.getUser(),
       ]);
       if (v.data) {
         setVenue(v.data as Venue);
         setCourts((c.data as Court[]) ?? []);
         setTrainers((t.data as Trainer[]) ?? []);
-        setUserId(u.data.user?.id ?? null);
         setState("ok");
       } else setState("missing");
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const submitClaim = async () => {

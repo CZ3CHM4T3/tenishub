@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound } from "lucide-react";
+import ProviderCard from "./ProviderCard";
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
 type Membership = { id: string; plan: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -145,6 +146,9 @@ export default function AccountPage() {
           </div>
           <button className="btn btn-green" onClick={saveProfile} disabled={busy}>{saved ? "✓ Uloženo" : "Uložit změny"}</button>
         </div>
+
+        {/* MOJE KARTA (samospráva trenér/areál) */}
+        <ProviderCard userId={profile.id} fullName={name} />
 
         {/* REZERVACE */}
         <div className="acct-card">

@@ -327,6 +327,35 @@
 .legal-wrap p { color: var(--muted); line-height: 1.65; }
 .legal-wrap a { color: var(--gold-l); font-weight: 600; }
 .legal-wrap .legal-note { margin-top: 2rem; font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1rem; }
+.city-sec { margin-top: 2rem; }
+.city-sec h2 { font-family: var(--font-jakarta), sans-serif; font-size: 1.15rem; color: var(--green); margin: 0 0 0.7rem; }
+.city-list { display: grid; gap: 0.5rem; }
+.city-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 1rem; border: 0.5px solid var(--line); border-radius: 12px; background: #fff; text-decoration: none; transition: 0.15s; }
+.city-row:hover { border-color: var(--gold); background: var(--soft); }
+.city-row-name { font-weight: 600; color: var(--green-d); }
+.city-row-sub { font-size: 0.85rem; color: var(--muted); white-space: nowrap; }
+.city-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.city-tag { padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid var(--line); background: #fff; color: var(--green-2); font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: 0.15s; }
+.city-tag:hover { border-color: var(--gold); color: var(--gold-l); }
+.foot-cities { margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid rgba(255,255,255,0.12); }
+.foot-cities h4 { font-size: 0.95rem; margin: 0 0 0.7rem; opacity: 0.9; }
+.foot-city-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+.foot-city-links a { font-size: 0.85rem; opacity: 0.75; text-decoration: none; transition: 0.15s; }
+.foot-city-links a:hover { opacity: 1; }
+/* Samospráva karty (účet) */
+.card-create { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
+.card-photo { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.1rem; }
+.card-photo-prev { width: 84px; height: 84px; border-radius: 16px; flex: none; background: var(--soft); background-size: cover; background-position: center; display: grid; place-items: center; color: var(--muted); border: 1px solid var(--line); }
+.hint { font-size: 0.8rem; color: var(--muted); margin: 0.4rem 0 0; }
+.cenik { margin: 1.1rem 0; border-top: 1px solid var(--line); padding-top: 1rem; }
+.cenik-head { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem; }
+.cenik-row { display: grid; grid-template-columns: 1fr 90px 80px 40px; gap: 0.5rem; margin-bottom: 0.5rem; }
+.cenik-row input { width: 100%; }
+.cenik-del { border: 1px solid var(--line); background: #fff; border-radius: 9px; color: #b14; cursor: pointer; display: grid; place-items: center; }
+.cenik-del:hover { background: #fdecec; }
+.cenik-add { margin-top: 0.2rem; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
+@media (max-width: 520px) { .cenik-row { grid-template-columns: 1fr 70px 60px 36px; } }
 .claim-banner { display: flex; gap: 1rem; align-items: flex-start; background: #fff; border: 1.5px solid var(--gold); border-left: 5px solid var(--gold); border-radius: 16px; padding: 1.2rem 1.4rem; margin: 1.4rem 0; box-shadow: 0 8px 26px rgba(40,50,30,0.08); }
 .claim-banner .cb-ic { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(200,162,76,0.16); color: var(--gold-l); }
 .claim-banner .cb-txt b { font-family: var(--font-jakarta), sans-serif; font-size: 1.05rem; color: var(--green); }

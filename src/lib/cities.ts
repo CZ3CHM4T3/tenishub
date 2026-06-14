@@ -21,3 +21,35 @@ export const CITIES: [string, number, number][] = [
   ["Teplice", 50.6404, 13.8245],
   ["Prostějov", 49.4719, 17.1118],
 ];
+
+// URL slugy měst (bez diakritiky) pro městské SEO stránky.
+const CITY_SLUGS: Record<string, string> = {
+  "Praha": "praha",
+  "Brno": "brno",
+  "Ostrava": "ostrava",
+  "Plzeň": "plzen",
+  "Liberec": "liberec",
+  "Olomouc": "olomouc",
+  "Hradec Králové": "hradec-kralove",
+  "České Budějovice": "ceske-budejovice",
+  "Pardubice": "pardubice",
+  "Zlín": "zlin",
+  "Ústí nad Labem": "usti-nad-labem",
+  "Karlovy Vary": "karlovy-vary",
+  "Jihlava": "jihlava",
+  "Kladno": "kladno",
+  "Most": "most",
+  "Opava": "opava",
+  "Frýdek-Místek": "frydek-mistek",
+  "Děčín": "decin",
+  "Teplice": "teplice",
+  "Prostějov": "prostejov",
+};
+
+export function citySlug(name: string): string {
+  return CITY_SLUGS[name] ?? name.toLowerCase().replace(/\s+/g, "-");
+}
+
+export function cityFromSlug(slug: string): string | null {
+  return CITIES.find((c) => citySlug(c[0]) === slug)?.[0] ?? null;
+}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "@/components/icons";
 import { createClient } from "@/lib/supabase/client";
-import { CITIES } from "@/lib/cities";
+import { CITIES, citySlug } from "@/lib/cities";
 import { Wordmark } from "@/components/Wordmark";
 import { ServiceMap } from "@/components/ServiceMap";
 import { AuthNav } from "@/components/AuthNav";
@@ -377,6 +377,14 @@ export default function Home() {
             </div>
             <div><h4>Pro koho</h4><div className="links"><a href="#proKoho">Trenéři</a><a href="#proKoho">Rodiče &amp; hráči</a><a href="#proKoho">Kluby &amp; areály</a><a href="#proKoho">Fyzio &amp; fitness</a></div></div>
             <div><h4>TenisHub</h4><div className="links"><a href="#how">Jak to funguje</a><Link href="/mapa">Mapa</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link><Link href="/admin">Administrace</Link></div></div>
+          </div>
+          <div className="foot-cities">
+            <h4>Tenis ve městech</h4>
+            <div className="foot-city-links">
+              {CITIES.map((c) => (
+                <Link key={c[0]} href={`/tenis/${citySlug(c[0])}`}>{c[0]}</Link>
+              ))}
+            </div>
           </div>
           <div className="copy"><span>© 2026 TenisHub.cz</span><span>tenishub.cz</span></div>
         </div>

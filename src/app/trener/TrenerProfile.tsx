@@ -31,7 +31,7 @@ export type Spec = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
   phone: string | null; email: string | null; website: string | null;
   price_from: number | null; verified: boolean; rating: number | null; reviews_count: number | null;
-  status?: string | null; source?: string | null;
+  status?: string | null; source?: string | null; photo_url?: string | null;
 };
 
 type Modal = null | "msg" | "sent" | "book" | "pay" | "done" | "auth" | "member" | "claim" | "claimSent" | "remove" | "removeSent";
@@ -52,6 +52,16 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   const [rmEmail, setRmEmail] = useState("");
   const [rmReason, setRmReason] = useState("");
   const [claimBusy, setClaimBusy] = useState(false);
+  const [dbServices, setDbServices] = useState<{ name: string; price_czk: number; duration_min: number }[]>([]);
+
+  // ceník z DB (reálné položky, které si trenér nastavil)
+  useEffect(() => {
+    if (!spec) return;
+    const supabase = createClient();
+    supabase.from("services").select("name,price_czk,duration_min").eq("specialist_id", spec.id)
+      .order("price_czk", { ascending: false })
+      .then(({ data }) => setDbServices(data ?? []));
+  }, [spec]);
 
   // přihlášení + členství (rezervace/zprávy = funkce HUB+)
   useEffect(() => {
@@ -185,7 +195,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
       <section className="phero">
         <div className="wrap">
           <div className="row">
-            <div className="avatar">{initials}</div>
+            <div className="avatar" style={spec?.photo_url ? { backgroundImage: `url(${spec.photo_url})`, backgroundSize: "cover", backgroundPosition: "center", color: "transparent" } : undefined}>{initials}</div>
             <div className="who">
               {unclaimed
                 ? <span className="verif unverif">Neověřený profil</span>
@@ -331,11 +341,19 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
 
           <aside className="side">
             <div className="bcard">
-              <div className="price">{price} Kč <small>/ 55 min</small></div>
+              <div className="price">{dbServices.length > 0 ? dbServices[dbServices.length - 1].price_czk : price} Kč <small>/ {dbServices.length > 0 ? dbServices[dbServices.length - 1].duration_min : 55} min</small></div>
               <div style={{ margin: "1rem 0" }}>
-                <div className="ln"><span>Individuální lekce</span><span>{price} Kč</span></div>
-                <div className="ln"><span>Ve dvojici (za osobu)</span><span>{Math.round(price * 0.6 / 10) * 10} Kč</span></div>
-                <div className="ln"><span>Skupina 4 hráči</span><span>{Math.round(price * 0.45 / 10) * 10} Kč</span></div>
+                {dbServices.length > 0 ? (
+                  dbServices.map((s) => (
+                    <div className="ln" key={s.name}><span>{s.name}{s.duration_min ? ` · ${s.duration_min} min` : ""}</span><span>{s.price_czk} Kč</span></div>
+                  ))
+                ) : (
+                  <>
+                    <div className="ln"><span>Individuální lekce</span><span>{price} Kč</span></div>
+                    <div className="ln"><span>Ve dvojici (za osobu)</span><span>{Math.round(price * 0.6 / 10) * 10} Kč</span></div>
+                    <div className="ln"><span>Skupina 4 hráči</span><span>{Math.round(price * 0.45 / 10) * 10} Kč</span></div>
+                  </>
+                )}
               </div>
               <button className="btn btn-gold" style={{ width: "100%" }} onClick={scrollToCal}>Vybrat termín →</button>
               <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={openMsg}>Napsat zprávu</button>
