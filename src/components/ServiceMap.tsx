@@ -267,7 +267,7 @@ function Pin({ x, y, svc, big, lit, onHover }: { x: number; y: number; svc: Serv
   );
 }
 
-export function ServiceMap({ showMap = true }: { showMap?: boolean }) {
+export function ServiceMap({ showMap = true, hideKeys = [] }: { showMap?: boolean; hideKeys?: string[] }) {
   const [hover, setHover] = useState<string | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   const [selVar, setSelVar] = useState<string>("");
@@ -309,7 +309,7 @@ export function ServiceMap({ showMap = true }: { showMap?: boolean }) {
 
       {/* KARTY služeb */}
       <div className="svc-cards">
-        {SERVICES.map((s) => {
+        {SERVICES.filter((s) => !hideKeys.includes(s.key)).map((s) => {
           const CIcon = s.Icon;
           const hl = hover === s.key || sel === s.key;
           return (

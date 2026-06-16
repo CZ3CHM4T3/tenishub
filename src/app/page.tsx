@@ -7,7 +7,6 @@ import { WhistleIcon } from "@/components/icons";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES, citySlug } from "@/lib/cities";
 import { Wordmark } from "@/components/Wordmark";
-import { ServiceMap } from "@/components/ServiceMap";
 import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import {
@@ -241,7 +240,7 @@ export default function Home() {
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
-              <Link href="#svet-sluzby" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
+              <Link href="/sluzby" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
                 <span className="world-in">
                   <span className="world-tag">Služby &amp; profíci</span>
                   <span className="world-sub">Trenér · areál · fyzio · fitness · sparring · vyplétání</span>
@@ -271,7 +270,7 @@ export default function Home() {
               <span className="chip"><span className="live-dot" /> {visits.toLocaleString("cs-CZ")} návštěv dnes</span>
             </div>
 
-            {/* NAJDI — vstup na mapu (mapa přesunuta sem z hera) */}
+            {/* NAJDI — rychlý vstup na mapu */}
             <Link href="/mapa" className="najdi-card rv d3">
               <span className="najdi-ic"><MapPin size={26} /></span>
               <div className="najdi-txt">
@@ -280,11 +279,6 @@ export default function Home() {
               </div>
               <span className="najdi-arr"><ArrowRight size={22} /></span>
             </Link>
-
-            {/* karty profilů (mapa skrytá) */}
-            <div className="hero-hive rv z d3">
-              <ServiceMap showMap={false} />
-            </div>
           </div>
         </div>
         <div className="scrollcue">SCROLL ↓</div>
@@ -293,7 +287,10 @@ export default function Home() {
       {/* VIDEOROZBOR — emoční vstupní bod */}
       <section className="vrbanner" id="svet-rodic">
         <div className="wrap vrbanner-in">
-          <div className="vrbanner-photo" style={{ backgroundImage: "url(/videorozbor.png)" }} aria-hidden="true" />
+          <div className="vrbanner-media" aria-hidden="true">
+            <img src="/videorozbor-2.png" className="vr-photo vr-photo-a" alt="" />
+            <img src="/videorozbor-1.png" className="vr-photo vr-photo-b" alt="" />
+          </div>
           <div className="vrbanner-txt">
             <span className="vrbanner-eyebrow">Videorozbor &amp; konzultace</span>
             <h2>Nebaví vaše dítě tenis?</h2>

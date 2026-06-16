@@ -399,7 +399,7 @@
 @media (max-width: 760px) { .spar-form-grid { grid-template-columns: repeat(2, 1fr); } }
 /* 2 SVĚTY — volba experience */
 .worlds-welcome { font-family: var(--font-jakarta), sans-serif; font-weight: 700; font-size: clamp(1.15rem, 2.2vw, 1.6rem); color: var(--green-d); margin: 1.8rem 0 0.9rem; }
-.worlds { position: relative; width: 100%; max-width: 1000px; margin: 0 auto; height: clamp(300px, 44vh, 440px); border-radius: 22px; overflow: hidden; box-shadow: 0 16px 44px rgba(40,50,30,0.16); }
+.worlds { position: relative; width: 100%; max-width: 1080px; margin: 0 auto; height: clamp(380px, 58vh, 580px); border-radius: 24px; overflow: hidden; box-shadow: 0 16px 44px rgba(40,50,30,0.16); }
 .world { position: absolute; inset: 0; background-size: cover; background-position: center; display: flex; align-items: flex-end; text-decoration: none; transition: 0.3s; }
 .world::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,28,22,0.78) 8%, rgba(15,28,22,0.18) 55%, rgba(15,28,22,0.35) 100%); }
 .world-rodic { clip-path: polygon(0 0, 60% 0, 44% 100%, 0 100%); }
@@ -426,7 +426,15 @@
 /* Videorozbor banner (homepage) */
 .vrbanner { padding: 0 0 1rem; }
 .vrbanner-in { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 0; background: var(--green); border-radius: 22px; overflow: hidden; box-shadow: 0 16px 44px rgba(40,50,30,0.16); }
-.vrbanner-photo { min-height: 260px; background-color: #cbb98a; background-size: cover; background-position: center; }
+.vrbanner-media { position: relative; min-height: 300px; }
+.vr-photo { position: absolute; border-radius: 14px; object-fit: cover; box-shadow: 0 14px 34px rgba(0,0,0,0.38); }
+.vr-photo-a { width: 72%; height: 72%; top: 8%; left: 5%; transform: rotate(-3deg); }
+.vr-photo-b { width: 40%; height: 58%; bottom: 6%; right: 6%; transform: rotate(4deg); border: 5px solid #fff; }
+/* /sluzby stránka */
+.sluzby-wrap { max-width: 1000px; padding: 2.2rem 1.2rem 4rem; }
+.sluzby-wrap h1 { font-family: var(--font-jakarta), sans-serif; font-size: 2rem; color: var(--green); margin: 0 0 0.5rem; }
+.sluzby-wrap .lead { color: var(--muted); font-size: 1.05rem; margin: 0 0 1.5rem; }
+.sluzby-najdi { max-width: 100% !important; margin: 0 0 1.6rem !important; }
 .vrbanner-txt { padding: 2.2rem 2.4rem; color: #fff; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .vrbanner-eyebrow { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.16); color: #fff; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.35rem 0.85rem; border-radius: 100px; }
 .vrbanner-txt h2 { font-family: var(--font-jakarta), sans-serif; font-size: clamp(1.7rem, 3.4vw, 2.5rem); margin: 0.8rem 0; color: #fff; }
