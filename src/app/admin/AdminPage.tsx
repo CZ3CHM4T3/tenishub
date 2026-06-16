@@ -14,6 +14,7 @@ type NamedRef = { name: string | null } | null;
 type Claim = { id: string; status: string; created_at: string; user_id: string; message: string | null; specialists: NamedRef; venues: NamedRef };
 type Removal = { id: string; status: string; created_at: string; email: string | null; reason: string | null; specialists: NamedRef; venues: NamedRef };
 type Review = { id: string; created_at: string; author_name: string | null; rating: number; body: string | null; r_skill: number | null; r_kids: number | null; r_comm: number | null; r_progress: number | null; r_value: number | null; specialists: NamedRef };
+type VerifyRow = { id: string; name: string; kind?: string; verified: boolean; reviews_count: number; status: string };
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const fmtT = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -29,6 +30,8 @@ export default function AdminPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [removals, setRemovals] = useState<Removal[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [vspecs, setVspecs] = useState<VerifyRow[]>([]);
+  const [vvenues, setVvenues] = useState<VerifyRow[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -47,6 +50,10 @@ export default function AdminPage() {
       supabase.from("removal_requests").select("id,status,created_at,email,reason,specialists(name),venues(name)").eq("status", "open").order("created_at", { ascending: false }),
     ]);
     const rv = await supabase.from("reviews").select("id,created_at,author_name,rating,body,r_skill,r_kids,r_comm,r_progress,r_value,specialists(name)").eq("status", "pending").order("created_at", { ascending: false });
+    const [vs, vv] = await Promise.all([
+      supabase.from("specialists").select("id,name,kind,verified,reviews_count,status").neq("status", "hidden").order("verified", { ascending: true }).order("reviews_count", { ascending: false }).limit(40),
+      supabase.from("venues").select("id,name,verified,reviews_count,status").neq("status", "hidden").order("verified", { ascending: true }).order("reviews_count", { ascending: false }).limit(40),
+    ]);
     setProfiles((p.data as Profile[]) ?? []);
     setMemberships((m.data as Membership[]) ?? []);
     setBookings((b.data as Booking[]) ?? []);
@@ -55,6 +62,8 @@ export default function AdminPage() {
     setClaims((cl.data as unknown as Claim[]) ?? []);
     setRemovals((rm.data as unknown as Removal[]) ?? []);
     setReviews((rv.data as unknown as Review[]) ?? []);
+    setVspecs((vs.data as VerifyRow[]) ?? []);
+    setVvenues((vv.data as VerifyRow[]) ?? []);
     setLoading(false);
   }, [router]);
 
@@ -115,6 +124,12 @@ export default function AdminPage() {
     setBusy(id);
     const supabase = createClient();
     await supabase.from("reviews").update({ status }).eq("id", id);
+    await load(); setBusy(null);
+  };
+  const setVerified = async (table: "specialists" | "venues", id: string, val: boolean) => {
+    setBusy(id);
+    const supabase = createClient();
+    await supabase.from(table).update({ verified: val }).eq("id", id);
     await load(); setBusy(null);
   };
 
@@ -282,6 +297,50 @@ export default function AdminPage() {
           <p className="member-note" style={{ marginTop: "0.8rem" }}>
             Recenze schvalujeme my kvůli objektivitě — zveřejní se až po „Schválit".
           </p>
+        </div>
+
+        {/* OVĚŘOVÁNÍ PROFILŮ */}
+        <div className="acct-card">
+          <div className="acct-card-head"><BadgeCheck size={20} /><h2>Ověřování profilů</h2></div>
+          <p className="member-note" style={{ marginTop: 0 }}>
+            „Ověřeno TenisHubem" = zlatý odznak + přednost ve výpisech. Ověřuj na základě recenzí a aktivity (prestiž a důvěra).
+          </p>
+          <div className="admin-scroll">
+            <table className="admin-table">
+              <thead><tr><th>Profil</th><th>Typ</th><th>Recenze</th><th>Stav</th><th>Akce</th></tr></thead>
+              <tbody>
+                {vspecs.map((s) => {
+                  const KL: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Kondiční", academy: "Škola", stringer: "Vyplétač" };
+                  return (
+                    <tr key={s.id}>
+                      <td><b>{s.name}</b></td>
+                      <td>{KL[s.kind ?? ""] ?? "—"}</td>
+                      <td>{s.reviews_count}</td>
+                      <td>{s.verified ? <span className="member-badge">OVĚŘENO</span> : <span className="nomember">čeká</span>}</td>
+                      <td className="admin-actions">
+                        {s.verified
+                          ? <button className="danger" onClick={() => setVerified("specialists", s.id, false)} disabled={busy === s.id}>Zrušit</button>
+                          : <button onClick={() => setVerified("specialists", s.id, true)} disabled={busy === s.id}>Ověřit</button>}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {vvenues.map((v) => (
+                  <tr key={v.id}>
+                    <td><b>{v.name}</b></td>
+                    <td>Areál</td>
+                    <td>{v.reviews_count}</td>
+                    <td>{v.verified ? <span className="member-badge">OVĚŘENO</span> : <span className="nomember">čeká</span>}</td>
+                    <td className="admin-actions">
+                      {v.verified
+                        ? <button className="danger" onClick={() => setVerified("venues", v.id, false)} disabled={busy === v.id}>Zrušit</button>
+                        : <button onClick={() => setVerified("venues", v.id, true)} disabled={busy === v.id}>Ověřit</button>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* REZERVACE A PLATBY */}

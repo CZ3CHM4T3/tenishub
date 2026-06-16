@@ -215,9 +215,9 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           <div className="row">
             <div className="avatar" style={spec?.photo_url ? { backgroundImage: `url(${spec.photo_url})`, backgroundSize: "cover", backgroundPosition: "center", color: "transparent" } : undefined}>{initials}</div>
             <div className="who">
-              {unclaimed
-                ? <span className="verif unverif">Neověřený profil</span>
-                : verified && <span className="verif">✓ Ověřený specialista</span>}
+              {verified
+                ? <span className="verif">✓ Ověřeno TenisHubem</span>
+                : <span className="verif unverif">Čeká na ověření</span>}
               <h1>{name}</h1>
               <div className="typ">{typLine}</div>
               {showRate && (

@@ -102,9 +102,9 @@ export default function ArealDetailClient({ id, initial }: { id: string; initial
           <div className="row">
             <div className="avatar">{venue.name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase()}</div>
             <div className="who">
-              {unclaimed
-                ? <span className="verif unverif">Neověřený profil</span>
-                : venue.verified && <span className="verif">✓ Ověřený areál</span>}
+              {venue.verified
+                ? <span className="verif">✓ Ověřeno TenisHubem</span>
+                : <span className="verif unverif">Čeká na ověření</span>}
               <h1>{venue.name}</h1>
               <div className="typ">Tenisový areál{venue.city ? ` · ${venue.city}` : ""}</div>
               {showRate && (

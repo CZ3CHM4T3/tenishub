@@ -231,7 +231,26 @@ export default function Home() {
           <div className="hero-center">
             <HeroCarousel />
 
-            <div className="searchbar rv d3">
+            {/* 2 SVĚTY — hlavní volba experience */}
+            <p className="worlds-welcome rv d2">Vítejte. Co vás k nám přivádí?</p>
+            <div className="worlds rv d3">
+              <Link href="#svet-rodic" className="world world-rodic" style={{ backgroundImage: "url(/svet-rodic.png)" }}>
+                <span className="world-in">
+                  <span className="world-tag">Rodič &amp; dítě</span>
+                  <span className="world-sub">Hledám trenéra, hlídám cestu dítěte a chci poradit</span>
+                  <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
+                </span>
+              </Link>
+              <Link href="#svet-sluzby" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
+                <span className="world-in">
+                  <span className="world-tag">Služby &amp; profíci</span>
+                  <span className="world-sub">Trenér · areál · fyzio · fitness · sparring · vyplétání</span>
+                  <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
+                </span>
+              </Link>
+            </div>
+
+            <div className="searchbar rv d3" id="svet-sluzby">
               <Search size={20} className="sb-ic" />
               <input placeholder="Hledej trenéra, kurt, fyzio…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} />
               <span className="sb-sep" />
@@ -272,9 +291,9 @@ export default function Home() {
       </section>
 
       {/* VIDEOROZBOR — emoční vstupní bod */}
-      <section className="vrbanner">
+      <section className="vrbanner" id="svet-rodic">
         <div className="wrap vrbanner-in">
-          <div className="vrbanner-photo" style={{ backgroundImage: "url(/videorozbor.jpg)" }} aria-hidden="true" />
+          <div className="vrbanner-photo" style={{ backgroundImage: "url(/videorozbor.png)" }} aria-hidden="true" />
           <div className="vrbanner-txt">
             <span className="vrbanner-eyebrow">Videorozbor &amp; konzultace</span>
             <h2>Nebaví vaše dítě tenis?</h2>

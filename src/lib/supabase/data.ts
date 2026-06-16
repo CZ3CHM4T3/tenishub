@@ -54,8 +54,8 @@ export const listCity = cache(async (city: string): Promise<{ specs: SpecRow[]; 
   try {
     const sb = anon();
     const [{ data: specs }, { data: vens }] = await Promise.all([
-      sb.from("specialists").select("id,name,kind,city,rating,reviews_count,venue_id,status").eq("city", city).neq("status", "hidden"),
-      sb.from("venues").select("id,name,city,rating,reviews_count,status").eq("city", city).neq("status", "hidden"),
+      sb.from("specialists").select("id,name,kind,city,rating,reviews_count,venue_id,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }),
+      sb.from("venues").select("id,name,city,rating,reviews_count,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }),
     ]);
     return { specs: (specs as SpecRow[]) ?? [], vens: (vens as VenueRow[]) ?? [] };
   } catch {
