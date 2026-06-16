@@ -128,10 +128,11 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
       { label: "Prohlížet sparring nabídky", href: "/sparring" },
     ],
     member: [
+      { label: "Moje cesta — deník tréninků a volna dítěte", soon: true },
+      { label: "Videorozbor a poradenství od profíků", soon: true },
       { label: "Rezervace a platby na pár kliků", href: "/trener" },
       { label: "Zprávy trenérům", href: "/trener" },
       { label: "Připomínky lekcí a plateb", soon: true },
-      { label: "Přehled dítěte (rozvrh, platby)", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],
   },
@@ -142,12 +143,12 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
       { label: "Veřejné žebříčky a výsledky", soon: true },
     ],
     member: [
-      { label: "Profil hráče (dítěte)", soon: true },
-      { label: "Výsledky a žebříček", soon: true },
+      { label: "Moje cesta — kalendář kariéry dítěte", soon: true },
+      { label: "Videorozbor a poradenství od profíků", soon: true },
+      { label: "Profil hráče, výsledky a žebříček", soon: true },
       { label: "Plánovač turnajů s detaily", soon: true },
       { label: "Tréninkový plán = checklist v kalendáři", soon: true },
       { label: "Matchmaking se sparringy", soon: true },
-      { label: "Články a FAQ návody", soon: true },
     ],
   },
   "hrac:amater": {
