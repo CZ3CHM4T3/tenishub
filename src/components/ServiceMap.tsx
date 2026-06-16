@@ -129,7 +129,6 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
     ],
     member: [
       { label: "Moje cesta — deník tréninků a volna dítěte", soon: true },
-      { label: "Videorozbor a poradenství od profíků", soon: true },
       { label: "Rezervace a platby na pár kliků", href: "/trener" },
       { label: "Zprávy trenérům", href: "/trener" },
       { label: "Připomínky lekcí a plateb", soon: true },
@@ -144,7 +143,6 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
     ],
     member: [
       { label: "Moje cesta — kalendář kariéry dítěte", soon: true },
-      { label: "Videorozbor a poradenství od profíků", soon: true },
       { label: "Profil hráče, výsledky a žebříček", soon: true },
       { label: "Plánovač turnajů s detaily", soon: true },
       { label: "Tréninkový plán = checklist v kalendáři", soon: true },
@@ -267,7 +265,7 @@ function Pin({ x, y, svc, big, lit, onHover }: { x: number; y: number; svc: Serv
   );
 }
 
-export function ServiceMap({ showMap = true, hideKeys = [] }: { showMap?: boolean; hideKeys?: string[] }) {
+export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: { showMap?: boolean; showCards?: boolean; hideKeys?: string[] }) {
   const [hover, setHover] = useState<string | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   const [selVar, setSelVar] = useState<string>("");
@@ -308,6 +306,7 @@ export function ServiceMap({ showMap = true, hideKeys = [] }: { showMap?: boolea
       )}
 
       {/* KARTY služeb */}
+      {showCards && (<>
       <div className="svc-cards">
         {SERVICES.filter((s) => !hideKeys.includes(s.key)).map((s) => {
           const CIcon = s.Icon;
@@ -382,6 +381,7 @@ export function ServiceMap({ showMap = true, hideKeys = [] }: { showMap?: boolea
           </div>
         </div>
       )}
+      </>)}
     </div>
   );
 }

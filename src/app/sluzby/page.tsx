@@ -18,16 +18,16 @@ export default function SluzbyPage() {
       </div></div></header>
 
       <div className="wrap sluzby-wrap">
-        <h1>Služby &amp; profíci</h1>
-        <p className="lead">Vyberte si, co hledáte — rozklikněte kartu a uvidíte, co je zdarma a co navíc s HUB+.</p>
+        <h1>Služby na mapě</h1>
+        <p className="lead">Trenéři, kurty, fyzio, fitness i vyplétání po celé ČR. Otevřete interaktivní mapu a filtrujte podle místa a dojezdu — nebo si vyberte podle role v sekci <Link href="/pro-koho" style={{ color: "var(--gold-l)", fontWeight: 600 }}>Pro koho</Link>.</p>
 
         <Link href="/mapa" className="najdi-card sluzby-najdi">
           <span className="najdi-ic"><MapPin size={26} /></span>
-          <div className="najdi-txt"><b>NAJDI na mapě</b><span>Všechny služby kolem vás — podle místa a dojezdu</span></div>
+          <div className="najdi-txt"><b>NAJDI na interaktivní mapě</b><span>Všechny služby kolem vás — podle místa a dojezdu</span></div>
           <span className="najdi-arr"><ArrowRight size={22} /></span>
         </Link>
 
-        <ServiceMap showMap={false} hideKeys={["rodic"]} />
+        <ServiceMap showMap={true} showCards={false} />
       </div>
     </div>
   );
