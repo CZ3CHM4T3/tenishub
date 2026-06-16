@@ -252,13 +252,59 @@ export default function Home() {
               <span className="chip"><span className="live-dot" /> {visits.toLocaleString("cs-CZ")} návštěv dnes</span>
             </div>
 
-            {/* mapa ČR s piny služeb + interaktivní karty */}
+            {/* NAJDI — vstup na mapu (mapa přesunuta sem z hera) */}
+            <Link href="/mapa" className="najdi-card rv d3">
+              <span className="najdi-ic"><MapPin size={26} /></span>
+              <div className="najdi-txt">
+                <b>NAJDI na mapě</b>
+                <span>Trenéra, kurt, fyzio, akademii i sparring po celé ČR</span>
+              </div>
+              <span className="najdi-arr"><ArrowRight size={22} /></span>
+            </Link>
+
+            {/* karty profilů (mapa skrytá) */}
             <div className="hero-hive rv z d3">
-              <ServiceMap />
+              <ServiceMap showMap={false} />
             </div>
           </div>
         </div>
         <div className="scrollcue">SCROLL ↓</div>
+      </section>
+
+      {/* VIDEOROZBOR — emoční vstupní bod */}
+      <section className="vrbanner">
+        <div className="wrap vrbanner-in">
+          <div className="vrbanner-photo" style={{ backgroundImage: "url(/videorozbor.jpg)" }} aria-hidden="true" />
+          <div className="vrbanner-txt">
+            <span className="vrbanner-eyebrow">Videorozbor &amp; konzultace</span>
+            <h2>Nebaví vaše dítě tenis?</h2>
+            <p>Většinou za tím není nedostatek talentu, ale frustrace — dítě <b>neví, proč mu to nejde</b>. Podívejte se s námi na video a poradíme konkrétní kroky. Nezávisle na tom, kde trénuje — jsme objektivní.</p>
+            <Link href="/videorozbor" className="btn btn-gold vrbanner-btn">Chci poradit <ArrowRight size={18} /></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* MOJE CESTA — prodej prémiové funkce pro rodiče */}
+      <section className="mcpromo">
+        <div className="wrap mcpromo-in">
+          <div className="mcpromo-txt">
+            <span className="mcpromo-eyebrow">Moje cesta · pro členy</span>
+            <h2>Celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
+            <p>Přehledný barevný kalendář: tréninky (kdy, kde, odkaz), turnaje i s výsledky, skladba tréninku, kompenzační sporty — a hlavně <b>volno a čas jen pro sebe</b>. Pomáháme růst krok za krokem, bez vyhoření.</p>
+            <Link href="/prihlaseni?tab=reg" className="btn btn-green">Vytvořit účet zdarma</Link>
+          </div>
+          <div className="mcpromo-vis" aria-hidden="true">
+            <div className="mcleg"><span style={{ background: "#7C4DD6" }} />Trénink</div>
+            <div className="mcleg"><span style={{ background: "#bf9a47" }} />Turnaj</div>
+            <div className="mcleg"><span style={{ background: "#3b8a5a" }} />Kompenzace</div>
+            <div className="mcleg"><span style={{ background: "#cdd3da" }} />Volno</div>
+            <div className="mcgrid">
+              {["t","t","x","u","t","r","f","t","x","t","u","f","t","t","r","x","u","t","f","t","x"].map((k, i) => (
+                <span key={i} className={`mcd mcd-${k}`} />
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* MARQUEE — specialisté z DB */}

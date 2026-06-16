@@ -267,7 +267,7 @@ function Pin({ x, y, svc, big, lit, onHover }: { x: number; y: number; svc: Serv
   );
 }
 
-export function ServiceMap() {
+export function ServiceMap({ showMap = true }: { showMap?: boolean }) {
   const [hover, setHover] = useState<string | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   const [selVar, setSelVar] = useState<string>("");
@@ -283,7 +283,8 @@ export function ServiceMap() {
 
   return (
     <div className="smap-wrap">
-      {/* MAPA s piny */}
+      {/* MAPA s piny (na homepage skrytá — přesunuto do karty NAJDI) */}
+      {showMap && (
       <svg className="smap" viewBox="-100 65 755 450" width="100%" role="group" aria-label="Služby po celé ČR">
         <defs>
           <filter id="pinShadow" x="-40%" y="-40%" width="180%" height="180%">
@@ -304,6 +305,7 @@ export function ServiceMap() {
           return <Pin key={`p${i}`} x={projX(lng)} y={projY(lat)} svc={svc} big={false} lit={lit} onHover={setHover} />;
         })}
       </svg>
+      )}
 
       {/* KARTY služeb */}
       <div className="svc-cards">

@@ -1,0 +1,67 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Wordmark } from "@/components/Wordmark";
+import { Phone, Mail, Video, Compass, ListChecks, HeartHandshake } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Videorozbor a konzultace — proč to vašemu dítěti nejde",
+  description: "Vaše dítě ztrácí radost z tenisu? Většinou za tím není talent, ale frustrace. Nezávisle a objektivně poradíme konkrétní kroky — videorozbor techniky, pohybu i hlavy.",
+};
+
+// 🔑 Jane, sem dej reálné telefonní číslo (zobrazí se jako tlačítko „Zavolejte nám").
+const TEL = "+420 776 000 000";
+
+export default function VideorozborPage() {
+  return (
+    <div className="legal-page">
+      <header className="subhdr"><div className="wrap"><div className="bar">
+        <Link href="/" className="brand"><Wordmark /></Link>
+        <Link href="/" className="back">← Zpět na web</Link>
+      </div></div></header>
+
+      <section className="vr-hero">
+        <div className="wrap">
+          <span className="vr-eyebrow"><Video size={15} /> Videorozbor &amp; konzultace</span>
+          <h1>Nebaví vaše dítě tenis?</h1>
+          <p className="vr-lead">
+            Většinou za tím není nedostatek talentu — ale <b>frustrace</b>. Dítě (a často ani rodič)
+            <b> neví, proč mu to nejde</b>, a z toho přichází zklamání a chuť skončit. My vám objektivně
+            poradíme, v čem je problém a jak ho řešit.
+          </p>
+          <div className="vr-cta">
+            <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám: {TEL}</a>
+            <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className="btn btn-out"><Mail size={16} /> Napsat e-mail</a>
+          </div>
+          <p className="vr-note">Nezávisle na tom, kde vaše dítě trénuje — <b>jsme objektivní</b>. Nezajímá nás klub, zajímá nás vaše dítě.</p>
+        </div>
+      </section>
+
+      <div className="wrap legal-wrap">
+        <h2>Jak to funguje</h2>
+        <div className="vr-steps">
+          <div className="vr-step"><span className="vr-step-ic"><Video size={22} /></span><div><b>1. Pošlete video nebo zavolejte</b><p>Popíšete, co dítě trápí — technika, pohyb, hlava, ztráta radosti.</p></div></div>
+          <div className="vr-step"><span className="vr-step-ic"><Compass size={22} /></span><div><b>2. Nezávislý rozbor</b><p>Objektivně se podíváme na příčinu. Nezajímá nás, kde trénuje — díváme se jen na to, co dítěti pomůže.</p></div></div>
+          <div className="vr-step"><span className="vr-step-ic"><ListChecks size={22} /></span><div><b>3. Konkrétní kroky</b><p>Řekneme přesně, v čem je problém a co s ním — jak to děláme my a proč to funguje.</p></div></div>
+          <div className="vr-step"><span className="vr-step-ic"><HeartHandshake size={22} /></span><div><b>4. Klid a posun</b><p>Dítě i vy konečně víte, proč a kam jdete. Frustrace se mění v plán.</p></div></div>
+        </div>
+
+        <h2>S čím poradíme</h2>
+        <ul className="vr-list">
+          <li><b>Technika</b> — úder, postavení, práce nohou: kde se rodí chyba a jak ji opravit.</li>
+          <li><b>Pohyb a tělo</b> — proč to „nejde", i když dítě dře; co může vázat výkon.</li>
+          <li><b>Hlava a motivace</b> — tlak, strach z chyby, ztráta radosti, komunikace s trenérem.</li>
+          <li><b>Směr</b> — co teď řešit a co ne, aby dítě rostlo bez vyhoření.</li>
+        </ul>
+
+        <p className="vr-foot">
+          Funguje pro <b>děti i dospělé</b>. Žádné obecné rady z internetu — konkrétní řešení na míru
+          od lidí, kteří tenisu i dětem rozumí.
+        </p>
+        <div className="vr-cta">
+          <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám</a>
+          <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className="btn btn-out"><Mail size={16} /> info@tenishub.cz</a>
+        </div>
+      </div>
+    </div>
+  );
+}
