@@ -9,6 +9,7 @@ import { CITIES, citySlug } from "@/lib/cities";
 import { Wordmark } from "@/components/Wordmark";
 import { ServiceMap } from "@/components/ServiceMap";
 import { AuthNav } from "@/components/AuthNav";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import {
   Search, CalendarCheck, CreditCard, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
@@ -228,8 +229,7 @@ export default function Home() {
         <span className="orb orb1" /><span className="orb orb2" /><span className="orb orb3" />
         <div className="wrap">
           <div className="hero-center">
-            <h1 className="rv d1"><span className="g">TENIS</span> – vše na jednom místě!</h1>
-            <p className="sub rv d2">Najdi co potřebuješ, rezervuj a zaplať na pár kliků.</p>
+            <HeroCarousel />
 
             <div className="searchbar rv d3">
               <Search size={20} className="sb-ic" />

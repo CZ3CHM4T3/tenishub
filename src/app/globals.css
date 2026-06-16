@@ -657,6 +657,16 @@
 .hero-center .sub { margin: 0 auto; }
 .hero-center .searchbar { margin-left: auto; margin-right: auto; }
 .hero-center .hero-chips { justify-content: center; }
+/* Textový carousel v hero */
+.hcaro { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.hcaro-slide { display: flex; flex-direction: column; align-items: center; min-height: clamp(220px, 30vh, 300px); justify-content: center; animation: hcaroIn 0.55s ease both; }
+@keyframes hcaroIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.hcaro-who { display: inline-block; background: rgba(200,162,76,0.16); border: 1px solid rgba(200,162,76,0.5); color: var(--gold-l); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.4rem 0.95rem; border-radius: 100px; }
+.hcaro-slide h1 { margin: 1rem 0 0.9rem; }
+.hcaro-dots { display: flex; gap: 0.5rem; margin-top: 0.4rem; }
+.hcaro-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 100px; background: rgba(44,74,59,0.22); cursor: pointer; transition: 0.25s; }
+.hcaro-dots button:hover { background: rgba(44,74,59,0.45); }
+.hcaro-dots button.on { width: 26px; background: var(--gold); }
 .hero-hive { width: 100%; margin-top: 2.2rem; }
 .hero-hive .hive-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
 .hero-hive .hive-stage { width: 100%; max-width: 1150px; }
