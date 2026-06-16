@@ -7,7 +7,7 @@ type Slide = { who: string; title: ReactNode; sub: string };
 const SLIDES: Slide[] = [
   {
     who: "Komunita — doposud neexistující služba pro rodiče",
-    title: <>Víme, jak těžké je <span className="g">zorientovat se v tenisu</span></>,
+    title: <>Víme, jak těžké je <span className="g">zorientovat se v tenise</span></>,
     sub: "Sdružujeme ověřené trenéry, kurty, fyzio i praktické návody — aby vaše dítě mohlo začít, růst a vydržet u tenisu.",
   },
   {
@@ -16,19 +16,19 @@ const SLIDES: Slide[] = [
     sub: "Ověřené profily, ceny i recenze na jednom místě — a domluvíte se na pár kliků.",
   },
   {
+    who: "Pro závodní hráče a jejich rodiče",
+    title: <><span className="g">Celá kariéra</span> dítěte přehledně</>,
+    sub: "Profil hráče, výsledky, žebříček, plánování turnajů i tým specialistů — vše na jednom místě.",
+  },
+  {
     who: "Pro trenéry, fyzio a kondiční trenéry",
     title: <>Noví klienti <span className="g">bez shánění</span></>,
-    sub: "Buďte vidět na mapě, spravujte si profil a přijímejte poptávky. Být vidět je zdarma.",
+    sub: "Buďte vidět na mapě, spravujte si profil a přijímejte poptávky od hráčů.",
   },
   {
     who: "Pro hráče a sparring partnery",
     title: <>Najděte si, <span className="g">s kým hrát</span></>,
     sub: "Parťáci podle úrovně, místa i stylu hry — a domluva zápasu přímo přes web.",
-  },
-  {
-    who: "Pro závodní hráče a jejich rodiče",
-    title: <><span className="g">Celá kariéra</span> dítěte přehledně</>,
-    sub: "Profil hráče, výsledky, žebříček, plánování turnajů i tým specialistů — vše na jednom místě.",
   },
   {
     who: "Pro kluby a areály",

@@ -9,7 +9,7 @@ import { getSpecialist, type SpecRow } from "@/lib/supabase/data";
 export const dynamic = "force-dynamic";
 
 const KIND_LABEL: Record<string, string> = {
-  coach: "Tenisový trenér", physio: "Fyzioterapeut", fitness: "Kondiční trenér", academy: "Tenisová škola",
+  coach: "Tenisový trenér", physio: "Fyzioterapeut", fitness: "Kondiční trenér", academy: "Tenisová škola", stringer: "Vyplétač",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {

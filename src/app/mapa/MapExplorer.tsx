@@ -8,7 +8,7 @@ import { Wordmark } from "@/components/Wordmark";
 import { CITIES } from "@/lib/cities";
 import "leaflet/dist/leaflet.css";
 
-type TypeKey = "coach" | "club" | "fitness" | "physio" | "academy" | "buddy";
+type TypeKey = "coach" | "club" | "fitness" | "physio" | "academy" | "buddy" | "stringer";
 
 const ICONS: Record<TypeKey, string> = {
   coach: '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>',
@@ -17,6 +17,7 @@ const ICONS: Record<TypeKey, string> = {
   physio: '<path d="M3 12h4l2 5 4-12 2 7h6"/>',
   academy: '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>',
   buddy: '<circle cx="8" cy="9" r="2.3"/><circle cx="16" cy="9" r="2.3"/><path d="M3.5 18c0-2.1 1.7-3.4 4.5-3.4M20.5 18c0-2.1-1.7-3.4-4.5-3.4M9 18c0-1.9 1.3-3 3-3s3 1.1 3 3"/>',
+  stringer: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>',
 };
 
 const TYPES: Record<TypeKey, { label: string; color: string }> = {
@@ -26,13 +27,14 @@ const TYPES: Record<TypeKey, { label: string; color: string }> = {
   physio: { label: "Fyzioterapeut", color: "#d9534f" },
   academy: { label: "Akademie / škola", color: "#7a5bc0" },
   buddy: { label: "Sparring partner", color: "#1f9e8a" },
+  stringer: { label: "Vyplétač", color: "#5a6470" },
 };
 
 
 type Point = { type: TypeKey; lat: number; lng: number; city: string; name: string; rate: string; id?: string };
 
 const ALL_ON: Record<TypeKey, boolean> = {
-  coach: true, club: true, fitness: true, physio: true, academy: true, buddy: true,
+  coach: true, club: true, fitness: true, physio: true, academy: true, buddy: true, stringer: true,
 };
 
 export default function MapExplorer() {

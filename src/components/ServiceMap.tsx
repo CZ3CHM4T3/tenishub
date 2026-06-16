@@ -2,7 +2,7 @@
 
 import { useState, type ComponentType } from "react";
 import Link from "next/link";
-import { Users, Handshake, Building2, HeartPulse, Dumbbell, Lock, Check } from "lucide-react";
+import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Lock, Check } from "lucide-react";
 import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "./icons";
 
@@ -18,6 +18,7 @@ const SERVICES: Service[] = [
   { key: "areal", label: "Areály", tagline: "plné kurty", fill: "#E0EBE9", color: "#2f5d57", Icon: Building2 },
   { key: "fyzio", label: "Fyzio", tagline: "rehabilitace", fill: "#F2E5E9", color: "#864a59", Icon: HeartPulse },
   { key: "fitness", label: "Fitness", tagline: "kondice & síla", fill: "#E8ECF4", color: "#4a5b86", Icon: Dumbbell },
+  { key: "vyplet", label: "Vyplétání", tagline: "servis raket", fill: "#E6E9ED", color: "#5a6470", Icon: Grid3x3 },
 ];
 
 // Realistická hranice ČR (z reálných souřadnic, vč. výběžků).
@@ -224,6 +225,21 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
       { label: "Online objednávky tréninků", href: "/trener" },
       { label: "Poptávky od hráčů a rodičů", soon: true },
       { label: "Prodej kondičních programů", soon: true },
+      { label: "Ověřený odznak", soon: true },
+      { label: "Články a FAQ návody", soon: true },
+    ],
+  },
+  vyplet: {
+    free: [
+      { label: "Vizitka v katalogu", href: "/mapa" },
+      { label: "Kontakt a ceník výpletů" },
+      { label: "Veřejné recenze", soon: true },
+    ],
+    member: [
+      { label: "Pin na mapě + top pozice", href: "/mapa" },
+      { label: "Online objednávka vyplétání", soon: true },
+      { label: "Poptávky od hráčů a klubů", soon: true },
+      { label: "Ceník výpletů a skladem strun", soon: true },
       { label: "Ověřený odznak", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],

@@ -23,7 +23,7 @@ const PAT = [
 const PRICE = 500;
 
 const KIND_LABEL: Record<string, string> = {
-  coach: "Tenisový trenér", physio: "Fyzioterapeut", fitness: "Fitness trenér", academy: "Akademie",
+  coach: "Tenisový trenér", physio: "Fyzioterapeut", fitness: "Fitness trenér", academy: "Akademie", stringer: "Vyplétač",
 };
 
 // Reálný specialista z DB (stránka /trener/[id]); bez něj jede demo model.

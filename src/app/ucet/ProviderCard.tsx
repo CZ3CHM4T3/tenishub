@@ -21,6 +21,7 @@ type Service = { id?: string; name: string; price_czk: number; duration_min: num
 const KINDS: [string, string][] = [
   ["coach", "Tenisový trenér"], ["physio", "Fyzioterapeut"],
   ["fitness", "Kondiční trenér"], ["academy", "Tenisová škola / akademie"],
+  ["stringer", "Vyplétač (servis raket)"],
 ];
 
 export default function ProviderCard({ userId, fullName }: { userId: string; fullName: string }) {
