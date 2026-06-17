@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star } from "lucide-react";
+import AdminSubjects from "./AdminSubjects";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -14,7 +15,6 @@ type NamedRef = { name: string | null } | null;
 type Claim = { id: string; status: string; created_at: string; user_id: string; message: string | null; specialists: NamedRef; venues: NamedRef };
 type Removal = { id: string; status: string; created_at: string; email: string | null; reason: string | null; specialists: NamedRef; venues: NamedRef };
 type Review = { id: string; created_at: string; author_name: string | null; rating: number; body: string | null; r_skill: number | null; r_kids: number | null; r_comm: number | null; r_progress: number | null; r_value: number | null; specialists: NamedRef };
-type VerifyRow = { id: string; name: string; kind?: string; verified: boolean; reviews_count: number; status: string };
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const fmtT = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -30,8 +30,7 @@ export default function AdminPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [removals, setRemovals] = useState<Removal[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [vspecs, setVspecs] = useState<VerifyRow[]>([]);
-  const [vvenues, setVvenues] = useState<VerifyRow[]>([]);
+  const [tab, setTab] = useState("prehled");
   const [busy, setBusy] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -50,10 +49,6 @@ export default function AdminPage() {
       supabase.from("removal_requests").select("id,status,created_at,email,reason,specialists(name),venues(name)").eq("status", "open").order("created_at", { ascending: false }),
     ]);
     const rv = await supabase.from("reviews").select("id,created_at,author_name,rating,body,r_skill,r_kids,r_comm,r_progress,r_value,specialists(name)").eq("status", "pending").order("created_at", { ascending: false });
-    const [vs, vv] = await Promise.all([
-      supabase.from("specialists").select("id,name,kind,verified,reviews_count,status").neq("status", "hidden").order("verified", { ascending: true }).order("reviews_count", { ascending: false }).limit(40),
-      supabase.from("venues").select("id,name,verified,reviews_count,status").neq("status", "hidden").order("verified", { ascending: true }).order("reviews_count", { ascending: false }).limit(40),
-    ]);
     setProfiles((p.data as Profile[]) ?? []);
     setMemberships((m.data as Membership[]) ?? []);
     setBookings((b.data as Booking[]) ?? []);
@@ -62,8 +57,6 @@ export default function AdminPage() {
     setClaims((cl.data as unknown as Claim[]) ?? []);
     setRemovals((rm.data as unknown as Removal[]) ?? []);
     setReviews((rv.data as unknown as Review[]) ?? []);
-    setVspecs((vs.data as VerifyRow[]) ?? []);
-    setVvenues((vv.data as VerifyRow[]) ?? []);
     setLoading(false);
   }, [router]);
 
@@ -126,14 +119,12 @@ export default function AdminPage() {
     await supabase.from("reviews").update({ status }).eq("id", id);
     await load(); setBusy(null);
   };
-  const setVerified = async (table: "specialists" | "venues", id: string, val: boolean) => {
-    setBusy(id);
-    const supabase = createClient();
-    await supabase.from(table).update({ verified: val }).eq("id", id);
-    await load(); setBusy(null);
-  };
-
   if (loading) return <div className="acct-loading">Načítám administraci…</div>;
+
+  const TABS: [string, string][] = [
+    ["prehled", "Přehled"], ["uzivatele", "Uživatelé"], ["subjekty", "Subjekty"],
+    ["recenze", "Recenze"], ["zadosti", "Žádosti"], ["rezervace", "Rezervace"],
+  ];
 
   const activeCount = profiles.filter((p) => activeOf(p.id)).length;
   const paidBookings = bookings.filter((b) => b.status === "paid");
@@ -154,8 +145,13 @@ export default function AdminPage() {
 
       <div className="wrap acct-wrap admin-wrap">
         <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
+        <div className="admin-tabs">
+          {TABS.map(([k, l]) => (
+            <button key={k} type="button" className={`atab${tab === k ? " on" : ""}`} onClick={() => setTab(k)}>{l}</button>
+          ))}
+        </div>
 
-        {/* STATISTIKY STRÁNKY */}
+        {tab === "prehled" && (
         <div className="admin-stats">
           <div className="astat"><Users size={16} /><b>{profiles.length}</b><span>účtů</span></div>
           <div className="astat"><BadgeCheck size={16} /><b>{activeCount}</b><span>aktivních HUB+</span></div>
@@ -165,7 +161,9 @@ export default function AdminPage() {
           <div className="astat"><MapPin size={16} /><b>{specCount} / {venueCount}</b><span>specialistů / areálů</span></div>
         </div>
 
-        {/* UŽIVATELÉ A ČLENSTVÍ */}
+        )}
+
+        {tab === "uzivatele" && (
         <div className="acct-card">
           <div className="acct-card-head"><Users size={20} /><h2>Uživatelé a členství</h2></div>
           <div className="admin-scroll">
@@ -199,7 +197,9 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* ŽÁDOSTI O PŘEVZETÍ PROFILU */}
+        )}
+
+        {tab === "zadosti" && (<>
         <div className="acct-card">
           <div className="acct-card-head"><UserCheck size={20} /><h2>Žádosti o převzetí profilu ({claims.length})</h2></div>
           {claims.length === 0 ? (
@@ -263,7 +263,9 @@ export default function AdminPage() {
           </p>
         </div>
 
-        {/* RECENZE KE SCHVÁLENÍ */}
+        </>)}
+
+        {tab === "recenze" && (
         <div className="acct-card">
           <div className="acct-card-head"><Star size={20} /><h2>Recenze ke schválení ({reviews.length})</h2></div>
           {reviews.length === 0 ? (
@@ -298,52 +300,11 @@ export default function AdminPage() {
             Recenze schvalujeme my kvůli objektivitě — zveřejní se až po „Schválit".
           </p>
         </div>
+        )}
 
-        {/* OVĚŘOVÁNÍ PROFILŮ */}
-        <div className="acct-card">
-          <div className="acct-card-head"><BadgeCheck size={20} /><h2>Ověřování profilů</h2></div>
-          <p className="member-note" style={{ marginTop: 0 }}>
-            „Ověřeno TenisHubem" = zlatý odznak + přednost ve výpisech. Ověřuj na základě recenzí a aktivity (prestiž a důvěra).
-          </p>
-          <div className="admin-scroll">
-            <table className="admin-table">
-              <thead><tr><th>Profil</th><th>Typ</th><th>Recenze</th><th>Stav</th><th>Akce</th></tr></thead>
-              <tbody>
-                {vspecs.map((s) => {
-                  const KL: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Kondiční", academy: "Škola", stringer: "Vyplétač" };
-                  return (
-                    <tr key={s.id}>
-                      <td><b>{s.name}</b></td>
-                      <td>{KL[s.kind ?? ""] ?? "—"}</td>
-                      <td>{s.reviews_count}</td>
-                      <td>{s.verified ? <span className="member-badge">OVĚŘENO</span> : <span className="nomember">čeká</span>}</td>
-                      <td className="admin-actions">
-                        {s.verified
-                          ? <button className="danger" onClick={() => setVerified("specialists", s.id, false)} disabled={busy === s.id}>Zrušit</button>
-                          : <button onClick={() => setVerified("specialists", s.id, true)} disabled={busy === s.id}>Ověřit</button>}
-                      </td>
-                    </tr>
-                  );
-                })}
-                {vvenues.map((v) => (
-                  <tr key={v.id}>
-                    <td><b>{v.name}</b></td>
-                    <td>Areál</td>
-                    <td>{v.reviews_count}</td>
-                    <td>{v.verified ? <span className="member-badge">OVĚŘENO</span> : <span className="nomember">čeká</span>}</td>
-                    <td className="admin-actions">
-                      {v.verified
-                        ? <button className="danger" onClick={() => setVerified("venues", v.id, false)} disabled={busy === v.id}>Zrušit</button>
-                        : <button onClick={() => setVerified("venues", v.id, true)} disabled={busy === v.id}>Ověřit</button>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {tab === "subjekty" && <AdminSubjects />}
 
-        {/* REZERVACE A PLATBY */}
+        {tab === "rezervace" && (
         <div className="acct-card">
           <div className="acct-card-head"><Banknote size={20} /><h2>Rezervace a platby (posledních {bookings.length})</h2></div>
           {bookings.length === 0 ? (
@@ -375,6 +336,7 @@ export default function AdminPage() {
             Pozn.: skutečné stržení peněz přijde s napojením GoPay — teď se evidují rezervace a jejich stav.
           </p>
         </div>
+        )}
       </div>
     </div>
   );

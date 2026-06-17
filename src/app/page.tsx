@@ -442,7 +442,7 @@ export default function Home() {
               <p style={{ maxWidth: 320, fontSize: ".92rem", marginTop: ".9rem" }}>Páteř českého tenisu. Najdi, rezervuj, hraj.</p>
             </div>
             <div><h4>Pro koho</h4><div className="links"><Link href="/pro-koho">Rodič &amp; dítě</Link><Link href="/pro-koho">Trenéři</Link><Link href="/pro-koho">Kluby &amp; areály</Link><Link href="/pro-koho">Fyzio &amp; fitness</Link></div></div>
-            <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Hledej na mapě</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link><Link href="/admin">Administrace</Link></div></div>
+            <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Hledej na mapě</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link></div></div>
           </div>
           <div className="foot-cities">
             <h4>Tenis ve městech</h4>
