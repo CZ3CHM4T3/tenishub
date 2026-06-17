@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Phone, Mail, Globe, MessageSquare, Lock, ShieldCheck, UserCheck, Flag } from "lucide-react";
+
+const WD_SHORT = ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"];
+const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+const dayLabel = (d: Date) => `${WD_SHORT[d.getDay()]} ${d.getDate()}. ${d.getMonth() + 1}.`;
 import { Wordmark } from "@/components/Wordmark";
 import { createClient } from "@/lib/supabase/client";
 
@@ -39,7 +43,9 @@ type Modal = null | "msg" | "sent" | "book" | "pay" | "done" | "auth" | "member"
 export default function TrenerProfile({ spec }: { spec?: Spec }) {
   const [modal, setModal] = useState<Modal>(null);
   const [booked, setBooked] = useState<Set<string>>(new Set());
-  const [chosen, setChosen] = useState<{ key: string; txt: string; di: number; ti: number } | null>(null);
+  const [chosen, setChosen] = useState<{ key: string; txt: string; di?: number; ti?: number; start?: Date } | null>(null);
+  const [avail, setAvail] = useState<{ weekday: number; start_min: number; end_min: number; slot_min: number }[]>([]);
+  const [taken, setTaken] = useState<Set<number>>(new Set());
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
   const [hasMember, setHasMember] = useState(false);
@@ -92,6 +98,49 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   };
   useEffect(() => { loadReviews(); /* eslint-disable-next-line */ }, [spec?.id]);
 
+  // reálná dostupnost + obsazené termíny (jen u reálného specialisty)
+  useEffect(() => {
+    if (!spec) return;
+    const supabase = createClient();
+    (async () => {
+      const [{ data: av }, { data: tk }] = await Promise.all([
+        supabase.from("availability").select("weekday,start_min,end_min,slot_min").eq("specialist_id", spec.id),
+        supabase.rpc("taken_slots", { p_specialist: spec.id }),
+      ]);
+      setAvail((av as typeof avail) ?? []);
+      const set = new Set<number>();
+      (tk as string[] | null)?.forEach((t) => set.add(new Date(t).getTime()));
+      setTaken(set);
+    })();
+  }, [spec]);
+
+  // vygenerované volné sloty na 14 dní dopředu
+  const realDays = useMemo(() => {
+    if (!spec || avail.length === 0) return [];
+    const out: { label: string; slots: { start: Date; label: string }[] }[] = [];
+    const now = Date.now();
+    for (let d = 0; d < 14; d++) {
+      const day = new Date(); day.setHours(0, 0, 0, 0); day.setDate(day.getDate() + d);
+      const ranges = avail.filter((a) => a.weekday === day.getDay());
+      const slots: { start: Date; label: string }[] = [];
+      ranges.forEach((r) => {
+        for (let m = r.start_min; m + r.slot_min <= r.end_min; m += r.slot_min) {
+          const st = new Date(day); st.setMinutes(m);
+          if (st.getTime() <= now || taken.has(st.getTime())) continue;
+          slots.push({ start: st, label: hhmm(m) });
+        }
+      });
+      if (slots.length) out.push({ label: dayLabel(day), slots });
+    }
+    return out;
+  }, [spec, avail, taken]);
+
+  const pickReal = (start: Date, label: string) => {
+    setChosen({ key: String(start.getTime()), txt: `${dayLabel(start)} v ${label}`, start });
+    if (!userId) { setModal("auth"); return; }
+    setModal("book");
+  };
+
   const submitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) { setModal("auth"); return; }
@@ -121,8 +170,13 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
     if (!chosen || !userId) return;
     setSaving(true);
     const supabase = createClient();
-    const [h, min] = TIMES[chosen.ti].split(":").map(Number);
-    const starts = new Date(2026, 5, DAYS[chosen.di][1], h, min);
+    let starts: Date;
+    if (chosen.start) {
+      starts = chosen.start;
+    } else {
+      const [h, min] = TIMES[chosen.ti!].split(":").map(Number);
+      starts = new Date(2026, 5, DAYS[chosen.di!][1], h, min);
+    }
     const ends = new Date(starts.getTime() + 55 * 60000);
     await supabase.from("bookings").insert({
       customer_id: userId,
@@ -134,6 +188,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
       payment_ref: paid ? "demo-card" : null,
     });
     setSaving(false);
+    if (chosen.start) setTaken((t) => new Set(t).add(chosen.start!.getTime()));
     setBooked((b) => new Set(b).add(chosen.key));
     setModal("done");
   };
@@ -290,35 +345,57 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
               </div>
             </div>
 
-            <div className="card">
-              <div className="cal-head">
-                <h2 style={{ margin: 0 }}>Volné hodiny</h2>
-                <span className="leg"><b>●</b> volné · klikni a rezervuj</span>
-              </div>
-              <div className="week" id="week">
-                {DAYS.map((d, di) => (
-                  <div className="day" key={di}>
-                    <div className="dh">{d[0]}<b>{d[1]}. 6.</b></div>
-                    {TIMES.map((t, ti) => {
-                      const key = `${di}-${ti}`;
-                      const isBooked = booked.has(key);
-                      const free = PAT[di][ti] === 1 && !isBooked;
-                      const cls = isBooked ? "slot booked" : free ? "slot" : "slot taken";
-                      return (
-                        <button
-                          key={ti}
-                          className={cls}
-                          disabled={!free && !isBooked}
-                          onClick={() => free && pickSlot(di, ti)}
-                        >
-                          {isBooked ? "✓" : t}
-                        </button>
-                      );
-                    })}
+            {spec ? (
+              <div className="card" id="week">
+                <div className="cal-head">
+                  <h2 style={{ margin: 0 }}>Volné termíny</h2>
+                  <span className="leg"><b>●</b> klikni a rezervuj</span>
+                </div>
+                {realDays.length === 0 ? (
+                  <p className="member-note" style={{ margin: 0 }}>
+                    Trenér zatím nemá nastavené volné termíny. <button type="button" className="linklike" onClick={openMsg}>Napiš mu →</button>
+                  </p>
+                ) : (
+                  <div className="realcal">
+                    {realDays.map((day) => (
+                      <div className="rc-day" key={day.label}>
+                        <div className="rc-dh">{day.label}</div>
+                        <div className="rc-slots">
+                          {day.slots.map((s) => (
+                            <button key={s.start.getTime()} type="button" className="slot" onClick={() => pickReal(s.start, s.label)}>{s.label}</button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
+            ) : (
+              <div className="card">
+                <div className="cal-head">
+                  <h2 style={{ margin: 0 }}>Volné hodiny</h2>
+                  <span className="leg"><b>●</b> volné · klikni a rezervuj</span>
+                </div>
+                <div className="week" id="week">
+                  {DAYS.map((d, di) => (
+                    <div className="day" key={di}>
+                      <div className="dh">{d[0]}<b>{d[1]}. 6.</b></div>
+                      {TIMES.map((t, ti) => {
+                        const key = `${di}-${ti}`;
+                        const isBooked = booked.has(key);
+                        const free = PAT[di][ti] === 1 && !isBooked;
+                        const cls = isBooked ? "slot booked" : free ? "slot" : "slot taken";
+                        return (
+                          <button key={ti} className={cls} disabled={!free && !isBooked} onClick={() => free && pickSlot(di, ti)}>
+                            {isBooked ? "✓" : t}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="card">
               <h2>Recenze {spec ? `(${dbReviews.length})` : "(37)"}</h2>

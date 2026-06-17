@@ -18,17 +18,26 @@ type Venue = {
 };
 type Service = { id?: string; name: string; price_czk: number; duration_min: number };
 
+type Avail = { weekday: number; from: string; to: string; slot: number };
+
 const KINDS: [string, string][] = [
   ["coach", "Tenisový trenér"], ["physio", "Fyzioterapeut"],
   ["fitness", "Kondiční trenér"], ["academy", "Tenisová škola / akademie"],
   ["stringer", "Vyplétač (servis raket)"],
 ];
+const WEEKDAYS: [number, string][] = [
+  [1, "Pondělí"], [2, "Úterý"], [3, "Středa"], [4, "Čtvrtek"], [5, "Pátek"], [6, "Sobota"], [0, "Neděle"],
+];
+const pad2 = (n: number) => String(n).padStart(2, "0");
+const minToStr = (m: number) => `${pad2(Math.floor(m / 60))}:${pad2(m % 60)}`;
+const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); return (h || 0) * 60 + (m || 0); };
 
 export default function ProviderCard({ userId, fullName }: { userId: string; fullName: string }) {
   const [loading, setLoading] = useState(true);
   const [spec, setSpec] = useState<Spec | null>(null);
   const [venue, setVenue] = useState<Venue | null>(null);
   const [services, setServices] = useState<Service[]>([]);
+  const [avail, setAvail] = useState<Avail[]>([]);
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -44,8 +53,14 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
     setSpec((sp as Spec) ?? null);
     setVenue((ve as Venue) ?? null);
     if (sp) {
-      const { data: svc } = await sb.from("services").select("id,name,price_czk,duration_min").eq("specialist_id", (sp as Spec).id);
+      const sid = (sp as Spec).id;
+      const [{ data: svc }, { data: av }] = await Promise.all([
+        sb.from("services").select("id,name,price_czk,duration_min").eq("specialist_id", sid),
+        sb.from("availability").select("weekday,start_min,end_min,slot_min").eq("specialist_id", sid),
+      ]);
       setServices((svc as Service[]) ?? []);
+      setAvail(((av as { weekday: number; start_min: number; end_min: number; slot_min: number }[]) ?? [])
+        .map((a) => ({ weekday: a.weekday, from: minToStr(a.start_min), to: minToStr(a.end_min), slot: a.slot_min })));
     }
     setLoading(false);
   }, [userId]);
@@ -91,6 +106,12 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
       specialist_id: spec.id, name: s.name.trim(), price_czk: Number(s.price_czk) || 0, duration_min: Number(s.duration_min) || 55,
     }));
     if (rows.length) await sb.from("services").insert(rows);
+    // dostupnost: smaž a vlož znovu
+    await sb.from("availability").delete().eq("specialist_id", spec.id);
+    const aRows = avail
+      .filter((a) => a.from && a.to && strToMin(a.to) > strToMin(a.from))
+      .map((a) => ({ specialist_id: spec.id, weekday: a.weekday, start_min: strToMin(a.from), end_min: strToMin(a.to), slot_min: a.slot || 60 }));
+    if (aRows.length) await sb.from("availability").insert(aRows);
     setBusy(false); flash("Uloženo ✓");
   };
 
@@ -175,6 +196,25 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
               </div>
             ))}
             <button className="btn btn-out cenik-add" onClick={() => setServices([...services, { name: "", price_czk: 0, duration_min: 55 }])}><Plus size={14} /> Přidat položku</button>
+          </div>
+
+          <div className="cenik">
+            <div className="cenik-head"><b>Dostupnost (kalendář rezervací)</b> <span className="hint">kdy tě jde rezervovat — opakuje se každý týden</span></div>
+            {avail.map((a, i) => (
+              <div className="avail-row" key={i}>
+                <select value={a.weekday} onChange={(e) => setAvail(avail.map((x, j) => j === i ? { ...x, weekday: Number(e.target.value) } : x))}>
+                  {WEEKDAYS.map(([w, l]) => <option key={w} value={w}>{l}</option>)}
+                </select>
+                <input type="time" value={a.from} onChange={(e) => setAvail(avail.map((x, j) => j === i ? { ...x, from: e.target.value } : x))} />
+                <span className="avail-dash">–</span>
+                <input type="time" value={a.to} onChange={(e) => setAvail(avail.map((x, j) => j === i ? { ...x, to: e.target.value } : x))} />
+                <select value={a.slot} onChange={(e) => setAvail(avail.map((x, j) => j === i ? { ...x, slot: Number(e.target.value) } : x))}>
+                  {[30, 45, 60, 90].map((s) => <option key={s} value={s}>{s} min</option>)}
+                </select>
+                <button className="cenik-del" onClick={() => setAvail(avail.filter((_, j) => j !== i))} aria-label="Smazat"><Trash2 size={15} /></button>
+              </div>
+            ))}
+            <button className="btn btn-out cenik-add" onClick={() => setAvail([...avail, { weekday: 1, from: "16:00", to: "20:00", slot: 60 }])}><Plus size={14} /> Přidat čas</button>
           </div>
 
           <div className="card-actions">
