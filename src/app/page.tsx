@@ -9,6 +9,7 @@ import { CITIES, citySlug } from "@/lib/cities";
 import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
+import { VideoNudge } from "@/components/VideoNudge";
 import {
   Search, CalendarCheck, CreditCard, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
@@ -185,21 +186,19 @@ export default function Home() {
               <div className="nav-item">
                 <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
                 <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
-                  <Link className="drop-card" href="/pro-koho"><b>Všechny role →</b><span>vyber si a porovnej Zdarma vs HUB+</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Rodiče &amp; hráči</b><span>najdi, rezervuj, hraj</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Trenéři</b><span>klienti &amp; nástroje</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Kluby &amp; areály</b><span>obsazenost kurtů</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Hráč</b><span>hraj, zlepšuj se, sparring</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Trenér</b><span>klienti &amp; nástroje</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Areály &amp; kluby</b><span>obsazenost kurtů</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Fyzio</b><span>klienti z tenisu</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Fitness</b><span>kondiční příprava</span></Link>
+                  <Link className="drop-card" href="/pro-koho"><b>Vyplétač</b><span>servis raket</span></Link>
                 </div></div>
               </div>
-              <div className="nav-item">
-                <button className={`nav-link${openMenu === "funkce" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "funkce" ? null : "funkce"))}>Funkce <ChevronDown size={15} /></button>
-                <div className={`drop${openMenu === "funkce" ? " open" : ""}`}><div className="drop-inner">
-                  <Link className="drop-card" href="/mapa"><b>Mapa služeb</b><span>trenéři, kurty, fyzio…</span></Link>
-                  <Link className="drop-card" href="/trener"><b>Rezervace &amp; profil</b><span>kalendář a platby</span></Link>
-                  <Link className="drop-card" href="/areal"><b>Dashboard areálu</b><span>obsaď volný kurt teď</span></Link>
-                </div></div>
-              </div>
-              <a className="nav-link" href="#how">Jak to funguje</a>
+              <Link className="nav-link" href="/mapa">Hledej</Link>
+              <Link className="nav-link" href="/clenstvi">Členství</Link>
+              <Link className="nav-link" href="/o-nas">O nás</Link>
             </nav>
             <div className="nav-r">
               <AuthNav />
@@ -270,28 +269,45 @@ export default function Home() {
         <div className="scrollcue">SCROLL ↓</div>
       </section>
 
-      {/* VIDEOROZBOR — emoční vstupní bod */}
-      <section className="vrbanner" id="svet-rodic">
-        <div className="wrap vrbanner-in">
-          <div className="vrbanner-media" aria-hidden="true">
-            <img src="/videorozbor-2.png" className="vr-photo vr-photo-a" alt="" />
-            <img src="/videorozbor-1.png" className="vr-photo vr-photo-b" alt="" />
+      {/* RODIČ & DÍTĚ — co je zdarma a co s HUB+ (pod fotkami) */}
+      <section className="sec rodic-plan" id="svet-rodic">
+        <div className="wrap">
+          <span className="eyebrow">Rodič &amp; dítě — vše, co nabízíme</span>
+          <h2 className="rodic-plan-h">Co máte zdarma a co s HUB+</h2>
+          <div className="rodic-plan-cols">
+            <div className="rp-col">
+              <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
+              <ul className="rp-list">
+                <li><Check size={16} /> Najít trenéra, kurt i fyzio na mapě</li>
+                <li><Check size={16} /> Profily, ceníky a recenze</li>
+                <li><Check size={16} /> Napsat trenérovi (zprávy)</li>
+                <li><Check size={16} /> Sparring zeď — najít parťáka</li>
+                <li><Check size={16} /> Veřejné žebříčky a články</li>
+              </ul>
+              <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
+            </div>
+            <div className="rp-col rp-col-hub">
+              <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
+              <ul className="rp-list rp-list-locked">
+                <li><Lock size={15} /> <b>Moje cesta</b> — kalendář kariéry dítěte</li>
+                <li><Lock size={15} /> Rezervace a platby na pár kliků</li>
+                <li><Lock size={15} /> Připomínky lekcí a plateb</li>
+                <li><Lock size={15} /> Profil hráče, výsledky a žebříček</li>
+                <li><Lock size={15} /> Plánovač turnajů + tréninkový checklist</li>
+              </ul>
+              <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
+            </div>
           </div>
-          <div className="vrbanner-txt">
-            <span className="vrbanner-eyebrow">Videorozbor &amp; konzultace</span>
-            <h2>Nebaví vaše dítě tenis?</h2>
-            <p>Většinou za tím není nedostatek talentu, ale frustrace — dítě <b>neví, proč mu to nejde</b>. Podívejte se s námi na video a poradíme konkrétní kroky. Nezávisle na tom, kde trénuje — jsme objektivní.</p>
-            <Link href="/videorozbor" className="btn btn-gold vrbanner-btn">Chci poradit <ArrowRight size={18} /></Link>
-          </div>
+          <p className="rp-extra"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
         </div>
       </section>
 
-      {/* MOJE CESTA — prodej prémiové funkce pro rodiče */}
+      {/* MOJE CESTA — hlavní bod HUB+ pro rodiče */}
       <section className="mcpromo">
         <div className="wrap mcpromo-in">
           <div className="mcpromo-txt">
-            <span className="mcpromo-eyebrow">Moje cesta · pro členy</span>
-            <h2>Celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
+            <span className="mcpromo-eyebrow">★ Hlavní výhoda HUB+ pro rodiče</span>
+            <h2>Moje cesta — celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
             <p>Přehledný barevný kalendář: tréninky (kdy, kde, odkaz), turnaje i s výsledky, skladba tréninku, kompenzační sporty — a hlavně <b>volno a čas jen pro sebe</b>. Pomáháme růst krok za krokem, bez vyhoření.</p>
             <Link href="/prihlaseni?tab=reg" className="btn btn-green">Vytvořit účet zdarma</Link>
           </div>
@@ -330,7 +346,8 @@ export default function Home() {
         </section>
       )}
 
-      {/* PRO KOHO */}
+      {/* PRO KOHO — přesunuto na /clenstvi (na homepage skryto) */}
+      {false && (
       <section className="sec who-sec" id="proKoho">
         <div className="wrap">
           <span className="eyebrow rv l">Pro koho</span>
@@ -392,6 +409,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* JAK TO FUNGUJE */}
       <section className="sec" id="how">
@@ -416,39 +434,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* RODIČ & DÍTĚ — co je zdarma a co s HUB+ */}
-      <section className="sec rodic-plan">
-        <div className="wrap">
-          <span className="eyebrow">Rodič &amp; dítě</span>
-          <h2 className="rodic-plan-h">Co získáte zdarma a co s HUB+</h2>
-          <div className="rodic-plan-cols">
-            <div className="rp-col">
-              <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
-              <ul className="rp-list">
-                <li><Check size={16} /> Najít trenéra, kurt i fyzio na mapě</li>
-                <li><Check size={16} /> Profily, ceníky a recenze</li>
-                <li><Check size={16} /> Napsat trenérovi (zprávy)</li>
-                <li><Check size={16} /> Sparring zeď — najít parťáka</li>
-                <li><Check size={16} /> Veřejné žebříčky a články</li>
-              </ul>
-              <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
-            </div>
-            <div className="rp-col rp-col-hub">
-              <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
-              <ul className="rp-list rp-list-locked">
-                <li><Lock size={15} /> <b>Moje cesta</b> — kalendář kariéry dítěte</li>
-                <li><Lock size={15} /> Rezervace a platby na pár kliků</li>
-                <li><Lock size={15} /> Připomínky lekcí a plateb</li>
-                <li><Lock size={15} /> Profil hráče, výsledky a žebříček</li>
-                <li><Lock size={15} /> Plánovač turnajů + tréninkový checklist</li>
-              </ul>
-              <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
-            </div>
-          </div>
-          <p className="rp-extra"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
-        </div>
-      </section>
-
       <footer className="site">
         <div className="wrap">
           <div className="grid">
@@ -456,8 +441,8 @@ export default function Home() {
               <Wordmark className="wm-lg" />
               <p style={{ maxWidth: 320, fontSize: ".92rem", marginTop: ".9rem" }}>Páteř českého tenisu. Najdi, rezervuj, hraj.</p>
             </div>
-            <div><h4>Pro koho</h4><div className="links"><a href="#proKoho">Trenéři</a><a href="#proKoho">Rodiče &amp; hráči</a><a href="#proKoho">Kluby &amp; areály</a><a href="#proKoho">Fyzio &amp; fitness</a></div></div>
-            <div><h4>TenisHub</h4><div className="links"><a href="#how">Jak to funguje</a><Link href="/mapa">Mapa</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link><Link href="/admin">Administrace</Link></div></div>
+            <div><h4>Pro koho</h4><div className="links"><Link href="/pro-koho">Rodič &amp; dítě</Link><Link href="/pro-koho">Trenéři</Link><Link href="/pro-koho">Kluby &amp; areály</Link><Link href="/pro-koho">Fyzio &amp; fitness</Link></div></div>
+            <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Hledej na mapě</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link><Link href="/admin">Administrace</Link></div></div>
           </div>
           <div className="foot-cities">
             <h4>Tenis ve městech</h4>
@@ -470,6 +455,8 @@ export default function Home() {
           <div className="copy"><span>© 2026 TenisHub.cz</span><span>tenishub.cz</span></div>
         </div>
       </footer>
+
+      <VideoNudge />
     </>
   );
 }
