@@ -153,7 +153,7 @@ export default function Home() {
   useEffect(() => {
     const supabase = createClient();
     (async () => {
-      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating").limit(12);
+      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating").eq("verified", true).limit(12);
       if (data) setFeatured(data as typeof featured);
       const [{ count: sc }, { count: vc }] = await Promise.all([
         supabase.from("specialists").select("*", { count: "exact", head: true }),
@@ -456,7 +456,10 @@ export default function Home() {
         </div>
       </footer>
 
-      <VideoNudge />
+      <VideoNudge side="left" bottom={18} delay={2600} photo="/videorozbor-1.png"
+        title="Nebaví vaše dítě tenis?" sub={"Poradíme proč — videorozbor & konzultace →"} />
+      <VideoNudge side="right" bottom={108} delay={5200} photo="/videorozbor-2.png"
+        title={"Videorozbor & konzultace"} sub={"Placená služba: rozbor techniky, pohybu i hlavy →"} />
     </>
   );
 }

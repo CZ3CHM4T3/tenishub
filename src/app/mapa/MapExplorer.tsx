@@ -52,8 +52,8 @@ export default function MapExplorer() {
     const supabase = createClient();
     (async () => {
       const [specs, vens, spar] = await Promise.all([
-        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id"),
-        supabase.from("venues").select("id,name,city,lat,lng,rating"),
+        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id").eq("verified", true),
+        supabase.from("venues").select("id,name,city,lat,lng,rating").eq("verified", true),
         supabase.from("sparring_offers").select("city,lat,lng,note,level").eq("active", true),
       ]);
       const pts: Point[] = [];

@@ -38,6 +38,8 @@ const projY = (lat: number) => -160.7 * lat + 8293.2;
 // REÁLNÉ body (žádné vymyšlené) — [lat, lng, index služby].
 // index: 0 = trenér/škola (coach+academy), 4 = areál/klub, 5 = fyzio, 6 = fitness.
 const REAL_POINTS: [number, number, number][] = [
+  [49.9270, 14.2790, 0], // MS GEM — jediný OVĚŘENÝ subjekt (akademie Dobřichovice)
+  /* ostatní body dočasně skryty — na mapu dáváme jen prověřené:
   // trenéři a tenisové školy
   [50.0830, 14.4200, 0], [50.0700, 14.4520, 0], [50.0855, 14.4920, 0], [50.1230, 14.4100, 0],
   [50.0905, 14.4710, 0], [50.0610, 14.4020, 0], [50.0500, 14.4350, 0], [50.0420, 14.4460, 0],
@@ -93,6 +95,7 @@ const REAL_POINTS: [number, number, number][] = [
   [49.1980, 16.6020, 0], [49.1920, 16.6110, 0], [49.2000, 16.5980, 0], [49.1880, 16.6150, 0], [49.2030, 16.6070, 0],
   [49.8400, 18.2850, 0], [49.8310, 18.2960, 0], [49.8380, 18.3000, 0],
   [50.0850, 14.4300, 0], [50.0750, 14.4120, 0], [50.0900, 14.4250, 0],
+  */
 ];
 
 // Role „spotřebitelské" (nemají vlastní piny) — hover na jejich kartu rozsvítí CELOU mapu.

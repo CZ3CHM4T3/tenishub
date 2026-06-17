@@ -3,23 +3,33 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export function VideoNudge() {
+type Props = {
+  side?: "left" | "right";
+  bottom?: number;
+  delay?: number;
+  photo: string;
+  title: string;
+  sub: string;
+  href?: string;
+};
+
+export function VideoNudge({ side = "left", bottom = 18, delay = 2600, photo, title, sub, href = "/videorozbor" }: Props) {
   const [shown, setShown] = useState(false);
   const [closed, setClosed] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setShown(true), 2600);
+    const t = setTimeout(() => setShown(true), delay);
     return () => clearTimeout(t);
-  }, []);
+  }, [delay]);
 
   if (closed) return null;
   return (
-    <Link href="/videorozbor" className={`videonudge${shown ? " in" : ""}`}>
+    <Link href={href} className={`videonudge ${side}${shown ? " in" : ""}`} style={{ bottom }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/videorozbor-1.png" alt="" className="videonudge-ph" />
+      <img src={photo} alt="" className="videonudge-ph" />
       <span>
-        <b>Nebaví vaše dítě tenis?</b>
-        <span>Poradíme proč — videorozbor &amp; konzultace →</span>
+        <b>{title}</b>
+        <span>{sub}</span>
       </span>
       <button
         className="videonudge-x"
