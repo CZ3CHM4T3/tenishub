@@ -31,7 +31,7 @@ const TYPES: Record<TypeKey, { label: string; color: string }> = {
 };
 
 
-type Point = { type: TypeKey; lat: number; lng: number; city: string; name: string; rate: string; id?: string };
+type Point = { type: TypeKey; lat: number; lng: number; city: string; name: string; rate: string; id?: string; verified?: boolean };
 
 const ALL_ON: Record<TypeKey, boolean> = {
   coach: true, club: true, fitness: true, physio: true, academy: true, buddy: true, stringer: true,
@@ -52,20 +52,20 @@ export default function MapExplorer() {
     const supabase = createClient();
     (async () => {
       const [specs, vens, spar] = await Promise.all([
-        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id").eq("verified", true),
-        supabase.from("venues").select("id,name,city,lat,lng,rating").eq("verified", true),
+        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id,verified").eq("verified", true),
+        supabase.from("venues").select("id,name,city,lat,lng,rating,verified").eq("verified", true),
         supabase.from("sparring_offers").select("city,lat,lng,note,level").eq("active", true),
       ]);
       const pts: Point[] = [];
-      type Row = { id?: string; kind?: string; name?: string; city?: string | null; lat?: number | null; lng?: number | null; rating?: number | null; note?: string | null; level?: string | null; venue_id?: string | null };
+      type Row = { id?: string; kind?: string; name?: string; city?: string | null; lat?: number | null; lng?: number | null; rating?: number | null; note?: string | null; level?: string | null; venue_id?: string | null; verified?: boolean };
       (specs.data as Row[] | null)?.forEach((s) => {
         if (s.venue_id) return; // trenér navázaný na areál → bez vlastního pinu (je v profilu areálu)
         if (s.lat != null && s.lng != null)
-          pts.push({ type: (s.kind as TypeKey) ?? "coach", lat: s.lat, lng: s.lng, city: s.city ?? "", name: s.name ?? "", rate: s.rating ? String(s.rating) : "—", id: s.id });
+          pts.push({ type: (s.kind as TypeKey) ?? "coach", lat: s.lat, lng: s.lng, city: s.city ?? "", name: s.name ?? "", rate: s.rating ? String(s.rating) : "—", id: s.id, verified: !!s.verified });
       });
       (vens.data as Row[] | null)?.forEach((v) => {
         if (v.lat != null && v.lng != null)
-          pts.push({ type: "club", lat: v.lat, lng: v.lng, city: v.city ?? "", name: v.name ?? "", rate: v.rating ? String(v.rating) : "—", id: v.id });
+          pts.push({ type: "club", lat: v.lat, lng: v.lng, city: v.city ?? "", name: v.name ?? "", rate: v.rating ? String(v.rating) : "—", id: v.id, verified: !!v.verified });
       });
       (spar.data as Row[] | null)?.forEach((b) => {
         if (b.lat != null && b.lng != null)
@@ -141,10 +141,10 @@ export default function MapExplorer() {
     home.setLatLng(c);
     layer.clearLayers();
 
-    const pinIcon = (t: TypeKey) =>
+    const pinIcon = (t: TypeKey, verified?: boolean) =>
       L.divIcon({
         className: "",
-        html: `<div class="pin" style="background:${TYPES[t].color}"><svg viewBox="0 0 24 24">${ICONS[t]}</svg></div>`,
+        html: `<div class="pin${verified ? " pin-verified" : ""}" style="background:${TYPES[t].color}"><svg viewBox="0 0 24 24">${ICONS[t]}</svg>${verified ? '<span class="pin-check">✓</span>' : ""}</div>`,
         iconSize: [34, 34], iconAnchor: [7, 32], popupAnchor: [10, -30],
       });
 
@@ -158,11 +158,12 @@ export default function MapExplorer() {
         `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.type]}</svg>` +
         `</div></div><div class="body"><b class="nm">${p.name}</b>` +
         `<div class="meta">${TYPES[p.type].label} · ${p.city}</div>` +
+        (p.verified ? `<div class="pop-verif">✓ Ověřeno TenisHubem</div>` : "") +
         `<div class="stars">★★★★★ <span>${p.rate}</span></div>` +
         (p.type === "buddy"
           ? `<a href="/sparring" class="open">Sparring nabídky →</a></div></div>`
           : `<a href="${p.type === "club" ? `/areal/${p.id ?? ""}` : `/trener/${p.id ?? ""}`}" class="open">Otevřít profil →</a></div></div>`);
-      L.marker([p.lat, p.lng], { icon: pinIcon(p.type) }).bindPopup(pop, { closeButton: false }).addTo(layer);
+      L.marker([p.lat, p.lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
       n++;
     });
     setCount(n);
