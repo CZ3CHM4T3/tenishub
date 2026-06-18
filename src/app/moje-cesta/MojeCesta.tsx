@@ -7,20 +7,27 @@ import { Wordmark } from "@/components/Wordmark";
 import {
   Route, Plus, ChevronLeft, ChevronRight, Trophy, Target, Trash2, Pencil,
   CalendarDays, CalendarRange, Grid3x3, TrendingUp, BarChart3, Lock, X,
+  History, Users, Lightbulb,
 } from "lucide-react";
 
 /* ---------- typy ---------- */
 type Player = { id: string; name: string; level: "hobby" | "competitive"; birth_year: number | null; category: string | null; ranking: number | null; cts_id: string | null };
 type EvType = { key: string; label: string; color: string };
 type PhaseT = { kind: string; label: string; color: string; start: string; end: string };
+type SetScore = { me: number; opp: number };
 type Ev = {
   id: string; player_id: string; date: string; type: string; title: string | null;
   location: string | null; link: string | null; notes: string | null;
-  opponent: string | null; score: string | null; win: boolean | null;
+  opponent: string | null; score: string | null; win: boolean | null; sets: SetScore[] | null;
+};
+type Metrics = {
+  trainings: number; tournaments: number; played: number; wins: number; losses: number;
+  winPct: number | null; firstSetPct: number | null; closePct: number | null; comebackPct: number | null;
+  threeW: number; threeL: number;
 };
 type Goal = { id: string; player_id: string; title: string; target: string | null; progress: number; done: boolean };
 type Seg = PhaseT & { s: Date; e: Date };
-type View = "month" | "week" | "year" | "load";
+type View = "month" | "week" | "year" | "load" | "reflect";
 type PForm = { open: boolean; id?: string; name: string; level: "hobby" | "competitive"; year: string; category: string; ranking: string; cts: string };
 
 /* ---------- pomocné ---------- */
@@ -48,6 +55,47 @@ function seasonSegments(template: PhaseT[]): Seg[] {
   });
 }
 
+/* ---------- analýza zápasů ---------- */
+const setsOf = (e: Ev): SetScore[] => Array.isArray(e.sets) ? e.sets : [];
+const hasResult = (e: Ev) => e.type === "tournament" && (e.win != null || setsOf(e).length > 0);
+const matchWin = (e: Ev): boolean => {
+  if (e.win != null) return e.win;
+  const s = setsOf(e); const w = s.filter((x) => x.me > x.opp).length, l = s.filter((x) => x.opp > x.me).length;
+  return w > l;
+};
+const wonFirstSet = (e: Ev): boolean | null => { const s = setsOf(e); return s.length ? s[0].me > s[0].opp : null; };
+const pct = (a: number, b: number) => b ? Math.round((a / b) * 100) : null;
+
+function computeMetrics(evs: Ev[]): Metrics {
+  const trainings = evs.filter((e) => e.type === "training").length;
+  const tournaments = evs.filter((e) => e.type === "tournament").length;
+  const played = evs.filter(hasResult);
+  const wins = played.filter(matchWin).length;
+  const losses = played.length - wins;
+  let fsW = 0, fsT = 0, clW = 0, clT = 0, cbW = 0, cbT = 0, threeW = 0, threeL = 0;
+  for (const e of played) {
+    const wf = wonFirstSet(e); const win = matchWin(e);
+    if (wf != null) { fsT++; if (wf) fsW++; if (wf) { clT++; if (win) clW++; } else { cbT++; if (win) cbW++; } }
+    if (setsOf(e).length >= 3) { if (win) threeW++; else threeL++; }
+  }
+  return {
+    trainings, tournaments, played: played.length, wins, losses,
+    winPct: pct(wins, played.length), firstSetPct: pct(fsW, fsT),
+    closePct: pct(clW, clT), comebackPct: pct(cbW, cbT), threeW, threeL,
+  };
+}
+
+function insights(m: Metrics, bestMonth: { idx: number; p: number } | null, monthName: string): string[] {
+  const out: string[] = [];
+  if (m.played < 3) { out.push("Zatím málo zápasů s výsledkem. Vyplň u turnajů sety (skóre po setech) a tady se ukážou trendy — kdy vyhráváš, jak dotahuješ zápasy i kdy to otáčíš."); return out; }
+  if (bestMonth) out.push(`Nejlíp ti to jde v měsíci ${monthName} — ${bestMonth.p} % výher.`);
+  if (m.closePct != null && m.closePct < 60) out.push(`Když vyhraješ první set, dotáhneš zápas jen v ${m.closePct} %. Stojí za to pracovat s vedením — koncentrace, nepolevit.`);
+  else if (m.closePct != null) out.push(`Když vedeš po prvním setu, spolehlivě dotáhneš (${m.closePct} %). Skvělá mentalita ve vedení.`);
+  if (m.comebackPct != null && m.comebackPct >= 35) out.push(`Umíš otáčet zápasy — po prohraném prvním setu pořád vyhraješ v ${m.comebackPct} %.`);
+  if (m.threeW + m.threeL >= 2) out.push(`Třísetové bitvy: ${m.threeW}–${m.threeL}. ${m.threeW >= m.threeL ? "V koncovkách jsi silný/á." : "Koncovky a kondice na konci zápasu = prostor ke zlepšení."}`);
+  return out.slice(0, 4);
+}
+
 export default function MojeCesta() {
   const [gate, setGate] = useState<"loading" | "noauth" | "nomember" | "ok">("loading");
   const [uid, setUid] = useState<string | null>(null);
@@ -62,6 +110,8 @@ export default function MojeCesta() {
   const [weekRef, setWeekRef] = useState(() => weekStart(new Date()));
   const [busy, setBusy] = useState(false);
 
+  const [compareOpen, setCompareOpen] = useState(false);
+  const [allEv, setAllEv] = useState<Ev[]>([]);
   const [pForm, setPForm] = useState<PForm>(PCLOSED);
   const [evForm, setEvForm] = useState<Partial<Ev> & { open: boolean }>({ open: false });
   const [goalForm, setGoalForm] = useState<{ open: boolean; title: string; target: string }>({ open: false, title: "", target: "" });
@@ -145,14 +195,32 @@ export default function MojeCesta() {
     setBusy(false);
   };
 
+  const loadCompare = async () => {
+    if (players.length < 2) return;
+    const { data } = await supabase.from("cesta_events").select("*").in("player_id", players.map((p) => p.id));
+    setAllEv((data as Ev[]) ?? []);
+    setCompareOpen(true);
+  };
+
+  const setSet = (i: number, field: "me" | "opp", val: string) => {
+    const arr: SetScore[] = [...(evForm.sets ?? [])];
+    while (arr.length <= i) arr.push({ me: 0, opp: 0 });
+    arr[i] = { ...arr[i], [field]: val === "" ? 0 : Math.min(99, Number(val.replace(/\D/g, ""))) };
+    setEvForm({ ...evForm, sets: arr });
+  };
+
   const saveEvent = async () => {
     if (!pid || !evForm.date) return;
     setBusy(true);
+    const isTour = (evForm.type || "training") === "tournament";
+    const cleanSets = isTour ? (evForm.sets ?? []).filter((s) => s.me || s.opp) : [];
+    const derivedWin = evForm.win ?? (cleanSets.length ? (cleanSets.filter((s) => s.me > s.opp).length > cleanSets.filter((s) => s.opp > s.me).length) : null);
+    const derivedScore = cleanSets.length ? cleanSets.map((s) => `${s.me}:${s.opp}`).join(" ") : (evForm.score || null);
     const payload = {
       player_id: pid, date: evForm.date, type: evForm.type || "training",
       title: evForm.title || null, location: evForm.location || null, link: evForm.link || null,
-      notes: evForm.notes || null, opponent: evForm.opponent || null, score: evForm.score || null,
-      win: evForm.win ?? null,
+      notes: evForm.notes || null, opponent: evForm.opponent || null, score: derivedScore,
+      win: derivedWin, sets: cleanSets.length ? cleanSets : null,
     };
     if (evForm.id) await supabase.from("cesta_events").update(payload).eq("id", evForm.id);
     else await supabase.from("cesta_events").insert(payload);
@@ -210,6 +278,15 @@ export default function MojeCesta() {
     const rest = inSeason.filter((e) => e.type === "rest" || e.type === "recovery").length;
     return { trainings, tournaments: tournaments.length, wins, losses, rest };
   }, [events, winRange]);
+
+  const reflect = useMemo(() => {
+    const M = computeMetrics(events);
+    const monthly = Array.from({ length: 12 }, () => ({ w: 0, t: 0 }));
+    events.filter(hasResult).forEach((e) => { const mi = new Date(e.date).getMonth(); monthly[mi].t++; if (matchWin(e)) monthly[mi].w++; });
+    let best: { idx: number; p: number } | null = null;
+    monthly.forEach((m, i) => { if (m.t > 0) { const p = Math.round(m.w / m.t * 100); if (!best || p > best!.p) best = { idx: i, p }; } });
+    return { M, monthly, best: best as { idx: number; p: number } | null, tips: insights(M, best, best ? MONTHS[(best as { idx: number }).idx] : "") };
+  }, [events]);
 
   // měsíc (po–ne)
   const grid = useMemo(() => {
@@ -283,6 +360,7 @@ export default function MojeCesta() {
     ["week", "Týden", <CalendarRange key="w" size={15} />],
     ["year", "Rok", <Grid3x3 key="y" size={15} />],
     ["load", "Zátěž", <TrendingUp key="l" size={15} />],
+    ["reflect", "Ohlédnutí", <History key="r" size={15} />],
   ];
   const maxTj = Math.max(3, ...loadWeeks.map((w) => w.tj));
 
@@ -296,6 +374,7 @@ export default function MojeCesta() {
           </button>
         ))}
         <button className="mc-ptab mc-padd" onClick={() => setPForm({ ...PCLOSED, open: true })}><Plus size={15} /> Hráč</button>
+        {players.length >= 2 && <button className="mc-ptab mc-pcompare" onClick={loadCompare}><Users size={15} /> Porovnat</button>}
       </div>
     </div>
 
@@ -447,6 +526,39 @@ export default function MojeCesta() {
               <p className="member-note">Křivka ukazuje periodicitu zátěže — v přípravě roste objem, v sezóně se ladí, v mezisezóně klesá (regenerace).</p>
             </div>
           </>)}
+
+          {/* OHLÉDNUTÍ — analýza zápasů */}
+          {view === "reflect" && (<>
+            <div className="mc-calhead"><h2>Ohlédnutí — jak ti to jde</h2></div>
+            <div className="mc-rmetrics">
+              <div className="mc-rm"><b>{reflect.M.winPct != null ? `${reflect.M.winPct} %` : "—"}</b><span>úspěšnost ({reflect.M.wins}–{reflect.M.losses})</span></div>
+              <div className="mc-rm"><b>{reflect.M.firstSetPct != null ? `${reflect.M.firstSetPct} %` : "—"}</b><span>vyhraný 1. set</span></div>
+              <div className="mc-rm"><b>{reflect.M.closePct != null ? `${reflect.M.closePct} %` : "—"}</b><span>dotažení (vedu 1. set → výhra)</span></div>
+              <div className="mc-rm"><b>{reflect.M.comebackPct != null ? `${reflect.M.comebackPct} %` : "—"}</b><span>otočky (prohra 1. setu → výhra)</span></div>
+            </div>
+
+            <h3 className="mc-adm-h">Úspěšnost po měsících</h3>
+            <div className="mc-months">
+              {reflect.monthly.map((m, i) => {
+                const p = m.t ? Math.round(m.w / m.t * 100) : 0;
+                const best = reflect.best?.idx === i && m.t > 0;
+                return (
+                  <div className="mc-mcol" key={i} title={m.t ? `${m.w}/${m.t} výher` : "bez zápasů"}>
+                    <div className="mc-mbar"><div className={best ? "best" : ""} style={{ height: `${m.t ? Math.max(4, p) : 0}%` }} /></div>
+                    <span className="mc-mpct">{m.t ? `${p}%` : "·"}</span>
+                    <span className="mc-mlabel">{MON3[i]}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {reflect.tips.length > 0 && (
+              <div className="mc-insights">
+                {reflect.tips.map((t, i) => <p key={i}><Lightbulb size={15} /> {t}</p>)}
+              </div>
+            )}
+            <p className="member-note">Tip: u turnajů vyplňuj <b>skóre po setech</b> (6:4, 3:6…) — z toho se počítá dotahování zápasů, otočky i třísetové bilance.</p>
+          </>)}
         </div>
 
         {/* CÍLE */}
@@ -515,14 +627,22 @@ export default function MojeCesta() {
           <label>Odkaz<input value={evForm.link ?? ""} onChange={(e) => setEvForm({ ...evForm, link: e.target.value })} placeholder="https://…" /></label>
           {evForm.type === "tournament" && (<>
             <label>Soupeř<input value={evForm.opponent ?? ""} onChange={(e) => setEvForm({ ...evForm, opponent: e.target.value })} /></label>
-            <div className="mc-row2">
-              <label>Skóre<input value={evForm.score ?? ""} onChange={(e) => setEvForm({ ...evForm, score: e.target.value })} placeholder="6:3 6:4" /></label>
-              <label>Výsledek
-                <select value={evForm.win === true ? "w" : evForm.win === false ? "l" : ""} onChange={(e) => setEvForm({ ...evForm, win: e.target.value === "w" ? true : e.target.value === "l" ? false : null })}>
-                  <option value="">—</option><option value="w">Výhra</option><option value="l">Prohra</option>
-                </select>
-              </label>
+            <span className="mc-setlbl">Skóre po setech (moje : soupeř)</span>
+            <div className="mc-sets">
+              {[0, 1, 2].map((i) => (
+                <div className="mc-setrow" key={i}>
+                  <span>{i + 1}. set</span>
+                  <input inputMode="numeric" value={evForm.sets?.[i]?.me ? String(evForm.sets[i].me) : ""} onChange={(e) => setSet(i, "me", e.target.value)} placeholder="6" />
+                  <em>:</em>
+                  <input inputMode="numeric" value={evForm.sets?.[i]?.opp ? String(evForm.sets[i].opp) : ""} onChange={(e) => setSet(i, "opp", e.target.value)} placeholder="4" />
+                </div>
+              ))}
             </div>
+            <label>Výsledek (vyplní se ze setů, můžeš přepsat)
+              <select value={evForm.win === true ? "w" : evForm.win === false ? "l" : ""} onChange={(e) => setEvForm({ ...evForm, win: e.target.value === "w" ? true : e.target.value === "l" ? false : null })}>
+                <option value="">— automaticky —</option><option value="w">Výhra</option><option value="l">Prohra</option>
+              </select>
+            </label>
           </>)}
           <label>Poznámka<textarea value={evForm.notes ?? ""} onChange={(e) => setEvForm({ ...evForm, notes: e.target.value })} rows={2} /></label>
           <div className="mc-modal-actions">
@@ -542,6 +662,50 @@ export default function MojeCesta() {
           <label>Cíl<input value={goalForm.title} onChange={(e) => setGoalForm({ ...goalForm, title: e.target.value })} placeholder="Naučit se podání, postup v žebříčku…" /></label>
           <label>Měřítko (nepovinné)<input value={goalForm.target} onChange={(e) => setGoalForm({ ...goalForm, target: e.target.value })} placeholder="Do TOP 50, 3 turnaje…" /></label>
           <button className="btn btn-green" disabled={busy} onClick={addGoal}>Přidat cíl</button>
+        </div>
+      </div>
+    )}
+
+    {/* MODÁL: porovnání hráčů */}
+    {compareOpen && (
+      <div className="mc-modal" onClick={() => setCompareOpen(false)}>
+        <div className="mc-modal-in mc-modal-wide" onClick={(e) => e.stopPropagation()}>
+          <button className="mc-x" onClick={() => setCompareOpen(false)}><X size={18} /></button>
+          <h3><Users size={18} style={{ verticalAlign: "-3px" }} /> Porovnání hráčů</h3>
+          {(() => {
+            const rows = players.map((p) => ({ p, m: computeMetrics(allEv.filter((e) => e.player_id === p.id)) }));
+            const num = (v: number | null) => v != null ? `${v} %` : "—";
+            const bestBy = (sel: (m: Metrics) => number | null, min = 1, key: (m: Metrics) => number = sel as (m: Metrics) => number) => {
+              const c = rows.filter((r) => sel(r.m) != null && key(r.m) >= min);
+              return c.length ? c.reduce((a, b) => (sel(b.m)! > sel(a.m)!) ? b : a) : null;
+            };
+            const bw = bestBy((m) => m.winPct, 2, (m) => m.played);
+            const bc = bestBy((m) => m.closePct, 2, (m) => m.played);
+            const bt = rows.reduce((a, b) => b.m.trainings > a.m.trainings ? b : a, rows[0]);
+            const tips: string[] = [];
+            if (bw) tips.push(`Nejvyšší úspěšnost: ${bw.p.name} (${bw.m.winPct} %).`);
+            if (bc) tips.push(`Nejlíp dotahuje vedené zápasy: ${bc.p.name} (${bc.m.closePct} %).`);
+            if (bt && bt.m.trainings > 0) tips.push(`Nejvíc trénuje: ${bt.p.name} (${bt.m.trainings} jednotek).`);
+            return (<>
+              <div className="admin-scroll">
+                <table className="admin-table mc-ctable">
+                  <thead><tr><th>Hráč</th><th>TJ</th><th>Turnaje</th><th>Bilance</th><th>Úsp.</th><th>1. set</th><th>Dotažení</th><th>Otočky</th></tr></thead>
+                  <tbody>
+                    {rows.map(({ p, m }) => (
+                      <tr key={p.id} className={p.id === pid ? "mc-crow-on" : ""}>
+                        <td><b>{p.name}</b> <span className="mc-lvl">{p.level === "competitive" ? (p.category || "záv.") : "hobby"}</span></td>
+                        <td>{m.trainings}</td><td>{m.tournaments}</td>
+                        <td>{m.wins}–{m.losses}</td>
+                        <td>{num(m.winPct)}</td><td>{num(m.firstSetPct)}</td><td>{num(m.closePct)}</td><td>{num(m.comebackPct)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {tips.length > 0 && <div className="mc-insights">{tips.map((t, i) => <p key={i}><Lightbulb size={15} /> {t}</p>)}</div>}
+              <p className="member-note">Procenta dávají smysl od pár odehraných zápasů. Vyplňuj u turnajů sety, ať je porovnání přesné.</p>
+            </>);
+          })()}
         </div>
       </div>
     )}

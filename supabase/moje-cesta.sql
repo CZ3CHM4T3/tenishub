@@ -48,10 +48,12 @@ create table if not exists public.cesta_events (
   link       text,
   notes      text,
   opponent   text,        -- turnaj: soupeř
-  score      text,        -- turnaj: skóre
+  score      text,        -- turnaj: skóre (textově, odvozeno ze setů)
   win        boolean,     -- turnaj: výhra?
+  sets       jsonb,       -- turnaj: pole setů [{"me":6,"opp":4},…] pro analýzu (dotažení, otočky…)
   created_at timestamptz not null default now()
 );
+alter table public.cesta_events add column if not exists sets jsonb;
 create index if not exists cesta_events_player_idx on public.cesta_events(player_id, date);
 
 alter table public.cesta_events enable row level security;
