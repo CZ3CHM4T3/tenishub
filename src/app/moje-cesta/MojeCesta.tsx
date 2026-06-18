@@ -194,6 +194,7 @@ export default function MojeCesta() {
 
   useEffect(() => { init(); }, [init]);
   useEffect(() => { try { const s = localStorage.getItem("mc_stats"); if (s) setStatKeys(JSON.parse(s)); } catch {} }, []);
+  useEffect(() => { if (typeof window !== "undefined" && window.innerWidth <= 640) setView("week"); }, []);
 
   const [syncInput, setSyncInput] = useState("");
   const toggleStat = (k: string) => setStatKeys((prev) => {

@@ -326,7 +326,8 @@
 .mc-stat b { display: block; font-size: 1.4rem; line-height: 1.1; }
 .mc-stat span { font-size: 0.78rem; color: var(--muted); }
 
-.mc-cols { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1.2rem; align-items: start; }
+.mc-cols { display: grid; grid-template-columns: 1fr; gap: 1.2rem; align-items: start; }
+.mc-goals { max-width: 560px; }
 .mc-calhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
 .mc-calhead h2 { margin: 0; font-size: 1.05rem; text-transform: capitalize; }
 .mc-calhead button { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 0.3rem; cursor: pointer; display: inline-flex; }
@@ -351,7 +352,7 @@
 .mc-meta { font-weight: 600; color: var(--muted); font-size: 0.85rem; }
 
 /* velký měsíc s názvy událostí */
-.mc-grid-big .mc-cell { aspect-ratio: auto; min-height: 116px; display: flex; flex-direction: column; gap: 4px; padding: 6px; }
+.mc-grid-big .mc-cell { aspect-ratio: auto; min-height: 132px; display: flex; flex-direction: column; gap: 4px; padding: 8px; }
 .mc-grid-big .mc-daynum { font-size: 0.92rem; }
 .mc-chips { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
 .mc-chip { font-style: normal; font-size: 0.74rem; font-weight: 600; color: #fff; padding: 3px 6px; border-radius: 6px; line-height: 1.2; text-shadow: 0 1px 1px rgba(0,0,0,0.22); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
@@ -497,7 +498,42 @@
 
 @media (max-width: 820px) {
   .mc-cols { grid-template-columns: 1fr; }
+  .mc-goals { max-width: none; }
   .mc-stats { grid-template-columns: repeat(2, 1fr); }
+}
+/* MOBIL — kalendář ovladatelný prstem */
+@media (max-width: 640px) {
+  .mc-wrap { padding-left: 0.7rem; padding-right: 0.7rem; }
+  .mc-cal { padding: 0.8rem !important; }
+  .mc-views { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .mc-vbtn { flex: none; }
+  .mc-grid { gap: 3px; }
+  /* měsíc = přehled: velké číslo + barevné proužky (text až v týdnu/po klepnutí) */
+  .mc-grid-big .mc-cell { min-height: 62px; padding: 4px 3px; gap: 3px; }
+  .mc-grid-big .mc-daynum { font-size: 0.92rem; font-weight: 700; }
+  .mc-chips { flex-direction: row; flex-wrap: wrap; gap: 3px; }
+  .mc-chip { font-size: 0 !important; padding: 0 !important; width: 14px; height: 7px; border-radius: 3px; -webkit-line-clamp: 1; }
+  .mc-chip.more { font-size: 0.6rem !important; width: auto; height: auto; padding: 0 3px !important; }
+  .mc-wd { font-size: 0.64rem; }
+  /* týden = svislá agenda na celou šířku, prst-friendly */
+  .mc-week { grid-template-columns: 1fr; gap: 8px; }
+  .mc-wday { min-height: 0; padding: 0.7rem; }
+  .mc-wev { padding: 0.6rem 0.7rem; }
+  .mc-wev b { font-size: 0.92rem; }
+  .mc-wadd { padding: 0.6rem; font-size: 0.85rem; }
+  /* osa, statistiky, ohlédnutí */
+  .mc-stats { grid-template-columns: repeat(2, 1fr); }
+  .mc-rmetrics { grid-template-columns: repeat(2, 1fr); }
+  .mc-months { height: 120px; }
+  .mc-mlabel { font-size: 0.56rem; }
+  .mc-ylabel { width: 40px; font-size: 0.66rem; }
+  .mc-yday { width: 16px; height: 16px; }
+  /* modály přes celou výšku, větší dotykové cíle */
+  .mc-modal { padding: 0; align-items: flex-end; }
+  .mc-modal-in { max-width: none; border-radius: 18px 18px 0 0; max-height: 94vh; padding: 1.3rem 1.1rem; }
+  .mc-modal-in input, .mc-modal-in select, .mc-modal-in textarea { padding: 0.65rem 0.7rem; font-size: 16px; }
+  .mc-gbtns button { padding: 0.75rem 0.5rem; }
+  .mc-players { gap: 0.4rem; }
 }
 .home-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--green-ink); border: 3px solid var(--gold); box-shadow: 0 0 0 7px rgba(200, 162, 76, 0.22); }
 .leaflet-popup-content-wrapper { border-radius: 16px; box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.3); }
