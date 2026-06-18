@@ -21,6 +21,24 @@ function toText(html: string): string {
 
 export async function GET(req: NextRequest) {
   const sp = req.nextUrl.searchParams;
+
+  // VYHLEDÁVÁNÍ HRÁČE PODLE JMÉNA → /vyhledavani?q=
+  const searchQ = sp.get("search");
+  if (searchQ != null) {
+    const q = searchQ.trim();
+    if (q.length < 3) return NextResponse.json({ results: [] });
+    try {
+      const rr = await fetch(`https://cesky-tenis.cz/vyhledavani?q=${encodeURIComponent(q)}`, {
+        headers: { "user-agent": "Mozilla/5.0 (compatible; TenisHub/1.0; +https://tenishub.cz)" },
+        cache: "no-store", signal: AbortSignal.timeout(7000),
+      });
+      if (!rr.ok) return NextResponse.json({ error: `Hledání selhalo (HTTP ${rr.status}).` }, { status: 502 });
+      return NextResponse.json({ results: parsePlayerSearch(await rr.text()) });
+    } catch {
+      return NextResponse.json({ error: "Spojení s cesky-tenis.cz selhalo." }, { status: 502 });
+    }
+  }
+
   const raw = sp.get("url") || "";
   let id = sp.get("id") || "";
   if (!id && raw) id = raw.match(/hrac\/(\d+)/)?.[1] ?? "";
@@ -86,6 +104,28 @@ export async function GET(req: NextRequest) {
 
 type ParsedFixture = { extId: string; date: string; opponent: string; homeAway: "doma" | "venku" };
 
+type SearchHit = { id: string; name: string; birth_year: number | null; club: string | null };
+
+function parsePlayerSearch(html: string): SearchHit[] {
+  const out: SearchHit[] = [];
+  try {
+    const aRe = /<a[^>]*href="\/hrac\/(\d+)"[^>]*>([\s\S]*?)<\/a>/g;
+    const seen = new Set<string>();
+    for (const m of html.matchAll(aRe)) {
+      const id = m[1];
+      const name = stripTags(m[2]);
+      if (!name || seen.has(id)) continue;
+      seen.add(id);
+      // za jménem v řádku bývá: <rok> <klub> <platnost DD.MM.YYYY>
+      const after = stripTags(html.slice(m.index! + m[0].length, m.index! + m[0].length + 220));
+      const rc = after.match(/((?:19|20)\d{2})\s+(.+?)\s+\d{1,2}\.\d{1,2}\.\d{4}/);
+      out.push({ id, name, birth_year: rc ? Number(rc[1]) : null, club: rc ? rc[2].trim() : null });
+      if (out.length >= 20) break;
+    }
+  } catch { /* best-effort */ }
+  return out;
+}
+
 function stripTags(s: string): string {
   return s.replace(/<[^>]+>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&#?\w+;/g, " ").replace(/\s+/g, " ").trim();
 }
@@ -108,8 +148,10 @@ function parseFixtures(html: string, soutId: string, clubName: string): ParsedFi
       const home = arr[0].team, away = arr[1].team;
       const mineHome = home.toLowerCase().includes(clubKey), mineAway = away.toLowerCase().includes(clubKey);
       if (!mineHome && !mineAway) continue;
+      const opponent = mineHome ? away : home;
+      if (/^volno$/i.test(opponent.trim())) continue; // bye (volný los) → nepřidávat
       const date = dateBefore(arr[0].i); if (!date) continue;
-      out.push({ extId: `ctf:${soutId}-${n}`, date, opponent: mineHome ? away : home, homeAway: mineHome ? "doma" : "venku" });
+      out.push({ extId: `ctf:${soutId}-${n}`, date, opponent, homeAway: mineHome ? "doma" : "venku" });
     }
   } catch { /* best-effort */ }
   return out;

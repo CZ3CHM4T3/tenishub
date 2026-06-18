@@ -1,0 +1,5 @@
+{
+  "crons": [
+    { "path": "/api/cron/sync-tenis", "schedule": "0 4 * * *" }
+  ]
+}

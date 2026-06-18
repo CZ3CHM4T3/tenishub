@@ -205,18 +205,16 @@ export default function MojeCesta() {
   useEffect(() => { if (typeof window !== "undefined" && window.innerWidth <= 640) setView("week"); }, []);
 
   const [syncInput, setSyncInput] = useState("");
+  const [searchResults, setSearchResults] = useState<{ id: string; name: string; birth_year: number | null; club: string | null }[]>([]);
   const toggleStat = (k: string) => setStatKeys((prev) => {
     const next = prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k];
     try { localStorage.setItem("mc_stats", JSON.stringify(next)); } catch {}
     return next;
   });
 
-  const syncCT = async () => {
-    const q = (syncInput.trim() || pForm.cts.trim());
-    if (!q) { setSyncMsg("Vlož odkaz na profil (cesky-tenis.cz) nebo číslo hráče."); return; }
+  const loadProfile = async (param: string) => {
     setSyncing(true); setSyncMsg(null);
     try {
-      const param = /^\d+$/.test(q) ? `id=${q}` : `url=${encodeURIComponent(q)}`;
       const r = await fetch(`/api/cesky-tenis?${param}`);
       const d = await r.json();
       if (!r.ok) { setSyncMsg(d.error || "Načtení selhalo."); setSyncing(false); return; }
@@ -228,8 +226,26 @@ export default function MojeCesta() {
         cts: d.id || f.cts,
       }));
       const bits = [d.name, d.club, d.ranking != null ? `žebříček ${d.ranking}.` : null, d.birth_year ? `*${d.birth_year}` : null].filter(Boolean);
-      setSyncMsg(bits.length ? `Načteno: ${bits.join(" · ")}` : "Profil se načetl, ale údaje se nepodařilo vyčíst — zadej ručně.");
-    } catch { setSyncMsg("Spojení selhalo."); }
+      setSyncMsg(bits.length ? `Načteno: ${bits.join(" · ")} — ulož a pak dej Aktualizovat.` : "Profil se načetl, ale údaje se nevyčetly — zadej ručně.");
+      setSearchResults([]);
+    } catch { setSyncMsg("Spojení selhalo (funguje až nasazené)."); }
+    setSyncing(false);
+  };
+  const syncCT = async () => {
+    const q = (syncInput.trim() || pForm.cts.trim());
+    if (!q) { setSyncMsg("Zadej jméno, odkaz na profil nebo číslo hráče."); return; }
+    if (/^\d+$/.test(q)) return loadProfile(`id=${q}`);
+    if (/hrac\//.test(q)) return loadProfile(`url=${encodeURIComponent(q)}`);
+    // jinak = hledání podle jména
+    setSyncing(true); setSyncMsg(null); setSearchResults([]);
+    try {
+      const r = await fetch(`/api/cesky-tenis?search=${encodeURIComponent(q)}`);
+      const d = await r.json();
+      if (!r.ok) { setSyncMsg(d.error || "Hledání selhalo."); setSyncing(false); return; }
+      const res = d.results ?? [];
+      setSearchResults(res);
+      if (!res.length) setSyncMsg("Nikoho jsem nenašel — zkus přesnější jméno, nebo vlož odkaz na profil.");
+    } catch { setSyncMsg("Spojení selhalo (funguje až nasazené)."); }
     setSyncing(false);
   };
 
@@ -261,9 +277,9 @@ export default function MojeCesta() {
     }
     setPForm(PCLOSED); setBusy(false);
   };
-  const openNewPlayer = () => { setSyncInput(""); setSyncMsg(null); setPForm({ ...PCLOSED, open: true }); };
+  const openNewPlayer = () => { setSyncInput(""); setSyncMsg(null); setSearchResults([]); setPForm({ ...PCLOSED, open: true }); };
   const editPlayer = (p: Player) => {
-    setSyncInput(""); setSyncMsg(null);
+    setSyncInput(""); setSyncMsg(null); setSearchResults([]);
     setPForm({
       open: true, id: p.id, name: p.name, level: p.level, year: p.birth_year ? String(p.birth_year) : "",
       category: p.category ?? "", ranking: p.ranking != null ? String(p.ranking) : "", cts: p.cts_id ?? "",
@@ -839,13 +855,22 @@ export default function MojeCesta() {
           </label>
           {pForm.level === "competitive" && (<>
             <div className="mc-sync">
-              <span className="mc-setlbl">Napojení na žebříček (cesky-tenis.cz)</span>
+              <span className="mc-setlbl">Napojení na svaz (cesky-tenis.cz)</span>
               <div className="mc-syncrow">
-                <input value={syncInput} onChange={(e) => setSyncInput(e.target.value)} placeholder="Vlož odkaz na svůj profil nebo číslo hráče (např. 1071630)" />
-                <button type="button" className="btn btn-green" disabled={syncing} onClick={syncCT}><RefreshCw size={14} /> {syncing ? "Načítám…" : "Načíst"}</button>
+                <input value={syncInput} onChange={(e) => setSyncInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); syncCT(); } }} placeholder="Napiš jméno (např. Schröffel Jan) nebo vlož odkaz/číslo" />
+                <button type="button" className="btn btn-green" disabled={syncing} onClick={syncCT}><RefreshCw size={14} /> {syncing ? "Hledám…" : "Najít"}</button>
               </div>
+              {searchResults.length > 0 && (
+                <div className="mc-sresults">
+                  {searchResults.map((s) => (
+                    <button type="button" key={s.id} className="mc-sres" onClick={() => loadProfile(`id=${s.id}`)}>
+                      <b>{s.name}</b><span>{[s.birth_year ? `*${s.birth_year}` : null, s.club].filter(Boolean).join(" · ")}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
               {syncMsg && <p className="mc-syncmsg">{syncMsg}</p>}
-              <p className="member-note" style={{ margin: "2px 0 0" }}>Na <b>cesky-tenis.cz</b> najdi svůj profil → zkopíruj odkaz z prohlížeče sem. Doplní jméno, ročník a aktuální místo v žebříčku.</p>
+              <p className="member-note" style={{ margin: "2px 0 0" }}>Napiš <b>jméno</b> a vyber se ze seznamu — doplní ročník i žebříček a po uložení tlačítkem <b>Aktualizovat</b> natáhne i zápasy a termíny.</p>
             </div>
             <label>Soutěž / třída<input value={pForm.category} onChange={(e) => setPForm({ ...pForm, category: e.target.value })} placeholder="Např. 4. třída D, mladší žactvo" /></label>
             <div className="mc-row2">

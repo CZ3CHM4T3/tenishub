@@ -444,6 +444,11 @@
 .mc-syncrow input { flex: 1; border: 1px solid var(--line); border-radius: 9px; padding: 0.5rem 0.6rem; font: inherit; }
 .mc-syncrow .btn { white-space: nowrap; }
 .mc-syncmsg { font-size: 0.82rem; color: var(--green); margin: 0.5rem 0 0; font-weight: 600; }
+.mc-sresults { display: flex; flex-direction: column; gap: 4px; margin-top: 0.5rem; max-height: 210px; overflow: auto; }
+.mc-sres { text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 0.5rem 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 1px; }
+.mc-sres:hover { border-color: var(--gold); background: rgba(200,162,76,0.06); }
+.mc-sres b { font-size: 0.9rem; }
+.mc-sres span { font-size: 0.76rem; color: var(--muted); }
 
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
