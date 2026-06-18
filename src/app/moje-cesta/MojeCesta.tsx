@@ -19,8 +19,9 @@ type Ev = {
   id: string; player_id: string; date: string; type: string; title: string | null;
   location: string | null; link: string | null; notes: string | null;
   opponent: string | null; score: string | null; win: boolean | null; sets: SetScore[] | null;
-  surface: string | null;
+  surface: string | null; games: GameSeq | null; aces: number | null; dfaults: number | null;
 };
+type GameSeq = ("m" | "o")[][];
 type Metrics = {
   trainings: number; tournaments: number; played: number; wins: number; losses: number;
   winPct: number | null; firstSetPct: number | null; closePct: number | null; comebackPct: number | null;
@@ -54,6 +55,11 @@ const METRIC_DEFS: { key: string; label: string; fmt: (a: StatA) => string }[] =
 ];
 const DEFAULT_STATS = ["trainings", "tournaments", "winloss", "winPct"];
 function weekStart(d: Date) { const x = new Date(d); const off = (x.getDay() + 6) % 7; x.setDate(x.getDate() - off); x.setHours(0, 0, 0, 0); return x; }
+function parseScore(s: string): SetScore[] {
+  return (s || "").split(/[\s,;]+/).map((p) => p.match(/^(\d{1,2}):(\d{1,2})$/)).filter(Boolean)
+    .map((m) => ({ me: Number(m![1]), opp: Number(m![2]) }));
+}
+const gamesToSets = (g: GameSeq): SetScore[] => g.filter((s) => s.length).map((s) => ({ me: s.filter((x) => x === "m").length, opp: s.filter((x) => x === "o").length }));
 
 function seasonSegments(template: PhaseT[]): Seg[] {
   const now = new Date();
@@ -145,6 +151,9 @@ export default function MojeCesta() {
   const [showStatCfg, setShowStatCfg] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState<string | null>(null);
+  const [scoreMode, setScoreMode] = useState<"quick" | "games">("quick");
+  const [showDetails, setShowDetails] = useState(false);
+  const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
   const [pForm, setPForm] = useState<PForm>(PCLOSED);
   const [evForm, setEvForm] = useState<Partial<Ev> & { open: boolean }>({ open: false });
   const [goalForm, setGoalForm] = useState<{ open: boolean; title: string; target: string }>({ open: false, title: "", target: "" });
@@ -269,18 +278,18 @@ export default function MojeCesta() {
     setCompareOpen(true);
   };
 
-  const setSet = (i: number, field: "me" | "opp", val: string) => {
-    const arr: SetScore[] = [...(evForm.sets ?? [])];
-    while (arr.length <= i) arr.push({ me: 0, opp: 0 });
-    arr[i] = { ...arr[i], [field]: val === "" ? 0 : Math.min(99, Number(val.replace(/\D/g, ""))) };
-    setEvForm({ ...evForm, sets: arr });
-  };
-
   const saveEvent = async () => {
     if (!pid || !evForm.date) return;
     setBusy(true);
     const isTour = (evForm.type || "training") === "tournament";
-    const cleanSets = isTour ? (evForm.sets ?? []).filter((s) => s.me || s.opp) : [];
+    const games: GameSeq | null = isTour && scoreMode === "games" && (evForm.games ?? []).some((g) => g.length)
+      ? (evForm.games ?? []).filter((g) => g.length) : null;
+    let cleanSets: SetScore[] = [];
+    if (isTour) {
+      if (games) cleanSets = gamesToSets(games);
+      else if (evForm.score && parseScore(evForm.score).length) cleanSets = parseScore(evForm.score);
+      else cleanSets = (evForm.sets ?? []).filter((s) => s.me || s.opp);
+    }
     const derivedWin = evForm.win ?? (cleanSets.length ? (cleanSets.filter((s) => s.me > s.opp).length > cleanSets.filter((s) => s.opp > s.me).length) : null);
     const derivedScore = cleanSets.length ? cleanSets.map((s) => `${s.me}:${s.opp}`).join(" ") : (evForm.score || null);
     const payload = {
@@ -288,6 +297,7 @@ export default function MojeCesta() {
       title: evForm.title || null, location: evForm.location || null, link: evForm.link || null,
       notes: evForm.notes || null, opponent: evForm.opponent || null, score: derivedScore,
       win: derivedWin, sets: cleanSets.length ? cleanSets : null, surface: evForm.surface || null,
+      games, aces: evForm.aces ?? null, dfaults: evForm.dfaults ?? null,
     };
     if (evForm.id) await supabase.from("cesta_events").update(payload).eq("id", evForm.id);
     else await supabase.from("cesta_events").insert(payload);
@@ -300,6 +310,37 @@ export default function MojeCesta() {
     await supabase.from("cesta_events").delete().eq("id", id);
     await loadPlayerData(pid);
     setEvForm({ open: false }); setBusy(false);
+  };
+
+  const openEvent = (ev: Partial<Ev> & { open?: boolean }) => {
+    setScoreMode(ev.games && ev.games.length ? "games" : "quick");
+    setShowDetails(!!(ev.aces || ev.dfaults));
+    setEvForm({ open: true, ...ev });
+  };
+  const addGame = (si: number, who: "m" | "o") => {
+    const g: GameSeq = (evForm.games ?? []).map((x) => [...x]);
+    while (g.length <= si) g.push([]);
+    g[si].push(who); setEvForm({ ...evForm, games: g });
+  };
+  const undoGame = (si: number) => {
+    const g: GameSeq = (evForm.games ?? []).map((x) => [...x]);
+    if (g[si]?.length) g[si].pop(); setEvForm({ ...evForm, games: g });
+  };
+  const addSet = () => setEvForm({ ...evForm, games: [...((evForm.games ?? []).map((x) => [...x])), []] });
+
+  const refreshRanking = async () => {
+    if (!player?.cts_id) { setRefreshMsg("Hráče nejdřív napoj: Upravit hráče → vlož odkaz → Načíst."); return; }
+    setRefreshMsg("Aktualizuji…");
+    try {
+      const r = await fetch(`/api/cesky-tenis?id=${encodeURIComponent(player.cts_id)}`);
+      const d = await r.json();
+      if (!r.ok) { setRefreshMsg(d.error || "Nepodařilo se načíst."); return; }
+      if (d.ranking != null) {
+        await supabase.from("cesta_players").update({ ranking: d.ranking }).eq("id", player.id);
+        setPlayers((ps) => ps.map((x) => x.id === player.id ? { ...x, ranking: d.ranking } : x));
+        setRefreshMsg(`Aktuální žebříček: ${d.ranking}. místo`);
+      } else setRefreshMsg("Žebříček se z profilu nepodařilo vyčíst.");
+    } catch { setRefreshMsg("Spojení selhalo (funguje až nasazené)."); }
   };
 
   const addGoal = async () => {
@@ -328,6 +369,12 @@ export default function MojeCesta() {
     const m: Record<string, Ev[]> = {};
     for (const e of events) (m[e.date] ??= []).push(e);
     return m;
+  }, [events]);
+
+  const opponents = useMemo(() => {
+    const s = new Set<string>();
+    for (const e of events) if (e.opponent) s.add(e.opponent);
+    return [...s].sort((a, b) => a.localeCompare(b, "cs"));
   }, [events]);
 
   const winRange = useMemo(() => {
@@ -359,8 +406,19 @@ export default function MojeCesta() {
     let bestSurface = "—";
     const cand = surfRows.filter((s) => s.t >= 2).sort((a, b) => b.p - a.p)[0];
     if (cand) bestSurface = `${cand.label} (${cand.p} %)`;
-    const tips = insights(M, best, best ? MONTHS[(best as { idx: number }).idx] : "", surfRows);
-    return { M, monthly, best: best as { idx: number; p: number } | null, surfRows, bestSurface, tips };
+    // mentální stránka z pořadí gemů + esa/dvojchyby
+    let gTot = 0, afterLossWin = 0, afterLossTot = 0, acesT = 0, dfT = 0;
+    events.filter(hasResult).forEach((e) => {
+      if (e.aces != null) acesT += e.aces;
+      if (e.dfaults != null) dfT += e.dfaults;
+      const flat = (Array.isArray(e.games) ? e.games : []).flat();
+      for (let i = 0; i < flat.length; i++) { gTot++; if (i > 0 && flat[i - 1] === "o") { afterLossTot++; if (flat[i] === "m") afterLossWin++; } }
+    });
+    const bounceBack = pct(afterLossWin, afterLossTot);
+    const mental = { gTot, bounceBack, acesT, dfT };
+    const tips = [...insights(M, best, best ? MONTHS[(best as { idx: number }).idx] : "", surfRows)];
+    if (gTot >= 12 && bounceBack != null) tips.push(`Mentální odolnost: hned po ztraceném gemu získáš ten další ve ${bounceBack} %. ${bounceBack >= 50 ? "Po chybě se rychle srovnáš." : "Po ztrátě gemu se hůř zvedáš — práce s resetem hlavy."}`);
+    return { M, monthly, best: best as { idx: number; p: number } | null, surfRows, bestSurface, mental, tips: tips.slice(0, 5) };
   }, [events]);
 
   const statA: StatA = useMemo(() => ({
@@ -473,8 +531,12 @@ export default function MojeCesta() {
               <span className="mc-meta">{player.category ? ` · ${player.category}` : ""}{player.ranking != null ? ` · žebříček ${player.ranking}.` : ""}</span>
             )}
           </h2>
-          <button className="linklike" style={{ marginLeft: "auto" }} onClick={() => editPlayer(player)}><Pencil size={15} /> Upravit hráče</button>
+          <span style={{ marginLeft: "auto", display: "inline-flex", gap: "1rem", alignItems: "center" }}>
+            {player.level === "competitive" && player.cts_id && <button className="linklike" onClick={refreshRanking}><RefreshCw size={14} /> Aktualizovat žebříček</button>}
+            <button className="linklike" onClick={() => editPlayer(player)}><Pencil size={15} /> Upravit hráče</button>
+          </span>
         </div>
+        {refreshMsg && <p className="mc-syncmsg" style={{ marginTop: 0 }}>{refreshMsg}</p>}
         <div className="mc-axis">
           {segs.map((s, i) => {
             const total = segs[segs.length - 1].e.getTime() - segs[0].s.getTime();
@@ -530,13 +592,13 @@ export default function MojeCesta() {
                 if (!d) return <span key={i} className="mc-cell empty" />;
                 const k = iso(d); const evs = evByDay[k] ?? [];
                 return (
-                  <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`} onClick={() => setEvForm({ open: true, date: k, type: evTypes[0]?.key ?? "training" })}>
+                  <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`} onClick={() => openEvent({ date: k, type: evTypes[0]?.key ?? "training" })}>
                     <span className="mc-daynum">{d.getDate()}</span>
                     <span className="mc-chips">
                       {evs.slice(0, 3).map((e) => (
                         <i key={e.id} className="mc-chip" style={{ background: typeOf(e.type).color }}
                           title={typeOf(e.type).label + (e.title ? ` — ${e.title}` : "")}
-                          onClick={(ev) => { ev.stopPropagation(); setEvForm({ open: true, ...e }); }}>
+                          onClick={(ev) => { ev.stopPropagation(); openEvent({ ...e }); }}>
                           {e.title || typeOf(e.type).label}
                         </i>
                       ))}
@@ -563,12 +625,12 @@ export default function MojeCesta() {
                     <div className="mc-wday-h"><b>{WD[i]}</b> {d.getDate()}.{d.getMonth() + 1}.</div>
                     <div className="mc-wday-evs">
                       {evs.map((e) => (
-                        <button key={e.id} className="mc-wev" style={{ borderLeftColor: typeOf(e.type).color }} onClick={() => setEvForm({ open: true, ...e })}>
+                        <button key={e.id} className="mc-wev" style={{ borderLeftColor: typeOf(e.type).color }} onClick={() => openEvent({ ...e })}>
                           <b>{e.title || typeOf(e.type).label}</b>
                           <span>{typeOf(e.type).label}{e.location ? ` · ${e.location}` : ""}{e.type === "tournament" && e.win != null ? ` · ${e.win ? "✓ výhra" : "prohra"}` : ""}</span>
                         </button>
                       ))}
-                      <button className="mc-wadd" onClick={() => setEvForm({ open: true, date: k, type: evTypes[0]?.key ?? "training" })}><Plus size={13} /> přidat</button>
+                      <button className="mc-wadd" onClick={() => openEvent({ date: k, type: evTypes[0]?.key ?? "training" })}><Plus size={13} /> přidat</button>
                     </div>
                   </div>
                 );
@@ -591,7 +653,7 @@ export default function MojeCesta() {
                         const c = evs.length ? typeOf(evs[0].type).color : undefined;
                         return <button key={di} className={`mc-yday${k === todayISO ? " today" : ""}`} style={{ background: c ?? "#edeff1" }}
                           title={`${d.getDate()}.${d.getMonth() + 1}.${evs.length ? " — " + evs.map((e) => typeOf(e.type).label).join(", ") : ""}`}
-                          onClick={() => setEvForm({ open: true, ...(evs[0] ?? { date: k, type: evTypes[0]?.key ?? "training" }) })} />;
+                          onClick={() => openEvent(evs[0] ?? { date: k, type: evTypes[0]?.key ?? "training" })} />;
                       })}
                     </div>
                   </div>
@@ -658,6 +720,15 @@ export default function MojeCesta() {
                     <span className="mc-surfval">{s.p} % <em>({s.w}/{s.t})</em></span>
                   </div>
                 ))}
+              </div>
+            </>)}
+
+            {(reflect.mental.gTot > 0 || reflect.mental.acesT > 0 || reflect.mental.dfT > 0) && (<>
+              <h3 className="mc-adm-h">Mentální stránka & servis</h3>
+              <div className="mc-rmetrics">
+                {reflect.mental.bounceBack != null && <div className="mc-rm"><b>{reflect.mental.bounceBack} %</b><span>gem hned po ztraceném gemu</span></div>}
+                {reflect.mental.acesT > 0 && <div className="mc-rm"><b>{reflect.mental.acesT}</b><span>esa celkem</span></div>}
+                {reflect.mental.dfT > 0 && <div className="mc-rm"><b>{reflect.mental.dfT}</b><span>dvojchyby celkem</span></div>}
               </div>
             </>)}
 
@@ -748,23 +819,49 @@ export default function MojeCesta() {
             </select>
           </label>
           {evForm.type === "tournament" && (<>
-            <label>Soupeř<input value={evForm.opponent ?? ""} onChange={(e) => setEvForm({ ...evForm, opponent: e.target.value })} /></label>
-            <span className="mc-setlbl">Skóre po setech (moje : soupeř)</span>
-            <div className="mc-sets">
-              {[0, 1, 2].map((i) => (
-                <div className="mc-setrow" key={i}>
-                  <span>{i + 1}. set</span>
-                  <input inputMode="numeric" value={evForm.sets?.[i]?.me ? String(evForm.sets[i].me) : ""} onChange={(e) => setSet(i, "me", e.target.value)} placeholder="6" />
-                  <em>:</em>
-                  <input inputMode="numeric" value={evForm.sets?.[i]?.opp ? String(evForm.sets[i].opp) : ""} onChange={(e) => setSet(i, "opp", e.target.value)} placeholder="4" />
-                </div>
-              ))}
+            <label>Soupeř (pamatuje si)
+              <input list="mc-opps" value={evForm.opponent ?? ""} onChange={(e) => setEvForm({ ...evForm, opponent: e.target.value })} placeholder="Jméno soupeře" />
+            </label>
+            <datalist id="mc-opps">{opponents.map((o) => <option key={o} value={o} />)}</datalist>
+
+            <div className="mc-smode">
+              <button type="button" className={scoreMode === "quick" ? "on" : ""} onClick={() => setScoreMode("quick")}>Rychle: skóre</button>
+              <button type="button" className={scoreMode === "games" ? "on" : ""} onClick={() => { if (!evForm.games || !evForm.games.length) setEvForm({ ...evForm, games: [[]] }); setScoreMode("games"); }}>Po gemech (mentál)</button>
             </div>
-            <label>Výsledek (vyplní se ze setů, můžeš přepsat)
+
+            {scoreMode === "quick" ? (
+              <label>Skóre po setech<input value={evForm.score ?? ""} onChange={(e) => setEvForm({ ...evForm, score: e.target.value })} placeholder="6:3 6:2" /></label>
+            ) : (
+              <div className="mc-gentry">
+                {(evForm.games && evForm.games.length ? evForm.games : [[]]).map((set, si) => (
+                  <div className="mc-gset" key={si}>
+                    <div className="mc-gset-h"><b>{si + 1}. set</b><span>{set.filter((x) => x === "m").length} : {set.filter((x) => x === "o").length}</span></div>
+                    <div className="mc-gseq">{set.map((w, gi) => <i key={gi} className={w === "m" ? "me" : "opp"} />)}{set.length === 0 && <em>ťukej, jak šly gemy za sebou →</em>}</div>
+                    <div className="mc-gbtns">
+                      <button type="button" className="g-me" onClick={() => addGame(si, "m")}>+ Můj gem</button>
+                      <button type="button" className="g-opp" onClick={() => addGame(si, "o")}>+ Soupeř</button>
+                      <button type="button" className="g-undo" onClick={() => undoGame(si)} disabled={!set.length}>← zpět</button>
+                    </div>
+                  </div>
+                ))}
+                <button type="button" className="btn btn-out btn-sm" onClick={addSet}><Plus size={13} /> Další set</button>
+                <p className="member-note" style={{ margin: 0 }}>Z pořadí gemů spočítáme i mentální stránku (dotahování, série, reakce po ztrátě).</p>
+              </div>
+            )}
+
+            <label>Výsledek (spočítá se sám, můžeš přepsat)
               <select value={evForm.win === true ? "w" : evForm.win === false ? "l" : ""} onChange={(e) => setEvForm({ ...evForm, win: e.target.value === "w" ? true : e.target.value === "l" ? false : null })}>
                 <option value="">— automaticky —</option><option value="w">Výhra</option><option value="l">Prohra</option>
               </select>
             </label>
+
+            <button type="button" className="mc-detoggle" onClick={() => setShowDetails((v) => !v)}>{showDetails ? "− skrýt" : "+ přidat"} esa a dvojchyby</button>
+            {showDetails && (
+              <div className="mc-row2">
+                <label>Esa<input inputMode="numeric" value={evForm.aces != null ? String(evForm.aces) : ""} onChange={(e) => setEvForm({ ...evForm, aces: e.target.value ? Math.min(999, Number(e.target.value.replace(/\D/g, ""))) : null })} placeholder="0" /></label>
+                <label>Dvojchyby<input inputMode="numeric" value={evForm.dfaults != null ? String(evForm.dfaults) : ""} onChange={(e) => setEvForm({ ...evForm, dfaults: e.target.value ? Math.min(999, Number(e.target.value.replace(/\D/g, ""))) : null })} placeholder="0" /></label>
+              </div>
+            )}
           </>)}
           <label>Poznámka<textarea value={evForm.notes ?? ""} onChange={(e) => setEvForm({ ...evForm, notes: e.target.value })} rows={2} /></label>
           <div className="mc-modal-actions">

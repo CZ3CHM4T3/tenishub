@@ -440,6 +440,27 @@
 .mc-surfval { width: 90px; flex: none; text-align: right; font-size: 0.82rem; font-weight: 700; }
 .mc-surfval em { font-style: normal; font-weight: 400; color: var(--muted); }
 
+/* zadávání zápasu */
+.mc-smode { display: flex; gap: 0.4rem; margin-bottom: 0.7rem; }
+.mc-smode button { flex: 1; padding: 0.5rem; border: 1px solid var(--line); background: #fff; border-radius: 9px; font-weight: 600; font-size: 0.84rem; cursor: pointer; color: var(--green-2); }
+.mc-smode button.on { background: var(--green); color: #fff; border-color: var(--green); }
+.mc-gentry { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.8rem; }
+.mc-gset { border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem; }
+.mc-gset-h { display: flex; justify-content: space-between; align-items: baseline; }
+.mc-gset-h span { font-weight: 700; font-size: 1.05rem; color: var(--green); }
+.mc-gseq { display: flex; flex-wrap: wrap; gap: 3px; min-height: 16px; margin: 6px 0; align-items: center; }
+.mc-gseq i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+.mc-gseq i.me { background: var(--green); }
+.mc-gseq i.opp { background: #d98b8b; }
+.mc-gseq em { font-size: 0.72rem; color: var(--muted); font-style: normal; }
+.mc-gbtns { display: flex; gap: 0.4rem; }
+.mc-gbtns button { flex: 1; padding: 0.5rem; border-radius: 8px; border: 0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+.mc-gbtns .g-me { background: var(--green); color: #fff; }
+.mc-gbtns .g-opp { background: #d98b8b; color: #fff; }
+.mc-gbtns .g-undo { background: #eef0f2; color: var(--green-2); flex: 0 0 auto; padding: 0.5rem 0.7rem; }
+.mc-gbtns button:disabled { opacity: 0.45; cursor: default; }
+.mc-detoggle { background: none; border: 0; color: var(--gold-l); font-weight: 600; font-size: 0.84rem; cursor: pointer; padding: 0.3rem 0; text-align: left; }
+
 @media (max-width: 820px) {
   .mc-statbar { flex-direction: column; }
   .mc-cfgmenu { right: auto; left: 0; }
