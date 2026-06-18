@@ -187,14 +187,14 @@ export default function Home() {
               <div className="nav-item">
                 <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
                 <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
-                  <Link className="drop-card" href="/pro-koho"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Hráč</b><span>hraj, zlepšuj se, sparring</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Trenér</b><span>klienti &amp; nástroje</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Areály &amp; kluby</b><span>obsazenost kurtů</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Fyzio</b><span>klienti z tenisu</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Fitness</b><span>kondiční příprava</span></Link>
-                  <Link className="drop-card" href="/pro-koho"><b>Vyplétač</b><span>servis raket</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=rodic"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=hrac"><b>Hráč</b><span>hraj, zlepšuj se, sparring</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=trener"><b>Trenér</b><span>klienti &amp; nástroje</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=sparring"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=areal"><b>Areály &amp; kluby</b><span>obsazenost kurtů</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=fyzio"><b>Fyzio</b><span>klienti z tenisu</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=fitness"><b>Fitness</b><span>kondiční příprava</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=vyplet"><b>Vyplétač</b><span>servis raket</span></Link>
                 </div></div>
               </div>
               <Link className="nav-link" href="/mapa">Hledej</Link>

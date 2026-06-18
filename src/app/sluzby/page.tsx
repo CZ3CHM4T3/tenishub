@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
 import { Wordmark } from "@/components/Wordmark";
 import { ServicePicker } from "@/components/ServicePicker";
+import { MapSearch } from "@/components/MapSearch";
 
 export const metadata: Metadata = {
   title: "Služby a profíci — vyberte, koho hledáte nebo kdo jste",
@@ -21,6 +22,8 @@ export default function SluzbyPage() {
         <span className="eyebrow">Služby &amp; profíci</span>
         <h1>Koho hledáte — nebo kdo jste?</h1>
         <p className="lead">Vyberte si. U každé služby najdete specialistu na mapě, nebo se sami přidáte jako poskytovatel.</p>
+
+        <MapSearch />
 
         <ServicePicker />
 

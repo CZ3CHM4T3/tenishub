@@ -11,17 +11,17 @@ type Pick = { key: string; label: string; tagline: string; color: string; fill: 
 
 const PICKS: Pick[] = [
   { key: "coach", label: "Trenér", tagline: "tenisový trénink", color: "#7C4DD6", fill: "#EEEDFE", Icon: WhistleIcon,
-    find: { label: "Hledám trenéra", href: "/mapa?type=coach" }, iam: { label: "Jsem trenér", href: "/pro-koho" } },
+    find: { label: "Hledám trenéra", href: "/mapa?type=coach" }, iam: { label: "Jsem trenér", href: "/pro-koho?role=trener" } },
   { key: "club", label: "Areály & kluby", tagline: "kurty a haly", color: "#2f5d57", fill: "#E0EBE9", Icon: Building2,
-    find: { label: "Hledám kurt", href: "/mapa?type=club" }, iam: { label: "Mám areál / klub", href: "/pro-koho" } },
+    find: { label: "Hledám kurt", href: "/mapa?type=club" }, iam: { label: "Mám areál / klub", href: "/pro-koho?role=areal" } },
   { key: "sparring", label: "Sparring", tagline: "parťák na zápas", color: "#8a5640", fill: "#F2E6DF", Icon: Handshake,
     find: { label: "Najít parťáka", href: "/sparring" }, iam: { label: "Přidat inzerát", href: "/sparring" } },
   { key: "physio", label: "Fyzio", tagline: "rehabilitace a prevence", color: "#864a59", fill: "#F2E5E9", Icon: HeartPulse,
-    find: { label: "Hledám fyzio", href: "/mapa?type=physio" }, iam: { label: "Jsem fyzioterapeut", href: "/pro-koho" } },
+    find: { label: "Hledám fyzio", href: "/mapa?type=physio" }, iam: { label: "Jsem fyzioterapeut", href: "/pro-koho?role=fyzio" } },
   { key: "fitness", label: "Fitness", tagline: "kondice a síla", color: "#4a5b86", fill: "#E8ECF4", Icon: Dumbbell,
-    find: { label: "Hledám kondičního", href: "/mapa?type=fitness" }, iam: { label: "Jsem kondiční trenér", href: "/pro-koho" } },
+    find: { label: "Hledám kondičního", href: "/mapa?type=fitness" }, iam: { label: "Jsem kondiční trenér", href: "/pro-koho?role=fitness" } },
   { key: "stringer", label: "Vyplétač", tagline: "servis raket", color: "#5a6470", fill: "#E6E9ED", Icon: Grid3x3,
-    find: { label: "Hledám vyplétače", href: "/mapa?type=stringer" }, iam: { label: "Vyplétám rakety", href: "/pro-koho" } },
+    find: { label: "Hledám vyplétače", href: "/mapa?type=stringer" }, iam: { label: "Vyplétám rakety", href: "/pro-koho?role=vyplet" } },
 ];
 
 export function ServicePicker() {

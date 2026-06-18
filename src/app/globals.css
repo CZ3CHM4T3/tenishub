@@ -471,6 +471,32 @@
 .spick-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
 @media (max-width: 520px) { .spick-btn { flex: 1; justify-content: center; } }
 
+/* ===== PRO KOHO — role stránka ===== */
+.prole-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; margin: 1.4rem 0; }
+.prole-card { display: flex; align-items: center; gap: 0.8rem; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 1rem; text-decoration: none; color: inherit; transition: transform 0.18s, box-shadow 0.2s, border-color 0.2s; }
+.prole-card:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.3); }
+.prole-ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; flex: none; }
+.prole-txt { display: flex; flex-direction: column; }
+.prole-txt b { font-size: 1.02rem; }
+.prole-txt span { font-size: 0.8rem; color: var(--muted); }
+.prole-arr { margin-left: auto; color: #c2c8cf; }
+.role-back { display: inline-block; color: var(--gold-l); font-weight: 600; text-decoration: none; margin-bottom: 0.8rem; }
+.role-hero { display: flex; align-items: center; gap: 1rem; }
+.role-hero-ic { width: 76px; height: 76px; border-radius: 20px; display: grid; place-items: center; flex: none; }
+.role-cta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.2rem; }
+.role-note { font-size: 0.86rem; color: var(--muted); }
+.role-others { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.8rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.role-others > span { font-size: 0.85rem; color: var(--muted); }
+.role-chip { font-size: 0.84rem; font-weight: 600; color: var(--green); border: 1px solid var(--line); border-radius: 100px; padding: 0.35rem 0.8rem; text-decoration: none; }
+.role-chip:hover { border-color: var(--gold); color: var(--gold-l); }
+.rp-list .soon, .rp-list-locked .soon { font-style: normal; font-size: 0.7rem; font-weight: 700; color: var(--gold-l); opacity: 0.8; }
+
+/* přímé hledání na /sluzby */
+.mapsearch { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1.2rem 0; }
+.mapsearch select, .mapsearch input { border: 1.5px solid var(--line); border-radius: 12px; padding: 0.7rem 0.8rem; font: inherit; }
+.mapsearch input { flex: 1; min-width: 180px; }
+.mapsearch .btn { white-space: nowrap; }
+
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
 .mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }
