@@ -51,10 +51,10 @@ export async function GET(req: NextRequest) {
     text.match(/(\d{1,6})\s+BH\b/)?.[1] ?? null;
 
   const birth =
-    text.match(/Ročník[:\s]*([12]\d{3})/)?.[1] ??
-    text.match(/nar(?:ozen[íy])?[.:\s]*([12]\d{3})/i)?.[1] ?? null;
+    text.match(/Narozen[íy]?\s+([12]\d{3})/i)?.[1] ??
+    text.match(/Ročník[:\s]*([12]\d{3})/)?.[1] ?? null;
 
-  const club = text.match(/((?:TJ|TK|LTC|SK|HET|I\.\s?ČLTK|ČLTK|Tenisový|Tenis)\b[^,;|]{2,45})/)?.[1]?.trim() ?? null;
+  const club = text.match(/Klub\s+([A-ZÁ-Ž][^|]{2,45}?)\s+Sezóna/)?.[1]?.trim() ?? null;
 
   const matches = parseMatches(text, name);
 
@@ -69,41 +69,35 @@ export async function GET(req: NextRequest) {
 type ParsedMatch = { extId: string; date: string; competition: string | null; opponent: string; score: string; sets: { me: number; opp: number }[]; win: boolean };
 
 const pad = (s: string) => s.padStart(2, "0");
-const NAME = "[A-ZÁ-Žá-žĚŠČŘŽÝÁÍÉÓÚŮĎŤŇ][\\p{L}'’.-]+(?:\\s+[A-ZÁ-Ž][\\p{L}'’.-]+){1}";
+// jméno = 1–3 slova začínající velkým písmenem (vč. diakritiky)
+const N = "\\p{Lu}[\\p{L}.'’-]+(?:\\s+\\p{Lu}[\\p{L}.'’-]+){0,2}";
 
 function parseMatches(text: string, playerName: string | null): ParsedMatch[] {
   const out: ParsedMatch[] = [];
   try {
-    const playerSurname = (playerName || "").trim().split(/\s+/)[0]?.toLowerCase() || "";
-    // pozice dat v textu (DD. M. YYYY)
+    // pozice dat v textu (DD. M. YYYY) pro přiřazení data k zápasu
     const dateRe = /(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})/g;
     const dates: { i: number; d: string }[] = [];
     for (const m of text.matchAll(dateRe)) dates.push({ i: m.index!, d: `${m[3]}-${pad(m[2])}-${pad(m[1])}` });
     const dateBefore = (pos: number) => { let r: string | null = null; for (const x of dates) { if (x.i < pos) r = x.d; else break; } return r; };
 
-    // skóre = aspoň 2 sety (s čárkou): "3-6, 2-6"
-    const scoreRe = /(\d{1,2})-(\d{1,2})(?:[,\s]+(\d{1,2})-(\d{1,2})){1,4}/g;
-    const nameRe = new RegExp(NAME, "gu");
+    // reálný formát: "Dvouhra <Já> <g g> <Soupeř> <g g> Ziskané body"
+    const re = new RegExp(`Dvouhra\\s+(${N})\\s+(\\d+(?:\\s+\\d+){0,2})\\s+(${N})\\s+(\\d+(?:\\s+\\d+){0,2})\\s+Z[ií]skan`, "gu");
     const seen = new Set<string>();
-    for (const sm of text.matchAll(scoreRe)) {
-      const idx = sm.index!;
-      const before = text.slice(Math.max(0, idx - 90), idx);
-      if (before.includes("/")) continue; // čtyřhra → přeskoč
-      const names = [...before.matchAll(nameRe)].map((x) => x[0].trim());
-      if (names.length < 1) continue;
-      const last2 = names.slice(-2);
-      const opponent = (last2.find((n) => !n.toLowerCase().startsWith(playerSurname)) || last2[last2.length - 1] || "").trim();
-      if (!opponent) continue;
-      const scoreStr = sm[0].replace(/\s+/g, " ").trim();
-      const sets = scoreStr.split(/[,\s]+/).map((p) => p.match(/^(\d{1,2})-(\d{1,2})$/)).filter(Boolean)
-        .map((mm) => ({ me: Number(mm![1]), opp: Number(mm![2]) }));
-      if (sets.length < 2) continue;
-      const date = dateBefore(idx) || "";
+    for (const m of text.matchAll(re)) {
+      const opponent = m[3].trim();
+      const myG = m[2].trim().split(/\s+/).map(Number);
+      const opG = m[4].trim().split(/\s+/).map(Number);
+      const n = Math.min(myG.length, opG.length);
+      const sets = Array.from({ length: n }, (_, i) => ({ me: myG[i], opp: opG[i] })).filter((s) => s.me || s.opp);
+      if (!sets.length) continue;
+      const date = dateBefore(m.index!) || "";
       if (!date) continue;
       const win = sets.filter((s) => s.me > s.opp).length > sets.filter((s) => s.opp > s.me).length;
-      const extId = `ct:${date}|${opponent.toLowerCase()}|${scoreStr}`;
+      const score = sets.map((s) => `${s.me}:${s.opp}`).join(" ");
+      const extId = `ct:${date}|${opponent.toLowerCase()}|${score}`;
       if (seen.has(extId)) continue; seen.add(extId);
-      out.push({ extId, date, competition: null, opponent, score: scoreStr.replace(/-/g, ":"), sets, win });
+      out.push({ extId, date, competition: null, opponent, score, sets, win });
     }
   } catch { /* best-effort */ }
   return out.slice(0, 80);

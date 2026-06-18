@@ -82,6 +82,7 @@ create table if not exists public.cesta_goals (
   created_at timestamptz not null default now()
 );
 create index if not exists cesta_goals_player_idx on public.cesta_goals(player_id);
+alter table public.cesta_goals add column if not exists locked boolean not null default false;
 
 alter table public.cesta_goals enable row level security;
 drop policy if exists cesta_goals_rw on public.cesta_goals;
@@ -106,6 +107,22 @@ drop policy if exists cesta_phases_rw on public.cesta_phases;
 create policy cesta_phases_rw on public.cesta_phases for all
   using (player_id in (select public.my_player_ids()))
   with check (player_id in (select public.my_player_ids()));
+
+-- ---------- VLASTNÍ KATEGORIE KALENDÁŘE (per účet) ----------
+create table if not exists public.cesta_types (
+  id         uuid primary key default gen_random_uuid(),
+  owner_id   uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  label      text not null,
+  color      text not null default '#7C4DD6',
+  sort       smallint not null default 0,
+  created_at timestamptz not null default now()
+);
+create index if not exists cesta_types_owner_idx on public.cesta_types(owner_id);
+alter table public.cesta_types enable row level security;
+drop policy if exists cesta_types_rw on public.cesta_types;
+create policy cesta_types_rw on public.cesta_types for all
+  using (owner_id = auth.uid() or public.is_admin())
+  with check (owner_id = auth.uid() or public.is_admin());
 
 -- ---------- NASTAVENÍ (1 řádek, ladí admin) ----------
 create table if not exists public.cesta_settings (

@@ -8,6 +8,7 @@ import {
   Route, Plus, ChevronLeft, ChevronRight, Target, Trash2, Pencil,
   CalendarDays, CalendarRange, Grid3x3, TrendingUp, Lock, X,
   History, Users, Lightbulb, SlidersHorizontal, RefreshCw, Check,
+  Palette, Circle, CircleCheck, Unlock,
 } from "lucide-react";
 
 /* ---------- typy ---------- */
@@ -28,7 +29,8 @@ type Metrics = {
   winPct: number | null; firstSetPct: number | null; closePct: number | null; comebackPct: number | null;
   threeW: number; threeL: number;
 };
-type Goal = { id: string; player_id: string; title: string; target: string | null; progress: number; done: boolean };
+type Goal = { id: string; player_id: string; title: string; target: string | null; progress: number; done: boolean; locked: boolean };
+type MyType = { id: string; label: string; color: string };
 type Seg = PhaseT & { s: Date; e: Date };
 type View = "month" | "week" | "year" | "load" | "reflect";
 type PForm = { open: boolean; id?: string; name: string; level: "hobby" | "competitive"; year: string; category: string; ranking: string; cts: string };
@@ -138,6 +140,7 @@ export default function MojeCesta() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [pid, setPid] = useState<string | null>(null);
   const [evTypes, setEvTypes] = useState<EvType[]>([]);
+  const [myTypes, setMyTypes] = useState<MyType[]>([]);
   const [template, setTemplate] = useState<PhaseT[]>([]);
   const [events, setEvents] = useState<Ev[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -155,6 +158,8 @@ export default function MojeCesta() {
   const [scoreMode, setScoreMode] = useState<"quick" | "games">("quick");
   const [showDetails, setShowDetails] = useState(false);
   const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
+  const [catOpen, setCatOpen] = useState(false);
+  const [catNew, setCatNew] = useState<{ label: string; color: string }>({ label: "", color: "#7C4DD6" });
   const [pForm, setPForm] = useState<PForm>(PCLOSED);
   const [evForm, setEvForm] = useState<Partial<Ev> & { open: boolean }>({ open: false });
   const [goalForm, setGoalForm] = useState<{ open: boolean; title: string; target: string }>({ open: false, title: "", target: "" });
@@ -181,11 +186,13 @@ export default function MojeCesta() {
       .eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle();
     if (!m.data && !isAdmin) { setGate("nomember"); return; }
 
-    const [pl, st] = await Promise.all([
+    const [pl, st, ct] = await Promise.all([
       supabase.from("cesta_players").select(PSEL).order("created_at"),
       supabase.from("cesta_settings").select("event_types,season_template").eq("id", 1).maybeSingle(),
+      supabase.from("cesta_types").select("id,label,color").order("sort"),
     ]);
     setEvTypes((st.data?.event_types as EvType[]) ?? []);
+    setMyTypes((ct.data as MyType[]) ?? []);
     setTemplate((st.data?.season_template as PhaseT[]) ?? []);
     const list = (pl.data as Player[]) ?? [];
     setPlayers(list);
@@ -349,7 +356,7 @@ export default function MojeCesta() {
       if (fresh.length) {
         const rows = fresh.map((m) => ({
           player_id: player.id, date: m.date, type: "tournament",
-          title: m.competition || "Zápas (import)", opponent: m.opponent,
+          title: `vs ${m.opponent}`, opponent: m.opponent,
           score: m.score, sets: m.sets, win: m.win, ext_id: m.extId,
         }));
         const { error } = await supabase.from("cesta_events").insert(rows);
@@ -360,16 +367,34 @@ export default function MojeCesta() {
     } catch { setRefreshMsg("Spojení selhalo (import funguje až nasazené na webu)."); }
   };
 
+  const addType = async () => {
+    if (!catNew.label.trim() || !uid) return;
+    const { data, error } = await supabase.from("cesta_types").insert({ owner_id: uid, label: catNew.label.trim(), color: catNew.color, sort: myTypes.length }).select("id,label,color").single();
+    if (error) { alert("Kategorii se nepodařilo přidat: " + error.message); return; }
+    if (data) { setMyTypes((t) => [...t, data as MyType]); setCatNew({ label: "", color: "#7C4DD6" }); }
+  };
+  const setTypeLocal = (id: string, patch: Partial<MyType>) => setMyTypes((t) => t.map((x) => x.id === id ? { ...x, ...patch } : x));
+  const persistType = async (id: string) => { const t = myTypes.find((x) => x.id === id); if (t) await supabase.from("cesta_types").update({ label: t.label, color: t.color }).eq("id", id); };
+  const deleteType = async (id: string) => { await supabase.from("cesta_types").delete().eq("id", id); setMyTypes((t) => t.filter((x) => x.id !== id)); };
+
+  // CÍLE: zámek + plnění
+  const lockGoals = async (locked: boolean) => {
+    if (!pid) return;
+    setBusy(true);
+    await supabase.from("cesta_goals").update({ locked }).eq("player_id", pid);
+    await loadPlayerData(pid); setBusy(false);
+  };
+  const toggleGoalDone = async (g: Goal) => {
+    await supabase.from("cesta_goals").update({ done: !g.done, progress: !g.done ? 100 : 0 }).eq("id", g.id);
+    if (pid) await loadPlayerData(pid);
+  };
+
   const addGoal = async () => {
     if (!pid || !goalForm.title.trim()) return;
     setBusy(true);
     await supabase.from("cesta_goals").insert({ player_id: pid, title: goalForm.title.trim(), target: goalForm.target || null });
     await loadPlayerData(pid);
     setGoalForm({ open: false, title: "", target: "" }); setBusy(false);
-  };
-  const setGoalProgress = async (g: Goal, progress: number) => {
-    await supabase.from("cesta_goals").update({ progress, done: progress >= 100 }).eq("id", g.id);
-    if (pid) await loadPlayerData(pid);
   };
   const delGoal = async (id: string) => {
     await supabase.from("cesta_goals").delete().eq("id", id);
@@ -378,7 +403,8 @@ export default function MojeCesta() {
 
   /* ---------- odvozené ---------- */
   const segs = useMemo(() => seasonSegments(template), [template]);
-  const typeOf = useCallback((k: string) => evTypes.find((t) => t.key === k) ?? { key: k, label: k, color: "#9aa3ad" }, [evTypes]);
+  const cats = useMemo<EvType[]>(() => [...evTypes, ...myTypes.map((t) => ({ key: t.id, label: t.label, color: t.color }))], [evTypes, myTypes]);
+  const typeOf = useCallback((k: string) => cats.find((t) => t.key === k) ?? { key: k, label: k, color: "#9aa3ad" }, [cats]);
   const player = players.find((p) => p.id === pid) ?? null;
   const todayISO = iso(new Date());
 
@@ -594,6 +620,7 @@ export default function MojeCesta() {
             {VIEWS.map(([v, label, ic]) => (
               <button key={v} className={`mc-vbtn${view === v ? " on" : ""}`} onClick={() => setView(v)}>{ic} {label}</button>
             ))}
+            <button className="mc-vbtn mc-vcat" onClick={() => setCatOpen(true)}><Palette size={15} /> Kategorie</button>
           </div>
 
           {/* MĚSÍC */}
@@ -609,7 +636,7 @@ export default function MojeCesta() {
                 if (!d) return <span key={i} className="mc-cell empty" />;
                 const k = iso(d); const evs = evByDay[k] ?? [];
                 return (
-                  <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`} onClick={() => openEvent({ date: k, type: evTypes[0]?.key ?? "training" })}>
+                  <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`} onClick={() => openEvent({ date: k, type: cats[0]?.key ?? "training" })}>
                     <span className="mc-daynum">{d.getDate()}</span>
                     <span className="mc-chips">
                       {evs.slice(0, 3).map((e) => (
@@ -647,7 +674,7 @@ export default function MojeCesta() {
                           <span>{typeOf(e.type).label}{e.location ? ` · ${e.location}` : ""}{e.type === "tournament" && e.win != null ? ` · ${e.win ? "✓ výhra" : "prohra"}` : ""}</span>
                         </button>
                       ))}
-                      <button className="mc-wadd" onClick={() => openEvent({ date: k, type: evTypes[0]?.key ?? "training" })}><Plus size={13} /> přidat</button>
+                      <button className="mc-wadd" onClick={() => openEvent({ date: k, type: cats[0]?.key ?? "training" })}><Plus size={13} /> přidat</button>
                     </div>
                   </div>
                 );
@@ -670,14 +697,14 @@ export default function MojeCesta() {
                         const c = evs.length ? typeOf(evs[0].type).color : undefined;
                         return <button key={di} className={`mc-yday${k === todayISO ? " today" : ""}`} style={{ background: c ?? "#edeff1" }}
                           title={`${d.getDate()}.${d.getMonth() + 1}.${evs.length ? " — " + evs.map((e) => typeOf(e.type).label).join(", ") : ""}`}
-                          onClick={() => openEvent(evs[0] ?? { date: k, type: evTypes[0]?.key ?? "training" })} />;
+                          onClick={() => openEvent(evs[0] ?? { date: k, type: cats[0]?.key ?? "training" })} />;
                       })}
                     </div>
                   </div>
                 );
               })}
             </div>
-            <div className="mc-legend">{evTypes.map((t) => <span key={t.key}><i style={{ background: t.color }} />{t.label}</span>)}</div>
+            <div className="mc-legend">{cats.map((t) => <span key={t.key}><i style={{ background: t.color }} />{t.label}</span>)}</div>
           </>)}
 
           {/* ZÁTĚŽ — křivka četnosti TJ */}
@@ -759,23 +786,42 @@ export default function MojeCesta() {
         </div>
 
         {/* CÍLE */}
-        <div className="acct-card mc-goals">
-          <div className="acct-card-head"><Target size={20} /><h2>Cíle sezóny</h2>
-            <button className="btn btn-out btn-sm" style={{ marginLeft: "auto" }} onClick={() => setGoalForm({ open: true, title: "", target: "" })}><Plus size={14} /> Cíl</button>
-          </div>
-          {goals.length === 0 ? <p className="member-note">Zatím žádný cíl. Co chceš tuhle sezónu dokázat?</p> : (
-            <ul className="mc-goallist">
-              {goals.map((g) => (
-                <li key={g.id} className={g.done ? "done" : ""}>
-                  <div className="mc-goaltop"><b>{g.title}</b><button className="linklike danger" onClick={() => delGoal(g.id)}><Trash2 size={14} /></button></div>
-                  {g.target && <span className="mc-goaltarget">{g.target}</span>}
-                  <div className="mc-prog"><div style={{ width: `${g.progress}%` }} /></div>
-                  <div className="mc-progbtns">{[0, 25, 50, 75, 100].map((v) => <button key={v} className={g.progress === v ? "on" : ""} onClick={() => setGoalProgress(g, v)}>{v}%</button>)}</div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        {(() => {
+          const locked = goals.length > 0 && goals.every((g) => g.locked);
+          const doneCount = goals.filter((g) => g.done).length;
+          return (
+            <div className="acct-card mc-goals">
+              <div className="acct-card-head"><Target size={20} /><h2>Cíle sezóny</h2>
+                {!locked && <button className="btn btn-out btn-sm" style={{ marginLeft: "auto" }} onClick={() => setGoalForm({ open: true, title: "", target: "" })}><Plus size={14} /> Cíl</button>}
+                {locked && <span className="mc-goalcount" style={{ marginLeft: "auto" }}>{doneCount}/{goals.length} splněno</span>}
+              </div>
+              {goals.length === 0 ? (
+                <p className="member-note">Než začne sezóna, dej si jasné cíle — pak je zamkneš jako závazek a budeš sbírat „splněno".</p>
+              ) : locked ? (<>
+                <ul className="mc-goallist locked">
+                  {goals.map((g) => (
+                    <li key={g.id} className={`mc-goalm${g.done ? " done" : ""}`} onClick={() => toggleGoalDone(g)}>
+                      <span className="mc-goalcheck">{g.done ? <CircleCheck size={26} /> : <Circle size={26} />}</span>
+                      <span className="mc-goalmtxt"><b>{g.title}</b>{g.target && <em>{g.target}</em>}<span className="mc-goalstate">{g.done ? "Splněno! 🎾" : "Nesplněno — klikni, až to dáš"}</span></span>
+                    </li>
+                  ))}
+                </ul>
+                <button className="linklike" onClick={() => lockGoals(false)} disabled={busy}><Unlock size={13} /> Odemknout (úprava cílů)</button>
+              </>) : (<>
+                <ul className="mc-goallist">
+                  {goals.map((g) => (
+                    <li key={g.id}>
+                      <div className="mc-goaltop"><b>{g.title}</b><button className="linklike danger" onClick={() => delGoal(g.id)}><Trash2 size={14} /></button></div>
+                      {g.target && <span className="mc-goaltarget">{g.target}</span>}
+                    </li>
+                  ))}
+                </ul>
+                <button className="btn btn-green btn-sm" onClick={() => lockGoals(true)} disabled={busy}><Lock size={13} /> Zamknout cíle a začít sezónu</button>
+                <p className="member-note" style={{ marginTop: "0.5rem" }}>Po zamčení už cíle neměníš — jen odškrtáváš splněné. To je ten závazek. 💪</p>
+              </>)}
+            </div>
+          );
+        })()}
       </div>
     </>)}
 
@@ -824,7 +870,7 @@ export default function MojeCesta() {
           <h3>{evForm.id ? "Upravit událost" : "Nová událost"} <span className="mc-modal-date">{evForm.date}</span></h3>
           <label>Typ
             <select value={evForm.type ?? "training"} onChange={(e) => setEvForm({ ...evForm, type: e.target.value })}>
-              {evTypes.map((t) => <option key={t.key} value={t.key}>{t.label}</option>)}
+              {cats.map((t) => <option key={t.key} value={t.key}>{t.label}</option>)}
             </select>
           </label>
           <label>Název / popis<input value={evForm.title ?? ""} onChange={(e) => setEvForm({ ...evForm, title: e.target.value })} placeholder="Trénink s trenérem, turnaj…" /></label>
@@ -942,6 +988,31 @@ export default function MojeCesta() {
               <p className="member-note">Procenta dávají smysl od pár odehraných zápasů. Vyplňuj u turnajů sety, ať je porovnání přesné.</p>
             </>);
           })()}
+        </div>
+      </div>
+    )}
+
+    {/* MODÁL: vlastní kategorie kalendáře */}
+    {catOpen && (
+      <div className="mc-modal" onClick={() => setCatOpen(false)}>
+        <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
+          <button className="mc-x" onClick={() => setCatOpen(false)}><X size={18} /></button>
+          <h3><Palette size={18} style={{ verticalAlign: "-3px" }} /> Kategorie a barvy</h3>
+          <p className="member-note" style={{ marginTop: 0 }}>Tvoje vlastní kategorie (k výchozím). V kalendáři pak píšeš tou barvou.</p>
+          <div className="mc-adm-rows">
+            {myTypes.map((t) => (
+              <div className="mc-adm-row" key={t.id}>
+                <input type="color" value={t.color} onChange={(e) => setTypeLocal(t.id, { color: e.target.value })} onBlur={() => persistType(t.id)} />
+                <input value={t.label} onChange={(e) => setTypeLocal(t.id, { label: e.target.value })} onBlur={() => persistType(t.id)} placeholder="Název kategorie" />
+                <button className="linklike danger" onClick={() => deleteType(t.id)}><Trash2 size={15} /></button>
+              </div>
+            ))}
+            <div className="mc-adm-row">
+              <input type="color" value={catNew.color} onChange={(e) => setCatNew({ ...catNew, color: e.target.value })} />
+              <input value={catNew.label} onChange={(e) => setCatNew({ ...catNew, label: e.target.value })} placeholder="Nová kategorie (např. Sparing, Turnaj A)" />
+              <button className="btn btn-green btn-sm" onClick={addType}><Plus size={14} /> Přidat</button>
+            </div>
+          </div>
         </div>
       </div>
     )}
