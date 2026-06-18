@@ -241,7 +241,7 @@ export default function Home() {
 
             {/* 2 SVĚTY — hlavní volba experience */}
             <div className="worlds rv d3">
-              <Link href="#svet-rodic" className="world world-rodic" style={{ backgroundImage: "url(/svet-rodic.png)" }}>
+              <Link href="/rodic" className="world world-rodic" style={{ backgroundImage: "url(/svet-rodic.png)" }}>
                 <span className="world-in">
                   <span className="world-tag">Rodič &amp; dítě</span>
                   <span className="world-sub">Hledám trenéra, hlídám cestu dítěte a chci poradit</span>

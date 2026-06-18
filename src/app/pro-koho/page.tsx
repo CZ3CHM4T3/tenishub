@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Wordmark } from "@/components/Wordmark";
 import { WhistleIcon } from "@/components/icons";
 import { IconRun } from "@tabler/icons-react";
@@ -18,6 +19,7 @@ const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconR
 
 export default async function ProKohoPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) {
   const { role } = await searchParams;
+  if (role === "rodic") redirect("/rodic"); // rodič má vlastní hub
   const r = role ? ROLES[role] : null;
 
   return (
