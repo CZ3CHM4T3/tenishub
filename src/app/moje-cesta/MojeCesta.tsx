@@ -348,21 +348,21 @@ export default function MojeCesta() {
         await supabase.from("cesta_players").update({ ranking: d.ranking }).eq("id", player.id);
         setPlayers((ps) => ps.map((x) => x.id === player.id ? { ...x, ranking: d.ranking } : x));
       }
-      // import zápasů (dedup přes ext_id)
+      // import zápasů + termínů (dedup přes ext_id)
       const existing = new Set(events.filter((e) => e.ext_id).map((e) => e.ext_id));
-      type PM = { extId: string; date: string; competition: string | null; opponent: string; score: string; sets: SetScore[]; win: boolean };
-      const fresh = ((d.matches as PM[]) ?? []).filter((m) => !existing.has(m.extId));
-      let added = 0;
-      if (fresh.length) {
-        const rows = fresh.map((m) => ({
-          player_id: player.id, date: m.date, type: "tournament",
-          title: `vs ${m.opponent}`, opponent: m.opponent,
-          score: m.score, sets: m.sets, win: m.win, ext_id: m.extId,
-        }));
+      type PM = { extId: string; date: string; opponent: string; score: string; sets: SetScore[]; win: boolean };
+      type FX = { extId: string; date: string; opponent: string; homeAway: string };
+      const freshM = ((d.matches as PM[]) ?? []).filter((m) => !existing.has(m.extId));
+      const freshF = ((d.fixtures as FX[]) ?? []).filter((f) => !existing.has(f.extId));
+      const rows = [
+        ...freshM.map((m) => ({ player_id: player.id, date: m.date, type: "tournament", title: `vs ${m.opponent}`, opponent: m.opponent, score: m.score, sets: m.sets, win: m.win, ext_id: m.extId })),
+        ...freshF.map((f) => ({ player_id: player.id, date: f.date, type: "tournament", title: `Družstva (${f.homeAway}): ${f.opponent}`, opponent: f.opponent, score: null, sets: null, win: null, ext_id: f.extId })),
+      ];
+      if (rows.length) {
         const { error } = await supabase.from("cesta_events").insert(rows);
-        if (!error) { added = rows.length; await loadPlayerData(player.id); }
+        if (!error) await loadPlayerData(player.id);
       }
-      const parts = [d.ranking != null ? `žebříček ${d.ranking}.` : "žebříček se nevyčetl", `nových zápasů: ${added}`];
+      const parts = [d.ranking != null ? `žebříček ${d.ranking}.` : "žebříček se nevyčetl", `zápasů: ${freshM.length}`, `termínů: ${freshF.length}`];
       setRefreshMsg("Hotovo — " + parts.join(" · "));
     } catch { setRefreshMsg("Spojení selhalo (import funguje až nasazené na webu)."); }
   };

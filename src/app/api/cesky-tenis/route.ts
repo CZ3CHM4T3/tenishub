@@ -58,12 +58,61 @@ export async function GET(req: NextRequest) {
 
   const matches = parseMatches(text, name);
 
+  // AUTO-OBJEVENÍ soutěží družstev z profilu (odkazy /soutez/{id}) → rozpis (termíny) zápasů
+  const soutIds = [...new Set([...html.matchAll(/\/soutez\/(\d+)/g)].map((m) => m[1]))].slice(0, 5);
+  let fixtures: ParsedFixture[] = [];
+  if (club && soutIds.length) {
+    const lists = await Promise.all(soutIds.map(async (sid) => {
+      try {
+        const rr = await fetch(`https://cesky-tenis.cz/soutez/${sid}`, {
+          headers: { "user-agent": "Mozilla/5.0 (compatible; TenisHub/1.0; +https://tenishub.cz)" },
+          cache: "no-store", signal: AbortSignal.timeout(7000),
+        });
+        if (!rr.ok) return [];
+        return parseFixtures(await rr.text(), sid, club);
+      } catch { return []; }
+    }));
+    const seen = new Set<string>();
+    fixtures = lists.flat().filter((f) => !seen.has(f.extId) && seen.add(f.extId));
+  }
+
   const body: Record<string, unknown> = {
     id, name, ranking: ranking ? Number(ranking) : null,
-    birth_year: birth ? Number(birth) : null, club, year, category, source: target, matches,
+    birth_year: birth ? Number(birth) : null, club, year, category, source: target, matches, fixtures,
   };
-  if (sp.get("debug")) body.sample = text.slice(0, 2500);
+  if (sp.get("debug")) { body.sample = text.slice(0, 2500); body.soutIds = soutIds; }
   return NextResponse.json(body);
+}
+
+type ParsedFixture = { extId: string; date: string; opponent: string; homeAway: "doma" | "venku" };
+
+function stripTags(s: string): string {
+  return s.replace(/<[^>]+>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&#?\w+;/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function parseFixtures(html: string, soutId: string, clubName: string): ParsedFixture[] {
+  const out: ParsedFixture[] = [];
+  try {
+    const clubKey = clubName.toLowerCase().trim();
+    if (!clubKey) return out;
+    // dvojice odkazů na týmy se stejným ?zapas=N (domácí, hosté)
+    const aRe = new RegExp(`<a[^>]*href="\\/soutez\\/${soutId}\\?zapas=(\\d+)"[^>]*>([\\s\\S]*?)<\\/a>`, "g");
+    const anchors = [...html.matchAll(aRe)].map((m) => ({ n: m[1], team: stripTags(m[2]), i: m.index! })).filter((a) => a.team);
+    const dRe = /(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})/g;
+    const dates = [...html.matchAll(dRe)].map((m) => ({ i: m.index!, d: `${m[3]}-${pad(m[2])}-${pad(m[1])}` }));
+    const dateBefore = (pos: number) => { let r: string | null = null; for (const x of dates) { if (x.i < pos) r = x.d; else break; } return r; };
+    const byN: Record<string, { n: string; team: string; i: number }[]> = {};
+    for (const a of anchors) (byN[a.n] ??= []).push(a);
+    for (const n of Object.keys(byN)) {
+      const arr = byN[n]; if (arr.length < 2) continue;
+      const home = arr[0].team, away = arr[1].team;
+      const mineHome = home.toLowerCase().includes(clubKey), mineAway = away.toLowerCase().includes(clubKey);
+      if (!mineHome && !mineAway) continue;
+      const date = dateBefore(arr[0].i); if (!date) continue;
+      out.push({ extId: `ctf:${soutId}-${n}`, date, opponent: mineHome ? away : home, homeAway: mineHome ? "doma" : "venku" });
+    }
+  } catch { /* best-effort */ }
+  return out;
 }
 
 type ParsedMatch = { extId: string; date: string; competition: string | null; opponent: string; score: string; sets: { me: number; opp: number }[]; win: boolean };
