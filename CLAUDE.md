@@ -187,8 +187,13 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   fce `seasonSegments`); barevný kalendář událostí (`cesta_events`, typy+barvy z `cesta_settings.event_types`, turnaj má
   soupeř/skóre/win); cíle (`cesta_goals`, progres 0–100); statistiky (tréninky, turnaje, W–L, regenerace/volno za sezónu).
   Admin záložka „Moje cesta" (`src/app/admin/AdminCesta.tsx`) ladí typy událostí (barvy) + fáze sezóny → `cesta_settings`
-  (RLS: read all, write jen admin). Odkazy z `/ucet` (karta) a homepage `mcpromo`. Čeká Fáze 2: turnaje s grafem umístění,
-  šablony týdne, propojení s rezervací (availability), deník; Fáze 3: hlídání vyhoření, tipy dle fáze, sdílení s trenérem.
+  (RLS: read all, write jen admin). Odkazy z `/ucet` (karta) a homepage `mcpromo`.
+  **v2:** víc hráčů s úpravou/mazáním (modal), závodní pole `category`/`ranking`/`cts_id` (soutěž/třída, místo v žebříčku,
+  reg. č. ČTS — ZADÁVÁ SE RUČNĚ; auto-tahání ze svazu cztenis.cz = budoucí integrace, nemáme DB soutěží/žebříčků ani API).
+  **4 náhledy kalendáře** (`view`): Měsíc (velké buňky s názvy událostí), Týden (sloupce s výpisem), Rok („v barvách" —
+  měsíce × dny obarvené dle aktivity, čemu se kdy věnoval), Zátěž (SVG křivka četnosti tréninkových jednotek/týden + tečky turnajů).
+  Čeká Fáze 2: turnaje s grafem vývoje umístění, šablony týdne (mikrocyklus), propojení s rezervací (availability), deník;
+  Fáze 3: hlídání vyhoření (poměr zátěž:volno), tipy dle fáze sezóny, sdílení plánu s trenérem; integrace žebříčku ČTS.
 - **Admin mazání účtů:** `/admin` → Uživatelé → „Zrušit účet" = náhodný 5-znakový kód k opsání (bez e-mailu), pak RPC
   `admin_delete_user` (jen admin, ne sám sebe; kaskáda smaže profil/členství/sparring, owner_id subjektů → null).
 - **Čeká (P1+):** bod 5 reálná rezervace (kalendář; platba GoPay 🔑), bod 6 admin analytika+konverze+feedback dotazník,
