@@ -14,6 +14,7 @@ import {
   Search, CalendarCheck, CreditCard, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, Lock, type LucideIcon,
+  CalendarDays, Target, BarChart3, History,
 } from "lucide-react";
 
 /* ── Persony: srovnání Zdarma vs HUB+ (placené = vše zdarma + navíc) ── */
@@ -329,14 +330,27 @@ export default function Home() {
             </div>
           </div>
           <div className="mcpromo-vis" aria-hidden="true">
-            <div className="mcleg"><span style={{ background: "#7C4DD6" }} />Trénink</div>
-            <div className="mcleg"><span style={{ background: "#bf9a47" }} />Turnaj</div>
-            <div className="mcleg"><span style={{ background: "#3b8a5a" }} />Kompenzace</div>
-            <div className="mcleg"><span style={{ background: "#cdd3da" }} />Volno</div>
-            <div className="mcgrid">
-              {["t","t","x","u","t","r","f","t","x","t","u","f","t","t","r","x","u","t","f","t","x"].map((k, i) => (
-                <span key={i} className={`mcd mcd-${k}`} />
-              ))}
+            <div className="mcv-card">
+              <div className="mcv-axis">
+                <span style={{ background: "#3b8a5a", width: "40%" }}>Příprava</span>
+                <span style={{ background: "#bf9a47", width: "38%" }}>Sezóna<i className="mcv-now" /></span>
+                <span style={{ background: "#cdd3da", width: "22%" }}>Mezi</span>
+              </div>
+              <div className="mcv-feats">
+                {[
+                  { Icon: CalendarDays, t: "Kalendář", s: "tréninky · turnaje · volno", c: "#7C4DD6", b: "#EEEDFE" },
+                  { Icon: Target, t: "Cíle sezóny", s: "závazek → splněno", c: "#2f5d57", b: "#E0EBE9" },
+                  { Icon: BarChart3, t: "Statistiky", s: "výhry, dotahování", c: "#4a5b86", b: "#E8ECF4" },
+                  { Icon: Trophy, t: "Žebříček", s: "ze svazu automaticky", c: "#7c6018", b: "#F2EAD6" },
+                  { Icon: CalendarCheck, t: "Termíny", s: "zápasy se vyplní samy", c: "#864a59", b: "#F2E5E9" },
+                  { Icon: History, t: "Ohlédnutí", s: "kdy a proč vyhráváš", c: "#8a5640", b: "#F2E6DF" },
+                ].map((f, i) => (
+                  <div className="mcv-feat" key={i}>
+                    <span className="mcv-ic" style={{ background: f.b, color: f.c }}><f.Icon size={18} /></span>
+                    <span className="mcv-txt"><b>{f.t}</b><span>{f.s}</span></span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
