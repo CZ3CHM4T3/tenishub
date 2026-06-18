@@ -5,12 +5,12 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import {
-  Route, Plus, ChevronLeft, ChevronRight, Trophy, Target, Trash2,
-  CalendarDays, BarChart3, Lock, X,
+  Route, Plus, ChevronLeft, ChevronRight, Trophy, Target, Trash2, Pencil,
+  CalendarDays, CalendarRange, Grid3x3, TrendingUp, BarChart3, Lock, X,
 } from "lucide-react";
 
 /* ---------- typy ---------- */
-type Player = { id: string; name: string; level: "hobby" | "competitive"; birth_year: number | null };
+type Player = { id: string; name: string; level: "hobby" | "competitive"; birth_year: number | null; category: string | null; ranking: number | null; cts_id: string | null };
 type EvType = { key: string; label: string; color: string };
 type PhaseT = { kind: string; label: string; color: string; start: string; end: string };
 type Ev = {
@@ -20,12 +20,17 @@ type Ev = {
 };
 type Goal = { id: string; player_id: string; title: string; target: string | null; progress: number; done: boolean };
 type Seg = PhaseT & { s: Date; e: Date };
+type View = "month" | "week" | "year" | "load";
+type PForm = { open: boolean; id?: string; name: string; level: "hobby" | "competitive"; year: string; category: string; ranking: string; cts: string };
 
 /* ---------- pomocné ---------- */
 const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const MONTHS = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"];
+const MON3 = ["led", "úno", "bře", "dub", "kvě", "čvn", "čvc", "srp", "zář", "říj", "lis", "pro"];
 const WD = ["po", "út", "st", "čt", "pá", "so", "ne"];
 const md = (s: string) => { const [m, d] = s.split("-").map(Number); return { m, d }; };
+const PCLOSED: PForm = { open: false, name: "", level: "hobby", year: "", category: "", ranking: "", cts: "" };
+function weekStart(d: Date) { const x = new Date(d); const off = (x.getDay() + 6) % 7; x.setDate(x.getDate() - off); x.setHours(0, 0, 0, 0); return x; }
 
 function seasonSegments(template: PhaseT[]): Seg[] {
   const now = new Date();
@@ -52,15 +57,17 @@ export default function MojeCesta() {
   const [template, setTemplate] = useState<PhaseT[]>([]);
   const [events, setEvents] = useState<Ev[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [view, setView] = useState<View>("month");
   const [month, setMonth] = useState(() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); });
+  const [weekRef, setWeekRef] = useState(() => weekStart(new Date()));
   const [busy, setBusy] = useState(false);
 
-  // modály
-  const [newPlayer, setNewPlayer] = useState<{ open: boolean; name: string; level: "hobby" | "competitive"; year: string }>({ open: false, name: "", level: "hobby", year: "" });
+  const [pForm, setPForm] = useState<PForm>(PCLOSED);
   const [evForm, setEvForm] = useState<Partial<Ev> & { open: boolean }>({ open: false });
   const [goalForm, setGoalForm] = useState<{ open: boolean; title: string; target: string }>({ open: false, title: "", target: "" });
 
   const supabase = useMemo(() => createClient(), []);
+  const PSEL = "id,name,level,birth_year,category,ranking,cts_id";
 
   const loadPlayerData = useCallback(async (playerId: string) => {
     const [e, g] = await Promise.all([
@@ -82,7 +89,7 @@ export default function MojeCesta() {
     if (!m.data && !isAdmin) { setGate("nomember"); return; }
 
     const [pl, st] = await Promise.all([
-      supabase.from("cesta_players").select("id,name,level,birth_year").order("created_at"),
+      supabase.from("cesta_players").select(PSEL).order("created_at"),
       supabase.from("cesta_settings").select("event_types,season_template").eq("id", 1).maybeSingle(),
     ]);
     setEvTypes((st.data?.event_types as EvType[]) ?? []);
@@ -97,25 +104,44 @@ export default function MojeCesta() {
 
   const selectPlayer = async (id: string) => { setPid(id); await loadPlayerData(id); };
 
-  const createPlayer = async () => {
-    if (!newPlayer.name.trim() || !uid) return;
+  const savePlayer = async () => {
+    if (!pForm.name.trim() || !uid) return;
     setBusy(true);
-    const { data, error } = await supabase.from("cesta_players").insert({
-      owner_id: uid, name: newPlayer.name.trim(), level: newPlayer.level,
-      birth_year: newPlayer.year ? Number(newPlayer.year) : null,
-    }).select("id,name,level,birth_year").single();
-    if (error) {
-      alert("Hráče se nepodařilo přidat: " + error.message
-        + "\n\n(Pokud chyba zmiňuje 'relation … does not exist', je potřeba v Supabase spustit supabase/moje-cesta.sql.)");
-      setBusy(false);
-      return;
-    }
-    if (data) {
+    const payload = {
+      name: pForm.name.trim(), level: pForm.level,
+      birth_year: pForm.year ? Number(pForm.year) : null,
+      category: pForm.category || null,
+      ranking: pForm.ranking ? Number(pForm.ranking) : null,
+      cts_id: pForm.cts || null,
+    };
+    if (pForm.id) {
+      const { error } = await supabase.from("cesta_players").update(payload).eq("id", pForm.id);
+      if (error) { alert("Uložení selhalo: " + error.message); setBusy(false); return; }
+      setPlayers((p) => p.map((x) => x.id === pForm.id ? { ...x, ...payload } as Player : x));
+    } else {
+      const { data, error } = await supabase.from("cesta_players").insert({ owner_id: uid, ...payload }).select(PSEL).single();
+      if (error) {
+        alert("Hráče se nepodařilo přidat: " + error.message
+          + "\n\n(Pokud chyba zmiňuje 'does not exist', spusť v Supabase supabase/moje-cesta.sql.)");
+        setBusy(false); return;
+      }
       setPlayers((p) => [...p, data as Player]);
-      setPid((data as Player).id);
-      setEvents([]); setGoals([]);
+      setPid((data as Player).id); setEvents([]); setGoals([]);
     }
-    setNewPlayer({ open: false, name: "", level: "hobby", year: "" });
+    setPForm(PCLOSED); setBusy(false);
+  };
+  const editPlayer = (p: Player) => setPForm({
+    open: true, id: p.id, name: p.name, level: p.level, year: p.birth_year ? String(p.birth_year) : "",
+    category: p.category ?? "", ranking: p.ranking != null ? String(p.ranking) : "", cts: p.cts_id ?? "",
+  });
+  const deletePlayer = async (p: Player) => {
+    if (!confirm(`Smazat hráče „${p.name}" a celou jeho cestu? Nevratné.`)) return;
+    setBusy(true);
+    await supabase.from("cesta_players").delete().eq("id", p.id);
+    const rest = players.filter((x) => x.id !== p.id);
+    setPlayers(rest);
+    setPForm(PCLOSED);
+    if (pid === p.id) { const n = rest[0]?.id ?? null; setPid(n); if (n) await loadPlayerData(n); else { setEvents([]); setGoals([]); } }
     setBusy(false);
   };
 
@@ -131,16 +157,14 @@ export default function MojeCesta() {
     if (evForm.id) await supabase.from("cesta_events").update(payload).eq("id", evForm.id);
     else await supabase.from("cesta_events").insert(payload);
     await loadPlayerData(pid);
-    setEvForm({ open: false });
-    setBusy(false);
+    setEvForm({ open: false }); setBusy(false);
   };
   const deleteEvent = async (id: string) => {
     if (!pid) return;
     setBusy(true);
     await supabase.from("cesta_events").delete().eq("id", id);
     await loadPlayerData(pid);
-    setEvForm({ open: false });
-    setBusy(false);
+    setEvForm({ open: false }); setBusy(false);
   };
 
   const addGoal = async () => {
@@ -148,8 +172,7 @@ export default function MojeCesta() {
     setBusy(true);
     await supabase.from("cesta_goals").insert({ player_id: pid, title: goalForm.title.trim(), target: goalForm.target || null });
     await loadPlayerData(pid);
-    setGoalForm({ open: false, title: "", target: "" });
-    setBusy(false);
+    setGoalForm({ open: false, title: "", target: "" }); setBusy(false);
   };
   const setGoalProgress = async (g: Goal, progress: number) => {
     await supabase.from("cesta_goals").update({ progress, done: progress >= 100 }).eq("id", g.id);
@@ -164,23 +187,34 @@ export default function MojeCesta() {
   const segs = useMemo(() => seasonSegments(template), [template]);
   const typeOf = useCallback((k: string) => evTypes.find((t) => t.key === k) ?? { key: k, label: k, color: "#9aa3ad" }, [evTypes]);
   const player = players.find((p) => p.id === pid) ?? null;
+  const todayISO = iso(new Date());
+
+  const evByDay = useMemo(() => {
+    const m: Record<string, Ev[]> = {};
+    for (const e of events) (m[e.date] ??= []).push(e);
+    return m;
+  }, [events]);
+
+  const winRange = useMemo(() => {
+    if (segs.length) return { s: segs[0].s, e: segs[segs.length - 1].e };
+    const y = new Date().getFullYear();
+    return { s: new Date(y, 0, 1), e: new Date(y, 11, 31) };
+  }, [segs]);
 
   const seasonStats = useMemo(() => {
-    if (!segs.length) return null;
-    const s0 = segs[0].s, e0 = segs[segs.length - 1].e;
-    const inSeason = events.filter((e) => { const d = new Date(e.date); return d >= s0 && d <= e0; });
+    const inSeason = events.filter((e) => { const d = new Date(e.date); return d >= winRange.s && d <= winRange.e; });
     const trainings = inSeason.filter((e) => e.type === "training").length;
     const tournaments = inSeason.filter((e) => e.type === "tournament");
     const wins = tournaments.filter((e) => e.win === true).length;
     const losses = tournaments.filter((e) => e.win === false).length;
     const rest = inSeason.filter((e) => e.type === "rest" || e.type === "recovery").length;
-    return { trainings, tournaments: tournaments.length, wins, losses, rest, total: inSeason.length };
-  }, [events, segs]);
+    return { trainings, tournaments: tournaments.length, wins, losses, rest };
+  }, [events, winRange]);
 
-  // kalendář (po–ne)
+  // měsíc (po–ne)
   const grid = useMemo(() => {
     const first = new Date(month.getFullYear(), month.getMonth(), 1);
-    const lead = (first.getDay() + 6) % 7; // pondělí = 0
+    const lead = (first.getDay() + 6) % 7;
     const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
     const cells: (Date | null)[] = [];
     for (let i = 0; i < lead; i++) cells.push(null);
@@ -188,21 +222,39 @@ export default function MojeCesta() {
     while (cells.length % 7 !== 0) cells.push(null);
     return cells;
   }, [month]);
-  const evByDay = useMemo(() => {
-    const m: Record<string, Ev[]> = {};
-    for (const e of events) (m[e.date] ??= []).push(e);
-    return m;
-  }, [events]);
 
-  const todayISO = iso(new Date());
+  // týden
+  const weekDays = useMemo(() => Array.from({ length: 7 }, (_, i) => { const d = new Date(weekRef); d.setDate(d.getDate() + i); return d; }), [weekRef]);
+
+  // rok — měsíce v barvách
+  const yearMonths = useMemo(() => {
+    const months: Date[] = [];
+    let cur = new Date(winRange.s.getFullYear(), winRange.s.getMonth(), 1);
+    const last = new Date(winRange.e.getFullYear(), winRange.e.getMonth(), 1);
+    while (cur <= last) { months.push(new Date(cur)); cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1); }
+    return months;
+  }, [winRange]);
+
+  // zátěž — týdenní počet tréninkových jednotek
+  const loadWeeks = useMemo(() => {
+    const buckets: { ws: Date; tj: number; tourn: number }[] = [];
+    const start = weekStart(winRange.s);
+    for (const d = new Date(start); d <= winRange.e; d.setDate(d.getDate() + 7)) {
+      const a = new Date(d), b = new Date(d); b.setDate(b.getDate() + 6); b.setHours(23, 59, 59);
+      let tj = 0, tourn = 0;
+      for (const e of events) { const x = new Date(e.date); if (x >= a && x <= b) { if (e.type === "training" || e.type === "conditioning") tj++; else if (e.type === "tournament") tourn++; } }
+      buckets.push({ ws: new Date(a), tj, tourn });
+    }
+    return buckets;
+  }, [events, winRange]);
+
   const nowPct = useMemo(() => {
-    if (!segs.length) return null;
-    const a = segs[0].s.getTime(), b = segs[segs.length - 1].e.getTime(), n = Date.now();
+    const a = winRange.s.getTime(), b = winRange.e.getTime(), n = Date.now();
     if (n < a || n > b) return null;
     return ((n - a) / (b - a)) * 100;
-  }, [segs]);
+  }, [winRange]);
 
-  /* ---------- gating obrazovky ---------- */
+  /* ---------- gating ---------- */
   if (gate === "loading") return <div className="acct-loading">Načítám Moji cestu…</div>;
 
   const Shell = (inner: React.ReactNode) => (
@@ -211,26 +263,28 @@ export default function MojeCesta() {
         <Link href="/" className="brand"><Wordmark /></Link>
         <Link href="/ucet" className="back">← Můj účet</Link>
       </div></div></header>
-      <div className="wrap acct-wrap">{inner}</div>
+      <div className="wrap acct-wrap mc-wrap">{inner}</div>
     </div>
   );
 
   if (gate === "noauth") return Shell(
-    <div className="acct-card mc-gate">
-      <Route size={34} />
-      <h1>Moje cesta</h1>
+    <div className="acct-card mc-gate"><Route size={34} /><h1>Moje cesta</h1>
       <p>Sezónní průvodce pro tebe i tvé dítě. Přihlas se a začni plánovat.</p>
-      <Link href="/prihlaseni?next=/moje-cesta" className="btn btn-green">Přihlásit se</Link>
-    </div>
+      <Link href="/prihlaseni?next=/moje-cesta" className="btn btn-green">Přihlásit se</Link></div>
   );
   if (gate === "nomember") return Shell(
-    <div className="acct-card mc-gate">
-      <Lock size={34} />
-      <h1>Moje cesta je součást HUB+</h1>
+    <div className="acct-card mc-gate"><Lock size={34} /><h1>Moje cesta je součást HUB+</h1>
       <p>Naplánuj celou sezónu — tréninky, turnaje, kondici i volno — a sleduj cíle a statistiky. Aktivuj HUB+ a máš to odemčené.</p>
-      <Link href="/ucet" className="btn btn-gold">Chci HUB+</Link>
-    </div>
+      <Link href="/ucet" className="btn btn-gold">Chci HUB+</Link></div>
   );
+
+  const VIEWS: [View, string, React.ReactNode][] = [
+    ["month", "Měsíc", <CalendarDays key="m" size={15} />],
+    ["week", "Týden", <CalendarRange key="w" size={15} />],
+    ["year", "Rok", <Grid3x3 key="y" size={15} />],
+    ["load", "Zátěž", <TrendingUp key="l" size={15} />],
+  ];
+  const maxTj = Math.max(3, ...loadWeeks.map((w) => w.tj));
 
   return Shell(<>
     <div className="mc-head">
@@ -238,81 +292,161 @@ export default function MojeCesta() {
       <div className="mc-players">
         {players.map((p) => (
           <button key={p.id} className={`mc-ptab${p.id === pid ? " on" : ""}`} onClick={() => selectPlayer(p.id)}>
-            {p.name} <span className="mc-lvl">{p.level === "competitive" ? "závodní" : "hobby"}</span>
+            {p.name} <span className="mc-lvl">{p.level === "competitive" ? (p.category || "závodní") : "hobby"}</span>
           </button>
         ))}
-        <button className="mc-ptab mc-padd" onClick={() => setNewPlayer((s) => ({ ...s, open: true }))}><Plus size={15} /> Hráč</button>
+        <button className="mc-ptab mc-padd" onClick={() => setPForm({ ...PCLOSED, open: true })}><Plus size={15} /> Hráč</button>
       </div>
     </div>
 
     {!player ? (
-      <div className="acct-card mc-gate">
-        <Route size={30} />
-        <h2>Založ si prvního hráče</h2>
-        <p>Může to být tvé dítě (spravuješ ho ty) i ty sám. Pak naplánuješ celou sezónu.</p>
-        <button className="btn btn-green" onClick={() => setNewPlayer((s) => ({ ...s, open: true }))}><Plus size={16} /> Přidat hráče</button>
-      </div>
+      <div className="acct-card mc-gate"><Route size={30} /><h2>Založ si prvního hráče</h2>
+        <p>Může to být tvé dítě (spravuješ ho ty) i ty sám. Klidně víc hráčů. Pak naplánuješ celou sezónu.</p>
+        <button className="btn btn-green" onClick={() => setPForm({ ...PCLOSED, open: true })}><Plus size={16} /> Přidat hráče</button></div>
     ) : (<>
       {/* OSA SEZÓNY */}
       <div className="acct-card mc-season">
-        <div className="acct-card-head"><CalendarDays size={20} /><h2>Sezóna {player.name}</h2></div>
+        <div className="acct-card-head"><CalendarDays size={20} />
+          <h2>Sezóna — {player.name}
+            {player.level === "competitive" && (
+              <span className="mc-meta">{player.category ? ` · ${player.category}` : ""}{player.ranking != null ? ` · žebříček ${player.ranking}.` : ""}</span>
+            )}
+          </h2>
+          <button className="linklike" style={{ marginLeft: "auto" }} onClick={() => editPlayer(player)}><Pencil size={15} /> Upravit hráče</button>
+        </div>
         <div className="mc-axis">
           {segs.map((s, i) => {
             const total = segs[segs.length - 1].e.getTime() - segs[0].s.getTime();
             const w = ((s.e.getTime() - s.s.getTime()) / total) * 100;
             const here = Date.now() >= s.s.getTime() && Date.now() <= s.e.getTime();
-            return (
-              <div key={i} className={`mc-seg${here ? " here" : ""}`} style={{ width: `${w}%`, background: s.color }}>
-                <span>{s.label}</span>
-              </div>
-            );
+            return <div key={i} className={`mc-seg${here ? " here" : ""}`} style={{ width: `${w}%`, background: s.color }}><span>{s.label}</span></div>;
           })}
           {nowPct != null && <div className="mc-now" style={{ left: `${nowPct}%` }} title="Jsi tady" />}
         </div>
       </div>
 
       {/* STATISTIKY */}
-      {seasonStats && (
-        <div className="mc-stats">
-          <div className="mc-stat"><BarChart3 size={16} /><b>{seasonStats.trainings}</b><span>tréninků</span></div>
-          <div className="mc-stat"><Trophy size={16} /><b>{seasonStats.tournaments}</b><span>turnajů</span></div>
-          <div className="mc-stat"><b>{seasonStats.wins}–{seasonStats.losses}</b><span>výhry–prohry</span></div>
-          <div className="mc-stat"><b>{seasonStats.rest}</b><span>regenerace / volno</span></div>
-        </div>
-      )}
+      <div className="mc-stats">
+        <div className="mc-stat"><BarChart3 size={16} /><b>{seasonStats.trainings}</b><span>tréninků</span></div>
+        <div className="mc-stat"><Trophy size={16} /><b>{seasonStats.tournaments}</b><span>turnajů</span></div>
+        <div className="mc-stat"><b>{seasonStats.wins}–{seasonStats.losses}</b><span>výhry–prohry</span></div>
+        <div className="mc-stat"><b>{seasonStats.rest}</b><span>regenerace / volno</span></div>
+      </div>
 
       <div className="mc-cols">
-        {/* KALENDÁŘ */}
         <div className="acct-card mc-cal">
-          <div className="mc-calhead">
-            <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} aria-label="Předchozí měsíc"><ChevronLeft size={18} /></button>
-            <h2>{MONTHS[month.getMonth()]} {month.getFullYear()}</h2>
-            <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} aria-label="Další měsíc"><ChevronRight size={18} /></button>
+          {/* přepínač náhledů */}
+          <div className="mc-views">
+            {VIEWS.map(([v, label, ic]) => (
+              <button key={v} className={`mc-vbtn${view === v ? " on" : ""}`} onClick={() => setView(v)}>{ic} {label}</button>
+            ))}
           </div>
-          <div className="mc-grid mc-wdrow">{WD.map((w) => <span key={w} className="mc-wd">{w}</span>)}</div>
-          <div className="mc-grid">
-            {grid.map((d, i) => {
-              if (!d) return <span key={i} className="mc-cell empty" />;
-              const k = iso(d);
-              const evs = evByDay[k] ?? [];
-              return (
-                <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`}
-                  onClick={() => setEvForm({ open: true, date: k, type: evTypes[0]?.key ?? "training" })}>
-                  <span className="mc-daynum">{d.getDate()}</span>
-                  <span className="mc-dots">
-                    {evs.slice(0, 4).map((e) => (
-                      <i key={e.id} title={typeOf(e.type).label + (e.title ? ` — ${e.title}` : "")}
-                        style={{ background: typeOf(e.type).color }}
-                        onClick={(ev) => { ev.stopPropagation(); setEvForm({ open: true, ...e }); }} />
-                    ))}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <div className="mc-legend">
-            {evTypes.map((t) => <span key={t.key}><i style={{ background: t.color }} />{t.label}</span>)}
-          </div>
+
+          {/* MĚSÍC */}
+          {view === "month" && (<>
+            <div className="mc-calhead">
+              <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} aria-label="Předchozí"><ChevronLeft size={18} /></button>
+              <h2>{MONTHS[month.getMonth()]} {month.getFullYear()}</h2>
+              <button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} aria-label="Další"><ChevronRight size={18} /></button>
+            </div>
+            <div className="mc-grid mc-wdrow">{WD.map((w) => <span key={w} className="mc-wd">{w}</span>)}</div>
+            <div className="mc-grid mc-grid-big">
+              {grid.map((d, i) => {
+                if (!d) return <span key={i} className="mc-cell empty" />;
+                const k = iso(d); const evs = evByDay[k] ?? [];
+                return (
+                  <button key={i} className={`mc-cell${k === todayISO ? " today" : ""}`} onClick={() => setEvForm({ open: true, date: k, type: evTypes[0]?.key ?? "training" })}>
+                    <span className="mc-daynum">{d.getDate()}</span>
+                    <span className="mc-chips">
+                      {evs.slice(0, 3).map((e) => (
+                        <i key={e.id} className="mc-chip" style={{ background: typeOf(e.type).color }}
+                          title={typeOf(e.type).label + (e.title ? ` — ${e.title}` : "")}
+                          onClick={(ev) => { ev.stopPropagation(); setEvForm({ open: true, ...e }); }}>
+                          {e.title || typeOf(e.type).label}
+                        </i>
+                      ))}
+                      {evs.length > 3 && <i className="mc-chip more">+{evs.length - 3}</i>}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </>)}
+
+          {/* TÝDEN */}
+          {view === "week" && (<>
+            <div className="mc-calhead">
+              <button onClick={() => { const d = new Date(weekRef); d.setDate(d.getDate() - 7); setWeekRef(d); }} aria-label="Předchozí"><ChevronLeft size={18} /></button>
+              <h2>{weekDays[0].getDate()}.&nbsp;{MON3[weekDays[0].getMonth()]} – {weekDays[6].getDate()}.&nbsp;{MON3[weekDays[6].getMonth()]}</h2>
+              <button onClick={() => { const d = new Date(weekRef); d.setDate(d.getDate() + 7); setWeekRef(d); }} aria-label="Další"><ChevronRight size={18} /></button>
+            </div>
+            <div className="mc-week">
+              {weekDays.map((d, i) => {
+                const k = iso(d); const evs = evByDay[k] ?? [];
+                return (
+                  <div key={i} className={`mc-wday${k === todayISO ? " today" : ""}`}>
+                    <div className="mc-wday-h"><b>{WD[i]}</b> {d.getDate()}.{d.getMonth() + 1}.</div>
+                    <div className="mc-wday-evs">
+                      {evs.map((e) => (
+                        <button key={e.id} className="mc-wev" style={{ borderLeftColor: typeOf(e.type).color }} onClick={() => setEvForm({ open: true, ...e })}>
+                          <b>{e.title || typeOf(e.type).label}</b>
+                          <span>{typeOf(e.type).label}{e.location ? ` · ${e.location}` : ""}{e.type === "tournament" && e.win != null ? ` · ${e.win ? "✓ výhra" : "prohra"}` : ""}</span>
+                        </button>
+                      ))}
+                      <button className="mc-wadd" onClick={() => setEvForm({ open: true, date: k, type: evTypes[0]?.key ?? "training" })}><Plus size={13} /> přidat</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>)}
+
+          {/* ROK — měsíce v barvách */}
+          {view === "year" && (<>
+            <div className="mc-calhead"><h2>Sezóna v barvách — čemu ses kdy věnoval</h2></div>
+            <div className="mc-year">
+              {yearMonths.map((m, mi) => {
+                const dim = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+                return (
+                  <div className="mc-yrow" key={mi}>
+                    <span className="mc-ylabel">{MON3[m.getMonth()]} ’{String(m.getFullYear()).slice(2)}</span>
+                    <div className="mc-ydays">
+                      {Array.from({ length: dim }, (_, di) => {
+                        const d = new Date(m.getFullYear(), m.getMonth(), di + 1); const k = iso(d); const evs = evByDay[k] ?? [];
+                        const c = evs.length ? typeOf(evs[0].type).color : undefined;
+                        return <button key={di} className={`mc-yday${k === todayISO ? " today" : ""}`} style={{ background: c ?? "#edeff1" }}
+                          title={`${d.getDate()}.${d.getMonth() + 1}.${evs.length ? " — " + evs.map((e) => typeOf(e.type).label).join(", ") : ""}`}
+                          onClick={() => setEvForm({ open: true, ...(evs[0] ?? { date: k, type: evTypes[0]?.key ?? "training" }) })} />;
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mc-legend">{evTypes.map((t) => <span key={t.key}><i style={{ background: t.color }} />{t.label}</span>)}</div>
+          </>)}
+
+          {/* ZÁTĚŽ — křivka četnosti TJ */}
+          {view === "load" && (<>
+            <div className="mc-calhead"><h2>Zátěž — tréninkové jednotky po týdnech</h2></div>
+            <div className="mc-loadchart">
+              <svg viewBox={`0 0 ${Math.max(60, loadWeeks.length * 16)} 130`} preserveAspectRatio="none" className="mc-loadsvg">
+                {[0.25, 0.5, 0.75, 1].map((g, i) => <line key={i} x1="0" x2={loadWeeks.length * 16} y1={105 - g * 95} y2={105 - g * 95} stroke="#e6e8ea" strokeWidth="1" />)}
+                {loadWeeks.map((w, i) => {
+                  const h = (w.tj / maxTj) * 95;
+                  return <g key={i}>
+                    <rect x={i * 16 + 3} y={105 - h} width={10} height={h} rx={2} fill="var(--green)" />
+                    {w.tourn > 0 && <circle cx={i * 16 + 8} cy={105 - h - 7} r={3.5} fill="var(--gold)" />}
+                  </g>;
+                })}
+                {loadWeeks.map((w, i) => w.ws.getDate() <= 7
+                  ? <text key={`t${i}`} x={i * 16 + 8} y={122} fontSize="8" textAnchor="middle" fill="#9aa3ad">{MON3[w.ws.getMonth()]}</text>
+                  : null)}
+              </svg>
+              <div className="mc-loadleg"><span><i style={{ background: "var(--green)" }} /> tréninková jednotka (počet/týden)</span><span><i className="dot" style={{ background: "var(--gold)" }} /> týden s turnajem</span></div>
+              <p className="member-note">Křivka ukazuje periodicitu zátěže — v přípravě roste objem, v sezóně se ladí, v mezisezóně klesá (regenerace).</p>
+            </div>
+          </>)}
         </div>
 
         {/* CÍLE */}
@@ -324,17 +458,10 @@ export default function MojeCesta() {
             <ul className="mc-goallist">
               {goals.map((g) => (
                 <li key={g.id} className={g.done ? "done" : ""}>
-                  <div className="mc-goaltop">
-                    <b>{g.title}</b>
-                    <button className="linklike danger" onClick={() => delGoal(g.id)}><Trash2 size={14} /></button>
-                  </div>
+                  <div className="mc-goaltop"><b>{g.title}</b><button className="linklike danger" onClick={() => delGoal(g.id)}><Trash2 size={14} /></button></div>
                   {g.target && <span className="mc-goaltarget">{g.target}</span>}
                   <div className="mc-prog"><div style={{ width: `${g.progress}%` }} /></div>
-                  <div className="mc-progbtns">
-                    {[0, 25, 50, 75, 100].map((v) => (
-                      <button key={v} className={g.progress === v ? "on" : ""} onClick={() => setGoalProgress(g, v)}>{v}%</button>
-                    ))}
-                  </div>
+                  <div className="mc-progbtns">{[0, 25, 50, 75, 100].map((v) => <button key={v} className={g.progress === v ? "on" : ""} onClick={() => setGoalProgress(g, v)}>{v}%</button>)}</div>
                 </li>
               ))}
             </ul>
@@ -343,21 +470,31 @@ export default function MojeCesta() {
       </div>
     </>)}
 
-    {/* MODÁL: nový hráč */}
-    {newPlayer.open && (
-      <div className="mc-modal" onClick={() => setNewPlayer((s) => ({ ...s, open: false }))}>
+    {/* MODÁL: hráč */}
+    {pForm.open && (
+      <div className="mc-modal" onClick={() => setPForm(PCLOSED)}>
         <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
-          <button className="mc-x" onClick={() => setNewPlayer((s) => ({ ...s, open: false }))}><X size={18} /></button>
-          <h3>Nový hráč</h3>
-          <label>Jméno<input value={newPlayer.name} onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })} placeholder="Např. Klárka / Já" /></label>
+          <button className="mc-x" onClick={() => setPForm(PCLOSED)}><X size={18} /></button>
+          <h3>{pForm.id ? "Upravit hráče" : "Nový hráč"}</h3>
+          <label>Jméno<input value={pForm.name} onChange={(e) => setPForm({ ...pForm, name: e.target.value })} placeholder="Např. Klárka / Já" /></label>
           <label>Úroveň
-            <select value={newPlayer.level} onChange={(e) => setNewPlayer({ ...newPlayer, level: e.target.value as "hobby" | "competitive" })}>
-              <option value="hobby">Hobby</option>
-              <option value="competitive">Závodní</option>
+            <select value={pForm.level} onChange={(e) => setPForm({ ...pForm, level: e.target.value as "hobby" | "competitive" })}>
+              <option value="hobby">Hobby</option><option value="competitive">Závodní</option>
             </select>
           </label>
-          <label>Rok narození (nepovinné)<input value={newPlayer.year} onChange={(e) => setNewPlayer({ ...newPlayer, year: e.target.value.replace(/\D/g, "").slice(0, 4) })} placeholder="2014" /></label>
-          <button className="btn btn-green" disabled={busy} onClick={createPlayer}>Přidat hráče</button>
+          {pForm.level === "competitive" && (<>
+            <label>Soutěž / třída<input value={pForm.category} onChange={(e) => setPForm({ ...pForm, category: e.target.value })} placeholder="Např. 4. třída D, mladší žactvo" /></label>
+            <div className="mc-row2">
+              <label>Místo v žebříčku<input value={pForm.ranking} onChange={(e) => setPForm({ ...pForm, ranking: e.target.value.replace(/\D/g, "").slice(0, 6) })} placeholder="152" /></label>
+              <label>Reg. číslo ČTS<input value={pForm.cts} onChange={(e) => setPForm({ ...pForm, cts: e.target.value })} placeholder="nepovinné" /></label>
+            </div>
+            <p className="member-note" style={{ marginTop: "-0.2rem" }}>Žebříček zatím zadáváš ručně. Automatické tahání ze svazu (cztenis.cz) připravujeme.</p>
+          </>)}
+          <label>Rok narození (nepovinné)<input value={pForm.year} onChange={(e) => setPForm({ ...pForm, year: e.target.value.replace(/\D/g, "").slice(0, 4) })} placeholder="2014" /></label>
+          <div className="mc-modal-actions">
+            {pForm.id && <button className="btn btn-out danger" onClick={() => deletePlayer(players.find((x) => x.id === pForm.id)!)}><Trash2 size={14} /> Smazat hráče</button>}
+            <button className="btn btn-green" disabled={busy} onClick={savePlayer}>{pForm.id ? "Uložit" : "Přidat hráče"}</button>
+          </div>
         </div>
       </div>
     )}

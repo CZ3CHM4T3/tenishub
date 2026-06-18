@@ -300,6 +300,7 @@
 /* ===== MOJE CESTA ===== */
 .btn-sm { padding: 0.35rem 0.7rem !important; font-size: 0.82rem !important; }
 .mcpromo-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.mc-wrap { max-width: 1180px; }
 .mc-gate { text-align: center; max-width: 540px; margin: 2rem auto; padding: 2.2rem; }
 .mc-gate svg { color: var(--gold); margin-bottom: 0.4rem; }
 .mc-gate h1, .mc-gate h2 { margin: 0.3rem 0; }
@@ -342,6 +343,47 @@
 .mc-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; margin-top: 0.8rem; font-size: 0.78rem; color: var(--muted); }
 .mc-legend span { display: inline-flex; align-items: center; gap: 5px; }
 .mc-legend i { width: 10px; height: 10px; border-radius: 3px; }
+
+/* přepínač náhledů */
+.mc-views { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+.mc-vbtn { display: inline-flex; align-items: center; gap: 5px; padding: 0.4rem 0.85rem; border: 1px solid var(--line); background: #fff; border-radius: 100px; font-weight: 600; font-size: 0.85rem; color: var(--green-2); cursor: pointer; }
+.mc-vbtn.on { background: var(--green); color: #fff; border-color: var(--green); }
+.mc-meta { font-weight: 600; color: var(--muted); font-size: 0.85rem; }
+
+/* velký měsíc s názvy událostí */
+.mc-grid-big .mc-cell { aspect-ratio: auto; min-height: 92px; display: flex; flex-direction: column; gap: 3px; }
+.mc-grid-big .mc-daynum { font-size: 0.85rem; }
+.mc-chips { display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
+.mc-chip { font-style: normal; font-size: 0.68rem; font-weight: 600; color: #fff; padding: 1px 5px; border-radius: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.45; text-shadow: 0 1px 1px rgba(0,0,0,0.18); cursor: pointer; }
+.mc-chip.more { background: #d3d8de !important; color: var(--green-2); text-shadow: none; }
+
+/* týden */
+.mc-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.mc-wday { border: 1px solid var(--line); border-radius: 10px; min-height: 150px; padding: 6px; background: #fff; }
+.mc-wday.today { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
+.mc-wday-h { font-size: 0.74rem; color: var(--muted); margin-bottom: 5px; }
+.mc-wday-h b { color: var(--green-2); text-transform: uppercase; }
+.mc-wday-evs { display: flex; flex-direction: column; gap: 4px; }
+.mc-wev { text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 7px; padding: 4px 6px; background: #fff; cursor: pointer; }
+.mc-wev b { display: block; font-size: 0.76rem; line-height: 1.2; }
+.mc-wev span { font-size: 0.66rem; color: var(--muted); }
+.mc-wadd { font-size: 0.7rem; color: var(--gold-l); border: 1px dashed var(--line); border-radius: 7px; padding: 3px; background: #fff; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; justify-content: center; }
+
+/* rok — měsíce v barvách */
+.mc-year { display: flex; flex-direction: column; gap: 5px; }
+.mc-yrow { display: flex; align-items: center; gap: 8px; }
+.mc-ylabel { width: 52px; flex: none; font-size: 0.74rem; font-weight: 700; color: var(--green-2); text-align: right; }
+.mc-ydays { display: flex; gap: 2px; flex-wrap: wrap; }
+.mc-yday { width: 13px; height: 13px; border-radius: 3px; border: 0; padding: 0; cursor: pointer; }
+.mc-yday.today { outline: 2px solid var(--green); outline-offset: 1px; }
+
+/* zátěž — křivka */
+.mc-loadchart { padding-top: 0.4rem; }
+.mc-loadsvg { width: 100%; height: 180px; overflow: visible; }
+.mc-loadleg { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+.mc-loadleg span { display: inline-flex; align-items: center; gap: 6px; }
+.mc-loadleg i { width: 12px; height: 10px; border-radius: 2px; display: inline-block; }
+.mc-loadleg i.dot { width: 9px; height: 9px; border-radius: 50%; }
 
 .mc-goallist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.8rem; }
 .mc-goallist li { border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 0.8rem; }

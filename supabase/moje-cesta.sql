@@ -19,6 +19,10 @@ create table if not exists public.cesta_players (
 create index if not exists cesta_players_owner_idx on public.cesta_players(owner_id);
 -- pojistka i pro již existující tabulku: owner_id se doplní z přihlášeného uživatele
 alter table public.cesta_players alter column owner_id set default auth.uid();
+-- závodní hráč: soutěž/třída (volný text, např. "4. třída D"), aktuální místo v žebříčku, reg. číslo ČTS
+alter table public.cesta_players add column if not exists category text;
+alter table public.cesta_players add column if not exists ranking  integer;
+alter table public.cesta_players add column if not exists cts_id   text;
 
 alter table public.cesta_players enable row level security;
 drop policy if exists cesta_players_rw on public.cesta_players;
