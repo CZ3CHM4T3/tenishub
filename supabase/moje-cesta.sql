@@ -10,13 +10,15 @@
 -- ---------- HRÁČI ----------
 create table if not exists public.cesta_players (
   id         uuid primary key default gen_random_uuid(),
-  owner_id   uuid not null references auth.users(id) on delete cascade,
+  owner_id   uuid not null default auth.uid() references auth.users(id) on delete cascade,
   name       text not null,
   level      text not null default 'hobby' check (level in ('hobby','competitive')),
   birth_year smallint,
   created_at timestamptz not null default now()
 );
 create index if not exists cesta_players_owner_idx on public.cesta_players(owner_id);
+-- pojistka i pro již existující tabulku: owner_id se doplní z přihlášeného uživatele
+alter table public.cesta_players alter column owner_id set default auth.uid();
 
 alter table public.cesta_players enable row level security;
 drop policy if exists cesta_players_rw on public.cesta_players;

@@ -45,6 +45,7 @@ function seasonSegments(template: PhaseT[]): Seg[] {
 
 export default function MojeCesta() {
   const [gate, setGate] = useState<"loading" | "noauth" | "nomember" | "ok">("loading");
+  const [uid, setUid] = useState<string | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [pid, setPid] = useState<string | null>(null);
   const [evTypes, setEvTypes] = useState<EvType[]>([]);
@@ -73,6 +74,7 @@ export default function MojeCesta() {
   const init = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setGate("noauth"); return; }
+    setUid(user.id);
     const prof = await supabase.from("profiles").select("is_admin").eq("id", user.id).maybeSingle();
     const isAdmin = prof.data?.is_admin === true;
     const m = await supabase.from("memberships").select("id").eq("profile_id", user.id)
@@ -96,12 +98,18 @@ export default function MojeCesta() {
   const selectPlayer = async (id: string) => { setPid(id); await loadPlayerData(id); };
 
   const createPlayer = async () => {
-    if (!newPlayer.name.trim()) return;
+    if (!newPlayer.name.trim() || !uid) return;
     setBusy(true);
-    const { data } = await supabase.from("cesta_players").insert({
-      name: newPlayer.name.trim(), level: newPlayer.level,
+    const { data, error } = await supabase.from("cesta_players").insert({
+      owner_id: uid, name: newPlayer.name.trim(), level: newPlayer.level,
       birth_year: newPlayer.year ? Number(newPlayer.year) : null,
     }).select("id,name,level,birth_year").single();
+    if (error) {
+      alert("Hráče se nepodařilo přidat: " + error.message
+        + "\n\n(Pokud chyba zmiňuje 'relation … does not exist', je potřeba v Supabase spustit supabase/moje-cesta.sql.)");
+      setBusy(false);
+      return;
+    }
     if (data) {
       setPlayers((p) => [...p, data as Player]);
       setPid((data as Player).id);
