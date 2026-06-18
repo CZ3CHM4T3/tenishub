@@ -176,8 +176,21 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
     E-mailové notifikace = TODO (potřebují provider, např. Resend). Unclaimed bez ownera → modal „profil nikdo nespravuje".
   - **Bod 4 Sparring v2** (`sparring-v2.sql`): kritéria (age/play_type/gender/handedness/surface), „Moje sparring karta"
     v /sparring (publish→zeď+pin na mapě), filtry, přímý kontakt přes `messages` (zdarma).
-- **RUN ORDER nových SQL (po RUN-ALL.sql, jednotlivě):** samosprava.sql, recenze-v2.sql, zpravy.sql, sparring-v2.sql.
+- **RUN ORDER nových SQL (po RUN-ALL.sql, jednotlivě):** samosprava.sql, recenze-v2.sql, zpravy.sql, sparring-v2.sql,
+  **vypletac.sql** (samostatně — ADD VALUE), **ms-gem.sql** (MS GEM = jediný ověřený na mapě), **rezervace.sql** (availability+taken_slots),
+  **admin-delete-user.sql** (RPC admin_delete_user — mazání účtů), **moje-cesta.sql** (Moje cesta).
   Pozn.: messaging/booking přístup = ZDARMA kvůli likviditě (paywall pocit pryč); platit se bude až za prokázané nástroje.
+- **MOJE CESTA `/moje-cesta` (Fáze 1 MVP hotová) — `supabase/moje-cesta.sql`:** sezónní průvodce hobby i závodního hráče.
+  Univerzální HRÁČI pod účtem (`cesta_players`: dítě spravované rodičem i dospělý; 1 účet = víc hráčů), HUB+ gating
+  (admin bypass). Komponenty: `src/app/moje-cesta/MojeCesta.tsx` (klient — server fetch Supabase lokálně selhává).
+  Osa sezóny (příprava/sezóna/mezisezóna, „dnes" marker) počítaná z `cesta_settings.season_template` (MM-DD, wrap přes rok,
+  fce `seasonSegments`); barevný kalendář událostí (`cesta_events`, typy+barvy z `cesta_settings.event_types`, turnaj má
+  soupeř/skóre/win); cíle (`cesta_goals`, progres 0–100); statistiky (tréninky, turnaje, W–L, regenerace/volno za sezónu).
+  Admin záložka „Moje cesta" (`src/app/admin/AdminCesta.tsx`) ladí typy událostí (barvy) + fáze sezóny → `cesta_settings`
+  (RLS: read all, write jen admin). Odkazy z `/ucet` (karta) a homepage `mcpromo`. Čeká Fáze 2: turnaje s grafem umístění,
+  šablony týdne, propojení s rezervací (availability), deník; Fáze 3: hlídání vyhoření, tipy dle fáze, sdílení s trenérem.
+- **Admin mazání účtů:** `/admin` → Uživatelé → „Zrušit účet" = náhodný 5-znakový kód k opsání (bez e-mailu), pak RPC
+  `admin_delete_user` (jen admin, ne sám sebe; kaskáda smaže profil/členství/sparring, owner_id subjektů → null).
 - **Čeká (P1+):** bod 5 reálná rezervace (kalendář; platba GoPay 🔑), bod 6 admin analytika+konverze+feedback dotazník,
   profil hráče závodního + žebříčky/turnaje, e-mail notifikace (Resend 🔑), dashboard areálu, video-analýza.
 - **Sekce „Pro koho"** na homepage = persona explorer: 8 person (`PERSONAS` v page.tsx, viz `docs/PORADCI-funkce.md`),
