@@ -20,6 +20,7 @@ type Ev = {
   location: string | null; link: string | null; notes: string | null;
   opponent: string | null; score: string | null; win: boolean | null; sets: SetScore[] | null;
   surface: string | null; games: GameSeq | null; aces: number | null; dfaults: number | null;
+  ext_id: string | null;
 };
 type GameSeq = ("m" | "o")[][];
 type Metrics = {
@@ -329,9 +330,9 @@ export default function MojeCesta() {
   };
   const addSet = () => setEvForm({ ...evForm, games: [...((evForm.games ?? []).map((x) => [...x])), []] });
 
-  const refreshRanking = async () => {
+  const refreshAll = async () => {
     if (!player?.cts_id) { setRefreshMsg("Hráče nejdřív napoj: Upravit hráče → vlož odkaz → Načíst."); return; }
-    setRefreshMsg("Aktualizuji…");
+    setRefreshMsg("Aktualizuji ze cesky-tenis.cz…");
     try {
       const r = await fetch(`/api/cesky-tenis?id=${encodeURIComponent(player.cts_id)}`);
       const d = await r.json();
@@ -339,9 +340,24 @@ export default function MojeCesta() {
       if (d.ranking != null) {
         await supabase.from("cesta_players").update({ ranking: d.ranking }).eq("id", player.id);
         setPlayers((ps) => ps.map((x) => x.id === player.id ? { ...x, ranking: d.ranking } : x));
-        setRefreshMsg(`Aktuální žebříček: ${d.ranking}. místo`);
-      } else setRefreshMsg("Žebříček se z profilu nepodařilo vyčíst.");
-    } catch { setRefreshMsg("Spojení selhalo (funguje až nasazené)."); }
+      }
+      // import zápasů (dedup přes ext_id)
+      const existing = new Set(events.filter((e) => e.ext_id).map((e) => e.ext_id));
+      type PM = { extId: string; date: string; competition: string | null; opponent: string; score: string; sets: SetScore[]; win: boolean };
+      const fresh = ((d.matches as PM[]) ?? []).filter((m) => !existing.has(m.extId));
+      let added = 0;
+      if (fresh.length) {
+        const rows = fresh.map((m) => ({
+          player_id: player.id, date: m.date, type: "tournament",
+          title: m.competition || "Zápas (import)", opponent: m.opponent,
+          score: m.score, sets: m.sets, win: m.win, ext_id: m.extId,
+        }));
+        const { error } = await supabase.from("cesta_events").insert(rows);
+        if (!error) { added = rows.length; await loadPlayerData(player.id); }
+      }
+      const parts = [d.ranking != null ? `žebříček ${d.ranking}.` : "žebříček se nevyčetl", `nových zápasů: ${added}`];
+      setRefreshMsg("Hotovo — " + parts.join(" · "));
+    } catch { setRefreshMsg("Spojení selhalo (import funguje až nasazené na webu)."); }
   };
 
   const addGoal = async () => {
@@ -533,7 +549,7 @@ export default function MojeCesta() {
             )}
           </h2>
           <span style={{ marginLeft: "auto", display: "inline-flex", gap: "1rem", alignItems: "center" }}>
-            {player.level === "competitive" && player.cts_id && <button className="linklike" onClick={refreshRanking}><RefreshCw size={14} /> Aktualizovat žebříček</button>}
+            {player.level === "competitive" && player.cts_id && <button className="linklike" onClick={refreshAll}><RefreshCw size={14} /> Aktualizovat (žebříček + zápasy)</button>}
             <button className="linklike" onClick={() => editPlayer(player)}><Pencil size={15} /> Upravit hráče</button>
           </span>
         </div>

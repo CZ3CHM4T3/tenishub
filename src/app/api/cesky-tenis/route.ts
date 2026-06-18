@@ -56,8 +56,55 @@ export async function GET(req: NextRequest) {
 
   const club = text.match(/((?:TJ|TK|LTC|SK|HET|I\.\s?ČLTK|ČLTK|Tenisový|Tenis)\b[^,;|]{2,45})/)?.[1]?.trim() ?? null;
 
-  return NextResponse.json({
+  const matches = parseMatches(text, name);
+
+  const body: Record<string, unknown> = {
     id, name, ranking: ranking ? Number(ranking) : null,
-    birth_year: birth ? Number(birth) : null, club, year, category, source: target,
-  });
+    birth_year: birth ? Number(birth) : null, club, year, category, source: target, matches,
+  };
+  if (sp.get("debug")) body.sample = text.slice(0, 2500);
+  return NextResponse.json(body);
+}
+
+type ParsedMatch = { extId: string; date: string; competition: string | null; opponent: string; score: string; sets: { me: number; opp: number }[]; win: boolean };
+
+const pad = (s: string) => s.padStart(2, "0");
+const NAME = "[A-ZÁ-Žá-žĚŠČŘŽÝÁÍÉÓÚŮĎŤŇ][\\p{L}'’.-]+(?:\\s+[A-ZÁ-Ž][\\p{L}'’.-]+){1}";
+
+function parseMatches(text: string, playerName: string | null): ParsedMatch[] {
+  const out: ParsedMatch[] = [];
+  try {
+    const playerSurname = (playerName || "").trim().split(/\s+/)[0]?.toLowerCase() || "";
+    // pozice dat v textu (DD. M. YYYY)
+    const dateRe = /(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})/g;
+    const dates: { i: number; d: string }[] = [];
+    for (const m of text.matchAll(dateRe)) dates.push({ i: m.index!, d: `${m[3]}-${pad(m[2])}-${pad(m[1])}` });
+    const dateBefore = (pos: number) => { let r: string | null = null; for (const x of dates) { if (x.i < pos) r = x.d; else break; } return r; };
+
+    // skóre = aspoň 2 sety (s čárkou): "3-6, 2-6"
+    const scoreRe = /(\d{1,2})-(\d{1,2})(?:[,\s]+(\d{1,2})-(\d{1,2})){1,4}/g;
+    const nameRe = new RegExp(NAME, "gu");
+    const seen = new Set<string>();
+    for (const sm of text.matchAll(scoreRe)) {
+      const idx = sm.index!;
+      const before = text.slice(Math.max(0, idx - 90), idx);
+      if (before.includes("/")) continue; // čtyřhra → přeskoč
+      const names = [...before.matchAll(nameRe)].map((x) => x[0].trim());
+      if (names.length < 1) continue;
+      const last2 = names.slice(-2);
+      const opponent = (last2.find((n) => !n.toLowerCase().startsWith(playerSurname)) || last2[last2.length - 1] || "").trim();
+      if (!opponent) continue;
+      const scoreStr = sm[0].replace(/\s+/g, " ").trim();
+      const sets = scoreStr.split(/[,\s]+/).map((p) => p.match(/^(\d{1,2})-(\d{1,2})$/)).filter(Boolean)
+        .map((mm) => ({ me: Number(mm![1]), opp: Number(mm![2]) }));
+      if (sets.length < 2) continue;
+      const date = dateBefore(idx) || "";
+      if (!date) continue;
+      const win = sets.filter((s) => s.me > s.opp).length > sets.filter((s) => s.opp > s.me).length;
+      const extId = `ct:${date}|${opponent.toLowerCase()}|${scoreStr}`;
+      if (seen.has(extId)) continue; seen.add(extId);
+      out.push({ extId, date, competition: null, opponent, score: scoreStr.replace(/-/g, ":"), sets, win });
+    }
+  } catch { /* best-effort */ }
+  return out.slice(0, 80);
 }

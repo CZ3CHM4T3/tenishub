@@ -62,6 +62,7 @@ alter table public.cesta_events add column if not exists surface text;
 alter table public.cesta_events add column if not exists games jsonb;
 alter table public.cesta_events add column if not exists aces smallint;
 alter table public.cesta_events add column if not exists dfaults smallint;
+alter table public.cesta_events add column if not exists ext_id text;  -- značka importu z cesky-tenis.cz (dedup)
 create index if not exists cesta_events_player_idx on public.cesta_events(player_id, date);
 
 alter table public.cesta_events enable row level security;
