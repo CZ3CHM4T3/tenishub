@@ -351,11 +351,11 @@
 .mc-meta { font-weight: 600; color: var(--muted); font-size: 0.85rem; }
 
 /* velký měsíc s názvy událostí */
-.mc-grid-big .mc-cell { aspect-ratio: auto; min-height: 92px; display: flex; flex-direction: column; gap: 3px; }
-.mc-grid-big .mc-daynum { font-size: 0.85rem; }
-.mc-chips { display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
-.mc-chip { font-style: normal; font-size: 0.68rem; font-weight: 600; color: #fff; padding: 1px 5px; border-radius: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.45; text-shadow: 0 1px 1px rgba(0,0,0,0.18); cursor: pointer; }
-.mc-chip.more { background: #d3d8de !important; color: var(--green-2); text-shadow: none; }
+.mc-grid-big .mc-cell { aspect-ratio: auto; min-height: 116px; display: flex; flex-direction: column; gap: 4px; padding: 6px; }
+.mc-grid-big .mc-daynum { font-size: 0.92rem; }
+.mc-chips { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.mc-chip { font-style: normal; font-size: 0.74rem; font-weight: 600; color: #fff; padding: 3px 6px; border-radius: 6px; line-height: 1.2; text-shadow: 0 1px 1px rgba(0,0,0,0.22); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
+.mc-chip.more { background: #d3d8de !important; color: var(--green-2); text-shadow: none; -webkit-line-clamp: 1; }
 
 /* týden */
 .mc-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
@@ -414,6 +414,36 @@
 .mc-modal-wide { max-width: 720px; }
 .mc-ctable th, .mc-ctable td { white-space: nowrap; }
 .mc-crow-on { background: rgba(44,74,59,0.06); }
+
+/* lišta statistik s výběrem metrik */
+.mc-statbar { display: flex; gap: 0.8rem; align-items: flex-start; margin: 1rem 0; }
+.mc-statbar .mc-stats { flex: 1; margin: 0; }
+.mc-cfgwrap { position: relative; flex: none; }
+.mc-cfgbtn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 0.9rem; border: 1px solid var(--line); background: #fff; border-radius: 12px; font-weight: 600; font-size: 0.85rem; color: var(--green-2); cursor: pointer; }
+.mc-cfgmenu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.12); padding: 0.8rem; width: 230px; display: flex; flex-direction: column; gap: 0.45rem; }
+.mc-cfgmenu b { font-size: 0.82rem; }
+.mc-cfgmenu label { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; cursor: pointer; }
+.mc-cfgmenu .btn { margin-top: 0.3rem; }
+
+/* napojení na svaz */
+.mc-sync { border: 1px dashed var(--line); border-radius: 12px; padding: 0.7rem; margin-bottom: 0.8rem; background: rgba(44,74,59,0.03); }
+.mc-syncrow { display: flex; gap: 0.5rem; }
+.mc-syncrow input { flex: 1; border: 1px solid var(--line); border-radius: 9px; padding: 0.5rem 0.6rem; font: inherit; }
+.mc-syncrow .btn { white-space: nowrap; }
+.mc-syncmsg { font-size: 0.82rem; color: var(--green); margin: 0.5rem 0 0; font-weight: 600; }
+
+/* povrchy v ohlédnutí */
+.mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
+.mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }
+.mc-surfname { width: 110px; flex: none; font-size: 0.84rem; font-weight: 600; color: var(--green-2); }
+.mc-surfrow .mc-prog { flex: 1; margin: 0; }
+.mc-surfval { width: 90px; flex: none; text-align: right; font-size: 0.82rem; font-weight: 700; }
+.mc-surfval em { font-style: normal; font-weight: 400; color: var(--muted); }
+
+@media (max-width: 820px) {
+  .mc-statbar { flex-direction: column; }
+  .mc-cfgmenu { right: auto; left: 0; }
+}
 
 .mc-goallist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.8rem; }
 .mc-goallist li { border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 0.8rem; }
