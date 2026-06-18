@@ -61,26 +61,26 @@ export default function RodicPage() {
             <span className="prole-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů, dotazy</span></span>
             <span className="prole-arr"><ArrowRight size={18} /></span>
           </Link>
-          <div className="prole-card rodic-soon">
+          <Link href="/clanky" className="prole-card">
             <span className="prole-ic" style={{ background: "#EEEDFE", color: "#7C4DD6" }}><BookOpen size={24} /></span>
-            <span className="prole-txt"><b>Knihovna článků a návodů <span className="hm-badge">HUB+</span></b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
-            <span className="prole-arr soon">brzy</span>
-          </div>
-          <div className="prole-card rodic-soon">
+            <span className="prole-txt"><b>Knihovna článků a návodů</b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
+            <span className="prole-arr"><ArrowRight size={18} /></span>
+          </Link>
+          <Link href="/poradna" className="prole-card">
             <span className="prole-ic" style={{ background: "#F2EAD6", color: "#7c6018" }}><HelpCircle size={24} /></span>
             <span className="prole-txt"><b>Poradna — zeptej se odborníka <span className="hm-badge">HUB+</span></b><span>odpovědi na míru vašeho dítěte</span></span>
-            <span className="prole-arr soon">brzy</span>
-          </div>
-          <div className="prole-card rodic-soon">
+            <span className="prole-arr"><ArrowRight size={18} /></span>
+          </Link>
+          <Link href="/turnaje" className="prole-card">
             <span className="prole-ic" style={{ background: "#E5ECF1", color: "#3b5666" }}><Calendar size={24} /></span>
-            <span className="prole-txt"><b>Kalendář turnajů v okolí <span className="hm-badge">HUB+</span></b><span>přihlášky a termíny na jednom místě</span></span>
-            <span className="prole-arr soon">brzy</span>
-          </div>
-          <div className="prole-card rodic-soon">
+            <span className="prole-txt"><b>Kalendář turnajů v okolí</b><span>přihlášky a termíny na jednom místě</span></span>
+            <span className="prole-arr"><ArrowRight size={18} /></span>
+          </Link>
+          <Link href="/bazar" className="prole-card">
             <span className="prole-ic" style={{ background: "#F2E6DF", color: "#8a5640" }}><Repeat size={24} /></span>
             <span className="prole-txt"><b>Bazar a spolujízda <span className="hm-badge">HUB+</span></b><span>vybavení z druhé ruky, odvoz na turnaj</span></span>
-            <span className="prole-arr soon">brzy</span>
-          </div>
+            <span className="prole-arr"><ArrowRight size={18} /></span>
+          </Link>
         </div>
 
         {/* ZDARMA vs HUB+ */}

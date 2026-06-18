@@ -533,6 +533,51 @@
 .freply { margin-top: 1rem; }
 .freply-ta { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.7rem; font: inherit; margin-bottom: 0.6rem; }
 
+/* Knihovna článků */
+.clanky-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.clanek-card { display: flex; flex-direction: column; gap: 0.4rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem; text-decoration: none; color: inherit; transition: transform 0.15s, box-shadow 0.2s; }
+.clanek-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.3); }
+.clanek-cat { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold-l); }
+.clanek-card b { font-size: 1.05rem; line-height: 1.25; }
+.clanek-perex { font-size: 0.86rem; color: var(--green-2); }
+.clanek-meta { font-size: 0.74rem; color: var(--muted); margin-top: auto; }
+.clanek h1 { margin-bottom: 0.3rem; }
+.clanek-lead { font-size: 1.05rem; font-weight: 600; color: var(--green-2); margin: 0.6rem 0 1rem; }
+.clanek p { line-height: 1.7; margin: 0 0 1rem; }
+
+/* Poradna */
+.pora-item { padding: 1rem 1.1rem; }
+.pora-topic { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gold-l); }
+.pora-q { margin: 0.3rem 0 0; line-height: 1.55; white-space: pre-wrap; }
+.pora-a { margin-top: 0.8rem; background: rgba(44,74,59,0.05); border-left: 3px solid var(--green); border-radius: 8px; padding: 0.6rem 0.8rem; }
+.pora-a-head { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: var(--green); }
+.pora-a p { margin: 0.3rem 0 0; line-height: 1.55; white-space: pre-wrap; }
+.pora-answer { margin-top: 0.7rem; }
+.pora-wait { margin: 0.6rem 0 0; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+/* Turnaje */
+.turnaje { display: flex; flex-direction: column; gap: 0.5rem; }
+.turnaj { display: flex; align-items: center; gap: 0.9rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 1rem; }
+.turnaj-date { flex: none; width: 64px; text-align: center; line-height: 1.1; }
+.turnaj-date b { display: block; font-size: 1.05rem; color: var(--green); }
+.turnaj-date span { font-size: 0.7rem; color: var(--muted); }
+.turnaj-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.turnaj-main b { font-size: 0.98rem; }
+.turnaj-meta { font-size: 0.78rem; color: var(--muted); }
+.turnaj-note { font-size: 0.78rem; color: var(--green-2); }
+
+/* Bazar */
+.bazar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.bazar-card { display: flex; flex-direction: column; gap: 0.35rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 1rem; }
+.bazar-top { display: flex; justify-content: space-between; align-items: center; }
+.bazar-cat { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; color: var(--gold-l); }
+.bazar-price { font-weight: 800; color: var(--green); }
+.bazar-card b { font-size: 1rem; }
+.bazar-city { font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; }
+.bazar-body { font-size: 0.86rem; color: var(--green-2); margin: 0.2rem 0; }
+.bazar-foot { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; font-size: 0.74rem; color: var(--muted); margin-top: auto; padding-top: 0.4rem; }
+.bazar-contact { font-weight: 700; color: var(--green); }
+
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
 .mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }
