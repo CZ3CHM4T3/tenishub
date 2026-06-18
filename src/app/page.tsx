@@ -107,6 +107,7 @@ function Counter({ to, suffix }: { to: number; suffix?: string }) {
 export default function Home() {
   const [persona, setPersona] = useState(0);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [online, setOnline] = useState(42);
   const [visits, setVisits] = useState(563);
   const [solid, setSolid] = useState(false);
@@ -202,9 +203,19 @@ export default function Home() {
             </nav>
             <div className="nav-r">
               <AuthNav />
-              <button className="burger" aria-label="Menu">☰</button>
+              <button className="burger" aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}>{mobileOpen ? "✕" : "☰"}</button>
             </div>
           </div>
+          {mobileOpen && (
+            <nav className="mnav" onClick={() => setMobileOpen(false)}>
+              <Link href="/pro-koho">Pro koho</Link>
+              <Link href="/mapa">Hledej</Link>
+              <Link href="/clenstvi">Členství</Link>
+              <Link href="/o-nas">O nás</Link>
+              <Link href="/videorozbor">Videorozbor</Link>
+              <Link href="/prihlaseni" className="mnav-login">Přihlásit se</Link>
+            </nav>
+          )}
         </div>
       </header>
 

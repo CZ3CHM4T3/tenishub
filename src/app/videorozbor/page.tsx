@@ -8,8 +8,9 @@ export const metadata: Metadata = {
   description: "Vaše dítě ztrácí radost z tenisu? Většinou za tím není talent, ale frustrace. Nezávisle a objektivně poradíme konkrétní kroky — videorozbor techniky, pohybu i hlavy.",
 };
 
-// 🔑 Jane, sem dej reálné telefonní číslo (zobrazí se jako tlačítko „Zavolejte nám").
-const TEL = "+420 776 000 000";
+// 🔑 Jane, sem dej reálné telefonní číslo a tlačítko „Zavolejte nám" se samo objeví.
+// Dokud je prázdné, ukazuje se jen e-mail (žádné falešné číslo).
+const TEL: string = "";
 
 export default function VideorozborPage() {
   return (
@@ -29,8 +30,8 @@ export default function VideorozborPage() {
             poradíme, v čem je problém a jak ho řešit.
           </p>
           <div className="vr-cta">
-            <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám: {TEL}</a>
-            <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className="btn btn-out"><Mail size={16} /> Napsat e-mail</a>
+            {TEL && <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám: {TEL}</a>}
+            <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className={`btn ${TEL ? "btn-out" : "btn-gold"}`}><Mail size={16} /> Napište nám: info@tenishub.cz</a>
           </div>
           <p className="vr-note">Nezávisle na tom, kde vaše dítě trénuje — <b>jsme objektivní</b>. Nezajímá nás klub, zajímá nás vaše dítě.</p>
         </div>
@@ -58,8 +59,8 @@ export default function VideorozborPage() {
           od lidí, kteří tenisu i dětem rozumí.
         </p>
         <div className="vr-cta">
-          <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám</a>
-          <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className="btn btn-out"><Mail size={16} /> info@tenishub.cz</a>
+          {TEL && <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám</a>}
+          <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className={`btn ${TEL ? "btn-out" : "btn-gold"}`}><Mail size={16} /> info@tenishub.cz</a>
         </div>
       </div>
     </div>

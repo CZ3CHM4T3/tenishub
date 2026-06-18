@@ -15,6 +15,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/mapa`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/clenstvi`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/pro-koho`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/sluzby`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/o-nas`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/sparring`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/videorozbor`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/soukromi`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
@@ -33,8 +37,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     );
     const [sp, ve] = await Promise.all([
-      sb.from("specialists").select("id").neq("status", "hidden"),
-      sb.from("venues").select("id").neq("status", "hidden"),
+      sb.from("specialists").select("id").neq("status", "hidden").abortSignal(AbortSignal.timeout(5000)),
+      sb.from("venues").select("id").neq("status", "hidden").abortSignal(AbortSignal.timeout(5000)),
     ]);
     (sp.data ?? []).forEach((s: { id: string }) =>
       routes.push({ url: `${base}/trener/${s.id}`, lastModified: now, changeFrequency: "weekly", priority: 0.6 }),

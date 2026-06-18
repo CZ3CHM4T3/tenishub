@@ -132,6 +132,13 @@
   .login:hover { background: var(--green); color: #fff; }
   .burger { display: none; background: none; border: 0; color: var(--green); font-size: 1.5rem; cursor: pointer; }
   @media (max-width: 880px) { .menu, .login { display: none; } .burger { display: block; } }
+  .mnav { display: none; }
+  @media (max-width: 880px) {
+    .mnav { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding: 0.4rem 0 0.6rem; }
+    .mnav a { padding: 0.85rem 0.4rem; font-weight: 700; color: var(--green); border-bottom: 1px solid rgba(0,0,0,0.05); text-decoration: none; }
+    .mnav a:last-child { border-bottom: 0; }
+    .mnav .mnav-login { color: var(--gold-l); }
+  }
 
   /* HERO */
   .hero { position: relative; min-height: 92svh; display: flex; align-items: center; color: var(--ink); overflow: hidden; padding: 2.5rem 0 2rem; }
@@ -318,7 +325,8 @@
 .mc-seg:first-child { border-radius: 14px 0 0 14px; }
 .mc-seg:last-child { border-radius: 0 14px 14px 0; }
 .mc-seg::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(0,0,0,0.12)); }
-.mc-seg span { position: relative; padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.32); letter-spacing: 0.02em; }
+.mc-seg span { position: relative; padding: 0 5px; line-height: 1.05; overflow: hidden; text-shadow: 0 1px 2px rgba(0,0,0,0.32); letter-spacing: 0; text-align: center; word-break: break-word; hyphens: auto; }
+.mc-seg span { font-size: clamp(0.6rem, 1.6vw, 0.85rem); }
 .mc-seg.here::after { content: ""; position: absolute; inset: 0; border: 2px solid rgba(255,255,255,0.9); border-radius: inherit; }
 .mc-now { position: absolute; top: -6px; bottom: -6px; width: 2px; background: rgba(22,17,10,0.5); transform: translateX(-50%); pointer-events: none; }
 .mc-now::before { content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); border: 2px solid #fff; transform: translateX(-50%); box-shadow: 0 2px 7px rgba(0,0,0,0.32); }
@@ -756,7 +764,7 @@
 .videonudge b { display: block; font-size: 0.95rem; }
 .videonudge span { font-size: 0.8rem; color: rgba(255,255,255,0.85); }
 .videonudge-x { position: absolute; top: 4px; right: 7px; background: none; border: 0; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.05rem; line-height: 1; }
-@media (max-width: 520px) { .videonudge.left { left: 10px; right: 10px; max-width: none; } .videonudge.right { display: none; } }
+@media (max-width: 640px) { .videonudge.left { left: 10px; right: 10px; max-width: none; } .videonudge.right { display: none; } }
 /* NAJDI karta (hero) */
 .najdi-card { display: flex; align-items: center; gap: 1rem; width: 100%; max-width: 640px; margin: 1.6rem auto 0; padding: 1rem 1.3rem; background: #fff; border: 1.5px solid var(--gold); border-radius: 16px; text-decoration: none; box-shadow: 0 10px 30px rgba(40,50,30,0.08); transition: 0.18s; }
 .najdi-card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(40,50,30,0.13); }

@@ -26,9 +26,13 @@ export type VenueRow = {
 export type Court = { name: string; indoor: boolean; surface: string | null };
 export type MiniTrainer = { id: string; name: string; kind: string };
 
+// Timeout pro serverový fetch — když je Supabase pomalá/nedostupná, ať se SSR
+// nezasekne (rychlý pád zpět na klientské načtení místo viset až do limitu funkce).
+const SIGNAL = () => AbortSignal.timeout(3500);
+
 export const getSpecialist = cache(async (id: string): Promise<SpecRow | null> => {
   try {
-    const { data } = await anon().from("specialists").select("*").eq("id", id).maybeSingle();
+    const { data } = await anon().from("specialists").select("*").eq("id", id).abortSignal(SIGNAL()).maybeSingle();
     return (data as SpecRow) ?? null;
   } catch {
     return null;
@@ -39,9 +43,9 @@ export const getVenue = cache(async (id: string): Promise<{ venue: VenueRow; cou
   try {
     const sb = anon();
     const [{ data: v }, { data: c }, { data: t }] = await Promise.all([
-      sb.from("venues").select("*").eq("id", id).maybeSingle(),
-      sb.from("courts").select("name,indoor,surface").eq("venue_id", id),
-      sb.from("specialists").select("id,name,kind").eq("venue_id", id).neq("status", "hidden"),
+      sb.from("venues").select("*").eq("id", id).abortSignal(SIGNAL()).maybeSingle(),
+      sb.from("courts").select("name,indoor,surface").eq("venue_id", id).abortSignal(SIGNAL()),
+      sb.from("specialists").select("id,name,kind").eq("venue_id", id).neq("status", "hidden").abortSignal(SIGNAL()),
     ]);
     if (!v) return null;
     return { venue: v as VenueRow, courts: (c as Court[]) ?? [], trainers: (t as MiniTrainer[]) ?? [] };
@@ -54,8 +58,8 @@ export const listCity = cache(async (city: string): Promise<{ specs: SpecRow[]; 
   try {
     const sb = anon();
     const [{ data: specs }, { data: vens }] = await Promise.all([
-      sb.from("specialists").select("id,name,kind,city,rating,reviews_count,venue_id,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }),
-      sb.from("venues").select("id,name,city,rating,reviews_count,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }),
+      sb.from("specialists").select("id,name,kind,city,rating,reviews_count,venue_id,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }).abortSignal(SIGNAL()),
+      sb.from("venues").select("id,name,city,rating,reviews_count,status,verified").eq("city", city).neq("status", "hidden").order("verified", { ascending: false }).order("reviews_count", { ascending: false }).abortSignal(SIGNAL()),
     ]);
     return { specs: (specs as SpecRow[]) ?? [], vens: (vens as VenueRow[]) ?? [] };
   } catch {
