@@ -90,6 +90,12 @@ export default function MapExplorer() {
     if (city !== null && Number.isFinite(+city) && +city >= 0 && +city < CITIES.length) setCityIndex(+city);
     const query = sp.get("q");
     if (query) setQ(query);
+    const type = sp.get("type");
+    if (type && type in ALL_ON) {
+      const next = { ...ALL_ON };
+      (Object.keys(next) as TypeKey[]).forEach((k) => { next[k] = k === type; });
+      setActive(next);
+    }
   }, []);
 
   const radiusKm = mode === "km" ? val : Math.round(val * 1.17); // dojezd → km (~70 km/h)

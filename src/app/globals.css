@@ -450,6 +450,27 @@
 .mc-sres b { font-size: 0.9rem; }
 .mc-sres span { font-size: 0.76rem; color: var(--muted); }
 
+/* ===== ROZCESTNÍK SLUŽEB (ServicePicker) ===== */
+.spick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
+.spick-card { position: relative; display: flex; align-items: center; gap: 0.9rem; background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 1.1rem; cursor: pointer; flex-wrap: wrap; transition: transform 0.2s, box-shadow 0.25s, border-color 0.2s; }
+.spick-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.3); }
+.spick.has-sel .spick-card:not(.on) { opacity: 0.62; }
+.spick-card.on { grid-column: 1 / -1; transform: none; }
+.spick-ic { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; flex: none; transition: transform 0.2s; }
+.spick-card:hover .spick-ic { transform: scale(1.06) rotate(-3deg); }
+.spick-txt { display: flex; flex-direction: column; }
+.spick-txt b { font-size: 1.06rem; }
+.spick-txt span { font-size: 0.82rem; color: var(--muted); }
+.spick-chev { margin-left: auto; color: #c2c8cf; transition: transform 0.2s; }
+.spick-card.on .spick-chev { transform: rotate(90deg); }
+.spick-cta { display: none; }
+.spick-card.on .spick-cta { display: flex; gap: 0.6rem; width: 100%; margin-top: 0.5rem; flex-wrap: wrap; }
+.spick-btn { display: inline-flex; align-items: center; gap: 7px; padding: 0.7rem 1.1rem; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 0.92rem; }
+.spick-btn.find { color: #fff; }
+.spick-btn.iam { background: #fff; border: 1.5px solid; }
+.spick-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+@media (max-width: 520px) { .spick-btn { flex: 1; justify-content: center; } }
+
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
 .mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }

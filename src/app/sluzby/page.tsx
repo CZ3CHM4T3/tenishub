@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
 import { Wordmark } from "@/components/Wordmark";
-import { ServiceMap } from "@/components/ServiceMap";
+import { ServicePicker } from "@/components/ServicePicker";
 
 export const metadata: Metadata = {
-  title: "Služby — trenéři, kurty, fyzio, fitness, sparring i vyplétání",
-  description: "Vyberte si službu: tenisový trenér, hráč, sparring, areály, fyzio, fitness nebo vyplétání. Najděte specialistu po celé ČR.",
+  title: "Služby a profíci — vyberte, koho hledáte nebo kdo jste",
+  description: "Trenér, areál, fyzio, fitness, sparring nebo vyplétání. Vyberte si — najděte specialistu na mapě, nebo se přidejte jako poskytovatel.",
 };
 
 export default function SluzbyPage() {
@@ -18,16 +18,17 @@ export default function SluzbyPage() {
       </div></div></header>
 
       <div className="wrap sluzby-wrap">
-        <h1>Služby na mapě</h1>
-        <p className="lead">Trenéři, kurty, fyzio, fitness i vyplétání po celé ČR. Otevřete interaktivní mapu a filtrujte podle místa a dojezdu — nebo si vyberte podle role v sekci <Link href="/pro-koho" style={{ color: "var(--gold-l)", fontWeight: 600 }}>Pro koho</Link>.</p>
+        <span className="eyebrow">Služby &amp; profíci</span>
+        <h1>Koho hledáte — nebo kdo jste?</h1>
+        <p className="lead">Vyberte si. U každé služby najdete specialistu na mapě, nebo se sami přidáte jako poskytovatel.</p>
+
+        <ServicePicker />
 
         <Link href="/mapa" className="najdi-card sluzby-najdi">
           <span className="najdi-ic"><MapPin size={26} /></span>
-          <div className="najdi-txt"><b>NAJDI na interaktivní mapě</b><span>Všechny služby kolem vás — podle místa a dojezdu</span></div>
+          <div className="najdi-txt"><b>Nebo otevřete celou mapu</b><span>Všechny služby kolem vás — podle místa a dojezdu</span></div>
           <span className="najdi-arr"><ArrowRight size={22} /></span>
         </Link>
-
-        <ServiceMap showMap={true} showCards={false} />
       </div>
     </div>
   );
