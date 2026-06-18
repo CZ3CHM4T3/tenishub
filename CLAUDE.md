@@ -192,8 +192,16 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   reg. č. ČTS — ZADÁVÁ SE RUČNĚ; auto-tahání ze svazu cztenis.cz = budoucí integrace, nemáme DB soutěží/žebříčků ani API).
   **4 náhledy kalendáře** (`view`): Měsíc (velké buňky s názvy událostí), Týden (sloupce s výpisem), Rok („v barvách" —
   měsíce × dny obarvené dle aktivity, čemu se kdy věnoval), Zátěž (SVG křivka četnosti tréninkových jednotek/týden + tečky turnajů).
-  Čeká Fáze 2: turnaje s grafem vývoje umístění, šablony týdne (mikrocyklus), propojení s rezervací (availability), deník;
-  Fáze 3: hlídání vyhoření (poměr zátěž:volno), tipy dle fáze sezóny, sdílení plánu s trenérem; integrace žebříčku ČTS.
+  **v3:** náhled „Ohlédnutí" — analýza zápasů ze SETŮ (`cesta_events.sets` jsonb [{me,opp}]): úspěšnost, % vyhraných 1. setů,
+  dotažení (vedu 1. set→výhra), otočky (prohra 1. setu→výhra), úspěšnost po měsících, slovní postřehy (fce `insights`).
+  Porovnání více hráčů (modal, krátká analýza nej úspěšnost/dotahování/nejvíc TJ). Skóre se zadává po setech.
+  **v4:** napojení na **cesky-tenis.cz** — API route `src/app/api/cesky-tenis/route.ts` (runtime nodejs, fetch+regex
+  parse server-rendered HTML: jméno z <title>, žebříček z „Žebříček \d+", ročník, klub) → v modalu hráče „Načíst"
+  (vlož odkaz/ID). BĚŽÍ JEN NASAZENĚ (lokálně síť blokovaná → 502, route to ošetřuje). Parser best-effort, závislý na HTML svazu.
+  Povrch kurtu u událostí (`cesta_events.surface`: antuka|hard|koberec|trava|hala) + „úspěšnost podle povrchu" v Ohlédnutí.
+  Volitelné metriky (`METRIC_DEFS`, výběr uložen v localStorage „mc_stats"). Větší měsíční kalendář s čitelným textem v polích.
+  Čeká: import zápasů z cesky-tenis.cz (teď jen identita+žebříček), name-search hráče; graf vývoje umístění; šablony týdne;
+  propojení s rezervací (availability); deník; hlídání vyhoření; sdílení plánu s trenérem.
 - **Admin mazání účtů:** `/admin` → Uživatelé → „Zrušit účet" = náhodný 5-znakový kód k opsání (bez e-mailu), pak RPC
   `admin_delete_user` (jen admin, ne sám sebe; kaskáda smaže profil/členství/sparring, owner_id subjektů → null).
 - **Čeká (P1+):** bod 5 reálná rezervace (kalendář; platba GoPay 🔑), bod 6 admin analytika+konverze+feedback dotazník,
