@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
+import AdminCesta from "./AdminCesta";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -141,6 +142,7 @@ export default function AdminPage() {
   const TABS: [string, string][] = [
     ["prehled", "Přehled"], ["uzivatele", "Uživatelé"], ["subjekty", "Subjekty"],
     ["recenze", "Recenze"], ["zadosti", "Žádosti"], ["rezervace", "Rezervace"],
+    ["cesta", "Moje cesta"],
   ];
 
   const activeCount = profiles.filter((p) => activeOf(p.id)).length;
@@ -321,6 +323,8 @@ export default function AdminPage() {
         )}
 
         {tab === "subjekty" && <AdminSubjects />}
+
+        {tab === "cesta" && <AdminCesta />}
 
         {tab === "rezervace" && (
         <div className="acct-card">

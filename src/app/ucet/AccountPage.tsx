@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound, Mail } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound, Mail, Route } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
@@ -106,6 +106,13 @@ export default function AccountPage() {
           <span className="msgs-ic"><Mail size={20} /></span>
           <span className="msgs-txt"><b>Zprávy</b><span>{unread > 0 ? `${unread} nepřečtených — někdo ti napsal` : "Tvoje konverzace s trenéry a hráči"}</span></span>
           {unread > 0 && <span className="chat-badge">{unread}</span>}
+          <span className="msgs-arr">→</span>
+        </Link>
+
+        {/* MOJE CESTA */}
+        <Link href="/moje-cesta" className="acct-card msgs-link">
+          <span className="msgs-ic"><Route size={20} /></span>
+          <span className="msgs-txt"><b>Moje cesta</b><span>Naplánuj sezónu — tréninky, turnaje, cíle a statistiky{membership ? "" : " (HUB+)"}</span></span>
           <span className="msgs-arr">→</span>
         </Link>
 

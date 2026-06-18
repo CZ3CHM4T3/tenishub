@@ -311,8 +311,11 @@ export default function Home() {
           <div className="mcpromo-txt">
             <span className="mcpromo-eyebrow">★ Hlavní výhoda HUB+ pro rodiče</span>
             <h2>Moje cesta — celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
-            <p>Přehledný barevný kalendář: tréninky (kdy, kde, odkaz), turnaje i s výsledky, skladba tréninku, kompenzační sporty — a hlavně <b>volno a čas jen pro sebe</b>. Pomáháme růst krok za krokem, bez vyhoření.</p>
-            <Link href="/prihlaseni?tab=reg" className="btn btn-green">Vytvořit účet zdarma</Link>
+            <p>Provede hobby i závodního hráče <b>celou sezónou</b>: osa příprava → sezóna → mezisezóna, barevný kalendář (tréninky, turnaje i s výsledky, kondice), cíle a statistiky — a hlavně <b>volno a čas jen pro sebe</b>. Růst krok za krokem, bez vyhoření.</p>
+            <div className="mcpromo-cta">
+              <Link href="/moje-cesta" className="btn btn-green">Otevřít Moji cestu</Link>
+              <Link href="/prihlaseni?tab=reg" className="btn btn-out">Vytvořit účet zdarma</Link>
+            </div>
           </div>
           <div className="mcpromo-vis" aria-hidden="true">
             <div className="mcleg"><span style={{ background: "#7C4DD6" }} />Trénink</div>
