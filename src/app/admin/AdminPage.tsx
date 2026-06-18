@@ -119,6 +119,22 @@ export default function AdminPage() {
     await supabase.from("reviews").update({ status }).eq("id", id);
     await load(); setBusy(null);
   };
+  const deleteUser = async (p: Profile) => {
+    const wanted = (p.email ?? "").trim().toLowerCase();
+    const code = window.prompt(
+      `ZRUŠENÍ ÚČTU je NEVRATNÉ.\nSmaže účet, členství i jeho data.\n\nPro potvrzení opiš e-mail účtu:\n${p.email ?? "(bez e-mailu)"}`
+    );
+    if (code == null) return;
+    if (!wanted || code.trim().toLowerCase() !== wanted) {
+      alert("E-mail nesouhlasí — účet NEbyl zrušen.");
+      return;
+    }
+    setBusy(p.id);
+    const supabase = createClient();
+    const { error } = await supabase.rpc("admin_delete_user", { p_uid: p.id });
+    if (error) alert("Účet se nepodařilo zrušit: " + error.message);
+    await load(); setBusy(null);
+  };
   if (loading) return <div className="acct-loading">Načítám administraci…</div>;
 
   const TABS: [string, string][] = [
@@ -188,6 +204,7 @@ export default function AdminPage() {
                         <button onClick={() => grant(p.id, 365)} disabled={busy === p.id}>+rok</button>
                         {m && m.auto_renew && <button onClick={() => stopRenew(p.id)} disabled={busy === p.id}>stop auto</button>}
                         {m && <button className="danger" onClick={() => endNow(p.id)} disabled={busy === p.id}>ukončit</button>}
+                        <button className="danger" onClick={() => deleteUser(p)} disabled={busy === p.id}>Zrušit účet</button>
                       </td>
                     </tr>
                   );
