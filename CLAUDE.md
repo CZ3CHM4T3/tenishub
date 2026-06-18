@@ -200,7 +200,14 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   (vlož odkaz/ID). BĚŽÍ JEN NASAZENĚ (lokálně síť blokovaná → 502, route to ošetřuje). Parser best-effort, závislý na HTML svazu.
   Povrch kurtu u událostí (`cesta_events.surface`: antuka|hard|koberec|trava|hala) + „úspěšnost podle povrchu" v Ohlédnutí.
   Volitelné metriky (`METRIC_DEFS`, výběr uložen v localStorage „mc_stats"). Větší měsíční kalendář s čitelným textem v polích.
-  Čeká: import zápasů z cesky-tenis.cz (teď jen identita+žebříček), name-search hráče; graf vývoje umístění; šablony týdne;
+  **v5:** snadná evidence zápasu (soupeř s našeptávačem `datalist`, povrch, skóre Rychle „6:3 6:2" NEBO Po gemech =
+  ťukací pořadí gemů → `cesta_events.games`, z toho mentální statistika: bounce-back po ztrátě gemu; volitelně esa/dvojchyby).
+  Kalendář přes celou šířku + mobilní optimalizace (na mobilu start v týdenní agendě, měsíc = barevné proužky, modály odspodu).
+  **v6 — import zápasů + auto-aktualizace na čudlík:** tlačítko „Aktualizovat" (`refreshAll`) stáhne žebříček i naimportuje
+  nové SINGLOVÉ zápasy z cesky-tenis.cz. API `parseMatches` parsuje match log z textu (best-effort: datum, soupeř, sety
+  player-first, výhra; čtyřhra se přeskakuje); dedup přes `cesta_events.ext_id` (`ct:datum|soupeř|skóre`). `?debug=1` vrací
+  `sample` (2,5k textu) + `matches` pro ladění parseru na reálných datech z Vercelu. Import BĚŽÍ JEN NASAZENĚ.
+  Čeká: name-search hráče, doubles import, automatika na pozadí (cron), graf vývoje umístění; šablony týdne;
   propojení s rezervací (availability); deník; hlídání vyhoření; sdílení plánu s trenérem.
 - **Admin mazání účtů:** `/admin` → Uživatelé → „Zrušit účet" = náhodný 5-znakový kód k opsání (bez e-mailu), pak RPC
   `admin_delete_user` (jen admin, ne sám sebe; kaskáda smaže profil/členství/sparring, owner_id subjektů → null).
