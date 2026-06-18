@@ -294,6 +294,9 @@ export default function Home() {
                 <li><Lock size={15} /> Připomínky lekcí a plateb</li>
                 <li><Lock size={15} /> Profil hráče, výsledky a žebříček</li>
                 <li><Lock size={15} /> Plánovač turnajů + tréninkový checklist</li>
+                <li><Lock size={15} /> Tréninkový deník a sledování pokroku</li>
+                <li><Lock size={15} /> Sparring matchmaking podle výkonnosti</li>
+                <li><Lock size={15} /> Knihovna článků a návodů (jak vybrat trenéra, výbavu…)</li>
               </ul>
               <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
             </div>

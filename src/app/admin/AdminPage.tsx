@@ -120,13 +120,14 @@ export default function AdminPage() {
     await load(); setBusy(null);
   };
   const deleteUser = async (p: Profile) => {
-    const wanted = (p.email ?? "").trim().toLowerCase();
-    const code = window.prompt(
-      `ZRUŠENÍ ÚČTU je NEVRATNÉ.\nSmaže účet, členství i jeho data.\n\nPro potvrzení opiš e-mail účtu:\n${p.email ?? "(bez e-mailu)"}`
+    const code = Math.random().toString(36).slice(2, 7).toUpperCase(); // náhodný 5-znakový kód
+    const who = p.full_name || p.email || "tento účet";
+    const typed = window.prompt(
+      `ZRUŠENÍ ÚČTU „${who}" je NEVRATNÉ.\nSmaže účet, členství i jeho data.\n\nPro potvrzení opiš tento kód:\n\n${code}`
     );
-    if (code == null) return;
-    if (!wanted || code.trim().toLowerCase() !== wanted) {
-      alert("E-mail nesouhlasí — účet NEbyl zrušen.");
+    if (typed == null) return;
+    if (typed.trim().toUpperCase() !== code) {
+      alert("Kód nesouhlasí — účet NEbyl zrušen.");
       return;
     }
     setBusy(p.id);
