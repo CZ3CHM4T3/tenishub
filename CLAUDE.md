@@ -133,7 +133,14 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
 - **`/sluzby`** = `ServicePicker` (dynamické karty trenér/areál/sparring/fyzio/fitness/vyplétač: „Hledám X" → `/mapa?type=` předfiltr, „Jsem X" → `/pro-koho?role=`) + `MapSearch` (přímé hledání) + odkaz na mapu.
 - **`/pro-koho?role=KEY`** = role-specifická stránka (hero + Zdarma vs HUB+ daného oboru + CTA, přepínání rolí) z `src/lib/roles.ts`. `role=rodic` **redirectuje na `/rodic`**. Homepage dropdown „Pro koho" i ServicePicker „Jsem X" odkazují rovnou na roli.
 - **`/rodic`** = rodičovský hub: rychlé akce (Najít trenéra/kurt = ZDARMA; **Moje cesta + Sparring = HUB+**; **Videorozbor = „Placená služba" MIMO HUB+ členství** — Janovo rozhodnutí, 1:1 expertní čas) + komunita/obsah (vše HUB+, zatím „brzy") + Zdarma/HUB+ + FAQ (funguje, `<details>`).
-- **3 PILÍŘE komunity pro rodiče (budoucí stabilní služba, vše HUB+, pořadí stavby):** ①​ Knihovna článků/návodů, ② Fórum rodičů (vlákna+moderace), ③ Poradna (zeptej se odborníka). Další HUB+ nápady: kalendář turnajů, bazar+spolujízda, checklist výbavy, srovnání trenérů, newsletter.
+- **KOMUNITA RODIČŮ — HOTOVO (5 funkcí, `supabase/forum.sql` + `supabase/komunita.sql`):** model = ČTENÍ VEŘEJNÉ (SEO+bootstrap), AKCE dle role.
+  - **Fórum `/forum`** (`forum_threads`+`forum_posts`): témata+odpovědi, 6 kategorií; psát = HUB+ (gate), admin vždy; trigger reply_count/last_at. Detail `/forum/[id]`.
+  - **Knihovna článků `/clanky`** (`articles`): píše ADMIN (modal, slug auto), čtou všichni; detail `/clanky/[slug]` (odstavce z \n\n).
+  - **Poradna `/poradna`** (`advice`): ptá se HUB+ člen, odpovídá ADMIN inline; odpovězené veřejné, vlastní/admin vše (RLS).
+  - **Kalendář turnajů `/turnaje`** (`tournaments`): spravuje ADMIN (modal), filtr města + i proběhlé; odkaz na přihlášku.
+  - **Bazar + spolujízda `/bazar`** (`bazar_listings`, kind bazar|spolujizda): 2 záložky, přidává HUB+ člen, maže autor/admin.
+  - Sdílený hook **`src/lib/useMe.ts`** ({me, canPost=HUB+/admin, isAdmin}). Karty na `/rodic` jsou živé. Vše v sitemapě.
+  - ČEKÁ: moderace ve `/admin` (skrýt/smazat příspěvky), e-mail notifikace odpovědí, auto-import turnajů ze svazu.
 - **Poskytovatelský model (rozhodnuto, ČEKÁ na implementaci):** Free = profil v DB VIDĚT vč. recenzí, ale fotka/bio/ceník/rezervace/zprávy/top + ověření = HUB+ (Free vidí vše ZAMČENÉ — ať vidí, o co přichází). **„Ověřeno TenisHubem" se NEKUPUJE** — ruční známka admina (reálnost+kvalita), prakticky jen pro spravované HUB+ karty; na mapě jen ověřené.
 
 ## Data (Supabase)
