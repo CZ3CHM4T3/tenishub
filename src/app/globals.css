@@ -511,6 +511,28 @@
 .faq-item[open] summary::after { content: "−"; }
 .faq-item p { margin: 0; padding: 0 1rem 1rem; color: var(--green-2); font-size: 0.92rem; line-height: 1.55; }
 
+/* ===== FÓRUM ===== */
+.fcats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
+.fcat { padding: 0.4rem 0.85rem; border: 1px solid var(--line); background: #fff; border-radius: 100px; font-weight: 600; font-size: 0.84rem; color: var(--green-2); cursor: pointer; }
+.fcat.on { background: var(--green); color: #fff; border-color: var(--green); }
+.fthreads { display: flex; flex-direction: column; gap: 0.5rem; }
+.fthread { display: flex; align-items: center; gap: 0.7rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem 1rem; text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; }
+.fthread:hover { border-color: var(--gold); transform: translateY(-1px); }
+.fpin { color: var(--gold-l); flex: none; }
+.fthread-main { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.fthread-main b { font-size: 0.98rem; }
+.fthread-meta { font-size: 0.76rem; color: var(--muted); }
+.fthread-reps { flex: none; display: flex; flex-direction: column; align-items: center; font-weight: 800; color: var(--green); font-size: 1.05rem; min-width: 56px; }
+.fthread-reps small { font-weight: 600; font-size: 0.62rem; color: var(--muted); }
+.fposts { display: flex; flex-direction: column; gap: 0.6rem; }
+.fpost { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.8rem 1rem; }
+.fpost-op { border-left: 3px solid var(--gold); }
+.fpost-head { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
+.fpost-head b { color: var(--green); font-size: 0.86rem; }
+.fpost p { margin: 0; line-height: 1.55; white-space: pre-wrap; }
+.freply { margin-top: 1rem; }
+.freply-ta { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.7rem; font: inherit; margin-bottom: 0.6rem; }
+
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
 .mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }

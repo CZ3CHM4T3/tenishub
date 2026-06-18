@@ -56,11 +56,11 @@ export default function RodicPage() {
         <h2 className="rodic-plan-h" style={{ marginTop: "2.2rem" }}>Komunita a obsah pro rodiče</h2>
         <p className="lead" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUB+ — místo, kde rodiče nejsou na tenis sami.</p>
         <div className="prole-grid">
-          <div className="prole-card rodic-soon">
+          <Link href="/forum" className="prole-card">
             <span className="prole-ic" style={{ background: "#E0EBE9", color: "#2f5d57" }}><MessagesSquare size={24} /></span>
             <span className="prole-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů, dotazy</span></span>
-            <span className="prole-arr soon">brzy</span>
-          </div>
+            <span className="prole-arr"><ArrowRight size={18} /></span>
+          </Link>
           <div className="prole-card rodic-soon">
             <span className="prole-ic" style={{ background: "#EEEDFE", color: "#7C4DD6" }}><BookOpen size={24} /></span>
             <span className="prole-txt"><b>Knihovna článků a návodů <span className="hm-badge">HUB+</span></b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
