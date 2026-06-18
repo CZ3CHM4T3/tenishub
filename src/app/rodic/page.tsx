@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const QUICK = [
-  { Icon: MapPin, t: "Najít trenéra / kurt", s: "specialisté a areály na mapě", href: "/mapa", c: "#7c6018", b: "#F2EAD6", hub: false },
-  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", b: "#EEEDFE", hub: true },
-  { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", b: "#F2E5E9", hub: true },
-  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", b: "#F2E6DF", hub: true },
+  { Icon: MapPin, t: "Najít trenéra / kurt", s: "specialisté a areály na mapě", href: "/mapa", c: "#7c6018", b: "#F2EAD6", badge: "" },
+  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", b: "#EEEDFE", badge: "HUB+" },
+  { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", b: "#F2E5E9", badge: "Placená služba" },
+  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", b: "#F2E6DF", badge: "HUB+" },
 ];
 
 const FAQ = [
@@ -46,7 +46,7 @@ export default function RodicPage() {
           {QUICK.map((q, i) => (
             <Link key={i} href={q.href} className="prole-card">
               <span className="prole-ic" style={{ background: q.b, color: q.c }}><q.Icon size={24} /></span>
-              <span className="prole-txt"><b>{q.t}{q.hub && <span className="hm-badge">HUB+</span>}</b><span>{q.s}</span></span>
+              <span className="prole-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUB+" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
               <span className="prole-arr"><ArrowRight size={18} /></span>
             </Link>
           ))}

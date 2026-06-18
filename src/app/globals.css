@@ -502,6 +502,7 @@
 .rodic-soon:hover { transform: none; border-color: var(--line); box-shadow: none; }
 .prole-arr.soon { font-size: 0.68rem; font-weight: 800; color: var(--gold-l); text-transform: uppercase; letter-spacing: 0.05em; }
 .prole-txt .hm-badge { display: inline-block; font-size: 0.6rem; font-weight: 800; color: #fff; background: var(--gold-l); border-radius: 100px; padding: 1px 6px; vertical-align: 1px; margin-left: 4px; }
+.prole-txt .hm-badge.paid { background: var(--green); }
 .faq { display: flex; flex-direction: column; gap: 0.5rem; max-width: 760px; }
 .faq-item { border: 1px solid var(--line); border-radius: 12px; background: #fff; overflow: hidden; }
 .faq-item summary { cursor: pointer; padding: 0.85rem 1rem; font-weight: 700; color: var(--green); list-style: none; position: relative; padding-right: 2.2rem; }
