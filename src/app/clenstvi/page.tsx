@@ -17,14 +17,14 @@ export default function ClenstviPage() {
       </div></div></header>
 
       <div className="wrap sluzby-wrap">
-        <h1>Členství</h1>
-        <p className="lead">
+        <h1 className="rv">Členství</h1>
+        <p className="lead rv d1">
           Naše pravidlo je jednoduché: <b>objevit, spojit se a být vidět je zdarma</b> — platí se až za
           nástroje, které šetří čas a přinášejí klienty. Vyberte roli a rozklikněte ji: uvidíte přesně,
           co máte <b>zdarma</b> a co navíc s <b>HUB+</b> (200 Kč/měsíc, kdykoli zrušíte).
         </p>
 
-        <ServiceMap showMap={false} showCards={true} />
+        <div className="rv d1"><ServiceMap showMap={false} showCards={true} /></div>
 
         <p className="rp-extra" style={{ marginTop: "2rem" }}>
           Pozn.: <b>Videorozbor a konzultace</b> je samostatná placená služba mimo HUB+. <Link href="/videorozbor">Více →</Link>

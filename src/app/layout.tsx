@@ -6,6 +6,7 @@ import "@fontsource/montserrat/600.css";
 import "@fontsource/montserrat/700.css";
 import "@fontsource/montserrat/800.css";
 import "./globals.css";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: {
@@ -52,11 +53,14 @@ export default function RootLayout({
   return (
     <html lang="cs">
       <body>
+        {/* bez JS: odhal vše, ať obsah není nikdy skrytý */}
+        <noscript><style>{`.rv{opacity:1!important;transform:none!important}`}</style></noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
         {children}
+        <ScrollReveal />
       </body>
     </html>
   );

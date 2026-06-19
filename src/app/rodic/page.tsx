@@ -37,14 +37,14 @@ export default function RodicPage() {
       </div></div></header>
 
       <div className="wrap sluzby-wrap">
-        <span className="eyebrow">Rodič &amp; dítě</span>
-        <h1>Všechno pro tenisové rodiče na jednom místě</h1>
-        <p className="lead">Najděte trenéra i kurt, veďte dítě celou sezónou bez vyhoření, čtěte návody a sdílejte zkušenosti s ostatními rodiči.</p>
+        <span className="eyebrow rv">Rodič &amp; dítě</span>
+        <h1 className="rv d1">Všechno pro tenisové rodiče na jednom místě</h1>
+        <p className="lead rv d1">Najděte trenéra i kurt, veďte dítě celou sezónou bez vyhoření, čtěte návody a sdílejte zkušenosti s ostatními rodiči.</p>
 
         {/* RYCHLÉ AKCE */}
         <div className="rolepick-grid">
           {QUICK.map((q, i) => (
-            <Link key={i} href={q.href} className="rolepick" style={{ backgroundColor: q.c, backgroundImage: `url(${q.photo})` }}>
+            <Link key={i} href={q.href} className={`rolepick rv z d${Math.min(i + 1, 4)}`} style={{ backgroundColor: q.c, backgroundImage: `url(${q.photo})` }}>
               <span className="rolepick-ic" style={{ color: q.c }}><q.Icon size={22} /></span>
               <span className="rolepick-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUB+" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
               <span className="rolepick-arr"><ArrowRight size={18} /></span>
@@ -53,9 +53,9 @@ export default function RodicPage() {
         </div>
 
         {/* KOMUNITA & OBSAH (HUB+) */}
-        <h2 className="rodic-plan-h" style={{ marginTop: "2.2rem" }}>Komunita a obsah pro rodiče</h2>
-        <p className="lead" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUB+ — místo, kde rodiče nejsou na tenis sami.</p>
-        <div className="rolepick-grid">
+        <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Komunita a obsah pro rodiče</h2>
+        <p className="lead rv" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUB+ — místo, kde rodiče nejsou na tenis sami.</p>
+        <div className="rolepick-grid rv d1">
           <Link href="/forum" className="rolepick" style={{ backgroundColor: "#2f5d57", backgroundImage: "url(/forum-rodice.png)" }}>
             <span className="rolepick-ic" style={{ color: "#2f5d57" }}><MessagesSquare size={22} /></span>
             <span className="rolepick-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů</span></span>
@@ -89,14 +89,14 @@ export default function RodicPage() {
         </div>
 
         {/* ZDARMA vs HUB+ */}
-        <h2 className="rodic-plan-h" style={{ marginTop: "2.2rem" }}>Co máte zdarma a co s HUB+</h2>
+        <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Co máte zdarma a co s HUB+</h2>
         <div className="rodic-plan-cols">
-          <div className="rp-col">
+          <div className="rp-col rv l d1">
             <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
             <ul className="rp-list">{r.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}</li>)}</ul>
             <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
           </div>
-          <div className="rp-col rp-col-hub">
+          <div className="rp-col rp-col-hub rv r d2">
             <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
             <ul className="rp-list rp-list-locked">{r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}</li>)}</ul>
             <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
@@ -104,8 +104,8 @@ export default function RodicPage() {
         </div>
 
         {/* FAQ */}
-        <h2 className="rodic-plan-h" style={{ marginTop: "2.2rem" }}>Časté otázky rodičů</h2>
-        <div className="faq">
+        <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Časté otázky rodičů</h2>
+        <div className="faq rv d1">
           {FAQ.map((f, i) => (
             <details className="faq-item" key={i}>
               <summary>{f.q}</summary>

@@ -31,14 +31,14 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
 
       <div className="wrap sluzby-wrap">
         {r ? <RoleDetail r={r} /> : (<>
-          <span className="eyebrow">Pro koho je TenisHub</span>
-          <h1>Vyberte, kdo jste</h1>
-          <p className="lead">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUB+.</p>
+          <span className="eyebrow rv">Pro koho je TenisHub</span>
+          <h1 className="rv d1">Vyberte, kdo jste</h1>
+          <p className="lead rv d1">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUB+.</p>
           <div className="rolepick-grid">
             {ROLE_ORDER.map((k) => {
               const x = ROLES[k]; const I = ICONS[x.icon];
               return (
-                <Link key={k} href={`/pro-koho?role=${k}`} className="rolepick" style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
+                <Link key={k} href={`/pro-koho?role=${k}`} className={`rolepick rv z d${Math.min((ROLE_ORDER.indexOf(k) % 4) + 1, 4)}`} style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
                   <span className="rolepick-ic" style={{ color: x.color }}><I size={22} /></span>
                   <span className="rolepick-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
                   <span className="rolepick-arr"><ArrowRight size={18} /></span>
@@ -57,7 +57,7 @@ function RoleDetail({ r }: { r: Role }) {
   return (
     <>
       <Link href="/pro-koho" className="role-back">← Všechny role</Link>
-      <div className="role-banner" style={{ backgroundImage: `url(${r.photo})` }}>
+      <div className="role-banner rv z" style={{ backgroundImage: `url(${r.photo})` }}>
         <div className="role-banner-in">
           <span className="role-hero-ic" style={{ background: r.fill, color: r.color }}><I size={30} /></span>
           <div>
@@ -68,14 +68,14 @@ function RoleDetail({ r }: { r: Role }) {
       </div>
 
       <div className="rodic-plan-cols" style={{ marginTop: "1.4rem" }}>
-        <div className="rp-col">
+        <div className="rp-col rv l d1">
           <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
           <ul className="rp-list">
             {r.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>
           <Link href={r.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {r.find.label}</Link>
         </div>
-        <div className="rp-col rp-col-hub">
+        <div className="rp-col rp-col-hub rv r d2">
           <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
           <ul className="rp-list rp-list-locked">
             {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
