@@ -36,7 +36,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   hrac: {
-    key: "hrac", label: "Hráč", tagline: "hraj, zlepšuj se, sparring", color: "#3b5666", fill: "#E5ECF1", icon: "hrac", photo: "/role-hrac.jpg", provider: false,
+    key: "hrac", label: "Hráč", tagline: "hraj, zlepšuj se, sparring", color: "#3b5666", fill: "#E5ECF1", icon: "hrac", photo: "/role-hrac.png", provider: false,
     find: { label: "Najít s kým hrát", href: "/sparring" },
     free: [
       { label: "Mapa kurtů a trenérů" },
@@ -53,7 +53,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   trener: {
-    key: "trener", label: "Trenér", tagline: "klienti a méně administrativy", color: "#7C4DD6", fill: "#EEEDFE", icon: "trener", photo: "/role-trener.jpg", provider: true,
+    key: "trener", label: "Trenér", tagline: "klienti a méně administrativy", color: "#7C4DD6", fill: "#EEEDFE", icon: "trener", photo: "/role-trener.png", provider: true,
     find: { label: "Najít trenéra na mapě", href: "/mapa?type=coach" },
     free: [
       { label: "Vizitka v katalogu" },
@@ -68,7 +68,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   sparring: {
-    key: "sparring", label: "Sparring partner", tagline: "najdi, s kým si zahrát", color: "#8a5640", fill: "#F2E6DF", icon: "sparring", photo: "/role-sparring.jpg", provider: false,
+    key: "sparring", label: "Sparring partner", tagline: "najdi, s kým si zahrát", color: "#8a5640", fill: "#F2E6DF", icon: "sparring", photo: "/role-sparring.png", provider: false,
     find: { label: "Najít parťáka / přidat inzerát", href: "/sparring" },
     free: [
       { label: "Prohlížet sparring nabídky" },
@@ -82,7 +82,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   areal: {
-    key: "areal", label: "Areály & kluby", tagline: "obsazenost kurtů + viditelnost", color: "#2f5d57", fill: "#E0EBE9", icon: "areal", photo: "/role-areal.jpg", provider: true,
+    key: "areal", label: "Areály & kluby", tagline: "obsazenost kurtů + viditelnost", color: "#2f5d57", fill: "#E0EBE9", icon: "areal", photo: "/role-areal.png", provider: true,
     find: { label: "Najít kurt na mapě", href: "/mapa?type=club" },
     free: [
       { label: "Profil areálu na mapě" },
@@ -96,7 +96,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   fyzio: {
-    key: "fyzio", label: "Fyzioterapeut", tagline: "noví klienti z tenisu", color: "#864a59", fill: "#F2E5E9", icon: "fyzio", photo: "/role-fyzio.jpg", provider: true,
+    key: "fyzio", label: "Fyzioterapeut", tagline: "noví klienti z tenisu", color: "#864a59", fill: "#F2E5E9", icon: "fyzio", photo: "/role-fyzio.png", provider: true,
     find: { label: "Najít fyzio na mapě", href: "/mapa?type=physio" },
     free: [
       { label: "Profil fyzia na mapě" },
@@ -110,7 +110,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   fitness: {
-    key: "fitness", label: "Kondiční trenér", tagline: "kondiční příprava tenistů", color: "#4a5b86", fill: "#E8ECF4", icon: "fitness", photo: "/role-fitness.jpg", provider: true,
+    key: "fitness", label: "Kondiční trenér", tagline: "kondiční příprava tenistů", color: "#4a5b86", fill: "#E8ECF4", icon: "fitness", photo: "/role-fitness.png", provider: true,
     find: { label: "Najít kondičního na mapě", href: "/mapa?type=fitness" },
     free: [
       { label: "Profil kondičního trenéra na mapě" },
@@ -124,7 +124,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   vyplet: {
-    key: "vyplet", label: "Vyplétač", tagline: "servis raket", color: "#5a6470", fill: "#E6E9ED", icon: "vyplet", photo: "/role-vyplet.jpg", provider: true,
+    key: "vyplet", label: "Vyplétač", tagline: "servis raket", color: "#5a6470", fill: "#E6E9ED", icon: "vyplet", photo: "/role-vyplet.png", provider: true,
     find: { label: "Najít vyplétače na mapě", href: "/mapa?type=stringer" },
     free: [
       { label: "Vizitka v katalogu" },

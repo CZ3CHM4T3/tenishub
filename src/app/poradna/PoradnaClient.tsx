@@ -74,7 +74,7 @@ export default function PoradnaClient() {
         </div>
         <div className="pora-intro">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/poradna.jpg" alt="" className="pora-portrait" />
+          <img src="/poradna.png" alt="" className="pora-portrait" />
           <p className="member-note" style={{ margin: 0 }}>Zeptejte se na cokoli kolem tenisu vašeho dítěte — výběr trenéra, trénink, motivaci, zdraví. Odpovídá odborník, odpovědi vidí všichni; ptát se můžou členové <b>HUB+</b>.</p>
         </div>
 

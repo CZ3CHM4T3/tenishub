@@ -546,7 +546,7 @@ export default function MojeCesta() {
   if (gate === "noauth") return Shell(
     <div className="acct-card mc-gate">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/moje-cesta.jpg" alt="" className="mc-gate-photo" />
+      <img src="/moje-cesta.png" alt="" className="mc-gate-photo" />
       <Route size={34} /><h1>Moje cesta</h1>
       <p>Sezónní průvodce pro tebe i tvé dítě. Přihlas se a začni plánovat.</p>
       <Link href="/prihlaseni?next=/moje-cesta" className="btn btn-green">Přihlásit se</Link></div>
@@ -554,7 +554,7 @@ export default function MojeCesta() {
   if (gate === "nomember") return Shell(
     <div className="acct-card mc-gate">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/moje-cesta.jpg" alt="" className="mc-gate-photo" />
+      <img src="/moje-cesta.png" alt="" className="mc-gate-photo" />
       <Lock size={34} /><h1>Moje cesta je součást HUB+</h1>
       <p>Naplánuj celou sezónu — tréninky, turnaje, kondici i volno — a sleduj cíle a statistiky. Aktivuj HUB+ a máš to odemčené.</p>
       <Link href="/ucet" className="btn btn-gold">Chci HUB+</Link></div>
