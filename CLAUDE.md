@@ -147,7 +147,9 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   fórum/poradna/bazar — skrýt/zobrazit/smazat, admin čte i hidden přes is_admin RLS). „Ověřeno" se NEKUPUJE (ruční známka).
 - **ČEKÁ na vstup Jana:** (a) **E-mail notifikace** — potřebuje Resend účet + API klíč (`RESEND_API_KEY`) + ověřenou doménu;
   (b) **Auto-import turnajů jednotlivců** — potřebuje vzorovou URL ze cesky-tenis.cz s výpisem turnajů (jako soutěž `/soutez/9648`).
-- **RUN ORDER komunita/model SQL (po RUN-ALL.sql):** forum.sql, komunita.sql, overeni.sql.
+- **RUN ORDER komunita/model SQL (po RUN-ALL.sql):** forum.sql, komunita.sql, overeni.sql, turnaje-import.sql, notifikace.sql.
+- **Auto-import turnajů — HOTOVO:** API `src/app/api/turnaje-import/route.ts` parsuje výpis `/jednotlivci/<kategorie>` (datum/třída/vstupné/pořadatel + /turnaj/{id}); v `/turnaje` admin vloží vyfiltrovanou URL → import s dedup `ext_id`. Beta (běží nasazeně), `?debug=1` vrací sample.
+- **E-mail notifikace — PŘIPRAVENO (no-op bez klíče):** `src/lib/email.ts` (Resend), `src/app/api/notify/route.ts` (service-role dohledá e-mail příjemce v profiles, dedup `notified_at`), `src/lib/notify.ts` (fire-and-forget). Napojeno: poradna odpověď → tazateli, fórum odpověď → autorovi tématu, nová zpráva → příjemci. AKTIVACE: env `RESEND_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` (+ volitelně `EMAIL_FROM`, default „TenisHub <info@tenishub.cz>") + ověřená doména na Resendu + spustit notifikace.sql.
 
 ## Data (Supabase)
 - Klienti: `src/lib/supabase/client.ts` (browser) a `server.ts` (SSR, Next 15 async cookies).
