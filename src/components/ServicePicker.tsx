@@ -3,6 +3,7 @@
 import { useState, type ComponentType } from "react";
 import Link from "next/link";
 import { Building2, HeartPulse, Dumbbell, Grid3x3, Handshake, ArrowRight, Search, UserPlus } from "lucide-react";
+import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "./icons";
 
 type Icon = ComponentType<{ size?: number }>;
@@ -12,6 +13,8 @@ type Pick = { key: string; label: string; tagline: string; color: string; fill: 
 const PICKS: Pick[] = [
   { key: "coach", label: "Trenér", tagline: "tenisový trénink", color: "#7C4DD6", fill: "#EEEDFE", Icon: WhistleIcon,
     find: { label: "Hledám trenéra", href: "/mapa?type=coach" }, iam: { label: "Jsem trenér", href: "/pro-koho?role=trener" } },
+  { key: "hrac", label: "Hráč", tagline: "hraj a zlepšuj se", color: "#3b5666", fill: "#E5ECF1", Icon: IconRun,
+    find: { label: "Hledám kurt / parťáka", href: "/sparring" }, iam: { label: "Jsem hráč", href: "/pro-koho?role=hrac" } },
   { key: "club", label: "Areály & kluby", tagline: "kurty a haly", color: "#2f5d57", fill: "#E0EBE9", Icon: Building2,
     find: { label: "Hledám kurt", href: "/mapa?type=club" }, iam: { label: "Mám areál / klub", href: "/pro-koho?role=areal" } },
   { key: "sparring", label: "Sparring", tagline: "parťák na zápas", color: "#8a5640", fill: "#F2E6DF", Icon: Handshake,
