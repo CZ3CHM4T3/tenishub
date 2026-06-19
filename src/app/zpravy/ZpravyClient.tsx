@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { Send } from "lucide-react";
+import { notify } from "@/lib/notify";
 
 type Msg = {
   id: string; from_id: string; to_id: string; from_name: string | null; to_name: string | null;
@@ -77,9 +78,10 @@ export default function ZpravyClient() {
     const sb = createClient();
     const body = text.trim();
     setText("");
-    await sb.from("messages").insert({
+    const { data: ins } = await sb.from("messages").insert({
       from_id: uid, to_id: active, from_name: myName || "Hráč", to_name: conv?.name ?? null, body,
-    });
+    }).select("id").single();
+    if (ins) notify("message", ins.id);
     load();
   };
 

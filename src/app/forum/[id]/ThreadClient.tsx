@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { MessagesSquare, Lock, CornerDownRight } from "lucide-react";
 import { catLabel } from "@/lib/forum";
+import { notify } from "@/lib/notify";
 
 type Thread = { id: string; author_name: string | null; category: string; title: string; body: string; created_at: string };
 type Post = { id: string; author_name: string | null; body: string; created_at: string };
@@ -48,9 +49,10 @@ export default function ThreadClient({ id }: { id: string }) {
   const send = async () => {
     if (!me || !reply.trim()) return;
     setBusy(true);
-    const { error } = await supabase.from("forum_posts").insert({ thread_id: id, author_id: me.id, author_name: me.name, body: reply.trim() });
+    const { data, error } = await supabase.from("forum_posts").insert({ thread_id: id, author_id: me.id, author_name: me.name, body: reply.trim() }).select("id").single();
     setBusy(false);
     if (error) { alert("Odpověď se nepodařilo přidat: " + error.message); return; }
+    if (data) notify("forum_reply", data.id);
     setReply("");
     await loadPosts();
   };

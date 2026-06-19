@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
 import { HelpCircle, Plus, X, Lock, CheckCircle2 } from "lucide-react";
 import { useMe } from "@/lib/useMe";
+import { notify } from "@/lib/notify";
 
 type Q = { id: string; author_name: string | null; topic: string; body: string; answer: string | null; answered_by: string | null; created_at: string };
 
@@ -53,6 +54,7 @@ export default function PoradnaClient() {
     if (!txt || !me) return;
     setBusy(true);
     await supabase.from("advice").update({ answer: txt, answered_by: me.name, answered_at: new Date().toISOString() }).eq("id", id);
+    notify("advice_answer", id);
     setBusy(false);
     setAnswers((a) => ({ ...a, [id]: "" }));
     await load();
