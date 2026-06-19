@@ -72,7 +72,11 @@ export default function PoradnaClient() {
           <h1 className="acct-h1"><HelpCircle size={26} style={{ verticalAlign: "-4px" }} /> Poradna</h1>
           <button className="btn btn-green" onClick={ask}><Plus size={16} /> Zeptat se</button>
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Zeptejte se na cokoli kolem tenisu vašeho dítěte. Odpovědi vidí všichni; ptát se můžou členové <b>HUB+</b>.</p>
+        <div className="pora-intro">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/poradna.jpg" alt="" className="pora-portrait" />
+          <p className="member-note" style={{ margin: 0 }}>Zeptejte se na cokoli kolem tenisu vašeho dítěte — výběr trenéra, trénink, motivaci, zdraví. Odpovídá odborník, odpovědi vidí všichni; ptát se můžou členové <b>HUB+</b>.</p>
+        </div>
 
         {loading ? <p className="member-note">Načítám…</p> : items.length === 0 ? (
           <div className="acct-card mc-gate"><HelpCircle size={30} /><h2>Zatím žádné dotazy</h2><p>Buďte první — zeptejte se.</p></div>

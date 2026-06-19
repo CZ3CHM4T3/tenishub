@@ -57,11 +57,13 @@ function RoleDetail({ r }: { r: Role }) {
   return (
     <>
       <Link href="/pro-koho" className="role-back">← Všechny role</Link>
-      <div className="role-hero">
-        <span className="role-hero-ic" style={{ background: r.fill, color: r.color }}><I size={40} /></span>
-        <div>
-          <h1 style={{ margin: 0 }}>{r.label}</h1>
-          <p className="lead" style={{ margin: "0.2rem 0 0" }}>{r.tagline}</p>
+      <div className="role-banner" style={{ backgroundImage: `url(${r.photo})` }}>
+        <div className="role-banner-in">
+          <span className="role-hero-ic" style={{ background: r.fill, color: r.color }}><I size={30} /></span>
+          <div>
+            <h1 style={{ margin: 0, color: "#fff" }}>{r.label}</h1>
+            <p style={{ margin: "0.2rem 0 0", color: "rgba(255,255,255,0.95)" }}>{r.tagline}</p>
+          </div>
         </div>
       </div>
 
