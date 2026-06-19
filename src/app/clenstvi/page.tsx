@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ServiceMap } from "@/components/ServiceMap";
 
 export const metadata: Metadata = {
@@ -11,10 +11,7 @@ export const metadata: Metadata = {
 export default function ClenstviPage() {
   return (
     <div className="sluzby-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap sluzby-wrap">
         <h1 className="rv">Členství</h1>

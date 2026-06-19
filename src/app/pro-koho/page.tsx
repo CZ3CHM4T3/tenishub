@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { WhistleIcon } from "@/components/icons";
 import { IconRun } from "@tabler/icons-react";
 import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, type LucideIcon } from "lucide-react";
@@ -24,10 +24,7 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="sluzby-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap sluzby-wrap">
         {r ? <RoleDetail r={r} /> : (<>

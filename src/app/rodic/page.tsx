@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import {
   MapPin, Route, Video, Handshake, MessagesSquare, BookOpen, HelpCircle,
   Check, Lock, ArrowRight, Calendar, Repeat, Car,
@@ -31,10 +31,7 @@ export default function RodicPage() {
   const r = ROLES.rodic;
   return (
     <div className="sluzby-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap sluzby-wrap">
         <span className="eyebrow rv">Rodič &amp; dítě</span>

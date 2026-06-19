@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ShieldCheck, HeartHandshake, Users, RefreshCw } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -11,10 +11,7 @@ export const metadata: Metadata = {
 export default function ONasPage() {
   return (
     <div className="legal-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <section className="vr-hero">
         <div className="wrap">

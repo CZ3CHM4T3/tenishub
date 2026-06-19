@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Phone, Mail, Video, Compass, ListChecks, HeartHandshake } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -15,10 +15,7 @@ const TEL: string = "";
 export default function VideorozborPage() {
   return (
     <div className="legal-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <section className="vr-hero">
         <div className="wrap">

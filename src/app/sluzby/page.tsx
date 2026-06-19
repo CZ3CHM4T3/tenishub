@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ServicePicker } from "@/components/ServicePicker";
 import { MapSearch } from "@/components/MapSearch";
 
@@ -13,10 +13,7 @@ export const metadata: Metadata = {
 export default function SluzbyPage() {
   return (
     <div className="sluzby-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap sluzby-wrap">
         <span className="eyebrow rv">Služby &amp; profíci</span>
