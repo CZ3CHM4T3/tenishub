@@ -532,8 +532,9 @@
 .rodic-soon { cursor: default; }
 .rodic-soon:hover { transform: none; border-color: var(--line); box-shadow: none; }
 .prole-arr.soon { font-size: 0.68rem; font-weight: 800; color: var(--gold-l); text-transform: uppercase; letter-spacing: 0.05em; }
-.prole-txt .hm-badge { display: inline-block; font-size: 0.6rem; font-weight: 800; color: #fff; background: var(--gold-l); border-radius: 100px; padding: 1px 6px; vertical-align: 1px; margin-left: 4px; }
-.prole-txt .hm-badge.paid { background: var(--green); }
+/* === HUB+ plaketka — jednotná lesklá zlatá „3D" všude === */
+.hm-badge { display: inline-block; font-size: 0.6rem !important; font-weight: 800; letter-spacing: 0.04em; color: #4a370b !important; background: linear-gradient(180deg, #fbe9a6 0%, #e7c46a 42%, #c9a14c 100%) !important; border: 1px solid rgba(120, 90, 20, 0.45); border-radius: 100px; padding: 1px 7px; vertical-align: 1px; margin-left: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.8); text-shadow: 0 1px 0 rgba(255,255,255,0.4) !important; }
+.hm-badge.paid { color: #fff !important; background: linear-gradient(180deg, #56926c 0%, #2f6e49 60%, #245538 100%) !important; border-color: rgba(20, 60, 40, 0.5); text-shadow: 0 1px 1px rgba(0,0,0,0.35) !important; }
 .faq { display: flex; flex-direction: column; gap: 0.5rem; max-width: 760px; }
 .faq-item { border: 1px solid var(--line); border-radius: 12px; background: #fff; overflow: hidden; }
 .faq-item summary { cursor: pointer; padding: 0.85rem 1rem; font-weight: 700; color: var(--green); list-style: none; position: relative; padding-right: 2.2rem; }
@@ -924,7 +925,7 @@
 .rp-col-head h3 { font-family: var(--font-jakarta), sans-serif; font-size: 1.3rem; color: var(--green-d); margin: 0; }
 .rp-tag { font-size: 0.74rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 100px; }
 .rp-tag-free { background: var(--soft); color: var(--green-2); }
-.rp-tag-hub { background: var(--gold); color: #1c2a16; }
+.rp-tag-hub { color: #4a370b; background: linear-gradient(180deg, #fbe9a6 0%, #e7c46a 42%, #c9a14c 100%); border: 1px solid rgba(120, 90, 20, 0.4); box-shadow: 0 1px 2px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.8); text-shadow: 0 1px 0 rgba(255,255,255,0.35); }
 .rp-list { list-style: none; padding: 0; margin: 0 0 1.3rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .rp-list li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.92rem; color: var(--green-2); }
 .rp-list svg { flex: none; color: var(--green); }
@@ -1318,7 +1319,7 @@ a.hm-item:hover { background: #eef3ef; transform: translateX(2px); }
 .hm-group-gold { color: var(--gold); }
 .hm-item.hm-member { background: #fbf7ec; border: 1px solid #efe5cc; }
 a.hm-item.hm-member:hover { background: #f6efdd; }
-.hm-item .hm-badge { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; color: #6b500f; background: linear-gradient(135deg, var(--gold-l), var(--gold)); padding: 0.14rem 0.42rem; border-radius: 6px; flex: none; }
+.hm-item .hm-badge { font-size: 0.62rem; padding: 0.16rem 0.5rem; border-radius: 100px; flex: none; }
 
 /* ═══════════ Účet / Přihlášení / Admin ═══════════ */
 .auth-page, .acct-page { min-height: 100vh; background: var(--soft); }
@@ -1383,7 +1384,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .plan-table { width: 100%; border-collapse: collapse; margin: 0.3rem 0 0.4rem; }
 .plan-table th { font-family: var(--font-jakarta), sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: center; padding: 0.45rem 0.5rem; width: 92px; }
 .plan-table th:first-child { width: auto; }
-.plan-table .th-plus { display: inline-block; color: #6b500f; background: linear-gradient(135deg, var(--gold-l), var(--gold)); padding: 0.2rem 0.6rem; border-radius: 7px; letter-spacing: 0.06em; }
+.plan-table .th-plus { display: inline-block; color: #4a370b; background: linear-gradient(180deg, #fbe9a6 0%, #e7c46a 42%, #c9a14c 100%); padding: 0.2rem 0.6rem; border-radius: 100px; letter-spacing: 0.05em; border: 1px solid rgba(120, 90, 20, 0.4); box-shadow: 0 1px 2px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.8); text-shadow: 0 1px 0 rgba(255,255,255,0.35); }
 .plan-table td { padding: 0.55rem 0.5rem; border-top: 1px dashed var(--line); font-size: 0.92rem; color: #3c4a42; }
 .plan-table td:nth-child(2), .plan-table td:nth-child(3) { text-align: center; }
 .plan-table .pt-ok { color: var(--green-2); }
