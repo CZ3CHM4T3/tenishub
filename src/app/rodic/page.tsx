@@ -55,31 +55,35 @@ export default function RodicPage() {
         {/* KOMUNITA & OBSAH (HUB+) */}
         <h2 className="rodic-plan-h" style={{ marginTop: "2.2rem" }}>Komunita a obsah pro rodiče</h2>
         <p className="lead" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUB+ — místo, kde rodiče nejsou na tenis sami.</p>
-        <div className="prole-grid">
-          <Link href="/forum" className="prole-card">
-            <span className="prole-ic" style={{ background: "#E0EBE9", color: "#2f5d57" }}><MessagesSquare size={24} /></span>
-            <span className="prole-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů, dotazy</span></span>
-            <span className="prole-arr"><ArrowRight size={18} /></span>
+        <div className="rolepick-grid">
+          <Link href="/forum" className="rolepick" style={{ backgroundColor: "#2f5d57", backgroundImage: "url(/forum-rodice.png)" }}>
+            <span className="rolepick-ic" style={{ color: "#2f5d57" }}><MessagesSquare size={22} /></span>
+            <span className="rolepick-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/clanky" className="prole-card">
-            <span className="prole-ic" style={{ background: "#EEEDFE", color: "#7C4DD6" }}><BookOpen size={24} /></span>
-            <span className="prole-txt"><b>Knihovna článků a návodů</b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
-            <span className="prole-arr"><ArrowRight size={18} /></span>
+          <Link href="/clanky" className="rolepick" style={{ backgroundColor: "#7C4DD6", backgroundImage: "url(/knihovna-rodic.png)" }}>
+            <span className="rolepick-ic" style={{ color: "#7C4DD6" }}><BookOpen size={22} /></span>
+            <span className="rolepick-txt"><b>Knihovna článků a návodů</b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/poradna" className="prole-card">
-            <span className="prole-ic" style={{ background: "#F2EAD6", color: "#7c6018" }}><HelpCircle size={24} /></span>
-            <span className="prole-txt"><b>Poradna — zeptej se odborníka <span className="hm-badge">HUB+</span></b><span>odpovědi na míru vašeho dítěte</span></span>
-            <span className="prole-arr"><ArrowRight size={18} /></span>
+          <Link href="/poradna" className="rolepick" style={{ backgroundColor: "#7c6018", backgroundImage: "url(/poradna.png)" }}>
+            <span className="rolepick-ic" style={{ color: "#7c6018" }}><HelpCircle size={22} /></span>
+            <span className="rolepick-txt"><b>Poradna — zeptej se odborníka <span className="hm-badge">HUB+</span></b><span>odpovědi na míru vašeho dítěte</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/turnaje" className="prole-card">
-            <span className="prole-ic" style={{ background: "#E5ECF1", color: "#3b5666" }}><Calendar size={24} /></span>
-            <span className="prole-txt"><b>Kalendář turnajů v okolí</b><span>přihlášky a termíny na jednom místě</span></span>
-            <span className="prole-arr"><ArrowRight size={18} /></span>
+          <Link href="/turnaje" className="rolepick" style={{ backgroundColor: "#3b5666", backgroundImage: "url(/turnaje-rodic.png)" }}>
+            <span className="rolepick-ic" style={{ color: "#3b5666" }}><Calendar size={22} /></span>
+            <span className="rolepick-txt"><b>Kalendář turnajů v okolí</b><span>přihlášky a termíny na jednom místě</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/bazar" className="prole-card">
-            <span className="prole-ic" style={{ background: "#F2E6DF", color: "#8a5640" }}><Repeat size={24} /></span>
-            <span className="prole-txt"><b>Bazar a spolujízda <span className="hm-badge">HUB+</span></b><span>vybavení z druhé ruky, odvoz na turnaj</span></span>
-            <span className="prole-arr"><ArrowRight size={18} /></span>
+          <Link href="/bazar" className="rolepick rolepick-split">
+            <span className="rps-a" style={{ backgroundImage: "url(/bazar.png)" }} />
+            <span className="rps-b" style={{ backgroundImage: "url(/spolujizda.png)" }} />
+            <span className="rolepick-ic" style={{ color: "#8a5640" }}><Repeat size={22} /></span>
+            <span className="rps-lbl rps-lbl-a">Bazar</span>
+            <span className="rps-lbl rps-lbl-b">Spolujízda</span>
+            <span className="rolepick-txt"><b>Bazar a spolujízda <span className="hm-badge">HUB+</span></b><span>vybavení z druhé ruky, odvoz na turnaj</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
         </div>
 
