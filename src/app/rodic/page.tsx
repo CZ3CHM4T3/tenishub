@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const QUICK = [
-  { Icon: MapPin, t: "Najít trenéra / kurt", s: "specialisté a areály na mapě", href: "/mapa", c: "#7c6018", b: "#F2EAD6", badge: "" },
-  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", b: "#EEEDFE", badge: "HUB+" },
-  { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", b: "#F2E5E9", badge: "Placená služba" },
-  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", b: "#F2E6DF", badge: "HUB+" },
+  { Icon: MapPin, t: "Najít trenéra / kurt", s: "specialisté a areály na mapě", href: "/mapa", c: "#7c6018", photo: "/najit-trener.png", badge: "" },
+  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", photo: "/moje-cesta.png", badge: "HUB+" },
+  { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", photo: "/videorozbor-rodic.png", badge: "Placená služba" },
+  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", photo: "/sparring-rodic.png", badge: "HUB+" },
 ];
 
 const FAQ = [
@@ -42,12 +42,12 @@ export default function RodicPage() {
         <p className="lead">Najděte trenéra i kurt, veďte dítě celou sezónou bez vyhoření, čtěte návody a sdílejte zkušenosti s ostatními rodiči.</p>
 
         {/* RYCHLÉ AKCE */}
-        <div className="prole-grid">
+        <div className="rolepick-grid">
           {QUICK.map((q, i) => (
-            <Link key={i} href={q.href} className="prole-card">
-              <span className="prole-ic" style={{ background: q.b, color: q.c }}><q.Icon size={24} /></span>
-              <span className="prole-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUB+" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
-              <span className="prole-arr"><ArrowRight size={18} /></span>
+            <Link key={i} href={q.href} className="rolepick" style={{ backgroundColor: q.c, backgroundImage: `url(${q.photo})` }}>
+              <span className="rolepick-ic" style={{ color: q.c }}><q.Icon size={22} /></span>
+              <span className="rolepick-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUB+" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
+              <span className="rolepick-arr"><ArrowRight size={18} /></span>
             </Link>
           ))}
         </div>
