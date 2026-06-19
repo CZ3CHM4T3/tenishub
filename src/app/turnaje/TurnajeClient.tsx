@@ -20,6 +20,9 @@ export default function TurnajeClient() {
   const [past, setPast] = useState(false);
   const [form, setForm] = useState<{ open: boolean; name: string; date: string; city: string; category: string; surface: string; signup_url: string; note: string }>({ open: false, name: "", date: "", city: "", category: "", surface: "", signup_url: "", note: "" });
   const [busy, setBusy] = useState(false);
+  const [impUrl, setImpUrl] = useState("");
+  const [impMsg, setImpMsg] = useState<string | null>(null);
+  const [impOpen, setImpOpen] = useState(false);
 
   const load = useCallback(async () => {
     const { data } = await supabase.from("tournaments").select("id,name,date,city,category,surface,signup_url,note").order("date");
@@ -42,6 +45,28 @@ export default function TurnajeClient() {
   };
   const del = async (id: string) => { if (!confirm("Smazat turnaj?")) return; await supabase.from("tournaments").delete().eq("id", id); await load(); };
 
+  const importSvaz = async () => {
+    if (!impUrl.trim()) { setImpMsg("Vlož odkaz na výpis turnajů z cesky-tenis.cz."); return; }
+    setImpMsg("Načítám ze svazu…");
+    try {
+      const r = await fetch(`/api/turnaje-import?url=${encodeURIComponent(impUrl.trim())}`);
+      const d = await r.json();
+      if (!r.ok) { setImpMsg(d.error || "Import selhal."); return; }
+      type IT = { extId: string; date: string; name: string; category: string | null; fee: string | null; url: string | null };
+      const list = (d.tournaments as IT[]) ?? [];
+      const ex = await supabase.from("tournaments").select("ext_id").not("ext_id", "is", null);
+      const have = new Set((ex.data ?? []).map((x: { ext_id: string }) => x.ext_id));
+      const rows = list.filter((t) => !have.has(t.extId)).map((t) => ({
+        name: t.name, date: t.date, category: t.category, signup_url: t.url,
+        note: t.fee ? `Vstupné ${t.fee} Kč` : null, ext_id: t.extId,
+      }));
+      if (rows.length) { const { error } = await supabase.from("tournaments").insert(rows); if (error) { setImpMsg("Uložení selhalo: " + error.message); return; } }
+      setImpMsg(`Hotovo — nalezeno ${list.length}, nově přidáno ${rows.length}.`);
+      setImpUrl("");
+      await load();
+    } catch { setImpMsg("Spojení selhalo (import běží až nasazené)."); }
+  };
+
   const cities = [...new Set(items.map((t) => t.city).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b, "cs"));
   const t0 = todayISO();
   const shown = items.filter((t) => (past ? true : t.date >= t0) && (!city || t.city === city));
@@ -58,7 +83,19 @@ export default function TurnajeClient() {
           <h1 className="acct-h1"><CalendarDays size={26} style={{ verticalAlign: "-4px" }} /> Kalendář turnajů</h1>
           {isAdmin && <button className="btn btn-green" onClick={() => setForm({ ...form, open: true })}><Plus size={16} /> Přidat turnaj</button>}
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Nadcházející turnaje — termín, místo a odkaz na přihlášku.</p>
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Nadcházející turnaje — termín, místo a odkaz na přihlášku.{isAdmin && <> · <button className="linklike" onClick={() => setImpOpen((v) => !v)}>Importovat ze svazu</button></>}</p>
+
+        {isAdmin && impOpen && (
+          <div className="mc-sync" style={{ marginBottom: "1rem" }}>
+            <span className="mc-setlbl">Import turnajů z cesky-tenis.cz</span>
+            <div className="mc-syncrow">
+              <input value={impUrl} onChange={(e) => setImpUrl(e.target.value)} placeholder="Vlož odkaz na výpis (např. …/jednotlivci/mladsi-zactvo?region=…)" />
+              <button type="button" className="btn btn-green" onClick={importSvaz}>Načíst</button>
+            </div>
+            {impMsg && <p className="mc-syncmsg">{impMsg}</p>}
+            <p className="member-note" style={{ margin: "2px 0 0" }}>Na cesky-tenis.cz si v sekci Jednotlivci vyfiltruj region/kategorii, zkopíruj odkaz z prohlížeče sem a dej Načíst. Opakovaně nepřidá duplicity.</p>
+          </div>
+        )}
 
         <div className="fcats">
           <button className={`fcat${city === "" ? " on" : ""}`} onClick={() => setCity("")}>Vše</button>
