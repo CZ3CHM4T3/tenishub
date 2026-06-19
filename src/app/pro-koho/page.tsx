@@ -34,14 +34,14 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
           <span className="eyebrow">Pro koho je TenisHub</span>
           <h1>Vyberte, kdo jste</h1>
           <p className="lead">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUB+.</p>
-          <div className="prole-grid">
+          <div className="rolepick-grid">
             {ROLE_ORDER.map((k) => {
-              const x = ROLES[k];
+              const x = ROLES[k]; const I = ICONS[x.icon];
               return (
-                <Link key={k} href={`/pro-koho?role=${k}`} className="prole-card">
-                  <span className="prole-photo" style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }} />
-                  <span className="prole-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
-                  <span className="prole-arr"><ArrowRight size={18} /></span>
+                <Link key={k} href={`/pro-koho?role=${k}`} className="rolepick" style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
+                  <span className="rolepick-ic" style={{ color: x.color }}><I size={22} /></span>
+                  <span className="rolepick-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
+                  <span className="rolepick-arr"><ArrowRight size={18} /></span>
                 </Link>
               );
             })}

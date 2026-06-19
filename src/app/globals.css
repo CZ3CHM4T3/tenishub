@@ -451,21 +451,21 @@
 .mc-sres span { font-size: 0.76rem; color: var(--muted); }
 
 /* ===== ROZCESTNÍK SLUŽEB (ServicePicker) ===== */
-.spick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
-.spick-card { position: relative; display: flex; align-items: center; gap: 0.9rem; background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 1.1rem; cursor: pointer; flex-wrap: wrap; transition: transform 0.2s, box-shadow 0.25s, border-color 0.2s; }
+.spick { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.1rem; margin: 1.6rem 0; }
+.spick-card { position: relative; display: flex; flex-direction: column; align-items: stretch; background: #fff; border: 1.5px solid var(--line); border-radius: 18px; padding: 0; cursor: pointer; overflow: hidden; transition: transform 0.2s, box-shadow 0.25s, border-color 0.2s; }
 .spick-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.3); }
 .spick.has-sel .spick-card:not(.on) { opacity: 0.62; }
 .spick-card.on { grid-column: 1 / -1; transform: none; }
-.spick-ic { position: relative; overflow: hidden; width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; flex: none; transition: transform 0.2s; }
-.spick-ic-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.spick-card:hover .spick-ic { transform: scale(1.06) rotate(-3deg); }
-.spick-txt { display: flex; flex-direction: column; }
-.spick-txt b { font-size: 1.06rem; }
-.spick-txt span { font-size: 0.82rem; color: var(--muted); }
-.spick-chev { margin-left: auto; color: #c2c8cf; transition: transform 0.2s; }
+.spick-photo { position: relative; min-height: 158px; background-size: cover; background-position: center; background-color: #2c4a3b; display: flex; align-items: flex-end; padding: 0.95rem 1rem; }
+.spick-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 28%, rgba(20,16,8,0.72) 100%); }
+.spick-ic { position: absolute; top: 12px; left: 12px; z-index: 2; width: 44px; height: 44px; border-radius: 13px; background: #fff; display: grid; place-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.28); }
+.spick-head { position: relative; z-index: 2; display: flex; flex-direction: column; }
+.spick-head b { font-size: 1.14rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.55); }
+.spick-head span { font-size: 0.82rem; color: rgba(255,255,255,0.93); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.spick-chev { position: absolute; top: 14px; right: 14px; z-index: 2; color: #fff; opacity: 0.9; transition: transform 0.2s; }
 .spick-card.on .spick-chev { transform: rotate(90deg); }
 .spick-cta { display: none; }
-.spick-card.on .spick-cta { display: flex; gap: 0.6rem; width: 100%; margin-top: 0.5rem; flex-wrap: wrap; }
+.spick-card.on .spick-cta { display: flex; gap: 0.6rem; padding: 0.8rem; flex-wrap: wrap; }
 .spick-btn { display: inline-flex; align-items: center; gap: 7px; padding: 0.7rem 1.1rem; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 0.92rem; }
 .spick-btn.find { color: #fff; }
 .spick-btn.iam { background: #fff; border: 1.5px solid; }
@@ -477,11 +477,21 @@
 .prole-card { display: flex; align-items: center; gap: 0.8rem; background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 1rem; text-decoration: none; color: inherit; transition: transform 0.18s, box-shadow 0.2s, border-color 0.2s; }
 .prole-card:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.3); }
 .prole-ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; flex: none; }
-.prole-photo { width: 56px; height: 56px; border-radius: 14px; flex: none; background-size: cover; background-position: center; }
 .prole-txt { display: flex; flex-direction: column; }
 .prole-txt b { font-size: 1.02rem; }
 .prole-txt span { font-size: 0.8rem; color: var(--muted); }
 .prole-arr { margin-left: auto; color: #c2c8cf; }
+
+/* foto dlaždice rolí (výběr na /pro-koho) */
+.rolepick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.1rem; margin: 1.4rem 0; }
+.rolepick { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 158px; border-radius: 16px; padding: 0.95rem 1rem; text-decoration: none; color: #fff; overflow: hidden; background-size: cover; background-position: center; background-color: #2c4a3b; border: 1px solid var(--line); transition: transform 0.18s, box-shadow 0.2s; }
+.rolepick::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 28%, rgba(20,16,8,0.72) 100%); }
+.rolepick:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -18px rgba(0,0,0,0.45); }
+.rolepick-ic { position: absolute; top: 12px; left: 12px; z-index: 2; width: 44px; height: 44px; border-radius: 13px; background: #fff; display: grid; place-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+.rolepick-txt { position: relative; z-index: 2; display: flex; flex-direction: column; }
+.rolepick-txt b { font-size: 1.08rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.55); }
+.rolepick-txt span { font-size: 0.8rem; color: rgba(255,255,255,0.92); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.rolepick-arr { position: absolute; top: 14px; right: 14px; z-index: 2; color: #fff; opacity: 0.9; }
 .role-back { display: inline-block; color: var(--gold-l); font-weight: 600; text-decoration: none; margin-bottom: 0.8rem; }
 .role-hero { display: flex; align-items: center; gap: 1rem; }
 .role-hero-ic { width: 76px; height: 76px; border-radius: 20px; display: grid; place-items: center; flex: none; }

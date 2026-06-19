@@ -45,16 +45,14 @@ export function ServicePicker() {
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSel(on ? null : p.key); } }}
           >
-            <span className="spick-ic" style={{ background: p.fill, color: p.color }}>
-              <PIcon size={30} />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.photo} alt="" className="spick-ic-img" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+            <span className="spick-photo" style={{ backgroundColor: p.fill, backgroundImage: `url(${p.photo})` }}>
+              <span className="spick-ic" style={{ color: p.color }}><PIcon size={24} /></span>
+              <span className="spick-head">
+                <b>{p.label}</b>
+                <span>{p.tagline}</span>
+              </span>
+              <span className="spick-chev"><ArrowRight size={18} /></span>
             </span>
-            <span className="spick-txt">
-              <b>{p.label}</b>
-              <span>{p.tagline}</span>
-            </span>
-            <span className="spick-chev" style={on ? { color: p.color } : undefined}><ArrowRight size={18} /></span>
 
             <div className="spick-cta" onClick={(e) => e.stopPropagation()}>
               <Link href={p.find.href} className="spick-btn find" style={{ background: p.color }}>
