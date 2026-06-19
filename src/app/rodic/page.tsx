@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Wordmark } from "@/components/Wordmark";
 import {
   MapPin, Route, Video, Handshake, MessagesSquare, BookOpen, HelpCircle,
-  Check, Lock, ArrowRight, Calendar, Repeat,
+  Check, Lock, ArrowRight, Calendar, Repeat, Car,
 } from "lucide-react";
 import { ROLES } from "@/lib/roles";
 
@@ -76,13 +76,14 @@ export default function RodicPage() {
             <span className="rolepick-txt"><b>Kalendář turnajů v okolí</b><span>přihlášky a termíny na jednom místě</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/bazar" className="rolepick rolepick-split">
-            <span className="rps-a" style={{ backgroundImage: "url(/bazar.png)" }} />
-            <span className="rps-b" style={{ backgroundImage: "url(/spolujizda.png)" }} />
+          <Link href="/bazar" className="rolepick" style={{ backgroundColor: "#8a5640", backgroundImage: "url(/bazar.png)" }}>
             <span className="rolepick-ic" style={{ color: "#8a5640" }}><Repeat size={22} /></span>
-            <span className="rps-lbl rps-lbl-a">Bazar</span>
-            <span className="rps-lbl rps-lbl-b">Spolujízda</span>
-            <span className="rolepick-txt"><b>Bazar a spolujízda <span className="hm-badge">HUB+</span></b><span>vybavení z druhé ruky, odvoz na turnaj</span></span>
+            <span className="rolepick-txt"><b>Bazar vybavení <span className="hm-badge">HUB+</span></b><span>rakety, boty, oblečení z druhé ruky</span></span>
+            <span className="rolepick-arr"><ArrowRight size={18} /></span>
+          </Link>
+          <Link href="/bazar?tab=spolujizda" className="rolepick" style={{ backgroundColor: "#3b8a5a", backgroundImage: "url(/spolujizda.png)" }}>
+            <span className="rolepick-ic" style={{ color: "#3b8a5a" }}><Car size={22} /></span>
+            <span className="rolepick-txt"><b>Spolujízda <span className="hm-badge">HUB+</span></b><span>odvoz na trénink i turnaj</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
         </div>

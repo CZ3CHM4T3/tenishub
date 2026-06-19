@@ -30,6 +30,7 @@ export default function BazarClient() {
     setLoading(false);
   }, [supabase]);
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("tab") === "spolujizda") setTab("spolujizda"); }, []);
 
   const add = () => {
     if (!me) { setGate("login"); return; }
