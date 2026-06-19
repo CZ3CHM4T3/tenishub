@@ -141,7 +141,13 @@ segment dávalo smysl platit členství kvůli funkcím, co mu usnadní práci a
   - **Bazar + spolujízda `/bazar`** (`bazar_listings`, kind bazar|spolujizda): 2 záložky, přidává HUB+ člen, maže autor/admin.
   - Sdílený hook **`src/lib/useMe.ts`** ({me, canPost=HUB+/admin, isAdmin}). Karty na `/rodic` jsou živé. Vše v sitemapě.
   - ČEKÁ: moderace ve `/admin` (skrýt/smazat příspěvky), e-mail notifikace odpovědí, auto-import turnajů ze svazu.
-- **Poskytovatelský model (rozhodnuto, ČEKÁ na implementaci):** Free = profil v DB VIDĚT vč. recenzí, ale fotka/bio/ceník/rezervace/zprávy/top + ověření = HUB+ (Free vidí vše ZAMČENÉ — ať vidí, o co přichází). **„Ověřeno TenisHubem" se NEKUPUJE** — ruční známka admina (reálnost+kvalita), prakticky jen pro spravované HUB+ karty; na mapě jen ověřené.
+- **Poskytovatelský model — HOTOVO (`supabase/overeni.sql`):** samospráva karty (`ProviderCard`, prop `isMember`) je bez HUB+
+  ZAMČENÁ (`.card-locked` overlay + `LockBar`, save disabled) — free vidí vše zamčené. „Chci ověření" → `verify_requested=true`.
+  Admin záložka **Ověření** (`AdminVerify`: fronta verify_requested && !verified → Ověřit/Zamítnout) + **Moderace** (`AdminModerace`:
+  fórum/poradna/bazar — skrýt/zobrazit/smazat, admin čte i hidden přes is_admin RLS). „Ověřeno" se NEKUPUJE (ruční známka).
+- **ČEKÁ na vstup Jana:** (a) **E-mail notifikace** — potřebuje Resend účet + API klíč (`RESEND_API_KEY`) + ověřenou doménu;
+  (b) **Auto-import turnajů jednotlivců** — potřebuje vzorovou URL ze cesky-tenis.cz s výpisem turnajů (jako soutěž `/soutez/9648`).
+- **RUN ORDER komunita/model SQL (po RUN-ALL.sql):** forum.sql, komunita.sql, overeni.sql.
 
 ## Data (Supabase)
 - Klienti: `src/lib/supabase/client.ts` (browser) a `server.ts` (SSR, Next 15 async cookies).
