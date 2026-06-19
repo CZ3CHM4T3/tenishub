@@ -4,17 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES } from "@/lib/cities";
-import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink } from "lucide-react";
+import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, Lock, BadgeCheck, ShieldQuestion } from "lucide-react";
 
 type Spec = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
   phone: string | null; email: string | null; website: string | null;
   price_from: number | null; photo_url: string | null; status: string | null;
+  verified: boolean | null; verify_requested: boolean | null;
 };
 type Venue = {
   id: string; name: string; city: string | null; description: string | null;
   website: string | null; reservation_url: string | null; amenities: string[] | null;
   photo_url: string | null; status: string | null;
+  verified: boolean | null; verify_requested: boolean | null;
 };
 type Service = { id?: string; name: string; price_czk: number; duration_min: number };
 
@@ -32,7 +34,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 const minToStr = (m: number) => `${pad2(Math.floor(m / 60))}:${pad2(m % 60)}`;
 const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); return (h || 0) * 60 + (m || 0); };
 
-export default function ProviderCard({ userId, fullName }: { userId: string; fullName: string }) {
+export default function ProviderCard({ userId, fullName, isMember }: { userId: string; fullName: string; isMember: boolean }) {
   const [loading, setLoading] = useState(true);
   const [spec, setSpec] = useState<Spec | null>(null);
   const [venue, setVenue] = useState<Venue | null>(null);
@@ -127,6 +129,28 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
     setBusy(false); flash("Uloženo ✓");
   };
 
+  const requestVerify = async (table: "specialists" | "venues", id: string) => {
+    setBusy(true);
+    const sb = createClient();
+    await sb.from(table).update({ verify_requested: true }).eq("id", id);
+    if (table === "specialists" && spec) setSpec({ ...spec, verify_requested: true });
+    if (table === "venues" && venue) setVenue({ ...venue, verify_requested: true });
+    setBusy(false); flash("Žádost o ověření odeslána ✓");
+  };
+
+  const VerifyBadge = ({ verified, requested }: { verified: boolean | null; requested: boolean | null }) =>
+    verified ? <span className="member-badge"><BadgeCheck size={14} style={{ verticalAlign: "-2px" }} /> Ověřeno</span>
+      : requested ? <span className="nomember">žádost o ověření odeslána</span>
+        : <span className="nomember">neověřeno</span>;
+
+  const LockBar = () => (
+    <div className="card-lockbar">
+      <Lock size={18} />
+      <div><b>Vyplnění karty je součást HUB+</b><span>Být v katalogu a na mapě je zdarma. Fotku, ceník, bio i rezervace odemkne HUB+.</span></div>
+      <Link href="/clenstvi" className="btn btn-gold btn-sm">Chci HUB+</Link>
+    </div>
+  );
+
   if (loading) return <div className="acct-card"><p className="member-note">Načítám tvou kartu…</p></div>;
 
   // --- nemá kartu → nabídka vytvoření ---
@@ -153,9 +177,14 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
       {spec && (
         <div className="acct-card">
           <div className="acct-card-head"><UserCog size={20} /><h2>Moje karta specialisty</h2>
-            {spec.status === "unclaimed" && <span className="nomember">čeká na ověření</span>}
+            <VerifyBadge verified={spec.verified} requested={spec.verify_requested} />
           </div>
+          {!isMember && <LockBar />}
+          {isMember && !spec.verified && !spec.verify_requested && (
+            <button className="btn btn-out btn-sm card-verify" disabled={busy} onClick={() => requestVerify("specialists", spec.id)}><ShieldQuestion size={15} /> Chci ověření TenisHubem</button>
+          )}
 
+          <div className={isMember ? "" : "card-locked"}>
           <div className="card-photo">
             <div className="card-photo-prev" style={spec.photo_url ? { backgroundImage: `url(${spec.photo_url})` } : undefined}>
               {!spec.photo_url && <ImagePlus size={26} />}
@@ -216,9 +245,10 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
             ))}
             <button className="btn btn-out cenik-add" onClick={() => setAvail([...avail, { weekday: 1, from: "16:00", to: "20:00", slot: 60 }])}><Plus size={14} /> Přidat čas</button>
           </div>
+          </div>{/* /card-locked */}
 
           <div className="card-actions">
-            <button className="btn btn-green" onClick={saveSpec} disabled={busy}>{saved || "Uložit kartu"}</button>
+            <button className="btn btn-green" onClick={saveSpec} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUB+" : undefined}>{!isMember ? "Uložení s HUB+" : (saved || "Uložit kartu")}</button>
             <Link href={`/trener/${spec.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
           </div>
         </div>
@@ -227,9 +257,14 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
       {venue && (
         <div className="acct-card">
           <div className="acct-card-head"><Building2 size={20} /><h2>Můj areál</h2>
-            {venue.status === "unclaimed" && <span className="nomember">čeká na ověření</span>}
+            <VerifyBadge verified={venue.verified} requested={venue.verify_requested} />
           </div>
+          {!isMember && <LockBar />}
+          {isMember && !venue.verified && !venue.verify_requested && (
+            <button className="btn btn-out btn-sm card-verify" disabled={busy} onClick={() => requestVerify("venues", venue.id)}><ShieldQuestion size={15} /> Chci ověření TenisHubem</button>
+          )}
 
+          <div className={isMember ? "" : "card-locked"}>
           <div className="card-photo">
             <div className="card-photo-prev" style={venue.photo_url ? { backgroundImage: `url(${venue.photo_url})` } : undefined}>
               {!venue.photo_url && <ImagePlus size={26} />}
@@ -251,9 +286,10 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
           </div>
           <div className="fld"><label>Popis</label><textarea rows={4} value={venue.description ?? ""} onChange={(e) => setVenue({ ...venue, description: e.target.value })} placeholder="Počet kurtů, povrch, hala, zázemí…" /></div>
           <div className="fld"><label>Vybavení (oddělené čárkou)</label><input value={(venue.amenities ?? []).join(", ")} onChange={(e) => setVenue({ ...venue, amenities: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="antuka, hala, šatny, bistro" /></div>
+          </div>{/* /card-locked */}
 
           <div className="card-actions">
-            <button className="btn btn-green" onClick={saveVenue} disabled={busy}>{saved || "Uložit areál"}</button>
+            <button className="btn btn-green" onClick={saveVenue} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUB+" : undefined}>{!isMember ? "Uložení s HUB+" : (saved || "Uložit areál")}</button>
             <Link href={`/areal/${venue.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
           </div>
         </div>

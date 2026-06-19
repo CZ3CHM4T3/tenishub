@@ -166,7 +166,7 @@ export default function AccountPage() {
         </div>
 
         {/* MOJE KARTA (samospráva trenér/areál) */}
-        <ProviderCard userId={profile.id} fullName={name} />
+        <ProviderCard userId={profile.id} fullName={name} isMember={!!membership || profile.is_admin} />
 
         {/* REZERVACE */}
         <div className="acct-card">

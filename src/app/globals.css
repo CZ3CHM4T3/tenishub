@@ -578,6 +578,27 @@
 .bazar-foot { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; font-size: 0.74rem; color: var(--muted); margin-top: auto; padding-top: 0.4rem; }
 .bazar-contact { font-weight: 700; color: var(--green); }
 
+/* poskytovatelská karta — zámek + ověření */
+.card-lockbar { display: flex; align-items: center; gap: 0.8rem; background: rgba(200,162,76,0.1); border: 1px solid rgba(200,162,76,0.4); border-radius: 12px; padding: 0.7rem 0.9rem; margin: 0.4rem 0 0.9rem; }
+.card-lockbar svg { color: var(--gold-l); flex: none; }
+.card-lockbar > div { display: flex; flex-direction: column; line-height: 1.25; }
+.card-lockbar > div span { font-size: 0.8rem; color: var(--muted); }
+.card-lockbar .btn { margin-left: auto; white-space: nowrap; }
+.card-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.4); user-select: none; }
+.card-verify { margin-bottom: 0.9rem; }
+
+/* moderace */
+.mod-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.mod-item { display: flex; gap: 0.8rem; align-items: flex-start; border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.85rem; background: #fff; }
+.mod-item.hidden { opacity: 0.6; }
+.mod-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mod-main b { font-size: 0.92rem; }
+.mod-sub { font-size: 0.74rem; color: var(--gold-l); font-weight: 600; }
+.mod-body { font-size: 0.82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mod-actions { display: flex; flex-direction: column; gap: 0.35rem; flex: none; }
+.mod-actions button { display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; padding: 0.35rem 0.6rem; border: 1px solid var(--line); background: #fff; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.mod-actions .danger { color: #b1442f; border-color: rgba(177,68,47,0.3); }
+
 /* povrchy v ohlédnutí */
 .mc-surf { display: flex; flex-direction: column; gap: 0.5rem; }
 .mc-surfrow { display: flex; align-items: center; gap: 0.7rem; }
