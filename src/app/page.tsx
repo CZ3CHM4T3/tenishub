@@ -137,11 +137,15 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const els = Array.from(document.querySelectorAll(".rv"));
+    if (!("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("in")); return; }
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".rv").forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    els.forEach((el) => io.observe(el));
+    // pojistka: kdyby observer nenaběhl (žádné odhalení do 1,5 s), odhal vše
+    const t = setTimeout(() => { if (!document.querySelector(".rv.in")) els.forEach((el) => el.classList.add("in")); }, 1500);
+    return () => { io.disconnect(); clearTimeout(t); };
   }, []);
 
   // živé statistiky (online + návštěvy)
@@ -284,10 +288,10 @@ export default function Home() {
       {/* RODIČ & DÍTĚ — co je zdarma a co s HUB+ (pod fotkami) */}
       <section className="sec rodic-plan" id="svet-rodic">
         <div className="wrap">
-          <span className="eyebrow">Rodič &amp; dítě — vše, co nabízíme</span>
-          <h2 className="rodic-plan-h">Co máte zdarma a co s HUB+</h2>
+          <span className="eyebrow rv">Rodič &amp; dítě — vše, co nabízíme</span>
+          <h2 className="rodic-plan-h rv d1">Co máte zdarma a co s HUB+</h2>
           <div className="rodic-plan-cols">
-            <div className="rp-col">
+            <div className="rp-col rv l d1">
               <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
               <ul className="rp-list">
                 <li><Check size={16} /> Najít trenéra, kurt i fyzio na mapě</li>
@@ -298,7 +302,7 @@ export default function Home() {
               </ul>
               <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
             </div>
-            <div className="rp-col rp-col-hub">
+            <div className="rp-col rp-col-hub rv r d2">
               <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
               <ul className="rp-list rp-list-locked">
                 <li><Lock size={15} /> <b>Moje cesta</b> — kalendář kariéry dítěte</li>
@@ -313,14 +317,14 @@ export default function Home() {
               <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
             </div>
           </div>
-          <p className="rp-extra"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
+          <p className="rp-extra rv d1"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
         </div>
       </section>
 
       {/* MOJE CESTA — hlavní bod HUB+ pro rodiče */}
       <section className="mcpromo">
         <div className="wrap mcpromo-in">
-          <div className="mcpromo-txt">
+          <div className="mcpromo-txt rv l">
             <span className="mcpromo-eyebrow">★ Hlavní výhoda HUB+ pro rodiče</span>
             <h2>Moje cesta — celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
             <p>Provede hobby i závodního hráče <b>celou sezónou</b>: osa příprava → sezóna → mezisezóna, barevný kalendář (tréninky, turnaje i s výsledky, kondice), cíle a statistiky — a hlavně <b>volno a čas jen pro sebe</b>. Růst krok za krokem, bez vyhoření.</p>
@@ -329,7 +333,7 @@ export default function Home() {
               <Link href="/prihlaseni?tab=reg" className="btn btn-out">Vytvořit účet zdarma</Link>
             </div>
           </div>
-          <div className="mcpromo-vis" aria-hidden="true">
+          <div className="mcpromo-vis rv r" aria-hidden="true">
             <div className="mcv-card">
               <div className="mcv-axis">
                 <span style={{ background: "#3b8a5a", width: "40%" }}>Příprava</span>
