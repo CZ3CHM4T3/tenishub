@@ -8,22 +8,22 @@ import { WhistleIcon } from "./icons";
 
 type Icon = ComponentType<{ size?: number }>;
 type Cta = { label: string; href: string };
-type Pick = { key: string; label: string; tagline: string; color: string; fill: string; Icon: Icon; find: Cta; iam: Cta };
+type Pick = { key: string; label: string; tagline: string; color: string; fill: string; Icon: Icon; photo: string; find: Cta; iam: Cta };
 
 const PICKS: Pick[] = [
-  { key: "coach", label: "Trenér", tagline: "tenisový trénink", color: "#7C4DD6", fill: "#EEEDFE", Icon: WhistleIcon,
+  { key: "coach", label: "Trenér", tagline: "tenisový trénink", color: "#7C4DD6", fill: "#EEEDFE", Icon: WhistleIcon, photo: "/role-trener.png",
     find: { label: "Hledám trenéra", href: "/mapa?type=coach" }, iam: { label: "Jsem trenér", href: "/pro-koho?role=trener" } },
-  { key: "hrac", label: "Hráč", tagline: "hraj a zlepšuj se", color: "#3b5666", fill: "#E5ECF1", Icon: IconRun,
+  { key: "hrac", label: "Hráč", tagline: "hraj a zlepšuj se", color: "#3b5666", fill: "#E5ECF1", Icon: IconRun, photo: "/role-hrac.png",
     find: { label: "Hledám kurt / parťáka", href: "/sparring" }, iam: { label: "Jsem hráč", href: "/pro-koho?role=hrac" } },
-  { key: "club", label: "Areály & kluby", tagline: "kurty a haly", color: "#2f5d57", fill: "#E0EBE9", Icon: Building2,
+  { key: "club", label: "Areály & kluby", tagline: "kurty a haly", color: "#2f5d57", fill: "#E0EBE9", Icon: Building2, photo: "/role-areal.png",
     find: { label: "Hledám kurt", href: "/mapa?type=club" }, iam: { label: "Mám areál / klub", href: "/pro-koho?role=areal" } },
-  { key: "sparring", label: "Sparring", tagline: "parťák na zápas", color: "#8a5640", fill: "#F2E6DF", Icon: Handshake,
+  { key: "sparring", label: "Sparring", tagline: "parťák na zápas", color: "#8a5640", fill: "#F2E6DF", Icon: Handshake, photo: "/role-sparring.png",
     find: { label: "Najít parťáka", href: "/sparring" }, iam: { label: "Přidat inzerát", href: "/sparring" } },
-  { key: "physio", label: "Fyzio", tagline: "rehabilitace a prevence", color: "#864a59", fill: "#F2E5E9", Icon: HeartPulse,
+  { key: "physio", label: "Fyzio", tagline: "rehabilitace a prevence", color: "#864a59", fill: "#F2E5E9", Icon: HeartPulse, photo: "/role-fyzio.png",
     find: { label: "Hledám fyzio", href: "/mapa?type=physio" }, iam: { label: "Jsem fyzioterapeut", href: "/pro-koho?role=fyzio" } },
-  { key: "fitness", label: "Fitness", tagline: "kondice a síla", color: "#4a5b86", fill: "#E8ECF4", Icon: Dumbbell,
+  { key: "fitness", label: "Fitness", tagline: "kondice a síla", color: "#4a5b86", fill: "#E8ECF4", Icon: Dumbbell, photo: "/role-fitness.png",
     find: { label: "Hledám kondičního", href: "/mapa?type=fitness" }, iam: { label: "Jsem kondiční trenér", href: "/pro-koho?role=fitness" } },
-  { key: "stringer", label: "Vyplétač", tagline: "servis raket", color: "#5a6470", fill: "#E6E9ED", Icon: Grid3x3,
+  { key: "stringer", label: "Vyplétač", tagline: "servis raket", color: "#5a6470", fill: "#E6E9ED", Icon: Grid3x3, photo: "/role-vyplet.png",
     find: { label: "Hledám vyplétače", href: "/mapa?type=stringer" }, iam: { label: "Vyplétám rakety", href: "/pro-koho?role=vyplet" } },
 ];
 
@@ -45,7 +45,11 @@ export function ServicePicker() {
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSel(on ? null : p.key); } }}
           >
-            <span className="spick-ic" style={{ background: p.fill, color: p.color }}><PIcon size={30} /></span>
+            <span className="spick-ic" style={{ background: p.fill, color: p.color }}>
+              <PIcon size={30} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.photo} alt="" className="spick-ic-img" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+            </span>
             <span className="spick-txt">
               <b>{p.label}</b>
               <span>{p.tagline}</span>

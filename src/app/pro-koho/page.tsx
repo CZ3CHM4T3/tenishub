@@ -36,10 +36,10 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
           <p className="lead">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUB+.</p>
           <div className="prole-grid">
             {ROLE_ORDER.map((k) => {
-              const x = ROLES[k]; const I = ICONS[x.icon];
+              const x = ROLES[k];
               return (
                 <Link key={k} href={`/pro-koho?role=${k}`} className="prole-card">
-                  <span className="prole-ic" style={{ background: x.fill, color: x.color }}><I size={26} /></span>
+                  <span className="prole-photo" style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }} />
                   <span className="prole-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
                   <span className="prole-arr"><ArrowRight size={18} /></span>
                 </Link>
