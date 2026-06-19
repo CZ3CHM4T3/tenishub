@@ -37,3 +37,14 @@ vygeneruj, ulož pod uvedeným **názvem** do `public/`, řekni Claudovi → zap
 | `public/clanek-hlava.jpg` | psychika / motivace | child concentrated, deep breath before serving |
 
 Tip: drž stejný věk/oblečení/světlo napříč, ať postavy působí jako „jeden svět".
+
+## RODIČ & DÍTĚ → `/rodic` (vyvážit pohlaví — víc maminek a dcer!)
+| Soubor | Poměr | Scéna (za „Scéna:") |
+|---|---|---|
+| `public/rodic-hero.png` | 16:6 (široký pruh) | a happy mother and her ~9y daughter walking off a clay court together, rackets in hand, warm late-afternoon light, genuine smiles |
+| `public/forum-rodice.png` | 16:9 | two or three parents (mix of moms and dads) chatting and laughing on a clubhouse terrace, kids playing tennis softly blurred behind |
+| `public/knihovna-rodic.png` | 16:9 | a mother sitting courtside reading tennis tips on her phone, her child stretching nearby, calm friendly mood |
+| `public/turnaje-rodic.png` | 16:9 | junior tennis tournament, kids (boys and girls) by a draw board / waiting to play, parents watching, festive but calm |
+| `public/bazar-rodic.png` | 4:3 | a parent handing a used kids' tennis bag and racket to another parent in a club parking lot, friendly exchange (bazar/spolujízda) |
+
+Pozn.: u celé sady cíleně střídej maminka/tatínek a dcera/syn, ať to není samý kluk/chlap.
