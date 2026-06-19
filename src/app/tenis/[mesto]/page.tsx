@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES, citySlug, cityFromSlug } from "@/lib/cities";
 import { listCity, type SpecRow, type VenueRow } from "@/lib/supabase/data";
 
@@ -60,12 +60,7 @@ export default async function CityPage({ params }: { params: Promise<{ mesto: st
   return (
     <div className="legal-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <header className="subhdr">
-        <div className="wrap"><div className="bar">
-          <Link href="/" className="brand"><Wordmark /></Link>
-          <Link href="/mapa" className="back">Mapa →</Link>
-        </div></div>
-      </header>
+      <SiteHeader />
 
       <div className="wrap legal-wrap">
         <h1>Tenis {city}</h1>

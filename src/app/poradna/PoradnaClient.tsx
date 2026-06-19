@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { HelpCircle, Plus, X, Lock, CheckCircle2 } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 import { notify } from "@/lib/notify";
@@ -62,10 +62,7 @@ export default function PoradnaClient() {
 
   return (
     <div className="acct-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/rodic" className="back">← Rodič &amp; dítě</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap acct-wrap" style={{ maxWidth: 820 }}>
         <div className="mc-head">

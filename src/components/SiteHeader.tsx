@@ -21,14 +21,33 @@ const ROLES: [string, string, string][] = [
 export function SiteHeader() {
   const [openMenu, setOpenMenu] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
   useEffect(() => {
     const h = (e: MouseEvent) => { if (!(e.target as HTMLElement).closest(".nav-item")) setOpenMenu(false); };
     document.addEventListener("click", h);
     return () => document.removeEventListener("click", h);
   }, []);
 
+  // Auto-skrytí: nahoře a při scrollu nahoru viditelné; při scrollu dolů se schová;
+  // objeví se i při nájezdu kurzoru k hornímu okraji.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 120) setHidden(false);
+      else if (y > lastY + 5) setHidden(true);
+      else if (y < lastY - 5) setHidden(false);
+      lastY = y;
+    };
+    const onMove = (e: MouseEvent) => { if (e.clientY < 72) setHidden(false); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("mousemove", onMove); };
+  }, []);
+
   return (
-    <header className="shdr">
+    <header className={`shdr${hidden && !mobileOpen ? " shdr-hidden" : ""}`}>
       <div className="wrap">
         <div className="bar">
           <Link href="/" className="brand" aria-label="TenisHub">

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { BookOpen } from "lucide-react";
 
 type Article = { title: string; perex: string | null; body: string; author_name: string | null; created_at: string };
@@ -24,10 +24,7 @@ export default function ClanekClient({ slug }: { slug: string }) {
 
   return (
     <div className="acct-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/clanky" className="back">← Knihovna</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap acct-wrap" style={{ maxWidth: 760 }}>
         {loading ? <p className="member-note">Načítám…</p> : !a ? (

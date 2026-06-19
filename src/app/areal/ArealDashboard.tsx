@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 
 const COURTS = ["Kurt 1", "Kurt 2", "Kurt 3", "Kurt 4 · krytý"];
 const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i); // 8:00–21:00
@@ -38,14 +37,7 @@ export default function ArealDashboard() {
 
   return (
     <div className="areal-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/" className="brand"><Wordmark /></Link>
-            <div className="who"><span>Dashboard areálu</span><span className="av">SD</span> TK Sokol Dobřichovice</div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <div className="wrap">
         <div className="head">

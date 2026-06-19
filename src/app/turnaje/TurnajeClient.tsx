@@ -1,10 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
-import { CalendarDays, Plus, X, MapPin, ExternalLink, Trash2 } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+import { CalendarDays, Plus, X, ExternalLink, Trash2 } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 
 type T = { id: string; name: string; date: string; city: string | null; category: string | null; surface: string | null; signup_url: string | null; note: string | null };
@@ -73,10 +72,7 @@ export default function TurnajeClient() {
 
   return (
     <div className="acct-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/rodic" className="back">← Rodič &amp; dítě</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap acct-wrap" style={{ maxWidth: 820 }}>
         <div className="mc-head">

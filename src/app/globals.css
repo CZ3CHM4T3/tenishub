@@ -775,7 +775,8 @@
 
 /* ═══════════ Sub-header (stránky /trener, /areal) ═══════════ */
 /* Sdílená krémová hlavička s plným menu (obsahové stránky) */
-.shdr { position: sticky; top: 0; z-index: 60; padding: 0.5rem 0; background: rgba(246, 241, 230, 0.96); backdrop-filter: blur(10px); box-shadow: 0 1px 0 #ece4d4, 0 8px 24px -18px rgba(31, 58, 45, 0.35); }
+.shdr { position: sticky; top: 0; z-index: 60; padding: 0.5rem 0; background: rgba(246, 241, 230, 0.96); backdrop-filter: blur(10px); box-shadow: 0 1px 0 #ece4d4, 0 8px 24px -18px rgba(31, 58, 45, 0.35); transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s; }
+.shdr-hidden { transform: translateY(-100%); box-shadow: none; }
 .shdr .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .shdr .brand-img { height: 46px; width: auto; display: block; }
 .shdr .menu { justify-content: center; }

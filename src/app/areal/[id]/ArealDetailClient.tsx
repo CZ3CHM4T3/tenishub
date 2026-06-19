@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { MapPin, Star, CheckCircle2, ArrowRight, ShieldCheck, UserCheck, Flag, Users } from "lucide-react";
 
 type Venue = {
@@ -88,14 +88,7 @@ export default function ArealDetailClient({ id, initial }: { id: string; initial
 
   return (
     <div className="profile-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/mapa" className="brand"><Wordmark /></Link>
-            <Link href="/mapa" className="back">← Zpět na mapu</Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="phero">
         <div className="wrap">

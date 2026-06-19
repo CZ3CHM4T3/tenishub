@@ -7,7 +7,7 @@ import { Phone, Mail, Globe, MessageSquare, Lock, ShieldCheck, UserCheck, Flag }
 const WD_SHORT = ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 const dayLabel = (d: Date) => `${WD_SHORT[d.getDay()]} ${d.getDate()}. ${d.getMonth() + 1}.`;
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { createClient } from "@/lib/supabase/client";
 
 const DAYS: [string, number][] = [
@@ -255,14 +255,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
 
   return (
     <div className="profile-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/mapa" className="brand"><Wordmark /></Link>
-            <Link href="/mapa" className="back">← Zpět na mapu</Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
       <section className="phero">

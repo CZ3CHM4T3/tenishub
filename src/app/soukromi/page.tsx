@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
   title: "Soukromí a údaje specialistů — TenisHub.cz",
@@ -9,12 +8,7 @@ export const metadata = {
 export default function SoukromiPage() {
   return (
     <div className="legal-page">
-      <header className="subhdr">
-        <div className="wrap"><div className="bar">
-          <Link href="/" className="brand"><Wordmark /></Link>
-          <Link href="/" className="back">← Zpět na web</Link>
-        </div></div>
-      </header>
+      <SiteHeader />
 
       <div className="wrap legal-wrap">
         <h1>Soukromí a profily specialistů</h1>

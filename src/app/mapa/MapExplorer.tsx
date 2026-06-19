@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import type * as LType from "leaflet";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";

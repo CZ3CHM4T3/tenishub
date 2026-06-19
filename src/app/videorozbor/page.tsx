@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Phone, Mail, Video, Compass, ListChecks, HeartHandshake } from "lucide-react";
 
