@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
 import { Handshake, MapPin, Clock, Send } from "lucide-react";
 
@@ -108,10 +108,7 @@ export default function SparringClient() {
 
   return (
     <div className="profile-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/mapa" className="back">← Zpět na mapu</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <section className="phero"><div className="wrap"><div className="row">
         <div className="avatar" style={{ background: "linear-gradient(135deg,#f0d9cd,#d8a98f)" }}><Handshake size={44} /></div>

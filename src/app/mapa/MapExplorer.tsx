@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type * as LType from "leaflet";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
 import "leaflet/dist/leaflet.css";
 
@@ -188,10 +188,7 @@ export default function MapExplorer() {
 
   return (
     <div className="map-page">
-      <header className="map-hdr">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/" className="back">← Zpět na web</Link>
-      </header>
+      <SiteHeader />
 
       <div className="map-main">
         <aside className="panel">
