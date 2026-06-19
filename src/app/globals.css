@@ -128,7 +128,7 @@
   .drop-card b { font-weight: 700; font-size: 0.92rem; color: var(--green); }
   .drop-card span { font-size: 0.8rem; color: var(--muted); }
   .nav-r { display: flex; align-items: center; gap: 1rem; }
-  .login { font-size: 0.92rem; color: var(--green-d); font-weight: 700; border: 1.5px solid var(--green); padding: 0.42rem 0.95rem; border-radius: 10px; transition: 0.2s; }
+  .login { font-size: 0.92rem; color: var(--green-d); font-weight: 700; border: 1.5px solid var(--green); padding: 0.5rem 1.05rem; border-radius: 12px; transition: 0.2s; }
   .login:hover { background: var(--green); color: #fff; }
   .burger { display: none; background: none; border: 0; color: var(--green); font-size: 1.5rem; cursor: pointer; }
   @media (max-width: 880px) { .menu, .login { display: none; } .burger { display: block; } }
@@ -782,15 +782,19 @@
 .subhdr .who { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: #cfe0d4; }
 .subhdr .av { width: 30px; height: 30px; border-radius: 8px; background: var(--gold); color: var(--green-ink); display: grid; place-items: center; font-family: var(--font-sora), sans-serif; font-weight: 700; font-size: 0.8rem; }
 
-.btn-green { background: var(--green); color: #fff; }
-.btn-green:hover { background: var(--green-2); }
+/* === Sjednocená tlačítka === */
+.btn { justify-content: center; white-space: nowrap; line-height: 1; }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-green { background: var(--green); color: #fff; box-shadow: 0 6px 16px -10px rgba(44,74,59,0.8); }
+.btn-green:hover { background: var(--green-2); box-shadow: 0 14px 26px -12px rgba(44,74,59,0.75); }
 .btn-out { background: #fff; color: var(--green); border: 1.5px solid var(--line); }
-.btn-out:hover { border-color: var(--green); }
+.btn-out:hover { border-color: var(--green); box-shadow: 0 12px 24px -14px rgba(0,0,0,0.3); }
 
 /* ═══════════ Profil trenéra (/trener) ═══════════ */
 .profile-page { background: var(--soft); min-height: 100vh; }
 .profile-page .wrap { width: min(1100px, 92%); }
-.profile-page .btn { padding: 0.85rem 1.4rem; font-size: 0.95rem; }
+.profile-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
 .phero { background: linear-gradient(160deg, var(--green), var(--green-d)); color: #fff; padding: 2.4rem 0 2rem; position: relative; overflow: hidden; }
 .phero::before { content: ""; position: absolute; right: -5%; top: -40%; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(200, 162, 76, 0.16), transparent 60%); }
 .phero .row { display: flex; gap: 1.6rem; align-items: flex-end; position: relative; flex-wrap: wrap; }
@@ -1114,7 +1118,7 @@
 /* ═══════════ Dashboard areálu (/areal) ═══════════ */
 .areal-page { --book: #2c4a39; --train: #c8a24c; --block: #d8ddd8; background: var(--soft); min-height: 100vh; }
 .areal-page .wrap { width: min(1180px, 94%); }
-.areal-page .btn { padding: 0.6rem 1.1rem; font-size: 0.88rem; border-radius: 10px; }
+.areal-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
 .areal-page .head { padding: 1.8rem 0 1rem; }
 .areal-page .head h1 { font-size: 1.7rem; color: var(--green); }
 .areal-page .head .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
@@ -1350,7 +1354,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .member-note { font-size: 0.9rem; color: #4d5c53; line-height: 1.6; margin: 0.7rem 0 1rem; }
 .acct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
 .acct-logout { margin-top: 0.4rem; }
-.acct-page .btn { padding: 0.7rem 1.2rem; font-size: 0.92rem; }
+.acct-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
 .acct-page .fld input:disabled { opacity: 0.6; cursor: not-allowed; }
 @media (max-width: 620px) { .acct-grid { grid-template-columns: 1fr; } }
 
