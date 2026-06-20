@@ -10,6 +10,7 @@ import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
 import AdminModerace from "./AdminModerace";
+import AdminFeedback from "./AdminFeedback";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -145,9 +146,13 @@ export default function AdminPage() {
     ["prehled", "Přehled"], ["uzivatele", "Uživatelé"], ["subjekty", "Subjekty"],
     ["recenze", "Recenze"], ["zadosti", "Žádosti"], ["overeni", "Ověření"],
     ["moderace", "Moderace"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"],
+    ["feedback", "Zpětná vazba"],
   ];
 
   const activeCount = profiles.filter((p) => activeOf(p.id)).length;
+  const since = (days: number) => new Date(Date.now() - days * 864e5);
+  const signups7 = profiles.filter((p) => new Date(p.created_at) >= since(7)).length;
+  const signups30 = profiles.filter((p) => new Date(p.created_at) >= since(30)).length;
   const paidBookings = bookings.filter((b) => b.status === "paid");
   const revenue = paidBookings.reduce((s, b) => s + (b.price_czk ?? 0), 0);
   const mrr = activeCount * 200;
@@ -331,6 +336,8 @@ export default function AdminPage() {
         {tab === "moderace" && <AdminModerace />}
 
         {tab === "cesta" && <AdminCesta />}
+
+        {tab === "feedback" && <AdminFeedback accounts={profiles.length} members={activeCount} signups7={signups7} signups30={signups30} />}
 
         {tab === "rezervace" && (
         <div className="acct-card">

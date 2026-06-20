@@ -1445,3 +1445,43 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .smap-wrap .hive-menu { width: 100%; max-width: 680px; }
 @media (max-width: 560px) { .hive-menu-grid { grid-template-columns: 1fr; } }
 @media (max-width: 880px) { .hero-visual .hive { max-width: 380px; } }
+
+/* ── Zpětná vazba (plovoucí tlačítko + dotazník) ─────────────── */
+.fb-fab { position: fixed; right: 18px; bottom: 18px; z-index: 90; display: inline-flex; align-items: center; gap: 0.5rem;
+  background: linear-gradient(180deg, #335645, #28452f); color: #fff; border: 1px solid rgba(255,255,255,0.14);
+  padding: 0.6rem 0.95rem; border-radius: 100px; font-weight: 700; font-size: 0.86rem; cursor: pointer;
+  box-shadow: 0 10px 26px -10px rgba(20,40,28,0.6); transition: transform 0.15s, box-shadow 0.2s; }
+.fb-fab:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(20,40,28,0.7); }
+.fb-fab svg { color: var(--gold-l, #d8b86a); }
+@media (max-width: 640px) { .fb-fab span { display: none; } .fb-fab { padding: 0.7rem; right: 14px; bottom: 14px; } }
+.fb-cats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0.8rem; }
+.fb-cat { border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 100px; padding: 0.35rem 0.7rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.15s; }
+.fb-cat:hover { border-color: var(--green); }
+.fb-cat.on { background: var(--green); color: #fff; border-color: var(--green); }
+.fb-stars { display: flex; align-items: center; gap: 0.15rem; margin-bottom: 0.7rem; }
+.fb-star { background: none; border: 0; padding: 2px; color: #cbb46a; cursor: pointer; line-height: 0; }
+.fb-star.on { color: var(--gold, #bf9a47); }
+.fb-stars small { margin-left: 0.5rem; color: var(--muted); font-size: 0.76rem; }
+.fb-done { text-align: center; padding: 1rem 0; color: var(--green); }
+.fb-done svg { color: var(--green); }
+.fb-done h3 { margin: 0.5rem 0 0.2rem; }
+
+/* ── Admin: konverzní trychtýř + výpis zpětné vazby ──────────── */
+.funnel { display: flex; align-items: stretch; gap: 0.5rem; flex-wrap: wrap; }
+.funnel-step { flex: 1; min-width: 120px; background: var(--soft); border: 1px solid var(--line); border-radius: 14px; padding: 0.9rem 1rem; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+.funnel-step b { font-size: 1.5rem; color: var(--green); line-height: 1.1; }
+.funnel-step span { font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+.funnel-step small { font-size: 0.72rem; color: var(--muted); }
+.funnel-step.funnel-paid { background: linear-gradient(180deg, #fbf2da, #f3e6c4); border-color: #e7cf93; }
+.funnel-step.funnel-paid b { color: #8a6a26; }
+.funnel-arrow { display: flex; align-items: center; }
+.funnel-arrow span { font-size: 0.78rem; font-weight: 800; color: var(--gold, #bf9a47); background: #fff; border: 1px solid var(--line); border-radius: 100px; padding: 2px 8px; white-space: nowrap; }
+@media (max-width: 640px) { .funnel { flex-direction: column; } .funnel-arrow { justify-content: center; transform: rotate(90deg); } }
+.fb-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.fb-item { border: 1px solid var(--line); border-radius: 12px; padding: 0.8rem 0.9rem; background: #fff; }
+.fb-item.is-new { border-color: var(--green); box-shadow: 0 0 0 1px var(--green) inset; }
+.fb-item-top { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+.fb-tag { background: var(--green); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+.fb-rate { display: inline-flex; align-items: center; gap: 3px; color: var(--gold, #bf9a47); font-weight: 700; font-size: 0.78rem; }
+.fb-meta { font-size: 0.74rem; color: var(--muted); }
+.fb-msg { margin: 0 0 0.5rem; line-height: 1.5; color: var(--ink); white-space: pre-wrap; }

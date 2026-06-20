@@ -7,6 +7,7 @@ import "@fontsource/montserrat/700.css";
 import "@fontsource/montserrat/800.css";
 import "./globals.css";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { SiteFeedback } from "@/components/SiteFeedback";
 
 export const metadata: Metadata = {
   title: {
@@ -61,6 +62,7 @@ export default function RootLayout({
         />
         {children}
         <ScrollReveal />
+        <SiteFeedback />
       </body>
     </html>
   );
