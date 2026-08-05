@@ -176,7 +176,7 @@ export default function Home() {
           <div className="bar">
             <Link href="/" className="brand" aria-label="TenisHub">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-gg.png" alt="TenisHub" className="brand-img" />
+              <img src="/logo-tenishub.png" alt="TenisHub" className="brand-img" />
             </Link>
             <nav className="menu">
               <div className="nav-item">
