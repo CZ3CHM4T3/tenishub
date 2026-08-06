@@ -8,6 +8,7 @@ import "@fontsource/montserrat/800.css";
 import "./globals.css";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SiteFeedback } from "@/components/SiteFeedback";
+import { MetaPixel } from "@/components/MetaPixel";
 
 export const metadata: Metadata = {
   title: {
@@ -63,6 +64,7 @@ export default function RootLayout({
         {children}
         <ScrollReveal />
         <SiteFeedback />
+        <MetaPixel />
       </body>
     </html>
   );
