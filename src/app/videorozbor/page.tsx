@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Phone, Mail, Video, Compass, ListChecks, HeartHandshake } from "lucide-react";
+import { VideoOrderForm } from "./VideoOrderForm";
 
 export const metadata: Metadata = {
   title: "Videorozbor a konzultace — proč to vašemu dítěti nejde",
@@ -26,8 +27,9 @@ export default function VideorozborPage() {
             poradíme, v čem je problém a jak ho řešit.
           </p>
           <div className="vr-cta rv d2">
-            {TEL && <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám: {TEL}</a>}
-            <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className={`btn ${TEL ? "btn-out" : "btn-gold"}`}><Mail size={16} /> Napište nám: info@tenishub.cz</a>
+            <a href="#objednat" className="btn btn-gold"><Video size={18} /> Objednat videorozbor</a>
+            {TEL && <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-out"><Phone size={18} /> Zavolejte nám: {TEL}</a>}
+            <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className="btn btn-out"><Mail size={16} /> info@tenishub.cz</a>
           </div>
           <p className="vr-note rv d2">Nezávisle na tom, kde vaše dítě trénuje — <b>jsme objektivní</b>. Nezajímá nás klub, zajímá nás vaše dítě.</p>
         </div>
@@ -54,10 +56,8 @@ export default function VideorozborPage() {
           Funguje pro <b>děti i dospělé</b>. Žádné obecné rady z internetu — konkrétní řešení na míru
           od lidí, kteří tenisu i dětem rozumí.
         </p>
-        <div className="vr-cta">
-          {TEL && <a href={`tel:${TEL.replace(/\s/g, "")}`} className="btn btn-gold"><Phone size={18} /> Zavolejte nám</a>}
-          <a href="mailto:info@tenishub.cz?subject=Videorozbor%20a%20konzultace" className={`btn ${TEL ? "btn-out" : "btn-gold"}`}><Mail size={16} /> info@tenishub.cz</a>
-        </div>
+
+        <VideoOrderForm />
       </div>
     </div>
   );

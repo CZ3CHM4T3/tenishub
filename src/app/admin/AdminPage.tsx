@@ -11,6 +11,7 @@ import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
 import AdminModerace from "./AdminModerace";
 import AdminFeedback from "./AdminFeedback";
+import AdminVideo from "./AdminVideo";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -146,7 +147,7 @@ export default function AdminPage() {
     ["prehled", "Přehled"], ["uzivatele", "Uživatelé"], ["subjekty", "Subjekty"],
     ["recenze", "Recenze"], ["zadosti", "Žádosti"], ["overeni", "Ověření"],
     ["moderace", "Moderace"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"],
-    ["feedback", "Zpětná vazba"],
+    ["feedback", "Zpětná vazba"], ["video", "Videorozbor"],
   ];
 
   const activeCount = profiles.filter((p) => activeOf(p.id)).length;
@@ -341,6 +342,8 @@ export default function AdminPage() {
         {tab === "cesta" && <AdminCesta />}
 
         {tab === "feedback" && <AdminFeedback accounts={profiles.length} members={activeCount} signups7={signups7} signups30={signups30} />}
+
+        {tab === "video" && <AdminVideo />}
 
         {tab === "rezervace" && (
         <div className="acct-card">

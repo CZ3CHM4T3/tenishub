@@ -11,7 +11,7 @@
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 1/13:  schema.sql
+-- ██ SEKCE 1/14:  schema.sql
 -- ██ Základ: tabulky, RLS, ukázková data
 -- ████████████████████████████████████████████████████████████
 
@@ -268,7 +268,7 @@ on conflict do nothing;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 2/13:  clenstvi.sql
+-- ██ SEKCE 2/14:  clenstvi.sql
 -- ██ Členství HUB+, is_admin(), profily neveřejné
 -- ████████████████████████████████████████████████████████████
 
@@ -341,7 +341,7 @@ create policy profiles_read on public.profiles for select
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 3/13:  admini.sql
+-- ██ SEKCE 3/14:  admini.sql
 -- ██ Auto-admini (Jan+Jirka), admin vidí bookings
 -- ████████████████████████████████████████████████████████████
 
@@ -382,7 +382,7 @@ create policy bookings_read on public.bookings for select using (
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 4/13:  recenze-sparring.sql
+-- ██ SEKCE 4/14:  recenze-sparring.sql
 -- ██ author_name v recenzích/sparringu + přepočet ratingu
 -- ████████████████████████████████████████████████████████████
 
@@ -423,7 +423,7 @@ create trigger reviews_recompute
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 5/13:  RUN-ALL.sql
+-- ██ SEKCE 5/14:  RUN-ALL.sql
 -- ██ Claimable profily + REÁLNÁ DATA (trenéři, kluby, školy) + úklid dema
 -- ████████████████████████████████████████████████████████████
 
@@ -1016,7 +1016,7 @@ delete from public.venues where source is null and owner_id is null;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 6/13:  RUN-FUNKCE.sql
+-- ██ SEKCE 6/14:  RUN-FUNKCE.sql
 -- ██ Samospráva karty, recenze v2, zprávy, sparring v2
 -- ████████████████████████████████████████████████████████████
 
@@ -1164,7 +1164,7 @@ alter table public.sparring_offers add column if not exists surface    text;  --
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 7/13:  moje-cesta.sql
+-- ██ SEKCE 7/14:  moje-cesta.sql
 -- ██ Moje cesta (hráči, události, cíle, sezóna)
 -- ████████████████████████████████████████████████████████████
 
@@ -1322,7 +1322,7 @@ create policy cesta_settings_write on public.cesta_settings for all
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 8/13:  rezervace.sql
+-- ██ SEKCE 8/14:  rezervace.sql
 -- ██ Dostupnost + obsazené sloty (rezervace)
 -- ████████████████████████████████████████████████████████████
 
@@ -1363,7 +1363,7 @@ $$;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 9/13:  vypletac.sql
+-- ██ SEKCE 9/14:  vypletac.sql
 -- ██ Služba Vyplétač raket
 -- ████████████████████████████████████████████████████████████
 
@@ -1376,7 +1376,7 @@ alter type public.service_kind add value if not exists 'stringer';
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 10/13:  ms-gem.sql
+-- ██ SEKCE 10/14:  ms-gem.sql
 -- ██ MS GEM – jediný ověřený profil
 -- ████████████████████████████████████████████████████████████
 
@@ -1402,7 +1402,7 @@ update public.specialists
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 11/13:  admin-delete-user.sql
+-- ██ SEKCE 11/14:  admin-delete-user.sql
 -- ██ RPC pro mazání účtů (jen admin)
 -- ████████████████████████████████████████████████████████████
 
@@ -1437,7 +1437,7 @@ grant  execute on function public.admin_delete_user(uuid) to authenticated;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 12/13:  RUN-KOMUNITA.sql
+-- ██ SEKCE 12/14:  RUN-KOMUNITA.sql
 -- ██ Fórum, články, poradna, turnaje, bazar, ověření, import turnajů, e-mail notifikace
 -- ████████████████████████████████████████████████████████████
 
@@ -1668,7 +1668,7 @@ alter table public.messages     add column if not exists notified_at timestamptz
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 13/13:  feedback-analytika.sql
+-- ██ SEKCE 13/14:  feedback-analytika.sql
 -- ██ Zpětná vazba (dotazník) + návštěvy pro konverzní trychtýř v adminu
 -- ████████████████████████████████████████████████████████████
 
@@ -1737,3 +1737,49 @@ create policy events_admin_select on public.events
 
 create index if not exists events_created_idx on public.events (created_at desc);
 create index if not exists events_kind_idx on public.events (kind);
+
+
+-- ████████████████████████████████████████████████████████████
+-- ██ SEKCE 14/14:  videorozbor.sql
+-- ██ Objednávky videorozboru (placená služba, admin je vidí)
+-- ████████████████████████████████████████████████████████████
+
+-- ============================================================
+-- TenisHub — VIDEOROZBOR (objednávky 1:1 rozboru z odkazu na video)
+-- Spustit v Supabase SQL Editoru PO clenstvi.sql (kvůli is_admin()).
+-- Bezpečné spustit i opakovaně.
+-- Placená služba MIMO HUB+ — rodič vloží odkaz na video + kontakt, admin řeší ručně.
+-- ============================================================
+
+create table if not exists public.video_requests (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  author_id     uuid references auth.users(id) on delete set null,
+  name          text not null,
+  email         text not null,
+  phone         text,
+  player_age    text,                 -- volný text (věk / úroveň hráče)
+  video_url     text not null,        -- odkaz YouTube / Disk / …
+  note          text,                 -- co řešit
+  preferred_at  text,                 -- preferovaný termín (volný text)
+  status        text not null default 'new'   -- new | contacted | done | cancelled
+);
+alter table public.video_requests enable row level security;
+
+-- objednat smí kdokoli (i nepřihlášený)
+drop policy if exists video_requests_insert on public.video_requests;
+create policy video_requests_insert on public.video_requests
+  for insert with check (true);
+
+-- číst a měnit smí jen admin
+drop policy if exists video_requests_admin_select on public.video_requests;
+create policy video_requests_admin_select on public.video_requests
+  for select using (public.is_admin());
+drop policy if exists video_requests_admin_update on public.video_requests;
+create policy video_requests_admin_update on public.video_requests
+  for update using (public.is_admin());
+drop policy if exists video_requests_admin_delete on public.video_requests;
+create policy video_requests_admin_delete on public.video_requests
+  for delete using (public.is_admin());
+
+create index if not exists video_requests_created_idx on public.video_requests (created_at desc);

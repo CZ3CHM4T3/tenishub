@@ -1509,3 +1509,20 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .crumbs a:hover { color: var(--gold-l); }
 .faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .faq-a { padding: 0 1rem 1rem; color: var(--green-2); font-size: 0.92rem; line-height: 1.55; }
+
+/* ── Videorozbor — objednávkový formulář ─────────────────────── */
+.vro-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.6rem; margin: 1.8rem 0; box-shadow: var(--shadow-s); scroll-margin-top: 90px; }
+.vro-head { display: flex; align-items: center; gap: 0.6rem; }
+.vro-head h3 { margin: 0; font-size: 1.25rem; color: var(--green); }
+.vro-head svg { color: var(--gold, #bf9a47); }
+.vro-sub { color: var(--muted); font-size: 0.92rem; margin: 0.4rem 0 1.1rem; }
+.vro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
+.vro-card label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.82rem; font-weight: 700; color: var(--green); }
+.vro-card label.vro-full { margin-bottom: 0.8rem; }
+.vro-card input, .vro-card textarea { border: 1.5px solid var(--line); border-radius: 10px; padding: 0.6rem 0.75rem; font-size: 0.92rem; font-family: inherit; font-weight: 400; color: var(--ink); background: var(--soft); }
+.vro-card input:focus, .vro-card textarea:focus { outline: none; border-color: var(--gold); background: #fff; }
+.vro-fine { font-size: 0.78rem; color: var(--muted); margin: 0.8rem 0 0; }
+.vro-done { text-align: center; }
+.vro-done svg { color: var(--green); }
+.vro-done h3 { margin: 0.5rem 0 0.3rem; color: var(--green); }
+@media (max-width: 560px) { .vro-grid { grid-template-columns: 1fr; } }
