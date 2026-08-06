@@ -69,6 +69,15 @@ export default async function CityPage({ params }: { params: Promise<{ mesto: st
           Otevři profil, podívej se na kontakt a recenze a domluv si lekci nebo kurt.
         </p>
 
+        <section className="city-sec">
+          <h2>Co v {city} hledáš?</h2>
+          <div className="city-tags">
+            {([["treneri", "Tenisový trenér"], ["kurty", "Tenisové kurty"], ["skoly", "Tenisová škola"], ["fyzio", "Fyzioterapeut"], ["kondice", "Kondiční trenér"]] as [string, string][]).map(([slug, label]) => (
+              <Link key={slug} href={`/tenis/${mesto}/${slug}`} className="city-tag">{label} {city}</Link>
+            ))}
+          </div>
+        </section>
+
         {total === 0 ? (
           <p style={{ color: "var(--muted)" }}>
             Pro {city} zatím připravujeme záznamy. Mezitím mrkni na <Link href="/mapa" style={{ color: "var(--gold-l)", fontWeight: 600 }}>celou mapu</Link>.

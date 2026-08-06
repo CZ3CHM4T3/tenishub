@@ -1502,3 +1502,10 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .dstat b { display: block; font-size: 1.5rem; line-height: 1.1; margin: 0.3rem 0 0.1rem; color: var(--green); }
 .dstat span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
 @media (max-width: 640px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } .dash-picker select { min-width: 0; width: 100%; } }
+
+/* ── Lokální SEO stránky (služba × město) ────────────────────── */
+.crumbs { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.6rem; }
+.crumbs a { color: var(--green-2); text-decoration: none; }
+.crumbs a:hover { color: var(--gold-l); }
+.faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.faq-a { padding: 0 1rem 1rem; color: var(--green-2); font-size: 0.92rem; line-height: 1.55; }

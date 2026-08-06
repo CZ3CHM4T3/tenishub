@@ -35,6 +35,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
+    // Lokální SEO: služba × město
+    ...CITIES.flatMap((c) =>
+      ["treneri", "kurty", "skoly", "fyzio", "kondice"].map((svc) => ({
+        url: `${base}/tenis/${citySlug(c[0])}/${svc}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.75,
+      })),
+    ),
   ];
 
   try {
