@@ -1485,3 +1485,20 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .fb-rate { display: inline-flex; align-items: center; gap: 3px; color: var(--gold, #bf9a47); font-weight: 700; font-size: 0.78rem; }
 .fb-meta { font-size: 0.74rem; color: var(--muted); }
 .fb-msg { margin: 0 0 0.5rem; line-height: 1.5; color: var(--ink); white-space: pre-wrap; }
+
+/* ── Provozní dashboard (interní, admin) ─────────────────────── */
+.acct-page { --book: #2c4a39; --train: #c8a24c; --block: #d8ddd8; }
+.dash-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.2rem; }
+.dash-picker { display: flex; flex-direction: column; gap: 0.25rem; }
+.dash-picker span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.dash-picker select { border: 1.5px solid var(--line); border-radius: 10px; padding: 0.55rem 0.8rem; font-size: 0.9rem; background: #fff; min-width: 240px; font-family: inherit; }
+.dash-sub { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; color: var(--green); }
+.dash-sub b { font-size: 1.05rem; }
+.dash-sub span { color: var(--muted); font-size: 0.9rem; }
+.dash-tag { margin-left: auto; background: var(--soft); border: 1px solid var(--line); border-radius: 100px; padding: 0.2rem 0.7rem; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; margin-bottom: 1.4rem; }
+.dstat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 0.9rem 1rem; box-shadow: var(--shadow-s); }
+.dstat svg { color: var(--gold, #bf9a47); }
+.dstat b { display: block; font-size: 1.5rem; line-height: 1.1; margin: 0.3rem 0 0.1rem; color: var(--green); }
+.dstat span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+@media (max-width: 640px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } .dash-picker select { min-width: 0; width: 100%; } }

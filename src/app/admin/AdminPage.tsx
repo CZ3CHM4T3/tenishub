@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star } from "lucide-react";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
@@ -170,7 +170,10 @@ export default function AdminPage() {
       </header>
 
       <div className="wrap acct-wrap admin-wrap">
-        <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
+        <div className="dash-head">
+          <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
+          <Link href="/dashboard" className="btn btn-gold"><LayoutDashboard size={16} /> Provozní dashboard</Link>
+        </div>
         <div className="admin-tabs">
           {TABS.map(([k, l]) => (
             <button key={k} type="button" className={`atab${tab === k ? " on" : ""}`} onClick={() => setTab(k)}>{l}</button>
