@@ -146,7 +146,7 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
   const LockBar = () => (
     <div className="card-lockbar">
       <Lock size={18} />
-      <div><b>Vyplnění karty je součást HUBmember</b><span>Být v katalogu a na mapě je zdarma. Fotku, ceník, bio i rezervace odemkne HUBmember.</span></div>
+      <div><b>Vyplnění karty je součást HUBmember</b><span>Základní zápis do katalogu a na mapu je bez poplatku. Fotku, ceník, bio i rezervace odemkne HUBmember.</span></div>
       <Link href="/clenstvi" className="btn btn-gold btn-sm">Chci HUBmember</Link>
     </div>
   );
@@ -160,7 +160,7 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
         <div className="acct-card-head"><UserCog size={20} /><h2>Moje profilová karta</h2></div>
         <p className="member-note">
           Nabízíš tenisové služby? Vytvoř si veřejnou kartu — objevíš se na mapě i v katalogu,
-          hráči tě najdou a ozvou se ti. Být vidět je <b>zdarma</b>.
+          hráči tě najdou a ozvou se ti. Základní zápis je <b>bez poplatku</b>.
         </p>
         <div className="card-create">
           {KINDS.map(([k, label]) => (

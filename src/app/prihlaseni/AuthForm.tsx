@@ -111,7 +111,7 @@ export default function AuthForm() {
           {info && <div className="auth-info">{info}</div>}
 
           <button className="btn btn-gold" style={{ width: "100%" }} disabled={busy} type="submit">
-            {busy ? "Pracuju…" : tab === "login" ? "Přihlásit se" : "Vytvořit účet zdarma"}
+            {busy ? "Pracuju…" : tab === "login" ? "Přihlásit se" : "Staň se členem"}
           </button>
           {tab === "login" && (
             <button className="auth-forgot" type="button" onClick={() => { setForgot(true); setErr(null); setInfo(null); }}>Zapomněl jsi heslo?</button>
@@ -120,7 +120,7 @@ export default function AuthForm() {
         )}
 
         <p className="auth-note">
-          Účet je zdarma. <b>HUBmember</b> si zapneš (a kdykoli vypneš) ve svém účtu — žádné skryté platby.
+          Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 200 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
         </p>
       </div>
     </div>

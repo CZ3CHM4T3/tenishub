@@ -362,7 +362,7 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
               })}
             </div>
           )}
-          <div className="hm-group"><Check size={14} strokeWidth={3} /> Zdarma</div>
+          <div className="hm-group"><Check size={14} strokeWidth={3} /> Ukázka</div>
           <div className="hive-menu-grid">
             {funcs.free.map((f) =>
               f.href ? (

@@ -114,7 +114,7 @@ export default function PoradnaClient() {
           <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
             <h3>{gate === "login" ? "Přihlaste se" : "Ptaní je součást HUBmember"}</h3>
-            <p className="member-note">{gate === "login" ? "Pro položení dotazu se přihlaste." : "Odpovědi vidí všichni zdarma. Ptát se odborníka můžou členové HUBmember."}</p>
+            <p className="member-note">{gate === "login" ? "Pro položení dotazu se přihlaste." : "Ptát se odborníků je součástí členství. Staňte se členem HUBmember."}</p>
             <Link href={gate === "login" ? "/prihlaseni?next=/poradna" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUBmember</>}</Link>
           </div>
         </div>

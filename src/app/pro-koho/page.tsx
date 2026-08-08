@@ -9,7 +9,7 @@ import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
 
 export const metadata: Metadata = {
   title: "Pro koho je TenisHub — rodiče, hráči, trenéři, kluby",
-  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá — co je zdarma a co navíc s HUBmember.",
+  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá a co získáte s členstvím HUBmember.",
 };
 
 const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconRun> = {
@@ -30,7 +30,7 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
         {r ? <RoleDetail r={r} /> : (<>
           <span className="eyebrow rv">Pro koho je TenisHub</span>
           <h1 className="rv d1">Vyberte, kdo jste</h1>
-          <p className="lead rv d1">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUBmember.</p>
+          <p className="lead rv d1">Klikněte na svou roli — uvidíte přesně, co pro vás v klubu děláme.</p>
           <div className="rolepick-grid">
             {ROLE_ORDER.map((k) => {
               const x = ROLES[k]; const I = ICONS[x.icon];
@@ -66,7 +66,7 @@ function RoleDetail({ r }: { r: Role }) {
 
       <div className="rodic-plan-cols" style={{ marginTop: "1.4rem" }}>
         <div className="rp-col rv l d1">
-          <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
+          <div className="rp-col-head"><h3>Ukázka</h3><span className="rp-tag rp-tag-free">náhled</span></div>
           <ul className="rp-list">
             {r.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>
@@ -82,7 +82,7 @@ function RoleDetail({ r }: { r: Role }) {
       </div>
 
       <div className="role-cta">
-        <Link href="/prihlaseni?tab=reg" className="btn btn-out">Vytvořit účet zdarma</Link>
+        <Link href="/prihlaseni?tab=reg" className="btn btn-out">Staň se členem</Link>
         {r.provider && <span className="role-note">Jste {r.label.toLowerCase()}? Vytvořte si profil, ať vás lidé najdou.</span>}
       </div>
 

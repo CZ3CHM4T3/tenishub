@@ -453,7 +453,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
               </div>
               <button className="btn btn-gold" style={{ width: "100%" }} onClick={scrollToCal}>Vybrat termín →</button>
               <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={openMsg}>Napsat zprávu</button>
-              <div className="note">Platba kartou online · zdarma storno 24 h předem</div>
+              <div className="note">Platba kartou online · bezplatné storno 24 h předem</div>
             </div>
           </aside>
         </div>
@@ -537,9 +537,9 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           <div className="modal">
             <button className="x" onClick={() => setModal(null)}>×</button>
             <h3>Nejdřív se přihlas</h3>
-            <div className="msub">Rezervace termínu vyžaduje účet (zdarma) a HUBmember.</div>
+            <div className="msub">Rezervace termínu je součástí členství HUBmember.</div>
             <Link href="/prihlaseni" className="btn btn-gold" style={{ width: "100%" }}>Přihlásit se</Link>
-            <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }}>Vytvořit účet zdarma</Link>
+            <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }}>Staň se členem</Link>
           </div>
         </div>
       )}

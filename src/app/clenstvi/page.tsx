@@ -4,8 +4,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ServiceMap } from "@/components/ServiceMap";
 
 export const metadata: Metadata = {
-  title: "Členství — co je zdarma a co s HUBmember",
-  description: "Přehled všech rolí a jejich výhod: co máte na TenisHubu zdarma a co navíc s HUBmemberem (200 Kč/měsíc). Objevování a spojení je zdarma, platí se za nástroje.",
+  title: "Členství HUBmember — kompletní tenisový klub",
+  description: "Přehled všech rolí a jejich výhod v členství HUBmember (200 Kč/měsíc): konkurenční výhoda pro závodní hráče a klid pro rodiče.",
 };
 
 export default function ClenstviPage() {
@@ -16,9 +16,9 @@ export default function ClenstviPage() {
       <div className="wrap sluzby-wrap">
         <h1 className="rv">Členství</h1>
         <p className="lead rv d1">
-          Naše pravidlo je jednoduché: <b>objevit, spojit se a být vidět je zdarma</b> — platí se až za
-          nástroje, které šetří čas a přinášejí klienty. Vyberte roli a rozklikněte ji: uvidíte přesně,
-          co máte <b>zdarma</b> a co navíc s <b>HUBmember</b> (200 Kč/měsíc, kdykoli zrušíte).
+          Naše pravidlo je jednoduché: <b>kompletní podpora v jednom členství</b> — za
+          cenu dvou káv měsíčně. Vyberte roli a rozklikněte ji: uvidíte přesně,
+          co všechno získáte s <b>HUBmember</b> (200 Kč/měsíc, kdykoli zrušíte).
         </p>
 
         <div className="rv d1"><ServiceMap showMap={false} showCards={true} /></div>

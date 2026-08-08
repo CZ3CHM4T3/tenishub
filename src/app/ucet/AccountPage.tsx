@@ -147,7 +147,7 @@ export default function AccountPage() {
                 Začalo a konec uvidíš vždy tady, prodloužení jde kdykoli vypnout.
               </p>
               <button className="btn btn-gold" onClick={activate} disabled={busy}>
-                Aktivovat HUBmember (zkušebních 30 dní zdarma)
+                Aktivovat HUBmember (30 dní na zkoušku)
               </button>
             </>
           )}

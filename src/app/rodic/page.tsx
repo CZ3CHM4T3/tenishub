@@ -20,7 +20,7 @@ const QUICK = [
 ];
 
 const FAQ = [
-  { q: "Jak vybrat prvního trenéra pro dítě?", a: "Hledejte podle místa a recenzí na mapě, mrkněte na ceník a přístup k dětem. U ověřených profilů máte jistotu, že subjekt prověřil TenisHub. Klidně napište víc trenérům — psaní zpráv je zdarma." },
+  { q: "Jak vybrat prvního trenéra pro dítě?", a: "Hledejte podle místa a recenzí na mapě, mrkněte na ceník a přístup k dětem. U ověřených profilů máte jistotu, že subjekt prověřil TenisHub. Klidně napište víc trenérům přímo v aplikaci." },
   { q: "Od kolika let má smysl začít?", a: "Babytenis a minitenis zvládnou děti už od 4–5 let formou hry. Důležitější než věk je radost a pravidelnost — s tím pomáhá i Moje cesta (hlídá poměr tréninku a volna, aby dítě nevyhořelo)." },
   { q: "Kolikrát týdně trénovat?", a: "Hobby stačí 1–2× týdně, u závodního se objem zvyšuje postupně podle fáze sezóny. V Moji cestě vidíte křivku zátěže, ať to nepřeženete." },
   { q: "Co když dítě začíná ztrácet radost?", a: "Je to častější, než si rodiče myslí — většinou za tím není talent, ale frustrace. Pomůže nezávislý videorozbor a konzultace: objektivně řekneme, v čem je problém a jak dál." },
@@ -86,12 +86,12 @@ export default function RodicPage() {
         </div>
 
         {/* ZDARMA vs HUBmember */}
-        <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Co máte zdarma a co s HUBmember</h2>
+        <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Co pro rodiče v klubu máme</h2>
         <div className="rodic-plan-cols">
           <div className="rp-col rv l d1">
-            <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
+            <div className="rp-col-head"><h3>Ukázka</h3><span className="rp-tag rp-tag-free">náhled</span></div>
             <ul className="rp-list">{r.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}</li>)}</ul>
-            <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
+            <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Staň se členem</Link>
           </div>
           <div className="rp-col rp-col-hub rv r d2">
             <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
