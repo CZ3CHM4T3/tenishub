@@ -6,7 +6,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock } from "lucide-react";
+import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown } from "lucide-react";
+import StromEditor from "./StromEditor";
+import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
 
@@ -20,6 +22,8 @@ export default function KlubClient() {
   const [code, setCode] = useState<string | null>(null);
   const [roster, setRoster] = useState<Member[]>([]);
   const [copied, setCopied] = useState(false);
+  const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
+  const [showTree, setShowTree] = useState(false);
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -27,12 +31,15 @@ export default function KlubClient() {
     const prof = await supabase.from("profiles").select("is_coach").eq("id", user.id).maybeSingle();
     if (!prof.data?.is_coach) { setIsCoach(false); setLoading(false); return; }
     setIsCoach(true);
-    const [{ data: c }, { data: r }] = await Promise.all([
+    const [{ data: c }, { data: r }, { data: ck }] = await Promise.all([
       supabase.rpc("my_coach_code"),
       supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).eq("status", "active").order("created_at", { ascending: false }),
+      supabase.from("coach_kurikulum").select("data").eq("coach_id", user.id).maybeSingle(),
     ]);
     setCode(typeof c === "string" ? c : null);
     setRoster((r as Member[]) ?? []);
+    const kd = (ck as { data?: unknown } | null)?.data as Kurikula | undefined;
+    setKurikula(kd && (kd as Kurikula).tracks ? kd : DEFAULT_KURIKULA);
     setLoading(false);
   }, [supabase, router]);
   useEffect(() => { load(); }, [load]);
@@ -109,20 +116,22 @@ export default function KlubClient() {
           </div>
         )}
 
-        {/* HERNÍ VRSTVA — brzy */}
-        <div className="klub-soon-grid">
-          <div className="acct-card klub-soon">
-            <span className="klub-soon-tag">Brzy</span>
-            <GitBranch size={26} />
-            <h3>Herní systém dovedností</h3>
-            <p>Postavíte si vlastní „strom dovedností". Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou.</p>
-          </div>
-          <div className="acct-card klub-soon">
-            <span className="klub-soon-tag">Brzy</span>
-            <Trophy size={26} />
-            <h3>Sparring Cup</h3>
-            <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
-          </div>
+        {/* STROM DOVEDNOSTÍ (tech tree) */}
+        <div className="acct-card">
+          <div className="acct-card-head"><GitBranch size={20} /><h2>Strom dovedností — vaše metoda</h2></div>
+          <p className="member-note">Postavte si vlastní strom dovedností. Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou. Máte hotový výchozí strom, klidně ho upravte.</p>
+          <button className="btn btn-green" onClick={() => setShowTree((v) => !v)}>
+            <ChevronDown size={16} style={{ transform: showTree ? "rotate(180deg)" : "none", transition: "0.2s" }} /> {showTree ? "Skrýt editor stromu" : "Otevřít editor stromu"}
+          </button>
+        </div>
+        {showTree && <StromEditor initial={kurikula} />}
+
+        {/* SPARING CUP — brzy */}
+        <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
+          <span className="klub-soon-tag">Brzy</span>
+          <Trophy size={26} />
+          <h3>Sparing Cup</h3>
+          <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
         </div>
       </div>
     </div>
