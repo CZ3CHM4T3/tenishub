@@ -19,7 +19,7 @@ const MockZebricek = () => (
     {[["1.", "Adam N.", "1 240", ""], ["2.", "Vaše dítě", "1 180", "me"], ["3.", "Tomáš K.", "1 095", ""], ["4.", "Eliška P.", "1 010", ""]].map(([p, n, b, c]) => (
       <div className={`ap-row ${c}`} key={n}><span className="ap-pos">{p}</span><span className="ap-nm">{n}</span><span className="ap-pts">{b}</span></div>
     ))}
-    <div className="ap-badge-live"><Sparkles size={12} /> automaticky ze svazu</div>
+    <div className="ap-badge-live"><Sparkles size={12} /> aktualizuje se samo</div>
   </div>
 );
 const MockPoradna = () => (
@@ -52,7 +52,7 @@ const MockKnihovna = () => (
 
 const SLIDES = [
   { Icon: CalendarDays, tag: "Moje cesta", title: "Celá sezóna dítěte přehledně", why: "Kalendář tréninků, turnajů i volna. Rodič konečně vidí, kam to celé směřuje — bez chaosu v hlavě.", Mock: MockCesta },
-  { Icon: Trophy, tag: "Žebříček", title: "Postavení a výsledky samy ze svazu", why: "Žebříček i zápasy se doplní automaticky. Žádné hledání po webech svazu — máte to na jednom místě.", Mock: MockZebricek },
+  { Icon: Trophy, tag: "Žebříček", title: "Automaticky aktualizované postavení a výsledky", why: "Postavení i odehrané zápasy se aktualizují samy. Máte je vždy po ruce na jednom místě.", Mock: MockZebricek },
   { Icon: MessageSquareHeart, tag: "Poradna", title: "Kdykoli si nejste jistí, tým odpoví", why: "Výběr trenéra, turnaj, výbava, bolest lokte… Zeptáte se a odborník odpoví do 48 hodin. Klid místo googlení.", Mock: MockPoradna },
   { Icon: LineChart, tag: "Ohlédnutí", title: "Kdy a proč vaše dítě vyhrává", why: "Rozbor zápasů ze setů: úspěšnost, dotahování, otočky. Uvidíte pokrok černé na bílém.", Mock: MockOhlednuti },
   { Icon: Swords, tag: "Sparring", title: "Parťák na úrovni vašeho dítěte", why: "Najděte spoluhráče podle věku, úrovně i lokality. Víc zápasů = rychlejší růst.", Mock: MockSparring },
@@ -80,7 +80,7 @@ export function AppetizerSlider() {
       <div className="wrap">
         <span className="app-eyebrow rv"><Sparkles size={15} /> Podívejte se dovnitř klubu</span>
         <h2 className="app-h rv d1">Kompletní tenisový klub pro vaše dítě <span className="g">za cenu dvou káv ve Starbucks</span></h2>
-        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>200 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
+        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>199 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
 
         <div className="app-stage rv d2">
           <button className="app-nav app-prev" onClick={() => go(-1)} aria-label="Předchozí"><ChevronLeft size={22} /></button>
@@ -103,7 +103,7 @@ export function AppetizerSlider() {
         </div>
 
         <div className="app-cta rv d2">
-          <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 200 Kč/měsíc <ArrowRight size={18} /></Link>
+          <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 199 Kč/měsíc <ArrowRight size={18} /></Link>
           <span className="app-fine">Kompletní servis za cenu dvou káv ve Starbucks. Členství můžeš kdykoli zrušit.</span>
         </div>
       </div>

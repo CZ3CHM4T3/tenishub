@@ -861,7 +861,7 @@ export default function MojeCesta() {
           </label>
           {pForm.level === "competitive" && (<>
             <div className="mc-sync">
-              <span className="mc-setlbl">Napojení na svaz (cesky-tenis.cz)</span>
+              <span className="mc-setlbl">Automatické načtení postavení a zápasů</span>
               <div className="mc-syncrow">
                 <input value={syncInput} onChange={(e) => setSyncInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); syncCT(); } }} placeholder="Napiš jméno (např. Schröffel Jan) nebo vlož odkaz/číslo" />
                 <button type="button" className="btn btn-green" disabled={syncing} onClick={syncCT}><RefreshCw size={14} /> {syncing ? "Hledám…" : "Najít"}</button>

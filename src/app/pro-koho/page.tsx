@@ -73,7 +73,7 @@ function RoleDetail({ r }: { r: Role }) {
           <Link href={r.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {r.find.label}</Link>
         </div>
         <div className="rp-col rp-col-hub rv r d2">
-          <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
+          <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">199 Kč/měs</span></div>
           <ul className="rp-list rp-list-locked">
             {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>

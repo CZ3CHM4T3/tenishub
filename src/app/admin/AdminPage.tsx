@@ -79,7 +79,7 @@ export default function AdminPage() {
       await supabase.from("memberships").update({ expires_at: exp.toISOString() }).eq("id", cur.id);
     } else {
       const exp = new Date(); exp.setDate(exp.getDate() + days);
-      await supabase.from("memberships").insert({ profile_id: pid, plan: "hubplus", status: "active", expires_at: exp.toISOString(), auto_renew: true, price_czk: 200 });
+      await supabase.from("memberships").insert({ profile_id: pid, plan: "hubplus", status: "active", expires_at: exp.toISOString(), auto_renew: true, price_czk: 199 });
     }
     await load(); setBusy(null);
   };
@@ -143,12 +143,26 @@ export default function AdminPage() {
   };
   if (loading) return <div className="acct-loading">Načítám administraci…</div>;
 
-  const TABS: [string, string][] = [
-    ["prehled", "Přehled"], ["uzivatele", "Uživatelé"], ["subjekty", "Subjekty"],
-    ["recenze", "Recenze"], ["zadosti", "Žádosti"], ["overeni", "Ověření"],
-    ["moderace", "Moderace"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"],
-    ["feedback", "Zpětná vazba"], ["video", "Videorozbor"],
+  const TAB_GROUPS: [string, [string, string][]][] = [
+    ["Přehled a čísla", [["prehled", "Přehled"], ["feedback", "Zpětná vazba"]]],
+    ["Lidé a členství", [["uzivatele", "Uživatelé"]]],
+    ["Katalog trenérů a areálů", [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]]],
+    ["Komunita", [["recenze", "Recenze"], ["moderace", "Moderace"]]],
+    ["Služby a nástroje", [["video", "Videorozbor"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"]]],
   ];
+  const TAB_INFO: Record<string, string> = {
+    prehled: "Souhrn webu: počty účtů, aktivních členů, tržby a klíčová čísla.",
+    feedback: "Konverzní trychtýř (návštěvy → účty → členové) a zpětná vazba od uživatelů.",
+    uzivatele: "Všichni registrovaní: nastavení a prodloužení členství, zrušení účtu.",
+    subjekty: "Katalog trenérů a areálů — správa jejich profilů a údajů.",
+    overeni: "Fronta žádostí o ověřený odznak — schválit nebo zamítnout.",
+    zadosti: "Převzetí cizího profilu („to jsem já“) a žádosti o odstranění (GDPR).",
+    recenze: "Nové recenze čekající na schválení, než se zveřejní.",
+    moderace: "Skrývání a mazání příspěvků ve fóru, poradně a bazaru.",
+    rezervace: "Přehled rezervací a plateb (patří k areálům — zatím odloženo).",
+    cesta: "Nastavení „Moje cesta“: typy událostí (barvy) a fáze sezóny.",
+    video: "Objednávky videorozboru — kontakt, odkaz na video a jejich stav.",
+  };
 
   const activeCount = profiles.filter((p) => activeOf(p.id)).length;
   const since = (days: number) => new Date(Date.now() - days * 864e5);
@@ -156,7 +170,7 @@ export default function AdminPage() {
   const signups30 = profiles.filter((p) => new Date(p.created_at) >= since(30)).length;
   const paidBookings = bookings.filter((b) => b.status === "paid");
   const revenue = paidBookings.reduce((s, b) => s + (b.price_czk ?? 0), 0);
-  const mrr = activeCount * 200;
+  const mrr = activeCount * 199;
   const userOf = (id: string | null) => profiles.find((p) => p.id === id);
 
   return (
@@ -175,11 +189,19 @@ export default function AdminPage() {
           <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
           <Link href="/dashboard" className="btn btn-gold"><LayoutDashboard size={16} /> Provozní dashboard</Link>
         </div>
-        <div className="admin-tabs">
-          {TABS.map(([k, l]) => (
-            <button key={k} type="button" className={`atab${tab === k ? " on" : ""}`} onClick={() => setTab(k)}>{l}</button>
+        <div className="admin-tabgroups">
+          {TAB_GROUPS.map(([label, tabs]) => (
+            <div className="admin-tabgroup" key={label}>
+              <span className="admin-tabgroup-l">{label}</span>
+              <div className="admin-tabs">
+                {tabs.map(([k, l]) => (
+                  <button key={k} type="button" className={`atab${tab === k ? " on" : ""}`} onClick={() => setTab(k)}>{l}</button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+        {TAB_INFO[tab] && <p className="admin-tabdesc">{TAB_INFO[tab]}</p>}
 
         {tab === "prehled" && (
         <div className="admin-stats">

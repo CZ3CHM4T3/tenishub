@@ -1588,3 +1588,10 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 /* ── Zašedlé "připravujeme" položky (uspané role) ────────────── */
 .drop-card.drop-soon { opacity: 0.5; cursor: default; pointer-events: none; }
 .drop-card.drop-soon span { color: var(--muted); font-style: italic; }
+
+/* ── Admin: skupiny záložek + popisek ────────────────────────── */
+.admin-tabgroups { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; align-items: flex-start; margin-bottom: 0.4rem; }
+.admin-tabgroup { display: flex; flex-direction: column; gap: 0.3rem; }
+.admin-tabgroup-l { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-left: 2px; }
+.admin-tabgroup .admin-tabs { margin: 0; flex-wrap: wrap; }
+.admin-tabdesc { margin: 0.2rem 0 1.2rem; padding: 0.6rem 0.85rem; background: var(--soft); border: 1px solid var(--line); border-left: 3px solid var(--gold, #bf9a47); border-radius: 8px; font-size: 0.85rem; color: var(--green-2, #3a4a40); }

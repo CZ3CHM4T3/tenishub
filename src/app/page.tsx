@@ -296,7 +296,7 @@ export default function Home() {
                   { Icon: CalendarDays, t: "Kalendář", s: "tréninky · turnaje · volno", c: "#7C4DD6", b: "#EEEDFE" },
                   { Icon: Target, t: "Cíle sezóny", s: "závazek → splněno", c: "#2f5d57", b: "#E0EBE9" },
                   { Icon: BarChart3, t: "Statistiky", s: "výhry, dotahování", c: "#4a5b86", b: "#E8ECF4" },
-                  { Icon: Trophy, t: "Žebříček", s: "ze svazu automaticky", c: "#7c6018", b: "#F2EAD6" },
+                  { Icon: Trophy, t: "Žebříček", s: "aktualizuje se samo", c: "#7c6018", b: "#F2EAD6" },
                   { Icon: CalendarCheck, t: "Termíny", s: "zápasy se vyplní samy", c: "#864a59", b: "#F2E5E9" },
                   { Icon: History, t: "Ohlédnutí", s: "kdy a proč vyhráváš", c: "#8a5640", b: "#F2E6DF" },
                 ].map((f, i) => (

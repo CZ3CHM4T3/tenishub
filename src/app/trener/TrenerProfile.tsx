@@ -550,7 +550,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             <button className="x" onClick={() => setModal(null)}>×</button>
             <h3><Lock size={18} style={{ verticalAlign: "-2px", color: "var(--gold)" }} /> Funkce HUBmember</h3>
             <div className="msub">
-              Rezervace a zprávy jsou členská funkce. HUBmember stojí 200 Kč/měsíc, začátek i konec vidíš
+              Rezervace a zprávy jsou členská funkce. HUBmember stojí 199 Kč/měsíc, začátek i konec vidíš
               ve svém účtu a prodlužování kdykoli vypneš.
             </div>
             <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Aktivovat HUBmember v mém účtu</Link>

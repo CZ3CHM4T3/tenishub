@@ -120,7 +120,7 @@ export default function AuthForm() {
         )}
 
         <p className="auth-note">
-          Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 200 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
+          Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 199 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
         </p>
       </div>
     </div>

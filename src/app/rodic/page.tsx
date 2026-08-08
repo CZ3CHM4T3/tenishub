@@ -24,7 +24,7 @@ const FAQ = [
   { q: "Od kolika let má smysl začít?", a: "Babytenis a minitenis zvládnou děti už od 4–5 let formou hry. Důležitější než věk je radost a pravidelnost — s tím pomáhá i Moje cesta (hlídá poměr tréninku a volna, aby dítě nevyhořelo)." },
   { q: "Kolikrát týdně trénovat?", a: "Hobby stačí 1–2× týdně, u závodního se objem zvyšuje postupně podle fáze sezóny. V Moji cestě vidíte křivku zátěže, ať to nepřeženete." },
   { q: "Co když dítě začíná ztrácet radost?", a: "Je to častější, než si rodiče myslí — většinou za tím není talent, ale frustrace. Pomůže nezávislý videorozbor a konzultace: objektivně řekneme, v čem je problém a jak dál." },
-  { q: "Jak sledovat pokrok a výsledky?", a: "Moje cesta vede celou sezónu: kalendář tréninků a turnajů, cíle, statistiky a u závodních i automatické tažení žebříčku a termínů zápasů ze svazu." },
+  { q: "Jak sledovat pokrok a výsledky?", a: "Moje cesta vede celou sezónu: kalendář tréninků a turnajů, cíle, statistiky a u závodních i automaticky aktualizované postavení a termíny zápasů." },
 ];
 
 export default function RodicPage() {
@@ -94,7 +94,7 @@ export default function RodicPage() {
             <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Staň se členem</Link>
           </div>
           <div className="rp-col rp-col-hub rv r d2">
-            <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
+            <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">199 Kč/měs</span></div>
             <ul className="rp-list rp-list-locked">{r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}</li>)}</ul>
             <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUBmember</Link>
           </div>
