@@ -3,10 +3,11 @@
 // Trenérské rozhraní — svěřenci + osobní zvací link. Jen pro trenéry (is_coach).
 // Fáze 1: roster + pozvánky. Fáze 2 (brzy): tech tree (skill tree) + Sparring Cup.
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown } from "lucide-react";
+import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight } from "lucide-react";
 import StromEditor from "./StromEditor";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 
@@ -24,6 +25,7 @@ export default function KlubClient() {
   const [copied, setCopied] = useState(false);
   const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
   const [showTree, setShowTree] = useState(false);
+  const [kids, setKids] = useState<{ id: string; jmeno: string; prezdivka: string; level: number }[]>([]);
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -31,13 +33,15 @@ export default function KlubClient() {
     const prof = await supabase.from("profiles").select("is_coach").eq("id", user.id).maybeSingle();
     if (!prof.data?.is_coach) { setIsCoach(false); setLoading(false); return; }
     setIsCoach(true);
-    const [{ data: c }, { data: r }, { data: ck }] = await Promise.all([
+    const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }] = await Promise.all([
       supabase.rpc("my_coach_code"),
       supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).eq("status", "active").order("created_at", { ascending: false }),
       supabase.from("coach_kurikulum").select("data").eq("coach_id", user.id).maybeSingle(),
+      supabase.from("deti").select("id,jmeno,prezdivka,level").eq("coach_id", user.id).order("jmeno"),
     ]);
     setCode(typeof c === "string" ? c : null);
     setRoster((r as Member[]) ?? []);
+    setKids((kd2 as { id: string; jmeno: string; prezdivka: string; level: number }[]) ?? []);
     const kd = (ck as { data?: unknown } | null)?.data as Kurikula | undefined;
     setKurikula(kd && (kd as Kurikula).tracks ? kd : DEFAULT_KURIKULA);
     setLoading(false);
@@ -97,6 +101,24 @@ export default function KlubClient() {
                   <span className="klub-av">{(m.member_name || "?").charAt(0).toUpperCase()}</span>
                   <div><b>{m.member_name || "Rodič"}</b><span>přidal(a) se {fmt(m.created_at)}</span></div>
                 </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* DĚTI V KLUBU — trenér je rozklikne a odemyká dovednosti */}
+        <div className="acct-card">
+          <div className="acct-card-head"><Users size={20} /><h2>Děti v klubu ({kids.length})</h2></div>
+          {kids.length === 0 ? (
+            <p className="member-note">Zatím žádné děti. Jakmile rodič ve svém účtu přidá dítě, objeví se tady — a vy mu můžete odemykat dovednosti ve stromě.</p>
+          ) : (
+            <div className="klub-list">
+              {kids.map((k) => (
+                <Link href={`/deti/${k.id}`} className="klub-row" key={k.id} style={{ textDecoration: "none" }}>
+                  <span className="klub-av">{k.jmeno.charAt(0).toUpperCase()}</span>
+                  <div style={{ flex: 1 }}><b>{k.jmeno}</b><span>{k.prezdivka} · level {k.level}</span></div>
+                  <span className="dite-cta">Odemykat <ArrowRight size={15} /></span>
+                </Link>
               ))}
             </div>
           )}

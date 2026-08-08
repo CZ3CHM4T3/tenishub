@@ -116,6 +116,12 @@ export default function AccountPage() {
           <span className="msgs-arr">→</span>
         </Link>
 
+        <Link href="/deti" className="acct-card msgs-link">
+          <span className="msgs-ic"><Route size={20} /></span>
+          <span className="msgs-txt"><b>Moje děti</b><span>Kariéra a pokrok dítěte u vašeho trenéra — strom dovedností, level a Sparing Cup</span></span>
+          <span className="msgs-arr">→</span>
+        </Link>
+
         {/* ČLENSTVÍ */}
         <div className={`acct-card member-card${membership ? " on" : ""}`}>
           <div className="acct-card-head">
