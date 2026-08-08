@@ -9,7 +9,7 @@ import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
 
 export const metadata: Metadata = {
   title: "Pro koho je TenisHub — rodiče, hráči, trenéři, kluby",
-  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá — co je zdarma a co navíc s HUB+.",
+  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá — co je zdarma a co navíc s HUBmember.",
 };
 
 const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconRun> = {
@@ -30,7 +30,7 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
         {r ? <RoleDetail r={r} /> : (<>
           <span className="eyebrow rv">Pro koho je TenisHub</span>
           <h1 className="rv d1">Vyberte, kdo jste</h1>
-          <p className="lead rv d1">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUB+.</p>
+          <p className="lead rv d1">Klikněte na svou roli — uvidíte rovnou všechno, co pro vás děláme, a co je zdarma vs s HUBmember.</p>
           <div className="rolepick-grid">
             {ROLE_ORDER.map((k) => {
               const x = ROLES[k]; const I = ICONS[x.icon];
@@ -73,11 +73,11 @@ function RoleDetail({ r }: { r: Role }) {
           <Link href={r.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {r.find.label}</Link>
         </div>
         <div className="rp-col rp-col-hub rv r d2">
-          <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
+          <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
           <ul className="rp-list rp-list-locked">
             {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>
-          <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
+          <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUBmember</Link>
         </div>
       </div>
 

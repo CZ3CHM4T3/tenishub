@@ -184,7 +184,7 @@ export default function AdminPage() {
         {tab === "prehled" && (
         <div className="admin-stats">
           <div className="astat"><Users size={16} /><b>{profiles.length}</b><span>účtů</span></div>
-          <div className="astat"><BadgeCheck size={16} /><b>{activeCount}</b><span>aktivních HUB+</span></div>
+          <div className="astat"><BadgeCheck size={16} /><b>{activeCount}</b><span>aktivních členů</span></div>
           <div className="astat"><Banknote size={16} /><b>{mrr.toLocaleString("cs-CZ")} Kč</b><span>členství / měsíc</span></div>
           <div className="astat"><CalendarCheck size={16} /><b>{bookings.length}</b><span>rezervací</span></div>
           <div className="astat"><Banknote size={16} /><b>{revenue.toLocaleString("cs-CZ")} Kč</b><span>zaplacené rezervace</span></div>
@@ -199,7 +199,7 @@ export default function AdminPage() {
           <div className="admin-scroll">
             <table className="admin-table">
               <thead>
-                <tr><th>Uživatel</th><th>E-mail</th><th>Registrace</th><th>HUB+</th><th>Od</th><th>Do</th><th>Prodloužení</th><th>Akce</th></tr>
+                <tr><th>Uživatel</th><th>E-mail</th><th>Registrace</th><th>HUBmember</th><th>Od</th><th>Do</th><th>Prodloužení</th><th>Akce</th></tr>
               </thead>
               <tbody>
                 {profiles.map((p) => {

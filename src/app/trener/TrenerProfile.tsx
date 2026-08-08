@@ -71,7 +71,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
       .then(({ data }) => setDbServices(data ?? []));
   }, [spec]);
 
-  // přihlášení + členství (rezervace/zprávy = funkce HUB+)
+  // přihlášení + členství (rezervace/zprávy = funkce HUBmember)
   useEffect(() => {
     const supabase = createClient();
     (async () => {
@@ -537,7 +537,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           <div className="modal">
             <button className="x" onClick={() => setModal(null)}>×</button>
             <h3>Nejdřív se přihlas</h3>
-            <div className="msub">Rezervace termínu vyžaduje účet (zdarma) a členství HUB+.</div>
+            <div className="msub">Rezervace termínu vyžaduje účet (zdarma) a HUBmember.</div>
             <Link href="/prihlaseni" className="btn btn-gold" style={{ width: "100%" }}>Přihlásit se</Link>
             <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }}>Vytvořit účet zdarma</Link>
           </div>
@@ -548,12 +548,12 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
         <div className="ov on" onClick={(e) => e.target === e.currentTarget && setModal(null)}>
           <div className="modal">
             <button className="x" onClick={() => setModal(null)}>×</button>
-            <h3><Lock size={18} style={{ verticalAlign: "-2px", color: "var(--gold)" }} /> Funkce HUB+</h3>
+            <h3><Lock size={18} style={{ verticalAlign: "-2px", color: "var(--gold)" }} /> Funkce HUBmember</h3>
             <div className="msub">
-              Rezervace a zprávy jsou členská funkce. HUB+ stojí 200 Kč/měsíc, začátek i konec vidíš
+              Rezervace a zprávy jsou členská funkce. HUBmember stojí 200 Kč/měsíc, začátek i konec vidíš
               ve svém účtu a prodlužování kdykoli vypneš.
             </div>
-            <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Aktivovat HUB+ v mém účtu</Link>
+            <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Aktivovat HUBmember v mém účtu</Link>
             <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={() => setModal(null)}>Zatím ne</button>
           </div>
         </div>

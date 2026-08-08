@@ -107,7 +107,7 @@ const VARIANTS: Record<string, { key: string; label: string }[]> = {
   hrac: [{ key: "amater", label: "Hráč amatér" }, { key: "zavodni", label: "Hráč závodní" }],
 };
 
-// Funkce per role: ZDARMA vs HUB+ (zobrazí se po kliknutí na kartu).
+// Funkce per role: ZDARMA vs HUBmember (zobrazí se po kliknutí na kartu).
 // Role s podvariantami mají klíče "role:varianta".
 const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
   trener: {
@@ -334,7 +334,7 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
         })}
       </div>
 
-      {/* MENU vybrané služby (Zdarma vs HUB+) */}
+      {/* MENU vybrané služby (Zdarma vs HUBmember) */}
       {selSvc && funcs && (
         <div className="hive-menu" style={{ borderTopColor: selSvc.color }}>
           <div className="hive-menu-head" style={{ color: selSvc.color }}>
@@ -376,9 +376,9 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
           <div className="hive-menu-grid">
             {funcs.member.map((f) =>
               f.href ? (
-                <Link key={f.label} href={f.href} className="hm-item hm-member">{f.label} <span className="hm-badge">HUB+</span></Link>
+                <Link key={f.label} href={f.href} className="hm-item hm-member">{f.label} <span className="hm-badge">HUBmember</span></Link>
               ) : (
-                <span key={f.label} className="hm-item hm-member hm-disabled">{f.label} <span className="hm-badge">HUB+</span></span>
+                <span key={f.label} className="hm-item hm-member hm-disabled">{f.label} <span className="hm-badge">HUBmember</span></span>
               )
             )}
           </div>

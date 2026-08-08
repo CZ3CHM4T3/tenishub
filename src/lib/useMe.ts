@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 export type Me = { id: string; name: string } | null;
 export type MeState = { me: Me; canPost: boolean; isAdmin: boolean; ready: boolean };
 
-// Sdílené: kdo je přihlášený, má aktivní HUB+ (canPost), je admin.
+// Sdílené: kdo je přihlášený, má aktivní HUBmember (canPost), je admin.
 export function useMe(): MeState {
   const [s, setS] = useState<MeState>({ me: null, canPost: false, isAdmin: false, ready: false });
   useEffect(() => {

@@ -555,9 +555,9 @@ export default function MojeCesta() {
     <div className="acct-card mc-gate">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/moje-cesta.png" alt="" className="mc-gate-photo" />
-      <Lock size={34} /><h1>Moje cesta je součást HUB+</h1>
-      <p>Naplánuj celou sezónu — tréninky, turnaje, kondici i volno — a sleduj cíle a statistiky. Aktivuj HUB+ a máš to odemčené.</p>
-      <Link href="/ucet" className="btn btn-gold">Chci HUB+</Link></div>
+      <Lock size={34} /><h1>Moje cesta je součást HUBmember</h1>
+      <p>Naplánuj celou sezónu — tréninky, turnaje, kondici i volno — a sleduj cíle a statistiky. Aktivuj HUBmember a máš to odemčené.</p>
+      <Link href="/ucet" className="btn btn-gold">Chci HUBmember</Link></div>
   );
 
   const VIEWS: [View, string, React.ReactNode][] = [

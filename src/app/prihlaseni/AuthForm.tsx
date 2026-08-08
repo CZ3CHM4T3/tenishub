@@ -120,7 +120,7 @@ export default function AuthForm() {
         )}
 
         <p className="auth-note">
-          Účet je zdarma. Členství <b>HUB+</b> si zapneš (a kdykoli vypneš) ve svém účtu — žádné skryté platby.
+          Účet je zdarma. <b>HUBmember</b> si zapneš (a kdykoli vypneš) ve svém účtu — žádné skryté platby.
         </p>
       </div>
     </div>

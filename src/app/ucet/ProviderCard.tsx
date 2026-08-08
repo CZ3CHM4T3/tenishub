@@ -146,8 +146,8 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
   const LockBar = () => (
     <div className="card-lockbar">
       <Lock size={18} />
-      <div><b>Vyplnění karty je součást HUB+</b><span>Být v katalogu a na mapě je zdarma. Fotku, ceník, bio i rezervace odemkne HUB+.</span></div>
-      <Link href="/clenstvi" className="btn btn-gold btn-sm">Chci HUB+</Link>
+      <div><b>Vyplnění karty je součást HUBmember</b><span>Být v katalogu a na mapě je zdarma. Fotku, ceník, bio i rezervace odemkne HUBmember.</span></div>
+      <Link href="/clenstvi" className="btn btn-gold btn-sm">Chci HUBmember</Link>
     </div>
   );
 
@@ -248,7 +248,7 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
           </div>{/* /card-locked */}
 
           <div className="card-actions">
-            <button className="btn btn-green" onClick={saveSpec} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUB+" : undefined}>{!isMember ? "Uložení s HUB+" : (saved || "Uložit kartu")}</button>
+            <button className="btn btn-green" onClick={saveSpec} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUBmember" : undefined}>{!isMember ? "Uložení s HUBmember" : (saved || "Uložit kartu")}</button>
             <Link href={`/trener/${spec.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
           </div>{/* /card-locked */}
 
           <div className="card-actions">
-            <button className="btn btn-green" onClick={saveVenue} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUB+" : undefined}>{!isMember ? "Uložení s HUB+" : (saved || "Uložit areál")}</button>
+            <button className="btn btn-green" onClick={saveVenue} disabled={busy || !isMember} title={!isMember ? "Vyplnění karty je součást HUBmember" : undefined}>{!isMember ? "Uložení s HUBmember" : (saved || "Uložit areál")}</button>
             <Link href={`/areal/${venue.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
           </div>
         </div>

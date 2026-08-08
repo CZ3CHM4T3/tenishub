@@ -112,7 +112,7 @@ export default function AccountPage() {
         {/* MOJE CESTA */}
         <Link href="/moje-cesta" className="acct-card msgs-link">
           <span className="msgs-ic"><Route size={20} /></span>
-          <span className="msgs-txt"><b>Moje cesta</b><span>Naplánuj sezónu — tréninky, turnaje, cíle a statistiky{membership ? "" : " (HUB+)"}</span></span>
+          <span className="msgs-txt"><b>Moje cesta</b><span>Naplánuj sezónu — tréninky, turnaje, cíle a statistiky{membership ? "" : " (HUBmember)"}</span></span>
           <span className="msgs-arr">→</span>
         </Link>
 
@@ -120,7 +120,7 @@ export default function AccountPage() {
         <div className={`acct-card member-card${membership ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
-            <h2>Členství HUB+</h2>
+            <h2>HUBmember</h2>
             {membership && <span className="member-badge">AKTIVNÍ</span>}
           </div>
           {membership ? (
@@ -143,11 +143,11 @@ export default function AccountPage() {
           ) : (
             <>
               <p className="member-note">
-                Zatím nemáš členství. <b>HUB+</b> odemkne rezervace, zprávy a všechny členské funkce za <b>200 Kč / měsíc</b>.
+                Zatím nemáš členství. <b>HUBmember</b> odemkne rezervace, zprávy a všechny členské funkce za <b>200 Kč / měsíc</b>.
                 Začalo a konec uvidíš vždy tady, prodloužení jde kdykoli vypnout.
               </p>
               <button className="btn btn-gold" onClick={activate} disabled={busy}>
-                Aktivovat HUB+ (zkušebních 30 dní zdarma)
+                Aktivovat HUBmember (zkušebních 30 dní zdarma)
               </button>
             </>
           )}

@@ -19,14 +19,14 @@ export function AuthNav() {
     return (
       <>
         <Link href="/ucet" className="login">Můj účet</Link>
-        <Link href="/ucet" className="btn btn-gold">HUB+</Link>
+        <Link href="/ucet" className="btn btn-gold">HUBmember</Link>
       </>
     );
   }
   return (
     <>
       <Link href="/prihlaseni" className="login">Přihlásit se</Link>
-      <Link href="/prihlaseni?tab=reg" className="btn btn-gold">Vstoupit zdarma</Link>
+      <Link href="/prihlaseni?tab=reg" className="btn btn-gold">Staň se členem</Link>
     </>
   );
 }

@@ -73,7 +73,7 @@ export default function ForumClient() {
           <h1 className="acct-h1"><MessagesSquare size={26} style={{ verticalAlign: "-4px" }} /> Fórum rodičů</h1>
           <button className="btn btn-green" onClick={newThread}><Plus size={16} /> Nové téma</button>
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Ptejte se a sdílejte zkušenosti. Čtení je pro všechny; psaní je součást <b>HUB+</b>.</p>
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Ptejte se a sdílejte zkušenosti. Čtení je pro všechny; psaní je součást <b>HUBmember</b>.</p>
 
         <div className="fcats">
           <button className={`fcat${cat === "" ? " on" : ""}`} onClick={() => setCat("")}>Vše</button>
@@ -121,10 +121,10 @@ export default function ForumClient() {
         <div className="mc-modal" onClick={() => setGate(null)}>
           <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
-            <h3>{gate === "login" ? "Přihlaste se" : "Psaní je součást HUB+"}</h3>
-            <p className="member-note">{gate === "login" ? "Pro psaní do fóra se přihlaste nebo si vytvořte účet." : "Čtení je zdarma. Zakládat témata a odpovídat můžou členové HUB+."}</p>
+            <h3>{gate === "login" ? "Přihlaste se" : "Psaní je součást HUBmember"}</h3>
+            <p className="member-note">{gate === "login" ? "Pro psaní do fóra se přihlaste nebo si vytvořte účet." : "Čtení je zdarma. Zakládat témata a odpovídat můžou členové HUBmember."}</p>
             <Link href={gate === "login" ? "/prihlaseni?next=/forum" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>
-              {gate === "login" ? <>Přihlásit se</> : <><Lock size={15} /> Chci HUB+</>}
+              {gate === "login" ? <>Přihlásit se</> : <><Lock size={15} /> Chci HUBmember</>}
             </Link>
           </div>
         </div>

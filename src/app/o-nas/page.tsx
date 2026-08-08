@@ -43,7 +43,7 @@ export default function ONasPage() {
         <h2 className="rv">Jak to děláme</h2>
         <p>
           Objevit, spojit se a být vidět je <b>zdarma</b> — to drží síť živou a otevřenou. Platí se až
-          za nástroje, které prokazatelně šetří čas a přinášejí klienty (členství HUB+). Tak je to
+          za nástroje, které prokazatelně šetří čas a přinášejí klienty (HUBmember). Tak je to
           férové ke všem stranám.
         </p>
         <p className="vr-foot">
