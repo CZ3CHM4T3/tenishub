@@ -244,8 +244,8 @@ export default function Home() {
               </Link>
               <Link href="/sluzby" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
                 <span className="world-in">
-                  <span className="world-tag">Služby &amp; profíci</span>
-                  <span className="world-sub">Trenér · areál · fyzio · fitness · sparring · vyplétání</span>
+                  <span className="world-tag">Trenéři a kluby</span>
+                  <span className="world-sub">Jsem trenér, klub nebo specialista</span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
@@ -276,41 +276,6 @@ export default function Home() {
       </section>
 
       {/* RODIČ & DÍTĚ — co je zdarma a co s HUB+ (pod fotkami) */}
-      <section className="sec rodic-plan" id="svet-rodic">
-        <div className="wrap">
-          <span className="eyebrow rv">Rodič &amp; dítě — vše, co nabízíme</span>
-          <h2 className="rodic-plan-h rv d1">Co máte zdarma a co s HUB+</h2>
-          <div className="rodic-plan-cols">
-            <div className="rp-col rv l d1">
-              <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
-              <ul className="rp-list">
-                <li><Check size={16} /> Najít trenéra, kurt i fyzio na mapě</li>
-                <li><Check size={16} /> Profily, ceníky a recenze</li>
-                <li><Check size={16} /> Napsat trenérovi (zprávy)</li>
-                <li><Check size={16} /> Sparring zeď — najít parťáka</li>
-                <li><Check size={16} /> Veřejné žebříčky a články</li>
-              </ul>
-              <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
-            </div>
-            <div className="rp-col rp-col-hub rv r d2">
-              <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
-              <ul className="rp-list rp-list-locked">
-                <li><Lock size={15} /> <b>Moje cesta</b> — kalendář kariéry dítěte</li>
-                <li><Lock size={15} /> Rezervace a platby na pár kliků</li>
-                <li><Lock size={15} /> Připomínky lekcí a plateb</li>
-                <li><Lock size={15} /> Profil hráče, výsledky a žebříček</li>
-                <li><Lock size={15} /> Plánovač turnajů + tréninkový checklist</li>
-                <li><Lock size={15} /> Tréninkový deník a sledování pokroku</li>
-                <li><Lock size={15} /> Sparring matchmaking podle výkonnosti</li>
-                <li><Lock size={15} /> Knihovna článků a návodů (jak vybrat trenéra, výbavu…)</li>
-              </ul>
-              <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
-            </div>
-          </div>
-          <p className="rp-extra rv d1"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
-        </div>
-      </section>
-
       {/* MOJE CESTA — hlavní bod HUB+ pro rodiče */}
       <section className="mcpromo">
         <div className="wrap mcpromo-in">
@@ -350,8 +315,45 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="sec rodic-plan" id="svet-rodic">
+        <div className="wrap">
+          <span className="eyebrow rv">Rodič &amp; dítě — vše, co nabízíme</span>
+          <h2 className="rodic-plan-h rv d1">Co máte zdarma a co s HUB+</h2>
+          <div className="rodic-plan-cols">
+            <div className="rp-col rv l d1">
+              <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">navždy</span></div>
+              <ul className="rp-list">
+                <li><Check size={16} /> Najít trenéra, kurt i fyzio na mapě</li>
+                <li><Check size={16} /> Profily, ceníky a recenze</li>
+                <li><Check size={16} /> Napsat trenérovi (zprávy)</li>
+                <li><Check size={16} /> Sparring zeď — najít parťáka</li>
+                <li><Check size={16} /> Veřejné žebříčky a články</li>
+              </ul>
+              <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Vytvořit účet zdarma</Link>
+            </div>
+            <div className="rp-col rp-col-hub rv r d2">
+              <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">200 Kč/měs</span></div>
+              <ul className="rp-list rp-list-locked">
+                <li><Lock size={15} /> <b>Moje cesta</b> — kalendář kariéry dítěte</li>
+                <li><Lock size={15} /> Rezervace a platby na pár kliků</li>
+                <li><Lock size={15} /> Připomínky lekcí a plateb</li>
+                <li><Lock size={15} /> Profil hráče, výsledky a žebříček</li>
+                <li><Lock size={15} /> Plánovač turnajů + tréninkový checklist</li>
+                <li><Lock size={15} /> Tréninkový deník a sledování pokroku</li>
+                <li><Lock size={15} /> Sparring matchmaking podle výkonnosti</li>
+                <li><Lock size={15} /> Knihovna článků a návodů (jak vybrat trenéra, výbavu…)</li>
+              </ul>
+              <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
+            </div>
+          </div>
+          <p className="rp-extra rv d1"><Video size={16} /> <b>Videorozbor a konzultace</b> je samostatná placená služba (mimo HUB+). <Link href="/videorozbor">Zjistit víc →</Link></p>
+        </div>
+      </section>
+
+
+
       {/* MARQUEE — specialisté z DB */}
-      {marquee.length > 0 && (
+      {false && marquee.length > 0 && (
         <section className="marquee-sec">
           <div className="marquee">
             <div className="marquee-track">
@@ -436,7 +438,8 @@ export default function Home() {
       </section>
       )}
 
-      {/* JAK TO FUNGUJE */}
+      {/* JAK TO FUNGUJE — USPÁNO (najdi–rezervuj–zaplať, oživit později) */}
+      {false && (
       <section className="sec" id="how">
         <div className="wrap">
           <span className="eyebrow rv">Jak to funguje</span>
@@ -448,6 +451,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA */}
       <section className="sec cta" id="cta">
@@ -481,9 +485,9 @@ export default function Home() {
         </div>
       </footer>
 
-      <VideoNudge side="left" bottom={18} delay={2600} photo="/videorozbor-1.png"
+      <VideoNudge side="left" bottom={18} delay={1200} photo="/videorozbor-1.png"
         title="Nebaví vaše dítě tenis?" sub={"Poradíme proč — videorozbor & konzultace →"} />
-      <VideoNudge side="right" bottom={108} delay={5200} photo="/videorozbor-2.png"
+      <VideoNudge side="right" bottom={108} delay={3200} photo="/videorozbor-2.png"
         title={"Videorozbor & konzultace"} sub={"Placená služba: rozbor techniky, pohybu i hlavy →"} />
     </>
   );
