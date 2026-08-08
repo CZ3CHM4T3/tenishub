@@ -1584,3 +1584,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .ap-ui-lib { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .ap-art { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-weight: 600; color: var(--ink); }
 .ap-art-ic { width: 24px; height: 24px; border-radius: 6px; background: var(--soft); color: var(--green); display: grid; place-items: center; flex: none; }
+
+/* ── Zašedlé "připravujeme" položky (uspané role) ────────────── */
+.drop-card.drop-soon { opacity: 0.5; cursor: default; pointer-events: none; }
+.drop-card.drop-soon span { color: var(--muted); font-style: italic; }

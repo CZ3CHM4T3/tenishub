@@ -8,11 +8,11 @@ const SLIDES: Slide[] = [
   {
     who: "Komunita — doposud neexistující služba pro rodiče",
     title: <>Víme, jak těžké je <span className="g">zorientovat se v tenise</span></>,
-    sub: "Sdružujeme ověřené trenéry, kurty, fyzio i praktické návody — aby vaše dítě mohlo začít, růst a vydržet u tenisu.",
+    sub: "Sdružujeme ověřené trenéry, fyzio i praktické návody — aby vaše dítě mohlo začít, růst a vydržet u tenisu.",
   },
   {
     who: "Pro rodiče malých tenistů",
-    title: <>Najděte <span className="g">trenéra i kurt</span> kousek od vás</>,
+    title: <>Najděte <span className="g">trenéra</span> kousek od vás</>,
     sub: "Ověřené profily, ceny i recenze na jednom místě — a domluvíte se na pár kliků.",
   },
   {
@@ -21,19 +21,9 @@ const SLIDES: Slide[] = [
     sub: "Profil hráče, výsledky, žebříček, plánování turnajů i tým specialistů — vše na jednom místě.",
   },
   {
-    who: "Pro trenéry, fyzio a kondiční trenéry",
-    title: <>Noví klienti <span className="g">bez shánění</span></>,
-    sub: "Buďte vidět na mapě, spravujte si profil a přijímejte poptávky od hráčů.",
-  },
-  {
     who: "Pro hráče a sparring partnery",
-    title: <>Najděte si, <span className="g">s kým hrát</span></>,
+    title: <>Najděte si <span className="g">vhodný sparring</span></>,
     sub: "Parťáci podle úrovně, místa i stylu hry — a domluva zápasu přímo přes web.",
-  },
-  {
-    who: "Pro kluby a areály",
-    title: <>Naplňte <span className="g">volné kurty</span></>,
-    sub: "Zviditelněte areál, propojte se s trenéry i hráči a přiveďte hráče na kurty.",
   },
 ];
 

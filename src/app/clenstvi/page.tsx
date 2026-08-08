@@ -17,7 +17,7 @@ export default function ClenstviPage() {
         <h1 className="rv">Členství</h1>
         <p className="lead rv d1">
           Naše pravidlo je jednoduché: <b>kompletní podpora v jednom členství</b> — za
-          cenu dvou káv měsíčně. Vyberte roli a rozklikněte ji: uvidíte přesně,
+          cenu dvou káv ve Starbucks měsíčně. Vyberte roli a rozklikněte ji: uvidíte přesně,
           co všechno získáte s <b>HUBmember</b> (200 Kč/měsíc, kdykoli zrušíte).
         </p>
 

@@ -76,7 +76,7 @@ const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
 
 const TESTIMONIALS = [
   { q: "Konečně najdu trenéra a rezervuju za minutu. Žádné telefonování.", a: "Petra M.", r: "rodič · Praha" },
-  { q: "Díky funkci Obsaď kurt teď nám neleží prázdné kurty.", a: "TK Sokol", r: "areál · Dobřichovice" },
+  { q: "Rodiče konečně vidí pokrok dítěte a míň se stresují.", a: "Jana P.", r: "trenérka · Brno" },
   { q: "Sparring partnera na své úrovni jsem našel během chvilky.", a: "Tomáš K.", r: "hráč · Brno" },
   { q: "Míň administrativy, víc klientů. Přesně co jsem potřeboval.", a: "Jiří N.", r: "trenér · Praha" },
 ];
@@ -116,7 +116,6 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null }[]>([]);
   const [specCount, setSpecCount] = useState(0);
-  const [venueCount, setVenueCount] = useState(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -152,12 +151,8 @@ export default function Home() {
     (async () => {
       const { data } = await supabase.from("specialists").select("id,name,kind,city,rating").eq("verified", true).limit(12);
       if (data) setFeatured(data as typeof featured);
-      const [{ count: sc }, { count: vc }] = await Promise.all([
-        supabase.from("specialists").select("*", { count: "exact", head: true }),
-        supabase.from("venues").select("*", { count: "exact", head: true }),
-      ]);
+      const { count: sc } = await supabase.from("specialists").select("*", { count: "exact", head: true });
       if (sc != null) setSpecCount(sc);
-      if (vc != null) setVenueCount(vc);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -187,9 +182,9 @@ export default function Home() {
                   <Link className="drop-card" href="/pro-koho?role=hrac"><b>Hráč</b><span>hraj, zlepšuj se, sparring</span></Link>
                   <Link className="drop-card" href="/pro-koho?role=trener"><b>Trenér</b><span>klienti &amp; nástroje</span></Link>
                   <Link className="drop-card" href="/pro-koho?role=sparring"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
-                  <Link className="drop-card" href="/pro-koho?role=areal"><b>Areály &amp; kluby</b><span>obsazenost kurtů</span></Link>
+                  <span className="drop-card drop-soon"><b>Areály &amp; kluby</b><span>připravujeme</span></span>
                   <Link className="drop-card" href="/pro-koho?role=fyzio"><b>Fyzio</b><span>klienti z tenisu</span></Link>
-                  <Link className="drop-card" href="/pro-koho?role=fitness"><b>Fitness</b><span>kondiční příprava</span></Link>
+                  <span className="drop-card drop-soon"><b>Fitness</b><span>připravujeme</span></span>
                   <Link className="drop-card" href="/pro-koho?role=vyplet"><b>Vyplétač</b><span>servis raket</span></Link>
                 </div></div>
               </div>
@@ -256,7 +251,7 @@ export default function Home() {
             <div className="help rv d3">
               <h2 className="help-title">Jak vám můžeme pomoci?</h2>
               <div className="help-opts">
-                <Link href="/sluzby" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra nebo kurt pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/sluzby" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/videorozbor" className="help-opt"><span className="help-ic"><Video size={20} /></span><span>Dítě ztrácí radost / něco mu nejde</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/prihlaseni?tab=reg" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok a plánovat (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/sparring" className="help-opt"><span className="help-ic"><Handshake size={20} /></span><span>Najít sparring partnera</span><ArrowRight size={16} className="help-arr" /></Link>
@@ -270,7 +265,7 @@ export default function Home() {
         <div className="hero-stats-side">
           <span className="hss-item"><span className="live-dot" /> {online} online</span>
           <span className="hss-item"><Award size={13} /> <b><Counter to={specCount} /></b> specialistů</span>
-          <span className="hss-item"><MapPin size={13} /> <b><Counter to={venueCount} /></b> areálů</span>
+          <span className="hss-item"><MapPin size={13} /> <b>{CITIES.length}</b> měst</span>
           <span className="hss-item"><span className="live-dot" /> {visits.toLocaleString("cs-CZ")} dnes</span>
         </div>
         <div className="scrollcue">SCROLL ↓</div>
@@ -427,7 +422,7 @@ export default function Home() {
         <div className="wrap">
           <span className="eyebrow rv" style={{ justifyContent: "center", display: "flex" }}>Pojďme na to</span>
           <h2 className="rv">Přidej se k českému tenisu</h2>
-          <p className="rv d1">Kompletní tenisový klub pro vaše dítě. Za cenu dvou káv měsíčně.</p>
+          <p className="rv d1">Kompletní tenisový klub pro vaše dítě. Za cenu dvou káv ve Starbucks měsíčně.</p>
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
         </div>
       </section>

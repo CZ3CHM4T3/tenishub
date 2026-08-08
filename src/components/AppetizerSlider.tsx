@@ -1,7 +1,7 @@
 "use client";
 
 // APPETIZER — hlavní prodejní blok homepage. Slidy s ukázkami funkcí + proč jsou skvělé
-// + hook „kompletní klub za cenu dvou káv". Žádné „zdarma" — registrace = rovnou členství.
+// + hook „kompletní klub za cenu dvou káv ve Starbucks". Žádné „zdarma" — registrace = rovnou členství.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, Trophy, MessageSquareHeart, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
@@ -79,7 +79,7 @@ export function AppetizerSlider() {
     <section className="appetizer" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div className="wrap">
         <span className="app-eyebrow rv"><Sparkles size={15} /> Podívejte se dovnitř klubu</span>
-        <h2 className="app-h rv d1">Kompletní tenisový klub pro vaše dítě <span className="g">za cenu dvou káv</span></h2>
+        <h2 className="app-h rv d1">Kompletní tenisový klub pro vaše dítě <span className="g">za cenu dvou káv ve Starbucks</span></h2>
         <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>200 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
 
         <div className="app-stage rv d2">
@@ -104,7 +104,7 @@ export function AppetizerSlider() {
 
         <div className="app-cta rv d2">
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 200 Kč/měsíc <ArrowRight size={18} /></Link>
-          <span className="app-fine">Kompletní servis za cenu dvou káv. Členství můžeš kdykoli zrušit.</span>
+          <span className="app-fine">Kompletní servis za cenu dvou káv ve Starbucks. Členství můžeš kdykoli zrušit.</span>
         </div>
       </div>
     </section>
