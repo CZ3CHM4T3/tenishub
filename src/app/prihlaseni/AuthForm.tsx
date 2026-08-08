@@ -19,7 +19,8 @@ function czError(msg: string) {
 export default function AuthForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const [tab, setTab] = useState<"login" | "reg">(params.get("tab") === "reg" ? "reg" : "login");
+  const invite = params.get("invite") || "";
+  const [tab, setTab] = useState<"login" | "reg">(params.get("tab") === "reg" || invite ? "reg" : "login");
   const [forgot, setForgot] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,6 +41,18 @@ export default function AuthForm() {
     setInfo("Hotovo — poslali jsme ti e-mail s odkazem pro nastavení nového hesla.");
   };
 
+  // Uplatní zvací kód (trenérská pozvánka nebo připojení pod trenéra) a přesměruje.
+  const applyInviteAndGo = async (supabase: ReturnType<typeof createClient>, code: string | null) => {
+    if (code) {
+      try {
+        const { data: res } = await supabase.rpc("apply_invite", { p_code: code });
+        try { localStorage.removeItem("th_invite"); } catch { /* */ }
+        if (res === "coach") { router.push("/klub"); return; }
+      } catch { /* neplatný kód ignoruj */ }
+    }
+    router.push("/ucet");
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true); setErr(null); setInfo(null);
@@ -47,17 +60,20 @@ export default function AuthForm() {
     if (tab === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) { setErr(czError(error.message)); setBusy(false); return; }
-      router.push("/ucet");
+      let stashed: string | null = invite || null;
+      try { stashed = stashed || localStorage.getItem("th_invite"); } catch { /* */ }
+      await applyInviteAndGo(supabase, stashed);
     } else {
+      if (invite) { try { localStorage.setItem("th_invite", invite); } catch { /* */ } }
       const { data, error } = await supabase.auth.signUp({
         email, password,
         options: { data: { full_name: name } },
       });
       if (error) { setErr(czError(error.message)); setBusy(false); return; }
       if (data.session) {
-        router.push("/ucet");
+        await applyInviteAndGo(supabase, invite || null);
       } else {
-        setInfo("Hotovo! Potvrď registraci kliknutím na odkaz v e-mailu a pak se přihlas.");
+        setInfo("Hotovo! Potvrď registraci kliknutím na odkaz v e-mailu a pak se přihlas — pozvánka se uplatní.");
         setBusy(false);
       }
     }
@@ -79,6 +95,14 @@ export default function AuthForm() {
           <button className={tab === "login" && !forgot ? "on" : ""} onClick={() => { setTab("login"); setForgot(false); setErr(null); }} type="button">Přihlášení</button>
           <button className={tab === "reg" && !forgot ? "on" : ""} onClick={() => { setTab("reg"); setForgot(false); setErr(null); }} type="button">Registrace</button>
         </div>
+
+        {invite && !forgot && (
+          <div className="auth-info" style={{ marginBottom: "1rem" }}>
+            {invite.toUpperCase().startsWith("TRN")
+              ? "Pozvánka pro trenéra — po registraci se otevře vaše trenérské rozhraní."
+              : "Pozvánka od trenéra — po registraci se připojíte do jeho klubu."}
+          </div>
+        )}
 
         {forgot ? (
           <form onSubmit={sendReset}>
@@ -111,7 +135,7 @@ export default function AuthForm() {
           {info && <div className="auth-info">{info}</div>}
 
           <button className="btn btn-gold" style={{ width: "100%" }} disabled={busy} type="submit">
-            {busy ? "Pracuju…" : tab === "login" ? "Přihlásit se" : "Staň se členem"}
+            {busy ? "Pracuju…" : tab === "login" ? "Přihlásit se" : invite ? "Registrovat se" : "Staň se členem"}
           </button>
           {tab === "login" && (
             <button className="auth-forgot" type="button" onClick={() => { setForgot(true); setErr(null); setInfo(null); }}>Zapomněl jsi heslo?</button>
@@ -119,9 +143,11 @@ export default function AuthForm() {
         </form>
         )}
 
-        <p className="auth-note">
-          Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 199 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
-        </p>
+        {!invite && (
+          <p className="auth-note">
+            Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 199 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
+          </p>
+        )}
       </div>
     </div>
   );

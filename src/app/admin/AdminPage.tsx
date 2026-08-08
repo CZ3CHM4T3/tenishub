@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard } from "lucide-react";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
@@ -37,6 +37,8 @@ export default function AdminPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [tab, setTab] = useState("prehled");
   const [busy, setBusy] = useState<string | null>(null);
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [invBusy, setInvBusy] = useState(false);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -123,6 +125,14 @@ export default function AdminPage() {
     const supabase = createClient();
     await supabase.from("reviews").update({ status }).eq("id", id);
     await load(); setBusy(null);
+  };
+  const genCoachInvite = async () => {
+    setInvBusy(true);
+    const supabase = createClient();
+    const { data, error } = await supabase.rpc("gen_coach_invite", { p_note: null });
+    setInvBusy(false);
+    if (error || !data) { alert("Nepodařilo se vygenerovat pozvánku: " + (error?.message ?? "")); return; }
+    setInviteLink(`${window.location.origin}/prihlaseni?tab=reg&invite=${data}`);
   };
   const deleteUser = async (p: Profile) => {
     const code = Math.random().toString(36).slice(2, 7).toUpperCase(); // náhodný 5-znakový kód
@@ -213,6 +223,20 @@ export default function AdminPage() {
           <div className="astat"><MapPin size={16} /><b>{specCount} / {venueCount}</b><span>specialistů / areálů</span></div>
         </div>
 
+        )}
+
+        {tab === "uzivatele" && (
+        <div className="acct-card">
+          <div className="acct-card-head"><UserPlus size={20} /><h2>Pozvat trenéra (magic link)</h2></div>
+          <p className="member-note">Vygenerujte odkaz a pošlete ho trenérovi. Registrací přes něj se z něj stane trenér s vlastním rozhraním <b>/klub</b> a zvacím linkem pro rodiče.</p>
+          <button className="btn btn-gold" onClick={genCoachInvite} disabled={invBusy}><Link2 size={16} /> {invBusy ? "Generuji…" : "Vygenerovat pozvánku pro trenéra"}</button>
+          {inviteLink && (
+            <div className="klub-link" style={{ marginTop: "0.8rem" }}>
+              <input readOnly value={inviteLink} onFocus={(e) => e.currentTarget.select()} />
+              <button className="btn btn-out" onClick={() => navigator.clipboard.writeText(inviteLink)}><Copy size={16} /> Kopírovat</button>
+            </div>
+          )}
+        </div>
         )}
 
         {tab === "uzivatele" && (

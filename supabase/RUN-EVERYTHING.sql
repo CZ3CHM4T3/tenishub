@@ -1,18 +1,14 @@
 -- ============================================================
 -- TenisHub — RUN-EVERYTHING.sql  (VŠECHNO V JEDNOM)
--- ------------------------------------------------------------
--- Spustit v Supabase: SQL Editor -> New query -> vložit CELÉ -> Run.
--- Vše je IDEMPOTENTNÍ = bezpečné spustit i opakovaně.
--- Pokud uvidíš hlášky typu "already exists" / "does not exist" u DROP,
--- nevadí — znamená to, že daná část už byla hotová. Důležitý je výsledek.
--- Pořadí sekcí respektuje závislosti, NEPŘEHAZOVAT.
+-- Supabase → SQL Editor → vložit CELÉ → Run. Idempotentní (bezpečné opakovaně).
+-- Hlášky "already exists" ignoruj. Pořadí NEPŘEHAZOVAT.
 -- ============================================================
 
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 1/14:  schema.sql
--- ██ Základ: tabulky, RLS, ukázková data
+-- ██ SEKCE 1/15:  schema.sql
+-- ██ Základ
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -268,8 +264,8 @@ on conflict do nothing;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 2/14:  clenstvi.sql
--- ██ Členství HUB+, is_admin(), profily neveřejné
+-- ██ SEKCE 2/15:  clenstvi.sql
+-- ██ Členství + is_admin()
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -341,8 +337,8 @@ create policy profiles_read on public.profiles for select
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 3/14:  admini.sql
--- ██ Auto-admini (Jan+Jirka), admin vidí bookings
+-- ██ SEKCE 3/15:  admini.sql
+-- ██ Admini
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -382,8 +378,8 @@ create policy bookings_read on public.bookings for select using (
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 4/14:  recenze-sparring.sql
--- ██ author_name v recenzích/sparringu + přepočet ratingu
+-- ██ SEKCE 4/15:  recenze-sparring.sql
+-- ██ author_name + rating
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -423,8 +419,8 @@ create trigger reviews_recompute
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 5/14:  RUN-ALL.sql
--- ██ Claimable profily + REÁLNÁ DATA (trenéři, kluby, školy) + úklid dema
+-- ██ SEKCE 5/15:  RUN-ALL.sql
+-- ██ Claimable + reálná data + úklid
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1016,8 +1012,8 @@ delete from public.venues where source is null and owner_id is null;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 6/14:  RUN-FUNKCE.sql
--- ██ Samospráva karty, recenze v2, zprávy, sparring v2
+-- ██ SEKCE 6/15:  RUN-FUNKCE.sql
+-- ██ Samospráva, recenze v2, zprávy, sparring v2
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1164,8 +1160,8 @@ alter table public.sparring_offers add column if not exists surface    text;  --
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 7/14:  moje-cesta.sql
--- ██ Moje cesta (hráči, události, cíle, sezóna)
+-- ██ SEKCE 7/15:  moje-cesta.sql
+-- ██ Moje cesta
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1322,8 +1318,8 @@ create policy cesta_settings_write on public.cesta_settings for all
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 8/14:  rezervace.sql
--- ██ Dostupnost + obsazené sloty (rezervace)
+-- ██ SEKCE 8/15:  rezervace.sql
+-- ██ Dostupnost + sloty
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1363,8 +1359,8 @@ $$;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 9/14:  vypletac.sql
--- ██ Služba Vyplétač raket
+-- ██ SEKCE 9/15:  vypletac.sql
+-- ██ Vyplétač
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1376,8 +1372,8 @@ alter type public.service_kind add value if not exists 'stringer';
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 10/14:  ms-gem.sql
--- ██ MS GEM – jediný ověřený profil
+-- ██ SEKCE 10/15:  ms-gem.sql
+-- ██ MS GEM
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1402,8 +1398,8 @@ update public.specialists
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 11/14:  admin-delete-user.sql
--- ██ RPC pro mazání účtů (jen admin)
+-- ██ SEKCE 11/15:  admin-delete-user.sql
+-- ██ Mazání účtů
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1437,8 +1433,8 @@ grant  execute on function public.admin_delete_user(uuid) to authenticated;
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 12/14:  RUN-KOMUNITA.sql
--- ██ Fórum, články, poradna, turnaje, bazar, ověření, import turnajů, e-mail notifikace
+-- ██ SEKCE 12/15:  RUN-KOMUNITA.sql
+-- ██ Fórum/články/poradna/turnaje/bazar/ověření/import/notifikace
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1668,8 +1664,8 @@ alter table public.messages     add column if not exists notified_at timestamptz
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 13/14:  feedback-analytika.sql
--- ██ Zpětná vazba (dotazník) + návštěvy pro konverzní trychtýř v adminu
+-- ██ SEKCE 13/15:  feedback-analytika.sql
+-- ██ Zpětná vazba + konverze
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1740,8 +1736,8 @@ create index if not exists events_kind_idx on public.events (kind);
 
 
 -- ████████████████████████████████████████████████████████████
--- ██ SEKCE 14/14:  videorozbor.sql
--- ██ Objednávky videorozboru (placená služba, admin je vidí)
+-- ██ SEKCE 14/15:  videorozbor.sql
+-- ██ Objednávky videorozboru
 -- ████████████████████████████████████████████████████████████
 
 -- ============================================================
@@ -1783,3 +1779,122 @@ create policy video_requests_admin_delete on public.video_requests
   for delete using (public.is_admin());
 
 create index if not exists video_requests_created_idx on public.video_requests (created_at desc);
+
+
+-- ████████████████████████████████████████████████████████████
+-- ██ SEKCE 15/15:  trener-system.sql
+-- ██ Trenérský systém: pozvánky (magic link) + role trenér + svěřenci
+-- ████████████████████████████████████████████████████████████
+
+-- ============================================================
+-- TenisHub — TRENÉRSKÝ SYSTÉM, fáze 1: pozvánky (magic link) + role trenér + svěřenci
+-- Spustit v Supabase SQL Editoru PO clenstvi.sql/admini.sql. Bezpečné opakovaně.
+--
+-- Flow:
+--  1) Admin vygeneruje pozvánku pro trenéra (kód TRN-xxxxxx) → pošle link.
+--  2) Trenér se registruje s ?invite=TRN-... → stane se trenérem (is_coach) a dostane
+--     svůj OSOBNÍ zvací kód (C-xxxxxx), který vidí jen on (a admin).
+--  3) Rodiče/kolegové se registrují s jeho ?invite=C-... → připojí se pod trenéra (roster).
+-- ============================================================
+
+-- role trenér + osobní zvací kód
+alter table public.profiles add column if not exists is_coach   boolean not null default false;
+alter table public.profiles add column if not exists coach_code text;
+create unique index if not exists profiles_coach_code_idx on public.profiles(coach_code) where coach_code is not null;
+
+-- jednorázové pozvánky admin -> trenér
+create table if not exists public.coach_invites (
+  id         uuid primary key default gen_random_uuid(),
+  code       text unique not null,
+  created_by uuid references auth.users(id) on delete set null,
+  used_by    uuid references auth.users(id) on delete set null,
+  used_at    timestamptz,
+  note       text,
+  created_at timestamptz not null default now()
+);
+alter table public.coach_invites enable row level security;
+drop policy if exists coach_invites_admin on public.coach_invites;
+create policy coach_invites_admin on public.coach_invites for all
+  using (public.is_admin()) with check (public.is_admin());
+
+-- svěřenci / členové pod trenérem (rodič nebo kolega)
+create table if not exists public.coach_roster (
+  id          uuid primary key default gen_random_uuid(),
+  coach_id    uuid not null references public.profiles(id) on delete cascade,
+  member_id   uuid not null references public.profiles(id) on delete cascade,
+  member_name text,
+  kind        text not null default 'parent',   -- parent | colleague
+  status      text not null default 'active',    -- active | removed
+  created_at  timestamptz not null default now(),
+  unique (coach_id, member_id)
+);
+alter table public.coach_roster enable row level security;
+drop policy if exists coach_roster_read on public.coach_roster;
+create policy coach_roster_read on public.coach_roster for select
+  using (coach_id = auth.uid() or member_id = auth.uid() or public.is_admin());
+drop policy if exists coach_roster_coach_upd on public.coach_roster;
+create policy coach_roster_coach_upd on public.coach_roster for update
+  using (coach_id = auth.uid() or public.is_admin());
+create index if not exists coach_roster_coach_idx on public.coach_roster(coach_id);
+
+-- ---------- RPC ----------
+-- Admin vygeneruje pozvánku pro trenéra, vrátí kód.
+create or replace function public.gen_coach_invite(p_note text default null)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_code text;
+begin
+  if not public.is_admin() then raise exception 'Jen admin může zvát trenéry.'; end if;
+  v_code := 'TRN-' || upper(substr(md5(gen_random_uuid()::text), 1, 6));
+  insert into public.coach_invites(code, created_by, note) values (v_code, auth.uid(), p_note);
+  return v_code;
+end $$;
+
+-- Uplatnění kódu po registraci: buď se stanu trenérem (TRN-), nebo se připojím pod trenéra (C-).
+create or replace function public.apply_invite(p_code text)
+returns text language plpgsql security definer set search_path = public as $$
+declare v_inv public.coach_invites; v_coach public.profiles; v_name text;
+begin
+  if auth.uid() is null then raise exception 'Nejste přihlášen.'; end if;
+  p_code := upper(trim(p_code));
+
+  -- trenérská pozvánka?
+  select * into v_inv from public.coach_invites where upper(code) = p_code and used_by is null;
+  if found then
+    update public.coach_invites set used_by = auth.uid(), used_at = now() where id = v_inv.id;
+    update public.profiles
+      set is_coach = true,
+          coach_code = coalesce(coach_code, 'C-' || upper(substr(md5(gen_random_uuid()::text), 1, 6)))
+      where id = auth.uid();
+    return 'coach';
+  end if;
+
+  -- osobní kód trenéra (rodič/kolega se připojuje)?
+  select * into v_coach from public.profiles where upper(coach_code) = p_code and is_coach = true;
+  if found then
+    if v_coach.id = auth.uid() then return 'self'; end if;
+    select coalesce(full_name, email) into v_name from public.profiles where id = auth.uid();
+    insert into public.coach_roster(coach_id, member_id, member_name)
+      values (v_coach.id, auth.uid(), v_name)
+      on conflict (coach_id, member_id) do nothing;
+    return 'joined';
+  end if;
+
+  return 'invalid';
+end $$;
+
+-- Zajistí trenérovi osobní kód (kdyby chyběl) a vrátí ho — volá si trenér ve svém rozhraní.
+create or replace function public.my_coach_code()
+returns text language plpgsql security definer set search_path = public as $$
+declare v_code text;
+begin
+  if auth.uid() is null then raise exception 'Nejste přihlášen.'; end if;
+  select coach_code into v_code from public.profiles where id = auth.uid() and is_coach = true;
+  if v_code is null then
+    if not exists (select 1 from public.profiles where id = auth.uid() and is_coach = true) then
+      raise exception 'Nejste trenér.';
+    end if;
+    v_code := 'C-' || upper(substr(md5(gen_random_uuid()::text), 1, 6));
+    update public.profiles set coach_code = v_code where id = auth.uid();
+  end if;
+  return v_code;
+end $$;
