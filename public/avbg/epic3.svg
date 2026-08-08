@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bg-epic3" cx="50%" cy="50%" r="72%">
+      <stop offset="0%" stop-color="#a5250f"/>
+      <stop offset="58%" stop-color="#a5250f"/>
+      <stop offset="100%" stop-color="#3a0a04"/>
+    </radialGradient>
+    <radialGradient id="core-epic3" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#ff7a3a" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ff7a3a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg-epic3)"/>
+  <g transform="translate(200,200)">
+    <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="22s" repeatCount="indefinite"/>
+      <path d="M0.0,0.0 L2.8,0.7 L5.0,2.7 L6.2,5.8 L6.1,9.6 L4.5,13.5 L1.2,17.0 L-3.5,19.6 L-9.5,20.7 L-16.1,19.9 L-22.8,17.0 L-28.9,11.9 L-33.8,4.8 L-36.7,-4.0 L-37.3,-14.0 L-35.0,-24.4 L-29.7,-34.4 L-21.6,-43.2 L-10.8,-50.0 L2.0,-54.0 L16.1,-54.5 L30.6,-51.3 L44.3,-44.1 L56.3,-33.2 L65.5,-19.1 L71.0,-2.4 L72.2,15.9 L68.5,34.5 L60.0,52.3 L46.8,67.8 L29.6,80.0 L9.1,87.6 L-13.2,90.0 L-36.2,86.5 L-58.2,77.2 L-77.7,62.1 L-93.2,42.2 L-103.6,18.3 L-107.7,-8.1 L-105.0,-35.4 L-95.4,-61.8 L-79.0,-85.6 L-56.8,-105.0 L-29.7,-118.5 L0.6,-125.0 L32.2,-123.8 L63.2,-114.5 L91.5,-97.3 L115.1,-73.2 L132.3,-43.3 L141.8,-9.4 L142.5,26.5 L134.1,62.1 L116.8,95.1 L91.3,123.4 L59.0,144.7 L21.8,157.7 L-18.2,161.0 L-58.5,154.1 L-96.4,137.2 L-129.5,110.9 L-155.5,76.6 L-172.4,36.4 L-178.9,-7.5 L-174.2,-52.4 L-158.3,-95.3 L-131.8,-133.5 L-96.1,-164.4 L-53.2,-185.8 L-5.6,-196.0 L43.7,-194.1 L91.6,-179.8 L135.1,-153.7 L171.3,-117.1 L197.6,-72.0 L212.1,-21.2 L213.6,32.4 L201.5,85.3 L176.4,134.2 L139.5,175.9 L92.8,207.6 L39.0,226.9 L-18.5,232.3 L-76.4,223.2 L-130.8,199.7 L-178.2,163.1 L-215.5,115.3 L-240.1,59.0 L-250.1,-2.2 L-244.5,-64.7 L-223.4,-124.6 L-187.7,-178.0 L-139.3,-221.3 L-81.1,-251.6 L-16.5,-266.6 L50.5,-265.2 L115.7,-247.1 L175.1,-213.0 L224.6,-164.7 L261.0,-105.1 L281.7,-37.6 L285.1,33.6 L270.6,104.1 L238.7,169.4 L191.2,225.4 L130.8,268.2" fill="none" stroke="#ff7a3a" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+      <path d="M0.0,0.0 L2.8,0.7 L5.0,2.7 L6.2,5.8 L6.1,9.6 L4.5,13.5 L1.2,17.0 L-3.5,19.6 L-9.5,20.7 L-16.1,19.9 L-22.8,17.0 L-28.9,11.9 L-33.8,4.8 L-36.7,-4.0 L-37.3,-14.0 L-35.0,-24.4 L-29.7,-34.4 L-21.6,-43.2 L-10.8,-50.0 L2.0,-54.0 L16.1,-54.5 L30.6,-51.3 L44.3,-44.1 L56.3,-33.2 L65.5,-19.1 L71.0,-2.4 L72.2,15.9 L68.5,34.5 L60.0,52.3 L46.8,67.8 L29.6,80.0 L9.1,87.6 L-13.2,90.0 L-36.2,86.5 L-58.2,77.2 L-77.7,62.1 L-93.2,42.2 L-103.6,18.3 L-107.7,-8.1 L-105.0,-35.4 L-95.4,-61.8 L-79.0,-85.6 L-56.8,-105.0 L-29.7,-118.5 L0.6,-125.0 L32.2,-123.8 L63.2,-114.5 L91.5,-97.3 L115.1,-73.2 L132.3,-43.3 L141.8,-9.4 L142.5,26.5 L134.1,62.1 L116.8,95.1 L91.3,123.4 L59.0,144.7 L21.8,157.7 L-18.2,161.0 L-58.5,154.1 L-96.4,137.2 L-129.5,110.9 L-155.5,76.6 L-172.4,36.4 L-178.9,-7.5 L-174.2,-52.4 L-158.3,-95.3 L-131.8,-133.5 L-96.1,-164.4 L-53.2,-185.8 L-5.6,-196.0 L43.7,-194.1 L91.6,-179.8 L135.1,-153.7 L171.3,-117.1 L197.6,-72.0 L212.1,-21.2 L213.6,32.4 L201.5,85.3 L176.4,134.2 L139.5,175.9 L92.8,207.6 L39.0,226.9 L-18.5,232.3 L-76.4,223.2 L-130.8,199.7 L-178.2,163.1 L-215.5,115.3 L-240.1,59.0 L-250.1,-2.2 L-244.5,-64.7 L-223.4,-124.6 L-187.7,-178.0 L-139.3,-221.3 L-81.1,-251.6 L-16.5,-266.6 L50.5,-265.2 L115.7,-247.1 L175.1,-213.0 L224.6,-164.7 L261.0,-105.1 L281.7,-37.6 L285.1,33.6 L270.6,104.1 L238.7,169.4 L191.2,225.4 L130.8,268.2" fill="none" stroke="#ff7a3a" stroke-width="7" stroke-linecap="round" opacity="0.14" transform="rotate(180)"/>
+    </g>
+    <circle r="120" fill="url(#core-epic3)">
+      <animate attributeName="r" values="95;150;95" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.45;0.9;0.45" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="251" cy="-71" r="1.5" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="2.7s" repeatCount="indefinite"/></circle>
+      <circle cx="114" cy="-191" r="3.1" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.3s" repeatCount="indefinite"/></circle>
+      <circle cx="-157" cy="-123" r="2.9" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="2.9s" repeatCount="indefinite"/></circle>
+      <circle cx="-146" cy="68" r="3.3" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="5.0s" repeatCount="indefinite"/></circle>
+      <circle cx="179" cy="-59" r="2.6" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.2s" repeatCount="indefinite"/></circle>
+      <circle cx="93" cy="21" r="2.6" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.3s" repeatCount="indefinite"/></circle>
+      <circle cx="-183" cy="171" r="2.8" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.9s" repeatCount="indefinite"/></circle>
+      <circle cx="8" cy="94" r="2.2" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="-269" cy="-17" r="3.2" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.0s" repeatCount="indefinite"/></circle>
+      <circle cx="183" cy="-145" r="3.3" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="4.8s" repeatCount="indefinite"/></circle>
+      <circle cx="19" cy="-231" r="2.3" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="5.0s" repeatCount="indefinite"/></circle>
+      <circle cx="116" cy="-28" r="3.4" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="4.3s" repeatCount="indefinite"/></circle>
+      <circle cx="-180" cy="45" r="2.7" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="4.8s" repeatCount="indefinite"/></circle>
+      <circle cx="-240" cy="-1" r="2.3" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="4.7s" repeatCount="indefinite"/></circle>
+      <circle cx="140" cy="-102" r="2.9" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="4.8s" repeatCount="indefinite"/></circle>
+      <circle cx="-29" cy="-175" r="2.0" fill="#ffcf9a" opacity="0.85"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="3.3s" repeatCount="indefinite"/></circle>
+  </g>
+</svg>

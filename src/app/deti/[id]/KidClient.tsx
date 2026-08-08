@@ -8,9 +8,11 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ArrowLeft } from "lucide-react";
 import Kariera from "./Kariera";
 import ProgressEditor from "./ProgressEditor";
+import AvatarEditor from "./AvatarEditor";
 import { DEFAULT_KURIKULA, key as nkey, type Curriculum, type Kurikula, type Track } from "@/lib/kariera";
+import { avatarSrc, bgSrc } from "@/lib/avatar";
 
-type Dite = { id: string; rodic_id: string; coach_id: string | null; jmeno: string; datum_narozeni: string | null; program: string; prezdivka: string };
+type Dite = { id: string; rodic_id: string; coach_id: string | null; jmeno: string; datum_narozeni: string | null; program: string; prezdivka: string; avatar_model: string; avatar_pozadi: string; zebricek_anonym: boolean };
 
 function trackFor(d: Dite): Track {
   if (d.datum_narozeni) {
@@ -36,7 +38,7 @@ export default function KidClient({ id }: { id: string }) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/prihlaseni?next=/deti/" + id); return; }
     setMeId(user.id);
-    const { data: d } = await supabase.from("deti").select("id,rodic_id,coach_id,jmeno,datum_narozeni,program,prezdivka").eq("id", id).maybeSingle();
+    const { data: d } = await supabase.from("deti").select("id,rodic_id,coach_id,jmeno,datum_narozeni,program,prezdivka,avatar_model,avatar_pozadi,zebricek_anonym").eq("id", id).maybeSingle();
     if (!d) { setLoading(false); return; }
     const dd = d as Dite;
     setDite(dd);
@@ -71,6 +73,19 @@ export default function KidClient({ id }: { id: string }) {
         <div className="mc-head">
           <h1 className="acct-h1">{dite.jmeno} <span style={{ color: "var(--muted)", fontWeight: 400, fontSize: "1rem" }}>· {dite.prezdivka}</span></h1>
         </div>
+
+        <div className="kid-top">
+          <div className="kid-avstage avstage">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="avbg" src={bgSrc(dite.avatar_pozadi)} alt="" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="avmodel" src={avatarSrc(dite.avatar_model)} alt="" />
+          </div>
+          {role === "rodic" && (
+            <AvatarEditor childId={dite.id} model={dite.avatar_model} bg={dite.avatar_pozadi} frames={{}} prezdivka={dite.prezdivka} anonym={dite.zebricek_anonym} />
+          )}
+        </div>
+
         {role === "coach" ? (
           <>
             <p className="member-note" style={{ marginTop: "-0.4rem" }}>Odemykejte dítěti dovednosti — klikněte na uzel. Předchůdci se odemknou samy.</p>

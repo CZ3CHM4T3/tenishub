@@ -78,8 +78,8 @@ export default function DetiClient() {
         <div className="acct-card klub-soon" style={{ textAlign: "center", marginTop: "1.4rem" }}>
           <span className="klub-soon-tag">Brzy</span>
           <Trophy size={24} />
-          <h3>Avatar &amp; Sparing Cup</h3>
-          <p>Vlastní tenista (avatar), který roste s dítětem, a žebříček Sparing Cupu — přidáváme.</p>
+          <h3>Sparing Cup</h3>
+          <p>Žebříček a pohár, kde vaše dítě měří síly s ostatními ve svém klubu — přidáváme.</p>
         </div>
       </div>
 

@@ -21,6 +21,11 @@
 
 /* tokeny i jako CSS proměnné (mockupový kód je používá přímo) */
 :root {
+  /* proměnné pro portnuté herní UI z MS GEM (tmavý panel) */
+  --navy: #002f65;
+  --lime: #c1d82f;
+  --mist: #f4f8fc;
+  --paper: #fff;
   --green-d: #1f3a2d;
   --green: #2c4a3b;
   --green-2: #3a5c49;
@@ -1933,3 +1938,85 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .pf-akt-date{color:var(--muted);font-size:.78rem}
 
 .dite-cta { display: inline-flex; align-items: center; gap: 4px; font-size: 0.82rem; font-weight: 700; color: var(--gold, #bf9a47); white-space: nowrap; }
+
+/* ===== PORT z MS GEM: EDITOR AVATARA + ProgressEditor (pe-*) + tier ===== */
+/* ===================== EDITOR AVATARA ===================== */
+.avstage{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#0a1729}
+.avstage .avbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.avstage .avmodel{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.cust-ov{position:fixed;inset:0;z-index:110;background:rgba(4,13,30,.68);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:1.2rem}.cust-ov.open{display:flex}
+.cust-box{background:linear-gradient(165deg,#12294a,#0a1a30);border:1px solid #2c4a76;border-radius:20px;max-width:780px;width:100%;padding:1.8rem;color:#e6edf7;max-height:94vh;overflow:auto;position:relative}
+.cust-box h3{color:#fff;font-family:var(--font-sora,"Sora"),sans-serif;margin-bottom:.4rem}
+.cust-box .cprev{position:relative;width:230px;height:230px;margin:.8rem auto 1.1rem;border-radius:16px;overflow:hidden;border:1px solid #2c4a76}
+/* indikátor zarovnání v náhledu */
+.av-guide{position:absolute;inset:0;pointer-events:none;z-index:3}
+.av-guide::before,.av-guide::after{content:"";position:absolute;left:0;right:0;height:1px}
+.av-guide::before{top:8.8%;background:repeating-linear-gradient(90deg,rgba(255,90,90,.9) 0 8px,transparent 8px 14px)}
+.av-guide::after{top:46%;background:repeating-linear-gradient(90deg,rgba(120,200,255,.85) 0 8px,transparent 8px 14px)}
+.av-guide i{position:absolute;top:0;bottom:0;left:50%;width:1px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.4) 0 8px,transparent 8px 14px)}
+/* posuvníky ukotvení avatara */
+.av-frame-ctrl{display:flex;flex-direction:column;gap:.55rem;background:rgba(255,255,255,.04);border:1px solid #2c4a76;border-radius:12px;padding:.8rem .9rem;margin:.3rem 0 .2rem}
+.av-frame-ctrl label{display:flex;flex-direction:column;gap:.3rem;font-size:.78rem;font-weight:700;color:#b7c6de}
+.av-frame-ctrl label b{color:#fff}
+.av-frame-ctrl input[type=range]{width:100%;accent-color:var(--lime)}
+.av-frame-reset{align-self:flex-start;background:rgba(255,255,255,.06);border:1px solid #2c4a76;color:#cfe0f5;border-radius:9px;padding:.4rem .8rem;font-weight:700;font-size:.78rem;cursor:pointer}
+.av-frame-reset:hover{background:rgba(255,255,255,.12)}
+.cust-box .mclose{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1px solid #2c4a76;background:rgba(255,255,255,.05);color:#e6edf7;font-size:1.2rem;cursor:pointer}
+.cl{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9fb4d1;margin:.9rem 0 .45rem}
+.nameinput{width:100%;background:#0a1729;border:1px solid #2c4a76;border-radius:10px;color:#fff;font-family:var(--font-sora,"Sora"),sans-serif;font-weight:700;font-size:1rem;padding:.6rem .8rem;margin-bottom:.3rem}
+.genderfilter{display:flex;gap:.4rem;margin-bottom:.6rem}
+.genderfilter button{flex:1;border:1px solid #2c4a76;background:rgba(255,255,255,.04);color:#e6edf7;border-radius:9px;padding:.45rem;font-weight:700;cursor:pointer;font-family:inherit}.genderfilter button.active{background:var(--lime);color:#08152b;border-color:var(--lime)}
+.modelgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;max-height:52vh;overflow-y:auto;padding:.2rem;margin-bottom:.4rem}
+.modelcell{border:2px solid #24425f;background:#0a1729;border-radius:12px;padding:0;cursor:pointer;overflow:hidden;display:flex;flex-direction:column}
+.modelcell .avstage{border-radius:10px 10px 0 0}
+.modelcell span{font-size:.72rem;font-weight:700;color:#9fb4d1;padding:.32rem;text-align:center;line-height:1}
+.modelcell.sel{border-color:var(--lime)}.modelcell.sel span{color:#fff}
+@media(max-width:560px){.modelgrid{grid-template-columns:repeat(3,1fr)}}
+.modelcell.sel{border-color:var(--lime)}.modelcell.sel span{color:#fff}
+.bggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}
+.bgcell{border:2px solid #24425f;border-radius:10px;padding:0;cursor:pointer;overflow:hidden;aspect-ratio:1/1;background:#0a1729}
+.bgcell img{width:100%;height:100%;object-fit:cover;display:block}
+.bgcell.sel{border-color:var(--lime)}
+.btn-save-av{width:100%;margin-top:1rem;background:var(--lime);color:#08152b;border:0;border-radius:12px;padding:.85rem;font-weight:800;font-size:1rem;cursor:pointer;font-family:var(--font-sora,"Sora"),sans-serif}.btn-save-av:hover{filter:brightness(1.05)}.btn-save-av:disabled{opacity:.6;cursor:default}
+
+/* ===================== ADMIN ZÁLOŽKY + KARIÉRA ===================== */
+.admtabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:.2rem 0 1.2rem;border-bottom:2px solid var(--line);padding-bottom:0}
+.admtab{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1rem;border-radius:11px 11px 0 0;color:var(--muted);text-decoration:none;font-weight:800;font-size:.92rem;border:2px solid transparent;border-bottom:0;position:relative;top:2px;transition:.14s}
+.admtab svg{width:17px;height:17px;color:var(--tc);opacity:.85}
+.admtab:hover{color:var(--tc);background:color-mix(in srgb,var(--tc) 8%,transparent)}
+.admtab.active{color:var(--tc);background:var(--paper);border-color:var(--line);border-top:3px solid var(--tc)}
+.admtab.active svg{opacity:1}
+/* admin: dvojité menu (Správa + Moje/rodič) */
+.admnav{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.1rem}
+.admnav .admtabs{margin:0}
+.admnav-grp{display:flex;flex-direction:column;gap:.1rem}
+.admnav-lbl{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding-left:.2rem}
+.tier-mini{display:inline-flex;align-items:center;gap:.45rem}
+.tier-mini .erb{width:26px;flex:none}.tier-mini .erb img{width:100%;display:block}.tier-mini .erb{position:relative;line-height:0}
+.tier-mini .erb .erb-lvl{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--font-sora,"Sora"),sans-serif;font-weight:800;font-size:.62rem;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.9)}
+.tier-mini b{font-weight:700}
+/* progress editor */
+.pe-chap{background:#0f2444;border:1px solid #24425f;border-radius:14px;padding:1rem 1.1rem;margin-bottom:.8rem}
+.pe-chead{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem}
+.pe-chead .ci{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none}.pe-chead .ci svg{width:19px;height:19px}
+.pe-chead .nm{font-weight:800;color:#fff}
+.pe-chead .pg{margin-left:auto;color:#9fb4d1;font-size:.82rem;font-weight:700}
+.pe-nodes{display:flex;flex-wrap:wrap;gap:.45rem}
+.pe-node{display:inline-flex;align-items:center;gap:.4rem;border:1px solid #2c4a76;background:#0a1729;color:#c9d8ee;border-radius:999px;padding:.4rem .7rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:.12s}
+.pe-node .dot{width:14px;height:14px;border-radius:50%;border:2px solid #43617f;flex:none;display:grid;place-items:center}
+.pe-node .dot svg{width:10px;height:10px;color:#08152b}
+.pe-node .x{color:var(--lime);font-family:var(--font-sora,"Sora"),sans-serif;font-weight:800}
+.pe-node.done{background:rgba(193,216,47,.14);border-color:var(--lime);color:#fff}
+.pe-node.done .dot{background:var(--lime);border-color:var(--lime)}
+.pe-node.active{border-color:#5f7fa8}
+.pe-node.locked{opacity:.5}
+.pe-node:hover{border-color:var(--lime)}
+.pe-head{position:sticky;top:0;z-index:5;background:#0a1a30;border:1px solid #24425f;border-radius:14px;padding:.8rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.pe-head .lvl{font-family:var(--font-sora,"Sora"),sans-serif;font-weight:800;color:#fff;font-size:1.05rem;display:flex;align-items:center;gap:.5rem}
+.pe-head .xp{color:#9fb4d1;font-weight:700}.pe-head .xp b{color:var(--lime)}
+.pe-saveinfo{margin-left:auto;font-size:.82rem;color:#9fb4d1}
+
+
+/* ── Stránka dítěte: avatar blok ─────────────────────────────── */
+.kid-top { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.kid-avstage { width: 130px; height: 130px; border-radius: 18px; flex: none; border: 2px solid var(--line); box-shadow: var(--shadow-s); }
