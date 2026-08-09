@@ -59,18 +59,18 @@ export const SKILL_ICONS: Record<string, string> = {
   ball: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />',
   // podání — tenisová raketa zvednutá + nadhozený míč (švih nahoru)
   serve: '<path d="M13.2 3.6a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" /><path d="M11.5 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M14.5 8v6M11.5 11h6" /><path d="M12.8 13.1l-5.8 6.9" />',
-  // volej — tenisová raketa + síť
-  volley: '<path d="M4 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M7 7v6M4 10h6" /><path d="M9.1 12.1l3.4 4.4" /><path d="M13 16.5h8v4.5h-8z" /><path d="M15.7 16.5v4.5M18.3 16.5v4.5M13 18.75h8" />',
-  // síť — symetrická mřížka se sloupky
-  net: '<path d="M3 7.5h18v9h-18z" /><path d="M6 7.5v9M9 7.5v9M12 7.5v9M15 7.5v9M18 7.5v9" /><path d="M3 12h18" /><path d="M3 16.5v2.5M21 16.5v2.5" /><path d="M3 19h18" />',
+  // volej — tenisová raketa + jednoduchá síť
+  volley: '<path d="M4 8.5a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M7 5.5v6M4 8.5h6" /><path d="M9 10.6l3.5 4.4" /><path d="M11 16h10" /><path stroke-width="1" d="M14 16v4.5M17.5 16v4.5" /><path d="M11 20.5h10" />',
+  // síť — jednoduchá: výrazná páska + sloupky, řídký tenký výplet
+  net: '<path d="M3 8h18" /><path d="M4 8v10.5M20 8v10.5" /><path stroke-width="1" d="M8 8v10M12 8v10M16 8v10M4 13h16" /><path d="M3 18.5h18" />',
   // bota (Tabler shoe)
   footwork: '<path d="M4 6h5.426a1 1 0 0 1 .863 .496l1.064 1.823a3 3 0 0 0 1.896 1.407l4.677 1.114a4 4 0 0 1 3.074 3.89v2.27a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1" /><path d="M14 13l1 -2" /><path d="M8 18v-1a4 4 0 0 0 -4 -4h-1" /><path d="M10 12l1.5 -3" />',
   // pohyb / skluz (Tabler walk)
   slide: '<path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M7 21l3 -4" /><path d="M16 21l-2 -4l-3 -3l1 -6" /><path d="M6 12l2 -3l4 -1l3 3l3 1" />',
   // běh (Tabler run)
   run: '<path d="M11.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M4 17l5 1l.75 -1.5" /><path d="M15 21v-4l-4 -3l1 -6" /><path d="M7 12v-3l5 -1l3 3l3 1" />',
-  // skok (Tabler ski-jumping)
-  jump: '<path d="M17 17.5l-5 -4.5v-6l5 4" /><path d="M7 17.5l5 -4.5" /><path d="M15.103 21.58l6.762 -14.502a2 2 0 0 0 -.968 -2.657" /><path d="M8.897 21.58l-6.762 -14.503a2 2 0 0 1 .968 -2.657" /><path d="M7 11l5 -4" /><path d="M10.007 4a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
+  // skok — figura ve výskoku (ruce nahoře), čára země pod ní
+  jump: '<path d="M10 4a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M12 6.5v5" /><path d="M12 8l-3.5 -2.5M12 8l3.5 -2.5" /><path d="M12 11.5l-3 3.5M12 11.5l3 3.5" /><path d="M4 20h16" />',
   // obratnost — kužel (Tabler cone)
   agility: '<path d="M21 17.998v-.5l-8.13 -14.99a1 1 0 0 0 -1.74 0l-8.13 14.989v.5c0 1.659 4.03 3.003 9 3.003s9 -1.344 9 -3.002" /><path d="M8 11.5h8" />',
   // rovnováha — jóga pozice (Tabler yoga)
