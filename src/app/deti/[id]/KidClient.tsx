@@ -11,20 +11,11 @@ import ProgressEditor from "./ProgressEditor";
 import AvatarEditor from "./AvatarEditor";
 import SparingCup, { type Standing, type Match } from "./SparingCup";
 import ZapasForm from "./ZapasForm";
-import { DEFAULT_KURIKULA, key as nkey, type Curriculum, type Kurikula, type Track } from "@/lib/kariera";
+import { DEFAULT_KURIKULA, key as nkey, type Curriculum, type Kurikula } from "@/lib/kariera";
+import { categoryForBirthdate, categoryDef, trackForBirthdate } from "@/lib/kategorie";
 import { avatarSrc, bgSrc } from "@/lib/avatar";
 
 type Dite = { id: string; rodic_id: string; coach_id: string | null; jmeno: string; datum_narozeni: string | null; program: string; prezdivka: string; avatar_model: string; avatar_pozadi: string; zebricek_anonym: boolean };
-
-function trackFor(d: Dite): Track {
-  if (d.datum_narozeni) {
-    const age = (Date.now() - new Date(d.datum_narozeni).getTime()) / (365.25 * 864e5);
-    if (age < 8) return "mini";
-    if (age < 15) return "junior";
-    return "adults";
-  }
-  return "junior";
-}
 
 export default function KidClient({ id }: { id: string }) {
   const router = useRouter();
@@ -48,7 +39,7 @@ export default function KidClient({ id }: { id: string }) {
     const dd = d as Dite;
     setDite(dd);
     setRole(dd.coach_id === user.id ? "coach" : dd.rodic_id === user.id ? "rodic" : null);
-    const track = trackFor(dd);
+    const track = trackForBirthdate(dd.datum_narozeni);
     const [{ data: ck }, { data: od }, { data: mt }, pro, hob] = await Promise.all([
       dd.coach_id ? supabase.from("coach_kurikulum").select("data").eq("coach_id", dd.coach_id).maybeSingle() : Promise.resolve({ data: null }),
       supabase.from("odemceno").select("kapitola,uzel").eq("dite_id", id),
@@ -83,6 +74,12 @@ export default function KidClient({ id }: { id: string }) {
         <button className="linklike" onClick={() => router.back()} style={{ marginBottom: "0.6rem" }}><ArrowLeft size={15} /> Zpět</button>
         <div className="mc-head">
           <h1 className="acct-h1">{dite.jmeno} <span style={{ color: "var(--muted)", fontWeight: 400, fontSize: "1rem" }}>· {dite.prezdivka}</span></h1>
+          {(() => {
+            const cat = categoryForBirthdate(dite.datum_narozeni);
+            if (!cat) return null;
+            const d = categoryDef(cat);
+            return <span className="kat-badge" style={{ background: "rgba(191,154,71,.16)", color: "var(--gold, #bf9a47)" }} title="Věková kategorie se mění automaticky podle věku">{d.label} · {d.vek}</span>;
+          })()}
         </div>
 
         <div className="kid-top">

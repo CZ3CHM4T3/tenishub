@@ -202,10 +202,14 @@ export function cloneCurriculum(cur: Curriculum): Curriculum {
 
 // ---- VĚKOVÉ TRACKY — každý má vlastní (nezávislou) kopii kurikula ----
 export type Track = "mini" | "junior" | "adults";
+// 3 stromy dovedností, každý pokrývá věkové kategorie (viz lib/kategorie.ts):
+//  mini   = Mini + Baby (6–9)
+//  junior = Mladší + starší žáci (10–14)
+//  adults = Dorost + dospělí (15+)
 export const TRACKS: { k: Track; n: string; hint: string; emoji: string }[] = [
-  { k: "mini", n: "MINI", hint: "mini a babytenis", emoji: "🐣" },
-  { k: "junior", n: "JUNIOR", hint: "žáci", emoji: "🎾" },
-  { k: "adults", n: "ADULTS", hint: "dorost a dospělí", emoji: "🏆" },
+  { k: "mini", n: "Mini + Baby", hint: "6–9 let", emoji: "🐣" },
+  { k: "junior", n: "Žáci", hint: "mladší i starší · 10–14 let", emoji: "🎾" },
+  { k: "adults", n: "Dorost + dospělí", hint: "15+ let", emoji: "🏆" },
 ];
 export type Kurikula = { tracks: Record<Track, Curriculum>; updated?: Partial<Record<Track, string>> };
 export const DEFAULT_KURIKULA: Kurikula = {
