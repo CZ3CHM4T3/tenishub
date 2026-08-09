@@ -64,10 +64,10 @@ export const SKILL_ICONS: Record<string, string> = {
   racket: TENNIS_RACKET,
   // tenisový míč (Tabler ball-tennis)
   ball: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />',
-  // podání — TÁ SAMÁ raketa + nadhozený míč vpravo nahoře
-  serve: `${TENNIS_RACKET}<path d="M14.6 4.5a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0" />`,
-  // volej — TÁ SAMÁ raketa + TÁ SAMÁ síť (zmenšená vpravo dole)
-  volley: `${TENNIS_RACKET}<g transform="translate(10.5 8.5) scale(0.48)">${TENNIS_NET}</g>`,
+  // podání — TÁ SAMÁ raketa (nakloněná) + čistý nadhozený míč
+  serve: `<g transform="rotate(16 9.5 13)">${TENNIS_RACKET}</g><circle cx="15" cy="3.9" r="1.8" />`,
+  // volej — TÁ SAMÁ raketa (nakloněná k síti) + TÁ SAMÁ síť (odsazená vpravo dole)
+  volley: `<g transform="rotate(15 9.5 13)">${TENNIS_RACKET}</g><g transform="translate(12.3 9.8) scale(0.46)">${TENNIS_NET}</g>`,
   // síť — sdílená kresba (viz TENNIS_NET)
   net: TENNIS_NET,
   // bota (Tabler shoe)
