@@ -20,6 +20,7 @@ export default function KlubClient() {
   const supabase = useMemo(() => createClient(), []);
   const [loading, setLoading] = useState(true);
   const [isCoach, setIsCoach] = useState(false);
+  const [preview, setPreview] = useState(false);
   const [code, setCode] = useState<string | null>(null);
   const [roster, setRoster] = useState<Member[]>([]);
   const [copied, setCopied] = useState(false);
@@ -30,9 +31,16 @@ export default function KlubClient() {
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/prihlaseni?next=/klub"); return; }
-    const prof = await supabase.from("profiles").select("is_coach").eq("id", user.id).maybeSingle();
-    if (!prof.data?.is_coach) { setIsCoach(false); setLoading(false); return; }
+    const prof = await supabase.from("profiles").select("is_coach,is_admin").eq("id", user.id).maybeSingle();
+    const coach = !!prof.data?.is_coach;
+    const adminPreview = !coach && !!prof.data?.is_admin;
+    if (!coach && !adminPreview) { setIsCoach(false); setLoading(false); return; }
     setIsCoach(true);
+    setPreview(adminPreview);
+    if (adminPreview) {
+      // Admin náhled: prázdná data + výchozí strom, ať vidí, jak rozhraní vypadá.
+      setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
+    }
     const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }] = await Promise.all([
       supabase.rpc("my_coach_code"),
       supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).eq("status", "active").order("created_at", { ascending: false }),
@@ -73,6 +81,11 @@ export default function KlubClient() {
     <div className="acct-page">
       <SiteHeader />
       <div className="wrap acct-wrap">
+        {preview && (
+          <div className="admin-preview-bar">
+            👁️ Náhledový režim (admin) — takhle vidí rozhraní trenér. Data jsou prázdná / ukázková.
+          </div>
+        )}
         <div className="mc-head">
           <h1 className="acct-h1"><Users size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Wordmark } from "@/components/Wordmark";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy } from "lucide-react";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy, Eye, Baby, GraduationCap } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
@@ -198,6 +198,13 @@ export default function AdminPage() {
         <div className="dash-head">
           <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
           <Link href="/dashboard" className="btn btn-gold"><LayoutDashboard size={16} /> Provozní dashboard</Link>
+        </div>
+
+        <div className="admin-viewas">
+          <span className="admin-viewas-l"><Eye size={15} /> Náhled webu jako:</span>
+          <Link href="/rodic" className="btn btn-out"><Baby size={15} /> Rodič &amp; dítě</Link>
+          <Link href="/klub" className="btn btn-out"><GraduationCap size={15} /> Trenér</Link>
+          <Link href="/" className="btn btn-out">Návštěvník (homepage)</Link>
         </div>
         <div className="admin-tabgroups">
           {TAB_GROUPS.map(([label, tabs]) => (
