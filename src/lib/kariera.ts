@@ -49,20 +49,27 @@ export const ALLCH: Chapter[] = [
 export type Node = { id: string; n: string; xp: number; col: number; row: number; req: string[]; desc?: string; icon?: string; xreq?: string[] };
 
 // ---- IKONY DOVEDNOSTÍ (promyšlené, ne emoji) — stroke SVG jako IC ----
-// Fitness/pohybové ikony jsou z Tabler Icons (MIT) — čisté, symetrické,
-// stejný stroke styl. Tenisové speciály (raketa/síť/švih/podání/volej)
-// a pár cviků dokresleny ručně ve stejném duchu.
+// Fitness/pohybové ikony jsou z Tabler Icons (MIT) — čisté, symetrické.
+// DŮLEŽITÉ: tenisová raketa a síť se kreslí JEN JEDNOU (konstanty níže)
+// a všude se používá TA SAMÁ — ať jsou konzistentní napříč ikonami.
+// Raketa = oválná hlava (cx 9.5) + krček + rukojeť, sedí vlevo a nechává
+// vpravo místo na doplněk (míč/síť/oblouk). Síť = sloupky + prověšená páska.
+const TENNIS_RACKET =
+  '<ellipse cx="9.5" cy="7" rx="3.7" ry="4.6" /><path d="M7.5 10.4 9.5 13.2 11.5 10.4" /><path d="M9.5 13.2V21" /><path d="M7.8 21h3.4" /><path stroke-width="0.9" d="M9.5 3v9M6.3 7h6.4M7 4.4h5M7 9.6h5" />';
+const TENNIS_NET =
+  '<path d="M3 6v14M21 6v14" /><path d="M3 8c6 2.5 12 2.5 18 0" /><path d="M3 19h18" /><path d="M12 10v9" /><path stroke-width="0.9" d="M7.5 9v10M16.5 9v10M3 13.7c6 1.8 12 1.8 18 0" />';
+
 export const SKILL_ICONS: Record<string, string> = {
-  // raketa + míč (Lucide Lab tennis-racket)
-  racket: '<path d="M10.7 4.7c3 -3 7.4 -3.6 9.8 -1.2s1.8 6.8 -1.2 9.8a9.5 9.5 0 0 1 -4.3 2.5c-2.1 .5 -4.1 .1 -5.5 -1.3S7.7 11.1 8.2 9a9.5 9.5 0 0 1 2.5 -4.3" /><path d="M8.2 9 6 18l9 -2.2" /><path d="m2 22 4 -4" /><circle cx="20" cy="20" r="2" />',
+  // raketa — sdílená kresba (viz TENNIS_RACKET)
+  racket: TENNIS_RACKET,
   // tenisový míč (Tabler ball-tennis)
   ball: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />',
-  // podání — zvednutá raketa (hlava+krček) + nadhozený míč
-  serve: '<ellipse cx="14" cy="10" rx="3.4" ry="4.2" /><path d="M12 13.4 14 16.2 16 13.4" /><path d="M14 16.2l-4 4.3" /><path stroke-width="0.9" d="M14 6.2v7.6M10.8 10h6.4" /><path d="M8 4a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" />',
-  // volej — raketa (hlava+krček) + tenisová síť
-  volley: '<ellipse cx="7.5" cy="7.5" rx="3.2" ry="3.9" /><path d="M5.7 10.7 7.5 13.2 9.3 10.7" /><path d="M7.5 13.2v2.3" /><path stroke-width="0.9" d="M7.5 4.2v6.6M4.6 7.5h5.8" /><path d="M11 15v6M21 15v6" /><path d="M11 16.4c3.3 1.2 6.7 1.2 10 0" /><path d="M11 21h10" />',
-  // síť — tvar tenisové sítě: sloupky, prověšená páska, středový popruh
-  net: '<path d="M3 6v14M21 6v14" /><path d="M3 8c6 2.5 12 2.5 18 0" /><path d="M3 19h18" /><path d="M12 10v9" /><path stroke-width="0.9" d="M7.5 9v10M16.5 9v10M3 13.7c6 1.8 12 1.8 18 0" />',
+  // podání — TÁ SAMÁ raketa + nadhozený míč vpravo nahoře
+  serve: `${TENNIS_RACKET}<path d="M14.6 4.5a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0" />`,
+  // volej — TÁ SAMÁ raketa + TÁ SAMÁ síť (zmenšená vpravo dole)
+  volley: `${TENNIS_RACKET}<g transform="translate(10.5 8.5) scale(0.48)">${TENNIS_NET}</g>`,
+  // síť — sdílená kresba (viz TENNIS_NET)
+  net: TENNIS_NET,
   // bota (Tabler shoe)
   footwork: '<path d="M4 6h5.426a1 1 0 0 1 .863 .496l1.064 1.823a3 3 0 0 0 1.896 1.407l4.677 1.114a4 4 0 0 1 3.074 3.89v2.27a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1" /><path d="M14 13l1 -2" /><path d="M8 18v-1a4 4 0 0 0 -4 -4h-1" /><path d="M10 12l1.5 -3" />',
   // pohyb / skluz (Tabler walk)
@@ -107,8 +114,8 @@ export const SKILL_ICONS: Record<string, string> = {
   flex: '<path d="M6.5 21l3.5 -5" /><path d="M5 11l7 -2" /><path d="M16 21l-4 -7v-5l7 -4" /><path d="M9.007 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
   // plank — vzpor na předloktí
   plank: '<path d="M3 10a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 10.5l9.5 3.2" /><path d="M8.5 12.2l-1.5 4.8h6" /><path d="M16.5 13.7l3 1.3" /><path d="M4 18.5h16" />',
-  // úder / švih — raketa (hlava+krček) + oblouk švihu
-  swing: '<ellipse cx="15" cy="7.5" rx="3.4" ry="4.2" /><path d="M12.9 11 15 13.8 17.1 11" /><path d="M15 13.8l-4.5 5" /><path stroke-width="0.9" d="M15 4v7M11.8 7.5h6.4" /><path d="M3 20a13 13 0 0 1 8.5 -13" />',
+  // úder / švih — TÁ SAMÁ raketa + oblouk švihu vpravo
+  swing: `${TENNIS_RACKET}<path d="M14.5 19a10 10 0 0 0 0 -15" />`,
   // gymnastika (Tabler gymnastics)
   gym: '<path d="M7 7a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M13 21l1 -9l7 -6" /><path d="M3 11h6l5 1" /><path d="M11.5 8.5l4.5 -3.5" />',
 };
