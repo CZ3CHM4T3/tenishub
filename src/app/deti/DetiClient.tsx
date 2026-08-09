@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Baby, Plus, X, ArrowRight, Trophy } from "lucide-react";
+import { Baby, Plus, X, ArrowRight } from "lucide-react";
 
 type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null };
 
@@ -74,13 +74,6 @@ export default function DetiClient() {
             ))}
           </div>
         )}
-
-        <div className="acct-card klub-soon" style={{ textAlign: "center", marginTop: "1.4rem" }}>
-          <span className="klub-soon-tag">Brzy</span>
-          <Trophy size={24} />
-          <h3>Sparing Cup</h3>
-          <p>Žebříček a pohár, kde vaše dítě měří síly s ostatními ve svém klubu — přidáváme.</p>
-        </div>
       </div>
 
       {form.open && (

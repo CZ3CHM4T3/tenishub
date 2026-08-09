@@ -106,15 +106,16 @@ create policy zapasy_coach_write on public.zapasy for all
 
 -- ---------- ŽEBŘÍČEK Sparing Cupu PER TRENÉR ----------
 -- Security definer → agregace bez odhalení cizích zápasů. Volá trenér i rodič (svého klubu).
+drop function if exists public.zebricek_coach(uuid, text);
 create or replace function public.zebricek_coach(p_coach uuid, p_cup text)
-returns table(dite_id uuid, prezdivka text, avatar_model text, anonym boolean, body bigint, vyhry bigint, prohry bigint)
+returns table(dite_id uuid, jmeno text, prezdivka text, avatar_model text, anonym boolean, body bigint, vyhry bigint, prohry bigint)
 language sql security definer stable set search_path = public as $zeb$
-  select z.dite_id, d.prezdivka, d.avatar_model, d.zebricek_anonym,
+  select z.dite_id, d.jmeno, d.prezdivka, d.avatar_model, d.zebricek_anonym,
          coalesce(sum(z.gemy_pro), 0)::bigint,
          count(*) filter (where z.gemy_pro > z.gemy_proti)::bigint,
          count(*) filter (where z.gemy_pro < z.gemy_proti)::bigint
   from public.zapasy z join public.deti d on d.id = z.dite_id
   where d.coach_id = p_coach and z.cup = p_cup and d.kariera_vypnuta = false
-  group by z.dite_id, d.prezdivka, d.avatar_model, d.zebricek_anonym
-  order by 5 desc, 6 desc;
+  group by z.dite_id, d.jmeno, d.prezdivka, d.avatar_model, d.zebricek_anonym
+  order by 6 desc, 7 desc;
 $zeb$;

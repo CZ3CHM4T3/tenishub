@@ -9,6 +9,8 @@ import { ArrowLeft } from "lucide-react";
 import Kariera from "./Kariera";
 import ProgressEditor from "./ProgressEditor";
 import AvatarEditor from "./AvatarEditor";
+import SparingCup, { type Standing, type Match } from "./SparingCup";
+import ZapasForm from "./ZapasForm";
 import { DEFAULT_KURIKULA, key as nkey, type Curriculum, type Kurikula, type Track } from "@/lib/kariera";
 import { avatarSrc, bgSrc } from "@/lib/avatar";
 
@@ -33,6 +35,9 @@ export default function KidClient({ id }: { id: string }) {
   const [meId, setMeId] = useState<string>("");
   const [cur, setCur] = useState<Curriculum>(DEFAULT_KURIKULA.tracks.junior);
   const [unlocked, setUnlocked] = useState<string[]>([]);
+  const [proLadder, setProLadder] = useState<Standing[]>([]);
+  const [hobbyLadder, setHobbyLadder] = useState<Standing[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -44,14 +49,20 @@ export default function KidClient({ id }: { id: string }) {
     setDite(dd);
     setRole(dd.coach_id === user.id ? "coach" : dd.rodic_id === user.id ? "rodic" : null);
     const track = trackFor(dd);
-    const [{ data: ck }, { data: od }] = await Promise.all([
+    const [{ data: ck }, { data: od }, { data: mt }, pro, hob] = await Promise.all([
       dd.coach_id ? supabase.from("coach_kurikulum").select("data").eq("coach_id", dd.coach_id).maybeSingle() : Promise.resolve({ data: null }),
       supabase.from("odemceno").select("kapitola,uzel").eq("dite_id", id),
+      supabase.from("zapasy").select("id,souper,datum,gemy_pro,gemy_proti").eq("dite_id", id).order("datum", { ascending: false }),
+      dd.coach_id ? supabase.rpc("zebricek_coach", { p_coach: dd.coach_id, p_cup: "pro" }) : Promise.resolve({ data: [] }),
+      dd.coach_id ? supabase.rpc("zebricek_coach", { p_coach: dd.coach_id, p_cup: "hobby" }) : Promise.resolve({ data: [] }),
     ]);
     const kd = (ck as { data?: unknown } | null)?.data as Kurikula | undefined;
     const kur = kd && (kd as Kurikula).tracks ? kd : DEFAULT_KURIKULA;
     setCur(kur.tracks[track] ?? kur.tracks.junior);
     setUnlocked(((od as { kapitola: string; uzel: string }[]) ?? []).map((o) => nkey(o.kapitola, o.uzel)));
+    setMatches((mt as Match[]) ?? []);
+    setProLadder((pro.data as Standing[]) ?? []);
+    setHobbyLadder((hob.data as Standing[]) ?? []);
     setLoading(false);
   }, [supabase, router, id]);
   useEffect(() => { load(); }, [load]);
@@ -94,6 +105,19 @@ export default function KidClient({ id }: { id: string }) {
         ) : (
           <Kariera unlocked={unlocked} cur={cur} />
         )}
+
+        {/* SPARING CUP */}
+        <h2 className="acct-h1" style={{ fontSize: "1.2rem", margin: "1.8rem 0 0.6rem" }}>Sparing Cup</h2>
+        {role === "coach" && (
+          <ZapasForm childId={dite.id} cup={dite.program === "pro" ? "pro" : "hobby"} kind="match" />
+        )}
+        <SparingCup
+          myProgram={dite.program === "pro" ? "pro" : "hobby"}
+          myId={dite.id}
+          proLadder={proLadder}
+          hobbyLadder={hobbyLadder}
+          matches={matches}
+        />
       </div>
     </div>
   );
