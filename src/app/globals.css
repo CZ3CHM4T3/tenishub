@@ -2537,3 +2537,271 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .admin-viewas-l { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-right: 0.2rem; }
 .admin-viewas .btn { padding: 0.45rem 0.85rem; font-size: 0.85rem; }
 .admin-preview-bar { background: linear-gradient(180deg, #fbe9a6, #e7c46a); color: #4a370b; font-weight: 700; font-size: 0.88rem; border-radius: 10px; padding: 0.6rem 0.9rem; margin-bottom: 1rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   TENISHUB — NOVÝ ŠAT HERNÍ VRSTVY  (elegantní klub, ne „esport")
+   Přepisuje port z MS GEM: zeleň + zlato, prestiž, tradice, klid.
+   Pryč: neonové záře, animované lišty, masivní 3D stíny, jedovatá zelenožlutá.
+   Sem: hluboká lahvová zeleň, zlaté vlásové linky, jemné hluboké stíny,
+   krémový text, ušlechtilé kovové zlato. „Diplom", ne „arkáda".
+   (Poháry a coiny = obrázky, ty řeší Jan zvlášť — tady jen prostředí.)
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* Zlato jako hlavní akcent herní vrstvy (přebíjí neonovou --lime u var() použití) */
+  --lime:#d3b26a;
+  --navy:#16271f;
+  /* Skinovací paleta */
+  --g-panel1:#233b2e; --g-panel2:#172a20; --g-panel3:#0f2018;
+  --g-line:rgba(197,161,86,.30);      /* zlatá vlásová linka */
+  --g-line-soft:rgba(197,161,86,.16);
+  --g-gold:#bf9a47; --g-gold-l:#d3b26a; --g-gold-h:#ecd49a;
+  --g-cream:#eef1e7; --g-sage:#adc0b1; --g-sage-d:#87a091;
+  --g-tile1:rgba(255,255,255,.055); --g-tile2:rgba(255,255,255,.018);
+  --g-shadow:0 22px 50px -26px rgba(0,0,0,.62), 0 2px 6px rgba(0,0,0,.18);
+  --g-shadow-lift:0 30px 60px -28px rgba(0,0,0,.66);
+  --g-inset:inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* ── Hlavní panely: lahvová zeleň + zlatý roh + jemný hluboký stín ── */
+.kar-wrap,
+.esport,
+.esport2{
+  background:
+    radial-gradient(120% 82% at 90% -12%, rgba(197,161,86,.15), transparent 44%),
+    linear-gradient(158deg, var(--g-panel1) 0%, var(--g-panel2) 56%, var(--g-panel3) 100%);
+  border:1px solid var(--g-line);
+  border-radius:22px;
+  box-shadow:var(--g-shadow), var(--g-inset);
+  color:var(--g-cream);
+}
+/* jemná zlatá dvojlinka pod „hlavičkami" = pocit diplomu/tradice */
+.ka-hero{border-bottom:1px solid var(--g-line)}
+.es-rules{border-top:1px solid var(--g-line);color:var(--g-sage)}
+.es-rules b{color:var(--g-gold-h)}
+
+/* Páska avatara (kav-band) — ušlechtilá, ne jásavá zelená */
+.kav-band{
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(197,161,86,.12), transparent 46%),
+    linear-gradient(120deg, #20362a, #16271f 72%);
+  border:1px solid var(--g-line);
+  box-shadow:var(--g-shadow), var(--g-inset);
+}
+.kav-photo{border:3px solid var(--g-gold);box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.kav-nick{color:#fff}
+.kav-sub{color:var(--g-gold-l)}
+
+/* Sekundární text sladit do teplé šalvějové */
+.xp-t,.tll-h,.es-season,.es-stat .l,.cup-note,.mh-date,.tt-head .tt-prog,
+.pe-chead .pg,.pe-head .xp,.pe-saveinfo,.tier .tn{color:var(--g-sage)}
+.xp-t b{color:#fff}
+.tll-h b,.pe-head .xp b{color:var(--g-gold-l)}
+.ka-tiername,.tll-title,.ka-sys-h,.es-head h2,.tt-head h2,.cust-box h3{color:#fff}
+.ka-cur-tn,.tier.cur .tn,.es-lab,.es-lab2,.es-score-h,.vp-l{color:var(--g-gold-l)}
+
+/* ── Kapitoly stromu: krémové kachle se zlatou horní linkou, jemné zvednutí
+      (žádný arkádový 3D „schod"). ── */
+.chap{
+  background:linear-gradient(180deg, var(--g-tile1), var(--g-tile2));
+  border:1px solid var(--g-line-soft);
+  border-top-color:var(--g-line);
+  border-radius:14px;
+  box-shadow:0 12px 26px -16px rgba(0,0,0,.5), var(--g-inset);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.chap:hover{
+  transform:translateY(-3px);
+  box-shadow:0 20px 36px -18px rgba(0,0,0,.6), var(--g-inset);
+  border-color:var(--g-line);
+}
+.chap:active{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px -14px rgba(0,0,0,.5), var(--g-inset);
+}
+.chap .cn{color:#fff}
+.chap .cp{color:var(--g-sage)}
+.chap .cbar{background:rgba(255,255,255,.08)}
+.chap .ci{box-shadow:0 6px 14px -6px rgba(0,0,0,.6)}
+
+/* ── XP lišta: kartáčované zlato, žádná záře ani animace ── */
+.xp-bar{background:rgba(255,255,255,.07);border:1px solid var(--g-line-soft)}
+.xp-bar i{background:linear-gradient(90deg,#a8842f,var(--g-gold) 45%,var(--g-gold-l))}
+.xp-bar.big{
+  border:1px solid var(--g-line);
+  background:linear-gradient(180deg,#0e2419,#0b1d15);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.45);
+}
+.xp-bar.big i{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,0) 48%),
+    linear-gradient(90deg,#9a7a2c,var(--g-gold) 46%,var(--g-gold-l) 88%,var(--g-gold-h));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -3px 6px rgba(40,28,6,.3);
+  animation:none;
+}
+.xp-bar-txt b{color:var(--g-gold-h)}
+.ka-cur-lvl,.ka-nexterb .erb-lvl{color:#fff}
+
+/* Erb aktuální ligy: jemná zlatá aura místo neonové zeleně */
+.tier.cur .tb .erb img{
+  filter:drop-shadow(0 0 10px rgba(197,161,86,.5)) drop-shadow(0 4px 7px rgba(0,0,0,.5));
+}
+.tier:hover .tb .erb img,.tier.hl .tb .erb img{
+  filter:drop-shadow(0 0 4px var(--g-gold-l)) drop-shadow(0 0 10px rgba(197,161,86,.5)) drop-shadow(0 3px 5px rgba(0,0,0,.5));
+}
+
+/* ── Osa levelů 0–50: uklidnit (zlaté vedení, bez pulzu/neonu) ── */
+.la-line{background:#1a3325}
+.la-fill{background:linear-gradient(90deg,var(--g-gold),var(--g-gold-l));box-shadow:none}
+.la-hoverfill{filter:none;box-shadow:none}
+.la-dot.on{background:var(--g-gold-l)}
+.la-dot.hov{background:var(--g-gold-h);box-shadow:0 0 6px rgba(211,178,106,.7)}
+.la-cur{
+  background:radial-gradient(circle,#fff 0 22%,var(--g-gold-l) 30% 52%,transparent 60%);
+  box-shadow:0 0 10px rgba(197,161,86,.7);
+  animation:none;
+}
+.la-lb.cur{color:var(--g-gold-l)}
+.la-hint{background:#15281d;border:1px solid var(--g-line)}
+
+/* ── Tech-tree overlay (celoobrazovkový strom) ── */
+.tt-ov{background:radial-gradient(120% 120% at 50% -10%, #1b3527, #0c1c14)}
+.tt-head{border-bottom:1px solid var(--g-line);color:var(--g-cream)}
+.tt-head .tt-xp{color:var(--g-gold-l)}
+.tt-close{border:1px solid var(--g-line);background:rgba(255,255,255,.04);color:var(--g-cream)}
+.tt-hint{color:var(--g-sage-d)}
+.tt-node .nc{
+  border:1px solid var(--g-line);
+  background:linear-gradient(180deg,#15291e,#0e1f16);
+  box-shadow:0 6px 14px -8px rgba(0,0,0,.6);
+}
+.tt-node .nc svg{color:var(--g-sage)}
+.tt-node.done .nc{
+  background:linear-gradient(180deg,var(--g-gold-l),var(--g-gold));
+  border-color:var(--g-gold);color:#20180a;
+}
+.tt-node.done .nc svg{color:#20180a}
+.tt-node .nd-done{background:var(--g-gold-l);border:2px solid #1a2b20;color:#20180a}
+.tt-node.active .nc{
+  border-color:var(--g-gold-l);
+  box-shadow:0 0 0 3px rgba(197,161,86,.22), 0 6px 16px -8px rgba(0,0,0,.6);
+  background:#16291d;
+}
+.tt-node.active .nc svg{color:var(--g-gold-l)}
+.tt-node .nn{color:var(--g-cream)}
+.tt-node.locked .nn{color:var(--g-sage-d)}
+.tt-node .nx{color:var(--g-gold-l)}
+.tt-node.locked .nx{color:#6f8578}
+.tt-node .nd-info{background:#14271b;border:1.5px solid var(--g-gold-l);color:var(--g-gold-l)}
+
+/* ═══ SPARING CUP — pódium a žebříček v klubovém zlatě ═══ */
+.esport .es-bgfade{
+  background:linear-gradient(180deg,rgba(12,26,18,.5),rgba(9,20,14,.82)),
+             radial-gradient(120% 90% at 78% 8%,transparent,rgba(9,20,14,.5));
+}
+.pod{
+  background:linear-gradient(180deg,#1d3527,#122417);
+  border:1px solid var(--g-line-soft);border-bottom:0;
+  box-shadow:var(--g-inset),0 12px 22px -12px rgba(0,0,0,.5);
+}
+.pod .nm,.pod .pt,.es-row .nm,.es-row .pt,.mh-opp,.mh-score,.es-stat .n,.vp-n{color:var(--g-cream)}
+.pod.p1{
+  background:linear-gradient(180deg,#294a37,#183020);
+  border-color:var(--g-gold);
+  box-shadow:var(--g-inset),0 0 26px -8px rgba(197,161,86,.3),0 12px 22px -12px rgba(0,0,0,.5);
+}
+.pod.p1 .rk{color:var(--g-gold-l)}
+.pod .av,.cup-av{border:2px solid var(--g-line)}
+.pod.mine{outline:2px solid rgba(197,161,86,.55)}
+.vp-feature{
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--g-line);
+}
+.es-stat .l{text-transform:uppercase}
+.mh-row{background:rgba(255,255,255,.03);border-left:3px solid var(--g-gold)}
+.mh-row.win{border-left-color:#57a074}
+.mh-row.loss{border-left-color:#b06b74}
+.mh-row.win .mh-res{background:#57a074;color:#0e1f16}
+.mh-row.loss .mh-res{background:#b06b74;color:#fff}
+.es-row{background:rgba(255,255,255,.03);border:1px solid transparent}
+.es-row.me{background:rgba(197,161,86,.1);border-color:rgba(197,161,86,.42)}
+.es-row .r{color:var(--g-sage)}
+.es-row .r.gold{color:var(--g-gold-l)}
+.es-row .wl,.es-stat .l{color:var(--g-sage)}
+
+/* Přepínač PRO / HOBBY — klidná pilulka, zlatá pro aktivní hobby */
+.cup-switch,.cup-switch2{
+  background:rgba(9,20,14,.5);border:1px solid var(--g-line);
+}
+.cup-switch button,.cup-switch2 button{color:var(--g-sage)}
+.cup-switch button.hobby.active,.cup-switch2 button.hobby.active{
+  color:#20180a;background:linear-gradient(180deg,var(--g-gold-l),var(--g-gold));box-shadow:none;
+}
+.cup-switch button.pro.active,.cup-switch2 button.pro.active{
+  color:#fff;background:#8f3a44;box-shadow:none;   /* tlumené bordó místo křiklavé červené */
+}
+
+/* ═══ PROGRESS EDITOR (trenér odemyká) — ušlechtilé panely + zlaté pilulky ═══ */
+.pe-chap{
+  background:linear-gradient(180deg,#1b3225,#132419);
+  border:1px solid var(--g-line-soft);border-radius:14px;
+  box-shadow:var(--g-inset);
+}
+.pe-chead .nm{color:#fff}
+.pe-head{
+  background:#122419;border:1px solid var(--g-line);
+  box-shadow:var(--g-inset);
+}
+.pe-head .lvl{color:#fff}
+.pe-node{
+  border:1px solid var(--g-line-soft);
+  background:rgba(255,255,255,.03);color:#cfe3d5;
+}
+.pe-node .dot{border:2px solid var(--g-sage-d)}
+.pe-node .x{color:var(--g-gold-l)}
+.pe-node.done{background:rgba(197,161,86,.14);border-color:var(--g-gold);color:#fff}
+.pe-node.done .dot{background:var(--g-gold-l);border-color:var(--g-gold-l)}
+.pe-node.done .dot svg{color:#20180a}
+.pe-node.active{border-color:var(--g-gold-l)}
+.pe-node:hover{border-color:var(--g-gold-l)}
+
+/* ═══ EDITOR AVATARA — elegantní modal ═══ */
+.avstage{background:#0e1f16}
+.cust-ov{background:rgba(9,18,13,.68)}
+.cust-box{
+  background:linear-gradient(165deg,#1b3225,#122419);
+  border:1px solid var(--g-line);border-radius:20px;color:var(--g-cream);
+  box-shadow:var(--g-shadow-lift);
+}
+.cust-box h3{color:#fff}
+.cust-box .cprev,.cust-box .mclose{border-color:var(--g-line)}
+.cust-box .mclose{background:rgba(255,255,255,.04);color:var(--g-cream)}
+.cl{color:var(--g-sage)}
+.nameinput{background:#0e1f16;border:1px solid var(--g-line);color:#fff}
+.genderfilter button{border:1px solid var(--g-line-soft);background:rgba(255,255,255,.03);color:var(--g-cream)}
+.genderfilter button.active{background:linear-gradient(180deg,var(--g-gold-l),var(--g-gold));color:#20180a;border-color:var(--g-gold)}
+.modelcell{border:2px solid var(--g-line-soft);background:#0e1f16}
+.modelcell span{color:var(--g-sage)}
+.modelcell.sel{border-color:var(--g-gold-l)}
+.modelcell.sel span{color:#fff}
+.bgcell{border:2px solid var(--g-line-soft);background:#0e1f16}
+.bgcell.sel{border-color:var(--g-gold-l)}
+.av-frame-ctrl{background:rgba(255,255,255,.03);border:1px solid var(--g-line-soft)}
+.av-frame-ctrl label{color:var(--g-sage)}
+.av-frame-ctrl label b{color:#fff}
+.av-frame-reset{background:rgba(255,255,255,.05);border:1px solid var(--g-line-soft);color:var(--g-cream)}
+.btn-save-av{background:linear-gradient(180deg,var(--g-gold-l),var(--g-gold));color:#20180a}
+.btn-save-av:hover{filter:brightness(1.04)}
+
+/* Docházka panely (též z portu) do stejného hávu */
+.doch{background:linear-gradient(180deg,#1b3225,#132419);border:1px solid var(--g-line-soft)}
+.doch-stat{background:rgba(255,255,255,.03);border:1px solid var(--g-line-soft)}
+
+/* Mini erb v seznamech */
+.tier-mini b{color:inherit}
+
+/* Redukce pohybu ctíme i tady (nic už nebliká, ale pro jistotu) */
+@media(prefers-reduced-motion:reduce){
+  .chap{transition:none}
+}
+/* ═══ konec nového šatu herní vrstvy ═══ */
