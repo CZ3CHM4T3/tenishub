@@ -7,9 +7,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Baby, Plus, X, ArrowRight } from "lucide-react";
-import { categoryForBirthdate, categoryDef } from "@/lib/kategorie";
 
-type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null; datum_narozeni: string | null };
+type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null };
 
 export default function DetiClient() {
   const router = useRouter();
@@ -26,7 +25,7 @@ export default function DetiClient() {
     if (!user) { router.replace("/prihlaseni?next=/deti"); return; }
     setMe(user.id);
     const [{ data: d }, { data: cr }] = await Promise.all([
-      supabase.from("deti").select("id,jmeno,prezdivka,level,program,coach_id,datum_narozeni").eq("rodic_id", user.id).order("vytvoreno", { ascending: true }),
+      supabase.from("deti").select("id,jmeno,prezdivka,level,program,coach_id").eq("rodic_id", user.id).order("vytvoreno", { ascending: true }),
       supabase.from("coach_roster").select("coach_id").eq("member_id", user.id).eq("status", "active").limit(1).maybeSingle(),
     ]);
     setDeti((d as Dite[]) ?? []);
@@ -69,7 +68,7 @@ export default function DetiClient() {
             {deti.map((d) => (
               <Link href={`/deti/${d.id}`} className="klub-row" key={d.id} style={{ textDecoration: "none" }}>
                 <span className="klub-av">{d.jmeno.charAt(0).toUpperCase()}</span>
-                <div style={{ flex: 1 }}><b>{d.jmeno}</b><span>{d.prezdivka} · level {d.level}{(() => { const c = categoryForBirthdate(d.datum_narozeni); return c ? ` · ${categoryDef(c).label}` : ""; })()} · {d.program === "pro" ? "závodní" : "hobby"}</span></div>
+                <div style={{ flex: 1 }}><b>{d.jmeno}</b><span>{d.prezdivka} · level {d.level} · {d.program === "pro" ? "závodní" : "hobby"}</span></div>
                 <span className="dite-cta">Kariéra <ArrowRight size={15} /></span>
               </Link>
             ))}
@@ -87,7 +86,6 @@ export default function DetiClient() {
               <label>Datum narození<input type="date" value={form.datum} onChange={(e) => setForm({ ...form, datum: e.target.value })} /></label>
               <label>Program<select value={form.program} onChange={(e) => setForm({ ...form, program: e.target.value })}><option value="hobby">Hobby</option><option value="pro">Závodní</option></select></label>
             </div>
-            {(() => { const c = categoryForBirthdate(form.datum); return c ? <p className="reg-hint" style={{ margin: "0 0 0.6rem" }}>Věková kategorie: <b>{categoryDef(c).label}</b> ({categoryDef(c).vek}) — nastaví se automaticky a mění se, jak dítě roste.</p> : null; })()}
             <button className="btn btn-green" disabled={busy || !form.jmeno.trim()} onClick={submit}>Přidat</button>
           </div>
         </div>
