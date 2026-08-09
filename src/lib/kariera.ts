@@ -53,14 +53,14 @@ export type Node = { id: string; n: string; xp: number; col: number; row: number
 // stejný stroke styl. Tenisové speciály (raketa/síť/švih/podání/volej)
 // a pár cviků dokresleny ručně ve stejném duchu.
 export const SKILL_ICONS: Record<string, string> = {
-  // raketa — kruhová hlava s pravidelným výpletem + rovná rukojeť
-  racket: '<path d="M7 8a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M12 3.5v9M9.6 4.3v7.4M14.4 4.3v7.4" /><path d="M7.5 8h9M8.3 5.6h7.4M8.3 10.4h7.4" /><path d="M12 13v8M10.5 21h3" />',
+  // raketa — kruhová hlava, TENKÝ výplet, rovná rukojeť
+  racket: '<path d="M7 8a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path stroke-width="1" d="M12 3.5v9M9.6 4.3v7.4M14.4 4.3v7.4M7.5 8h9M8.3 5.6h7.4M8.3 10.4h7.4" /><path d="M12 13v8M10.5 21h3" />',
   // tenisový míč (Tabler ball-tennis)
   ball: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />',
-  // podání — raketa nahoře + nadhozený míč
-  serve: '<path d="M12.6 3.6a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" /><path d="M12.4 11a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0" /><path d="M15 8.4v5.2M12.4 11h5.2" /><path d="M13.3 12.9l-6.3 7.1" />',
-  // volej — raketa vepředu + míč
-  volley: '<path d="M4.4 10a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0" /><path d="M7.2 7.2v5.6M4.4 10h5.6" /><path d="M9.2 12l5 5.4" /><path d="M15.6 8a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" />',
+  // podání — tenisová raketa zvednutá + nadhozený míč (švih nahoru)
+  serve: '<path d="M13.2 3.6a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" /><path d="M11.5 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M14.5 8v6M11.5 11h6" /><path d="M12.8 13.1l-5.8 6.9" />',
+  // volej — tenisová raketa + síť
+  volley: '<path d="M4 10a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M7 7v6M4 10h6" /><path d="M9.1 12.1l3.4 4.4" /><path d="M13 16.5h8v4.5h-8z" /><path d="M15.7 16.5v4.5M18.3 16.5v4.5M13 18.75h8" />',
   // síť — symetrická mřížka se sloupky
   net: '<path d="M3 7.5h18v9h-18z" /><path d="M6 7.5v9M9 7.5v9M12 7.5v9M15 7.5v9M18 7.5v9" /><path d="M3 12h18" /><path d="M3 16.5v2.5M21 16.5v2.5" /><path d="M3 19h18" />',
   // bota (Tabler shoe)
@@ -75,8 +75,8 @@ export const SKILL_ICONS: Record<string, string> = {
   agility: '<path d="M21 17.998v-.5l-8.13 -14.99a1 1 0 0 0 -1.74 0l-8.13 14.989v.5c0 1.659 4.03 3.003 9 3.003s9 -1.344 9 -3.002" /><path d="M8 11.5h8" />',
   // rovnováha — jóga pozice (Tabler yoga)
   balance: '<path d="M4 20h4l1.5 -3" /><path d="M17 20l-1 -5h-5l1 -7" /><path d="M4 10l4 -1l4 -1l4 1.5l4 1.5" /><path d="M10.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
-  // střed těla — trup s břišáky (kapsle + osa + rungy)
-  core: '<path d="M12 3a4 4 0 0 1 4 4v9a4 4 0 0 1 -8 0v-9a4 4 0 0 1 4 -4z" /><path d="M12 4v15M9.5 8.5h5M9.5 12h5M9.5 15.5h5" />',
+  // střed těla — silueta těla v rámu (Tabler body-scan)
+  core: '<path d="M11 8a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M10 17v-1a2 2 0 1 1 4 0v1" /><path d="M8 10q 1 1 2 1h4q 1 0 2 -1" /><path d="M12 11v3" /><path d="M3 7v-2a2 2 0 0 1 2 -2h2" /><path d="M3 17v2a2 2 0 0 0 2 2h2" /><path d="M17 3h2a2 2 0 0 1 2 2v2" /><path d="M17 21h2a2 2 0 0 0 2 -2v-2" />',
   // síla — velká činka (Tabler barbell)
   strength: '<path d="M2 12h1" /><path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2" /><path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1" /><path d="M9 12h6" /><path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1" /><path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2" /><path d="M22 12h-1" />',
   // přítah / shyb — jednoručka (Tabler dumbbell)
@@ -99,16 +99,16 @@ export const SKILL_ICONS: Record<string, string> = {
   defense: '<path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" /><path d="M15 19l2 2l4 -4" />',
   // rotace míče — kruhová šipka 360 (Tabler rotate-360)
   spin: '<path d="M12 16h4v4" /><path d="M19.458 11.042c.86 -2.366 .722 -4.58 -.6 -5.9c-2.272 -2.274 -7.185 -1.045 -10.973 2.743c-3.788 3.788 -5.017 8.701 -2.744 10.974c2.227 2.226 6.987 1.093 10.74 -2.515" />',
-  // koordinace — žonglování (3 míče + oblouk chytání)
-  coord: '<path d="M10.5 4.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" /><path d="M4.5 12.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" /><path d="M16.5 12.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0" /><path d="M5 15.5c0 3 3 4.5 7 4.5s7 -1.5 7 -4.5" />',
+  // koordinace — žonglování: 3 míče + dvě ruce (misky) dole
+  coord: '<path d="M10.7 4a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" /><path d="M4.7 9.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" /><path d="M16.7 9.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0" /><path d="M3.5 18c1.2 1.6 3.3 1.6 4.5 0M16 18c1.2 1.6 3.3 1.6 4.5 0" />',
   // reakce — blesk (Tabler bolt)
   reaction: '<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />',
   // ohebnost — protažení (Tabler stretching-2)
   flex: '<path d="M6.5 21l3.5 -5" /><path d="M5 11l7 -2" /><path d="M16 21l-4 -7v-5l7 -4" /><path d="M9.007 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
   // plank — vzpor na předloktí
   plank: '<path d="M3 10a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 10.5l9.5 3.2" /><path d="M8.5 12.2l-1.5 4.8h6" /><path d="M16.5 13.7l3 1.3" /><path d="M4 18.5h16" />',
-  // úder / švih — pálka + míč (Tabler ping-pong)
-  swing: '<path d="M12.718 20.713a7.64 7.64 0 0 1 -7.48 -12.755l.72 -.72a7.643 7.643 0 0 1 9.105 -1.283l2.387 -2.345a2.08 2.08 0 0 1 3.057 2.815l-.116 .126l-2.346 2.387a7.644 7.644 0 0 1 -1.052 8.864" /><path d="M11 18a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M9.3 5.3l9.4 9.4" />',
+  // úder / švih — tenisová raketa + oblouk švihu
+  swing: '<path d="M13 7a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path stroke-width="1" d="M16 4v6M13 7h6" /><path d="M14.2 9.2l-4.7 5.1" /><path d="M3.5 20a12 12 0 0 1 8.5 -12.5" />',
   // gymnastika (Tabler gymnastics)
   gym: '<path d="M7 7a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M13 21l1 -9l7 -6" /><path d="M3 11h6l5 1" /><path d="M11.5 8.5l4.5 -3.5" />',
 };
