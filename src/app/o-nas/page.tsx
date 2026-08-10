@@ -4,8 +4,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ShieldCheck, HeartHandshake, Users, RefreshCw } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "O nás — ověřená síť českého tenisu",
-  description: "TenisHub je péče, služby, komunita i informace na jednom místě. Budujeme ověřenou, pravidelně aktualizovanou síť — od trenérů, rodičů a hráčů, pro trenéry, rodiče a hráče.",
+  title: "O nás — online tenisový klub pro rodiče a trenéry",
+  description: "TenisHub je péče, podpora, komunita i informace na jednom místě. Pomáháme dětem začít, růst a vydržet u tenisu — pro rodiče, děti a trenéry.",
 };
 
 export default function ONasPage() {
@@ -16,11 +16,11 @@ export default function ONasPage() {
       <section className="vr-hero">
         <div className="wrap">
           <span className="vr-eyebrow rv">O projektu</span>
-          <h1 className="rv d1">Celý český tenis na jednom místě</h1>
+          <h1 className="rv d1">Pomáháme dětem začít, růst a vydržet u tenisu</h1>
           <p className="vr-lead rv d1">
             Orientovat se v tenise je těžké — kde začít, koho vybrat, co je dobře. TenisHub to dává
-            dohromady: <b>péči, služby, komunitu i informace</b> na jednom místě. Aby každé dítě i hráč
-            mohli začít, růst a vydržet u tenisu.
+            dohromady: <b>péči, podporu, komunitu i informace</b> na jednom místě. Aby každé dítě
+            mohlo začít, růst a vydržet u tenisu.
           </p>
         </div>
       </section>

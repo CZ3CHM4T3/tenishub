@@ -421,8 +421,8 @@ export default function Home() {
       <section className="sec cta" id="cta">
         <div className="wrap">
           <span className="eyebrow rv" style={{ justifyContent: "center", display: "flex" }}>Pojďme na to</span>
-          <h2 className="rv">Přidej se k českému tenisu</h2>
-          <p className="rv d1">Kompletní tenisový klub pro vaše dítě. Za cenu dvou káv ve Starbucks měsíčně.</p>
+          <h2 className="rv">Pomozte dítěti začít, růst a vydržet u tenisu</h2>
+          <p className="rv d1">Přehled, podpora a kontakty na jednom místě — celý tenisový klub pro vaše dítě za 199 Kč měsíčně.</p>
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
         </div>
       </section>

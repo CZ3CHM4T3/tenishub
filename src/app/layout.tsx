@@ -12,23 +12,23 @@ import { MetaPixel } from "@/components/MetaPixel";
 
 export const metadata: Metadata = {
   title: {
-    default: "TenisHub.cz — celý český tenis na jednom místě",
+    default: "TenisHub.cz — online tenisový klub pro rodiče a trenéry",
     template: "%s | TenisHub.cz",
   },
   description:
-    "Najdi a rezervuj trenéry, kurty, akademie, fyzio i kondiční trenéry po celé ČR. Sparring, turnaje a komunita — nebo získej klienty a naplň kurty.",
+    "Online tenisový klub pro rodiče a děti: najdi trenéra a klub, sleduj kariéru dítěte. Přehled, podpora a kontakty na jednom místě.",
   metadataBase: new URL("https://tenishub.cz"),
   keywords: [
-    "tenis", "tenisový trenér", "tenisové kurty", "rezervace kurtu",
-    "tenisová akademie", "sparring partner", "fyzioterapeut tenistů", "kondiční trenér tenis",
+    "tenis", "tenisový trenér", "tenis pro děti", "tenisový klub",
+    "tenisová akademie", "sparring partner", "trénink dětí tenis", "kariéra tenisty",
   ],
   openGraph: {
     siteName: "TenisHub.cz",
     locale: "cs_CZ",
     type: "website",
-    title: "TenisHub.cz — celý český tenis na jednom místě",
+    title: "TenisHub.cz — online tenisový klub pro rodiče a trenéry",
     description:
-      "Trenéři, kurty, akademie, fyzio i komunita. Najdi, rezervuj, zaplať — nebo získej klienty a naplň kurty.",
+      "Pomáháme dětem začít, růst a vydržet u tenisu. Najdi trenéra a klub, sleduj kariéru dítěte — vše na jednom místě.",
   },
   twitter: { card: "summary_large_image" },
 };
@@ -43,7 +43,7 @@ const JSON_LD = {
   name: "TenisHub.cz",
   url: "https://tenishub.cz",
   description:
-    "Celý český tenis na jednom místě — trenéři, kurty, akademie, fyzio, kondice a komunita.",
+    "Online tenisový klub pro rodiče a trenéry — najdi trenéra a klub, sleduj kariéru dítěte, komunita a rady na jednom místě.",
   inLanguage: "cs-CZ",
 };
 

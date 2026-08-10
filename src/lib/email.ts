@@ -26,7 +26,7 @@ export function emailLayout(title: string, body: string, ctaText: string, ctaUrl
       <h2 style="margin:0 0 10px;font-size:19px">${title}</h2>
       <p style="margin:0 0 18px;line-height:1.55;color:#3a4a40">${body}</p>
       <a href="${ctaUrl}" style="display:inline-block;background:#bf9a47;color:#fff;text-decoration:none;font-weight:700;padding:11px 18px;border-radius:10px">${ctaText}</a>
-      <p style="margin:20px 0 0;font-size:12px;color:#9aa3ad">TenisHub — celý český tenis na jednom místě. Tento e-mail vám přišel, protože máte účet na tenishub.cz.</p>
+      <p style="margin:20px 0 0;font-size:12px;color:#9aa3ad">TenisHub — online tenisový klub pro rodiče a trenéry. Tento e-mail vám přišel, protože máte účet na tenishub.cz.</p>
     </div>
   </div>`;
 }
