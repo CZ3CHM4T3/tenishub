@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { isHiddenRole } from "@/lib/simplify";
 import { ChevronDown } from "lucide-react";
 import { AuthNav } from "./AuthNav";
 
@@ -58,7 +59,7 @@ export function SiteHeader() {
             <div className="nav-item">
               <button className={`nav-link${openMenu ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => !m)}>Pro koho <ChevronDown size={15} /></button>
               <div className={`drop${openMenu ? " open" : ""}`}><div className="drop-inner">
-                {ROLES.map(([k, t, s]) => (
+                {ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
                   <Link key={k} className="drop-card" href={`/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
                 ))}
               </div></div>

@@ -6,6 +6,9 @@ import { WhistleIcon } from "@/components/icons";
 import { IconRun } from "@tabler/icons-react";
 import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, type LucideIcon } from "lucide-react";
 import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
+import { isHiddenRole } from "@/lib/simplify";
+
+const VISIBLE_ROLE_ORDER = ROLE_ORDER.filter((k) => !isHiddenRole(k));
 
 export const metadata: Metadata = {
   title: "Pro koho je TenisHub — rodiče, hráči, trenéři, kluby",
@@ -20,6 +23,7 @@ const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconR
 export default async function ProKohoPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) {
   const { role } = await searchParams;
   if (role === "rodic") redirect("/rodic"); // rodič má vlastní hub
+  if (role && isHiddenRole(role)) redirect("/"); // zjednodušený web — skryté role
   const r = role ? ROLES[role] : null;
 
   return (
@@ -32,7 +36,7 @@ export default async function ProKohoPage({ searchParams }: { searchParams: Prom
           <h1 className="rv d1">Vyberte, kdo jste</h1>
           <p className="lead rv d1">Klikněte na svou roli — uvidíte přesně, co pro vás v klubu děláme.</p>
           <div className="rolepick-grid">
-            {ROLE_ORDER.map((k) => {
+            {VISIBLE_ROLE_ORDER.map((k) => {
               const x = ROLES[k]; const I = ICONS[x.icon];
               return (
                 <Link key={k} href={`/pro-koho?role=${k}`} className={`rolepick rv z d${Math.min((ROLE_ORDER.indexOf(k) % 4) + 1, 4)}`} style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
@@ -88,7 +92,7 @@ function RoleDetail({ r }: { r: Role }) {
 
       <div className="role-others">
         <span>Jiná role:</span>
-        {ROLE_ORDER.filter((k) => k !== r.key).map((k) => (
+        {VISIBLE_ROLE_ORDER.filter((k) => k !== r.key).map((k) => (
           <Link key={k} href={`/pro-koho?role=${k}`} className="role-chip">{ROLES[k].label}</Link>
         ))}
       </div>

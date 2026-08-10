@@ -23,7 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/bazar`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
     { url: `${base}/clenstvi`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/pro-koho`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/sluzby`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/o-nas`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/sparring`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/videorozbor`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -37,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     // Lokální SEO: služba × město
     ...CITIES.flatMap((c) =>
-      ["treneri", "kurty", "skoly", "fyzio", "kondice"].map((svc) => ({
+      ["treneri", "kurty", "skoly"].map((svc) => ({
         url: `${base}/tenis/${citySlug(c[0])}/${svc}`,
         lastModified: now,
         changeFrequency: "weekly" as const,

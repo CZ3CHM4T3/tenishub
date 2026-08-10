@@ -6,6 +6,7 @@ import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "@/components/icons";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES, citySlug } from "@/lib/cities";
+import { isHiddenRole } from "@/lib/simplify";
 import { AppetizerSlider } from "@/components/AppetizerSlider";
 import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
@@ -66,6 +67,9 @@ const PERSONA_COLOR: Record<string, { c: string; t: string }> = {
   fyzio: { c: "#864a59", t: "#F2E5E9" },
   fitness: { c: "#4a5b86", t: "#E8ECF4" },
 };
+
+// Zjednodušený web: skryté persony (fitness/fyzio/hráč) — viz lib/simplify.
+const VISIBLE_PERSONAS = PERSONAS.filter((p) => !isHiddenRole(p.key.split("-")[0]));
 
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
@@ -157,7 +161,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const p = PERSONAS[persona];
+  const p = VISIBLE_PERSONAS[persona];
   const PIcon = p.Icon;
   const pc = PERSONA_COLOR[p.key];
   const marquee = featured.length ? [...featured, ...featured] : [];
@@ -179,13 +183,9 @@ export default function Home() {
                 <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
                 <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
                   <Link className="drop-card" href="/pro-koho?role=rodic"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
-                  <Link className="drop-card" href="/pro-koho?role=hrac"><b>Hráč</b><span>hraj, zlepšuj se, sparring</span></Link>
-                  <Link className="drop-card" href="/pro-koho?role=trener"><b>Trenér</b><span>klienti &amp; nástroje</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=trener"><b>Trenér</b><span>vlastní klub &amp; svěřenci</span></Link>
                   <Link className="drop-card" href="/pro-koho?role=sparring"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
-                  <span className="drop-card drop-soon"><b>Areály &amp; kluby</b><span>připravujeme</span></span>
-                  <Link className="drop-card" href="/pro-koho?role=fyzio"><b>Fyzio</b><span>klienti z tenisu</span></Link>
-                  <span className="drop-card drop-soon"><b>Fitness</b><span>připravujeme</span></span>
-                  <Link className="drop-card" href="/pro-koho?role=vyplet"><b>Vyplétač</b><span>servis raket</span></Link>
+                  <span className="drop-card drop-soon"><b>Kluby</b><span>připravujeme</span></span>
                 </div></div>
               </div>
               <Link className="nav-link" href="/mapa">Hledej</Link>
@@ -238,10 +238,10 @@ export default function Home() {
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
-              <Link href="/sluzby" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
+              <Link href="/pro-koho?role=trener" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
                 <span className="world-in">
                   <span className="world-tag">Trenéři a kluby</span>
-                  <span className="world-sub">Jsem trenér, klub nebo specialista</span>
+                  <span className="world-sub">Jsem trenér — vedu svůj klub a svěřence</span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
@@ -251,7 +251,7 @@ export default function Home() {
             <div className="help rv d3">
               <h2 className="help-title">Jak vám můžeme pomoci?</h2>
               <div className="help-opts">
-                <Link href="/sluzby" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/mapa" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/videorozbor" className="help-opt"><span className="help-ic"><Video size={20} /></span><span>Dítě ztrácí radost / něco mu nejde</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/prihlaseni?tab=reg" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok a plánovat (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/sparring" className="help-opt"><span className="help-ic"><Handshake size={20} /></span><span>Najít sparring partnera</span><ArrowRight size={16} className="help-arr" /></Link>
@@ -346,7 +346,7 @@ export default function Home() {
           <p className="lead rv l">Vyber, kdo jsi — uvidíš, co ti TenisHub usnadní.</p>
 
           <div className="persona-tabs rv l d1">
-            {PERSONAS.map((pp, i) => {
+            {VISIBLE_PERSONAS.map((pp, i) => {
               const TIcon = pp.Icon;
               const col = PERSONA_COLOR[pp.key];
               const on = i === persona;
@@ -434,7 +434,7 @@ export default function Home() {
               <Wordmark className="wm-lg" />
               <p style={{ maxWidth: 320, fontSize: ".92rem", marginTop: ".9rem" }}>První český online tenisový klub — rodiče, děti a trenéři pohromadě.</p>
             </div>
-            <div><h4>Pro koho</h4><div className="links"><Link href="/pro-koho">Rodič &amp; dítě</Link><Link href="/pro-koho">Trenéři</Link><Link href="/pro-koho">Kluby &amp; areály</Link><Link href="/pro-koho">Fyzio &amp; fitness</Link></div></div>
+            <div><h4>Pro koho</h4><div className="links"><Link href="/pro-koho?role=rodic">Rodič &amp; dítě</Link><Link href="/pro-koho?role=trener">Trenéři</Link><Link href="/pro-koho?role=sparring">Sparring</Link></div></div>
             <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Hledej na mapě</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link></div></div>
           </div>
           <div className="foot-cities">

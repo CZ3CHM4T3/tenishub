@@ -5,6 +5,7 @@ import type * as LType from "leaflet";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
+import { isHiddenMapType } from "@/lib/simplify";
 import "leaflet/dist/leaflet.css";
 
 type TypeKey = "coach" | "club" | "fitness" | "physio" | "academy" | "buddy" | "stringer";
@@ -155,6 +156,7 @@ export default function MapExplorer() {
 
     let n = 0;
     points.forEach((p) => {
+      if (isHiddenMapType(p.type)) return;
       if (!active[p.type]) return;
       if (q && !p.name.toLowerCase().includes(q.toLowerCase())) return;
       if (c.distanceTo([p.lat, p.lng]) / 1000 > radiusKm) return;
@@ -219,7 +221,7 @@ export default function MapExplorer() {
 
           <div className="lab">Jaké služby?</div>
           <div className="types">
-            {(Object.keys(TYPES) as TypeKey[]).map((k) => (
+            {(Object.keys(TYPES) as TypeKey[]).filter((k) => !isHiddenMapType(k)).map((k) => (
               <div
                 key={k}
                 className={`type${active[k] ? "" : " off"}`}

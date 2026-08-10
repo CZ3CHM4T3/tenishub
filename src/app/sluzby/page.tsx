@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { MapPin, ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function SluzbyPage() {
+  redirect("/"); // zjednodušený web — /sluzby zatím skryto (viz lib/simplify)
   return (
     <div className="sluzby-page">
       <SiteHeader />

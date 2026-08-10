@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Lock, Check } from "lucide-react";
 import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "./icons";
+import { isHiddenRole } from "@/lib/simplify";
 
 type IconType = ComponentType<{ size?: number }>;
 type Func = { label: string; href?: string; soon?: boolean };
@@ -300,7 +301,7 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
           fill="#2c4a3b" fillOpacity="0.035" stroke="#2c4a3b" strokeOpacity="0.32" strokeWidth="2" strokeLinejoin="round"
           filter="url(#czInk)"
         />
-        {REAL_POINTS.map(([lat, lng, si], i) => {
+        {REAL_POINTS.filter(([, , si]) => !isHiddenRole(SERVICES[si].key)).map(([lat, lng, si], i) => {
           const svc = SERVICES[si];
           const lit = hover === svc.key || (hover !== null && CONSUMER.has(hover));
           return <Pin key={`p${i}`} x={projX(lng)} y={projY(lat)} svc={svc} big={false} lit={lit} onHover={setHover} />;
@@ -311,7 +312,7 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
       {/* KARTY služeb */}
       {showCards && (<>
       <div className="svc-cards">
-        {SERVICES.filter((s) => !hideKeys.includes(s.key)).map((s) => {
+        {SERVICES.filter((s) => !hideKeys.includes(s.key) && !isHiddenRole(s.key)).map((s) => {
           const CIcon = s.Icon;
           const hl = hover === s.key || sel === s.key;
           return (
