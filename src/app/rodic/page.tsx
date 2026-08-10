@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const QUICK = [
-  { Icon: MapPin, t: "Najít trenéra / kurt", s: "specialisté a areály na mapě", href: "/mapa", c: "#7c6018", photo: "/najit-trener.png", badge: "" },
+  { Icon: MapPin, t: "Najít trenéra / klub", s: "trenéři a kluby na mapě", href: "/mapa", c: "#7c6018", photo: "/najit-trener.png", badge: "" },
   { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", photo: "/moje-cesta.png", badge: "HUBmember" },
   { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", photo: "/videorozbor-rodic.png", badge: "Placená služba" },
   { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", photo: "/sparring-rodic.png", badge: "HUBmember" },

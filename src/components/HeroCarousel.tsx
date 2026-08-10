@@ -8,7 +8,7 @@ const SLIDES: Slide[] = [
   {
     who: "Komunita — doposud neexistující služba pro rodiče",
     title: <>Víme, jak těžké je <span className="g">zorientovat se v tenise</span></>,
-    sub: "Sdružujeme ověřené trenéry, fyzio i praktické návody — aby vaše dítě mohlo začít, růst a vydržet u tenisu.",
+    sub: "Sdružujeme ověřené trenéry, kluby i praktické návody — aby vaše dítě mohlo začít, růst a vydržet u tenisu.",
   },
   {
     who: "Pro rodiče malých tenistů",

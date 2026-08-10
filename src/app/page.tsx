@@ -13,7 +13,7 @@ import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { VideoNudge } from "@/components/VideoNudge";
 import {
-  Search, CalendarCheck, CreditCard, ArrowRight, ChevronDown, Check, MapPin, Star,
+  Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, type LucideIcon,
   CalendarDays, Target, BarChart3, History,
@@ -30,7 +30,7 @@ const PERSONAS: Persona[] = [
     free: ["Vizitka v katalogu", "Být k nalezení na mapě", "Veřejné recenze"],
     plus: ["Kalendář a online rezervace", "Platby předem (GoPay)", "Správa klientů a omluvenky", "Ověřený odznak a top pozice", "Články a FAQ návody"] },
   { key: "rodic-hobby", Icon: Users, label: "Rodič hobby hráče", promise: "Najdi, rezervuj, zaplať — a měj klid.",
-    free: ["Hledání trenérů, kurtů i fyzio", "Profily a recenze", "Prohlížení sparring nabídek"],
+    free: ["Hledání trenérů a klubů", "Profily a recenze", "Prohlížení sparring nabídek"],
     plus: ["Moje cesta — deník tréninků a volna dítěte", "Rezervace a platby na pár kliků", "Zprávy trenérům", "Přehled dítěte (rozvrh, platby)", "Články a FAQ návody"] },
   { key: "rodic-zavodni", Icon: Trophy, label: "Rodič závodního hráče", promise: "Celá cesta dítěte pod kontrolou.",
     free: ["Hledání špičkových specialistů", "Profily a recenze", "Veřejné žebříčky"],
@@ -40,7 +40,7 @@ const PERSONAS: Persona[] = [
     plus: ["Rezervace kurtů a lekcí", "Sparring matchmaking", "Statistiky zápasů", "Ligy a výzvy", "Články a FAQ návody"] },
   { key: "hrac-zavodni", Icon: IconRun, label: "Hráč závodní", promise: "Celý tvůj tenisový tým na jednom místě.",
     free: ["Mapa specialistů", "Veřejné žebříčky", "Prohlížení sparringu"],
-    plus: ["Rezervace celého týmu (trenér, fyzio, kondice)", "Profil hráče a statistiky", "Plánovač turnajů", "Video-analýza", "Články a FAQ návody"] },
+    plus: ["Rezervace u trenéra i klubu", "Profil hráče a statistiky", "Plánovač turnajů", "Video-analýza", "Články a FAQ návody"] },
   { key: "sparring", Icon: Handshake, label: "Sparring partner", promise: "Nabídni se a hraj víc.",
     free: ["Prohlížení nabídek na mapě"],
     plus: ["Vlastní sparring inzerát", "Kontaktovat parťáka", "Matchmaking podle úrovně", "Hodnocení po zápase", "Články a FAQ návody"] },
@@ -407,11 +407,11 @@ export default function Home() {
       <section className="sec" id="how">
         <div className="wrap">
           <span className="eyebrow rv">Jak to funguje</span>
-          <h2 className="rv">Tři kroky</h2>
+          <h2 className="rv">Trenér vede klub, vy sledujete pokrok</h2>
           <div className="steps">
-            <div className="step rv l d1"><div className="ic-b"><Search /></div><div className="num">01</div><h3>Najdi</h3><p>Trenéra, kurt, fyzio nebo sparring v mapě po celé ČR.</p></div>
-            <div className="step rv z d2"><div className="ic-b"><CalendarCheck /></div><div className="num">02</div><h3>Rezervuj</h3><p>Vyber termín a rovnou se přihlas. Žádné SMS.</p></div>
-            <div className="step rv r d3"><div className="ic-b"><CreditCard /></div><div className="num">03</div><h3>Zaplať &amp; hraj</h3><p>Zaplať online a hotovo. Vše na jednom místě.</p></div>
+            <div className="step rv l d1"><div className="ic-b"><Search /></div><div className="num">01</div><h3>Najdi trenéra</h3><p>Vyber trenéra a jeho klub na mapě — nebo tě trenér pozve svým odkazem.</p></div>
+            <div className="step rv z d2"><div className="ic-b"><Users /></div><div className="num">02</div><h3>Přidej dítě</h3><p>Připoj se k jeho klubu a přidej svoje dítě. Za pár kliků.</p></div>
+            <div className="step rv r d3"><div className="ic-b"><Trophy /></div><div className="num">03</div><h3>Sleduj kariéru</h3><p>Strom dovedností, level a Sparing Cup. Vidíš, jak dítě roste.</p></div>
           </div>
         </div>
       </section>

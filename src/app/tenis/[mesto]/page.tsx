@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ mesto: st
   const { mesto } = await params;
   const city = cityFromSlug(mesto);
   if (!city) return { title: "Tenis v ČR" };
-  const title = `Tenis ${city} — trenéři, kurty, fyzio a akademie`;
-  const description = `Tenisoví trenéři, kurty, fyzioterapeuti a akademie v ${city}. Najdi specialistu nebo areál, otevři profil a rezervuj — na TenisHubu.`;
+  const title = `Tenis ${city} — trenéři, kluby a akademie`;
+  const description = `Tenisoví trenéři, kluby a akademie v ${city}. Najdi trenéra, otevři profil a domluv si lekci — na TenisHubu.`;
   return { title, description, alternates: { canonical: `/tenis/${mesto}` }, openGraph: { title, description } };
 }
 
@@ -40,8 +40,6 @@ export default async function CityPage({ params }: { params: Promise<{ mesto: st
 
   const { specs, vens } = await listCity(city);
   const coaches = specs.filter((s) => s.kind === "coach" || s.kind === "academy");
-  const physio = specs.filter((s) => s.kind === "physio");
-  const fitness = specs.filter((s) => s.kind === "fitness");
   const total = specs.length + vens.length;
 
   const ld = {
@@ -65,14 +63,14 @@ export default async function CityPage({ params }: { params: Promise<{ mesto: st
       <div className="wrap legal-wrap">
         <h1>Tenis {city}</h1>
         <p className="lead">
-          Tenisoví trenéři, kurty a areály, fyzioterapeuti a kondiční trenéři v {city} na jednom místě.
+          Tenisoví trenéři, kluby a akademie v {city} na jednom místě.
           Otevři profil, podívej se na kontakt a recenze a domluv si lekci nebo kurt.
         </p>
 
         <section className="city-sec">
           <h2>Co v {city} hledáš?</h2>
           <div className="city-tags">
-            {([["treneri", "Tenisový trenér"], ["kurty", "Tenisové kurty"], ["skoly", "Tenisová škola"], ["fyzio", "Fyzioterapeut"], ["kondice", "Kondiční trenér"]] as [string, string][]).map(([slug, label]) => (
+            {([["treneri", "Tenisový trenér"], ["kurty", "Tenisové kurty"], ["skoly", "Tenisová škola"]] as [string, string][]).map(([slug, label]) => (
               <Link key={slug} href={`/tenis/${mesto}/${slug}`} className="city-tag">{label} {city}</Link>
             ))}
           </div>
@@ -97,22 +95,6 @@ export default async function CityPage({ params }: { params: Promise<{ mesto: st
                 <h2>Areály a kurty ({vens.length})</h2>
                 <div className="city-list">
                   {vens.map((v) => <Card key={v.id} href={`/areal/${v.id}`} name={v.name} sub="Tenisový areál" />)}
-                </div>
-              </section>
-            )}
-            {physio.length > 0 && (
-              <section className="city-sec">
-                <h2>Fyzioterapie ({physio.length})</h2>
-                <div className="city-list">
-                  {physio.map((s) => <Card key={s.id} href={`/trener/${s.id}`} name={s.name} sub="Fyzioterapeut" />)}
-                </div>
-              </section>
-            )}
-            {fitness.length > 0 && (
-              <section className="city-sec">
-                <h2>Kondiční trenéři ({fitness.length})</h2>
-                <div className="city-list">
-                  {fitness.map((s) => <Card key={s.id} href={`/trener/${s.id}`} name={s.name} sub="Kondiční trenér" />)}
                 </div>
               </section>
             )}

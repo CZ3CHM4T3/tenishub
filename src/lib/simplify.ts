@@ -27,3 +27,7 @@ export const isHiddenMapType = (key: string): boolean => HIDDEN_MAP_TYPEKEYS.has
 // Cesty schované z navigace, patičky a sitemapy (neindexovat).
 export const HIDDEN_PATHS = new Set<string>(["/sluzby", "/vypletac"]);
 export const isHiddenPath = (path: string): boolean => HIDDEN_PATHS.has(path);
+
+// Městské SEO landingy /tenis/[mesto]/[sluzba] — skryté slugy (fyzio, kondice).
+export const HIDDEN_CITY_SERVICE_SLUGS = new Set<string>(["fyzio", "kondice"]);
+export const isHiddenCityService = (slug: string): boolean => HIDDEN_CITY_SERVICE_SLUGS.has(slug);

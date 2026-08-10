@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES, citySlug, cityFromSlug } from "@/lib/cities";
 import { listCity, type SpecRow, type VenueRow } from "@/lib/supabase/data";
+import { isHiddenCityService } from "@/lib/simplify";
 
 export const dynamic = "force-dynamic";
 
@@ -98,7 +99,7 @@ const SERVICES: Svc[] = [
 const svcFromSlug = (s: string) => SERVICES.find((x) => x.slug === s) ?? null;
 
 export function generateStaticParams() {
-  return CITIES.flatMap((c) => SERVICES.map((s) => ({ mesto: citySlug(c[0]), sluzba: s.slug })));
+  return CITIES.flatMap((c) => SERVICES.filter((s) => !isHiddenCityService(s.slug)).map((s) => ({ mesto: citySlug(c[0]), sluzba: s.slug })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ mesto: string; sluzba: string }> }): Promise<Metadata> {
@@ -113,7 +114,7 @@ export async function generateMetadata({ params }: { params: Promise<{ mesto: st
 export default async function ServiceCityPage({ params }: { params: Promise<{ mesto: string; sluzba: string }> }) {
   const { mesto, sluzba } = await params;
   const city = cityFromSlug(mesto); const svc = svcFromSlug(sluzba);
-  if (!city || !svc) notFound();
+  if (!city || !svc || isHiddenCityService(svc.slug)) notFound(); // zjednodušený web
 
   const { specs, vens } = await listCity(city);
   const items = svc.venues ? vens : specs.filter((s) => svc.kinds!.includes(s.kind));
@@ -132,7 +133,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ me
   ];
 
   const otherCities = CITIES.map((c) => c[0]).filter((n) => n !== city).slice(0, 14);
-  const otherSvcs = SERVICES.filter((s) => s.slug !== svc.slug);
+  const otherSvcs = SERVICES.filter((s) => s.slug !== svc.slug && !isHiddenCityService(s.slug));
 
   return (
     <div className="legal-page">
