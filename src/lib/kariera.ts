@@ -58,14 +58,17 @@ const TENNIS_RACKET =
   '<ellipse cx="9.5" cy="7" rx="3.7" ry="4.6" /><path d="M7.5 10.4 9.5 13.2 11.5 10.4" /><path d="M9.5 13.2V21" /><path d="M7.8 21h3.4" /><path stroke-width="0.9" d="M9.5 3v9M6.3 7h6.4M7 4.4h5M7 9.6h5" />';
 const TENNIS_NET =
   '<path d="M3 6v14M21 6v14" /><path d="M3 8c6 2.5 12 2.5 18 0" /><path d="M3 19h18" /><path d="M12 10v9" /><path stroke-width="0.9" d="M7.5 9v10M16.5 9v10M3 13.7c6 1.8 12 1.8 18 0" />';
+// tenisový míč se švy (Tabler ball-tennis) — sdílený (karta Míč i podání)
+const TENNIS_BALL =
+  '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />';
 
 export const SKILL_ICONS: Record<string, string> = {
   // raketa — sdílená kresba (viz TENNIS_RACKET)
   racket: TENNIS_RACKET,
-  // tenisový míč (Tabler ball-tennis)
-  ball: '<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 5.3a9 9 0 0 1 0 13.4" /><path d="M18 5.3a9 9 0 0 0 0 13.4" />',
-  // podání — TÁ SAMÁ raketa (nakloněná) + čistý nadhozený míč
-  serve: `<g transform="rotate(16 9.5 13)">${TENNIS_RACKET}</g><circle cx="15" cy="3.9" r="1.8" />`,
+  // tenisový míč (viz TENNIS_BALL)
+  ball: TENNIS_BALL,
+  // podání — TÁ SAMÁ raketa (nakloněná) + TEN SAMÝ míč, zmenšený a odsazený
+  serve: `<g transform="rotate(16 9.5 13)">${TENNIS_RACKET}</g><g transform="translate(15 1) scale(0.25)">${TENNIS_BALL}</g>`,
   // volej — TÁ SAMÁ raketa (nakloněná k síti) + TÁ SAMÁ síť (odsazená vpravo dole)
   volley: `<g transform="rotate(15 9.5 13)">${TENNIS_RACKET}</g><g transform="translate(12.3 9.8) scale(0.46)">${TENNIS_NET}</g>`,
   // síť — sdílená kresba (viz TENNIS_NET)
