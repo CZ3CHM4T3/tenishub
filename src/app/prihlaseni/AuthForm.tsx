@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 
 // Překlad nejčastějších chyb Supabase do češtiny.
 function czError(msg: string) {
@@ -20,9 +19,9 @@ export default function AuthForm() {
   const router = useRouter();
   const params = useSearchParams();
   const invite = params.get("invite") || "";
-  const isTrenerReg = params.get("role") === "trener"; // trenér má registraci OTEVŘENOU
-  const canRegister = !!invite || isTrenerReg; // rodič jen přes pozvánku, trenér volně
-  const [tab, setTab] = useState<"login" | "reg">(invite || isTrenerReg ? "reg" : "login");
+  const isTrenerReg = params.get("role") === "trener"; // trenér = po registraci rovnou trenérský profil
+  const canRegister = true; // registrace je otevřená pro všechny (účet zdarma; HUB+ odemyká nástroje/role)
+  const [tab, setTab] = useState<"login" | "reg">(params.get("tab") === "reg" || invite || isTrenerReg ? "reg" : "login");
   const [forgot, setForgot] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,14 +92,7 @@ export default function AuthForm() {
 
   return (
     <div className="auth-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/" className="brand"><Wordmark /></Link>
-            <Link href="/" className="back">← Zpět na web</Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <div className="auth-box">
         <div className="auth-tabs">
@@ -159,9 +151,9 @@ export default function AuthForm() {
         </form>
         )}
 
-        {!canRegister && (
+        {tab === "reg" && !invite && !isTrenerReg && (
           <p className="auth-note">
-            Rodičovský účet teď založíme jen přes pozvánku (od trenéra nebo od nás). Jste trenér? <Link href="/pro-trenery">Založte si profil zdarma →</Link>
+            Účet je zdarma. <b>HUB+</b> odemyká nástroje (Moje cesta, poradna, sparring…) a možnost mít víc rolí. Aktivuješ ho v účtu.
           </p>
         )}
       </div>

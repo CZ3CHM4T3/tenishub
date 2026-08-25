@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export default function ResetForm() {
   const router = useRouter();
@@ -40,14 +40,7 @@ export default function ResetForm() {
 
   return (
     <div className="auth-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/" className="brand"><Wordmark /></Link>
-            <Link href="/" className="back">← Zpět na web</Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <div className="auth-box">
         <h2 style={{ color: "var(--green-d)", marginBottom: "1rem", fontSize: "1.3rem" }}>Nastavit nové heslo</h2>

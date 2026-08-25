@@ -23,6 +23,7 @@ const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconR
 export default async function ProKohoPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) {
   const { role } = await searchParams;
   if (role === "rodic") redirect("/rodic"); // rodič má vlastní hub
+  if (role === "trener") redirect("/pro-trenery"); // trenér má jeden vstup
   if (role && isHiddenRole(role)) redirect("/"); // zjednodušený web — skryté role
   const r = role ? ROLES[role] : null;
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store, GraduationCap } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store, GraduationCap, Check } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
@@ -13,6 +13,17 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "profil", label: "Profil", Icon: UserRound },
   { k: "karta", label: "Moje karta", Icon: Store },
   { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
+];
+
+// Role = „klobouky". Trenér zdarma (návnada); ostatní role odemyká HUB+.
+const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; soon?: boolean }[] = [
+  { k: "trener", label: "Trenér", desc: "Vlastní klub, svěřenci, kalendář, strom dovedností.", free: true },
+  { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false },
+  { k: "sparring", label: "Sparing hráč", desc: "Vlastní karta na zeď, hledání parťáků.", free: false },
+  { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky.", free: false, soon: true },
+  { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
+  { k: "fitness", label: "Kondiční trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
+  { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
 ];
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean; is_coach: boolean };
@@ -32,6 +43,8 @@ export default function AccountPage() {
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
   const [atab, setAtab] = useState("clenstvi");
+  const [roles, setRoles] = useState<string[]>([]);
+  const [rolesSaved, setRolesSaved] = useState(false);
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("tab");
@@ -52,6 +65,10 @@ export default function AccountPage() {
     if (p.data) { setProfile(p.data); setName(p.data.full_name ?? ""); setCity(p.data.city ?? ""); setPhone(p.data.phone ?? ""); }
     setMembership((m.data as Membership) ?? null);
     setBookings((b.data as Booking[]) ?? []);
+    // role (klobouky) — zvlášť, ať to nespadne, kdyby sloupec ještě nebyl
+    const rr = await supabase.from("profiles").select("roles").eq("id", user.id).maybeSingle();
+    const arr = (rr.data as { roles?: string[] | null } | null)?.roles;
+    setRoles(Array.isArray(arr) ? arr : (p.data?.is_coach ? ["trener"] : []));
     setLoading(false);
   }, [router]);
 
@@ -65,12 +82,22 @@ export default function AccountPage() {
     setBusy(false); setSaved(true); setTimeout(() => setSaved(false), 2500);
   };
 
-  const becomeCoach = async () => {
+  const isMember = !!membership || (profile?.is_admin ?? false);
+
+  const toggleRole = (k: string, free: boolean, soon?: boolean) => {
+    if (soon) return;
+    if (!free && !isMember) return; // placené role jen s HUB+
+    setRoles((r) => r.includes(k) ? r.filter((x) => x !== k) : [...r, k]);
+  };
+
+  const saveRoles = async () => {
+    if (!profile) return;
     setBusy(true);
     const supabase = createClient();
-    await supabase.rpc("become_coach");
-    setBusy(false);
-    router.push("/klub");
+    await supabase.from("profiles").update({ roles, is_coach: roles.includes("trener") }).eq("id", profile.id);
+    if (roles.includes("trener")) { try { await supabase.rpc("become_coach"); } catch { /* */ } }
+    await load();
+    setBusy(false); setRolesSaved(true); setTimeout(() => setRolesSaved(false), 2000);
   };
 
   const toggleRenew = async () => {
@@ -161,20 +188,25 @@ export default function AccountPage() {
         {/* MOJE ROLE — jeden účet, víc klobouků */}
         <div className="acct-card">
           <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
-          <p className="member-note">Jeden účet, klidně víc rolí zároveň. Podle nich se ti odemykají prostory (najdeš je v menu vpravo nahoře).</p>
-          <div className="role-chips">
-            <span className="role-chip on">Rodič / člen</span>
-            {profile.is_coach && <span className="role-chip on">Trenér</span>}
-            {profile.is_admin && <span className="role-chip on">Administrátor</span>}
+          <p className="member-note">Jeden účet, klidně víc rolí zároveň. <b>Trenér je zdarma</b>; ostatní role odemyká <b>HUB+</b>. Podle rolí se ti objeví prostory v menu vpravo nahoře.</p>
+          {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Bez HUB+ si můžeš aktivovat jen trenéra. HUB+ odemkne všechny role.</p>}
+          <div className="rolepicker">
+            {ACCOUNT_ROLES.map((r) => {
+              const on = roles.includes(r.k);
+              const locked = !r.free && !isMember;
+              const disabled = r.soon || locked;
+              return (
+                <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
+                  <span className="rp-check">{on ? <Check size={15} /> : null}</span>
+                  <span className="rp-txt"><b>{r.label}{r.free && <span className="rp-free">zdarma</span>}{!r.free && !r.soon && <span className="rp-hub">HUB+</span>}{r.soon && <span className="rp-soon">brzy</span>}</b><span>{r.desc}</span></span>
+                </button>
+              );
+            })}
           </div>
-          {profile.is_coach ? (
-            <Link href="/klub" className="btn btn-out" style={{ marginTop: ".8rem" }}><GraduationCap size={16} /> Otevřít trenérské rozhraní</Link>
-          ) : (
-            <div style={{ marginTop: ".8rem" }}>
-              <p className="member-note">Nabízíš i vlastní tenisové služby? Aktivuj si <b>trenérský profil</b> — je zdarma.</p>
-              <button className="btn btn-green" onClick={becomeCoach} disabled={busy}><GraduationCap size={16} /> Stát se i trenérem</button>
-            </div>
-          )}
+          <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginTop: ".9rem" }}>
+            <button className="btn btn-green" onClick={saveRoles} disabled={busy}>{rolesSaved ? "✓ Uloženo" : "Uložit role"}</button>
+            {roles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
+          </div>
         </div>
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>

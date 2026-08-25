@@ -3376,6 +3376,19 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .pm-link:hover{text-decoration:underline}
 .role-chips{display:flex;flex-wrap:wrap;gap:.4rem}
 .role-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:999px;font-weight:700;font-size:.82rem;background:#eef4ef;color:var(--green);border:1px solid #cfe0d7}
+.rolepicker{display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem}
+.rolepick-row{display:flex;align-items:flex-start;gap:.7rem;padding:.7rem .8rem;border:1px solid var(--line);border-radius:11px;background:#fff;cursor:pointer;text-align:left;width:100%}
+.rolepick-row:hover:not(.dis){border-color:var(--green)}
+.rolepick-row.on{border-color:var(--green);background:#f5faf7}
+.rolepick-row.dis{opacity:.55;cursor:not-allowed}
+.rp-check{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;color:#fff;margin-top:.05rem}
+.rolepick-row.on .rp-check{background:var(--green);border-color:var(--green)}
+.rp-txt{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.rp-txt b{display:flex;align-items:center;gap:.4rem;color:var(--ink);font-size:.96rem}
+.rp-txt>span{color:var(--muted);font-size:.84rem;line-height:1.35}
+.rp-free{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#2f5d57;background:#e2efe9;padding:.1rem .35rem;border-radius:5px}
+.rp-hub{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:5px}
+.rp-soon{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#7C4DD6;background:#EEEDFE;padding:.1rem .35rem;border-radius:5px}
 /* plovoucí lišta náhledu (admin) */
 .adminbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:.35rem;background:#1c3025;color:#fff;border:1px solid #395043;border-radius:999px;padding:.4rem .5rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.55);max-width:calc(100vw - 24px);overflow-x:auto}
 .adminbar.preview{background:#5a3a12;border-color:#8a5a1e}

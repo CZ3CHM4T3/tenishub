@@ -60,7 +60,7 @@ export function SiteHeader() {
               <button className={`nav-link${openMenu ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => !m)}>Pro koho <ChevronDown size={15} /></button>
               <div className={`drop${openMenu ? " open" : ""}`}><div className="drop-inner">
                 {ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
-                  <Link key={k} className="drop-card" href={`/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
+                  <Link key={k} className="drop-card" href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
                 ))}
               </div></div>
             </div>
@@ -75,12 +75,11 @@ export function SiteHeader() {
         </div>
         {mobileOpen && (
           <nav className="mnav" onClick={() => setMobileOpen(false)}>
-            <Link href="/pro-koho">Pro koho</Link>
+            <Link href="/rodic">Rodič &amp; dítě</Link>
+            <Link href="/pro-trenery">Trenér</Link>
             <Link href="/mapa">Mapa služeb</Link>
             <Link href="/clenstvi">Členství</Link>
             <Link href="/o-nas">O nás</Link>
-            <Link href="/rodic">Rodič &amp; dítě</Link>
-            <Link href="/prihlaseni" className="mnav-login">Přihlásit se</Link>
           </nav>
         )}
       </div>
