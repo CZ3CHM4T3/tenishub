@@ -249,7 +249,7 @@ export default function Home() {
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
-              <Link href="/pro-koho?role=trener" className="world world-sluzby world-trainer">
+              <Link href="/pro-trenery" className="world world-sluzby world-trainer">
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
                     <polygon className="wt-map-shadow" points={CZ_MAP} />

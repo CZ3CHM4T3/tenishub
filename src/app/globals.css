@@ -3240,3 +3240,65 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rodic-why-card span{color:var(--muted);font-size:.88rem;line-height:1.4}
 @media(max-width:820px){.rhub-grid,.rodic-why-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.rhub-grid,.rhub-grid-2,.rodic-why-grid{grid-template-columns:1fr}.rhub-cta{flex-direction:column;align-items:stretch;text-align:center}.rhub-cta-btn{justify-content:center}}
+
+/* ===== TRENÉRSKÝ LANDING (/pro-trenery) ===== */
+.ptr-page{background:var(--paper,#fff);min-height:100vh}
+.ptr-hero{background:linear-gradient(160deg,#f7f3e9,#eef4ef);padding:2.6rem 0 2.2rem;border-bottom:1px solid var(--line)}
+.ptr-eyebrow{display:inline-block;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:#fff;border:1px solid var(--gold-l);padding:.3rem .75rem;border-radius:999px}
+.ptr-h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:800;color:var(--green);line-height:1.08;margin:.7rem 0 .3rem}
+.ptr-h1 .g{color:var(--gold)}
+.ptr-lead{font-size:1.08rem;color:var(--ink);max-width:640px;line-height:1.5;margin:0 0 1.2rem}
+.ptr-hero-cta{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.ptr-link{color:var(--green);font-weight:700;text-decoration:none}
+.ptr-link:hover{text-decoration:underline}
+.ptr-wrap{padding-bottom:3rem}
+.ptr-sec{margin:2.6rem 0}
+.ptr-h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;color:var(--green);margin:0 0 .3rem}
+.ptr-sub{color:var(--muted);max-width:640px;margin:0 0 1.2rem;line-height:1.5}
+/* kroky */
+.ptr-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem}
+.ptr-step{position:relative;background:#fff;border:1px solid var(--line);border-radius:15px;padding:1.1rem .9rem;display:flex;flex-direction:column;gap:.35rem}
+.ptr-step-n{position:absolute;top:-11px;left:14px;width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:.8rem;display:grid;place-items:center}
+.ptr-step-ic{width:46px;height:46px;border-radius:12px;background:#eef4ef;color:var(--green);display:grid;place-items:center;margin-bottom:.2rem}
+.ptr-step b{color:var(--ink);font-size:.98rem}
+.ptr-step>span:not(.ptr-step-n):not(.ptr-step-ic):not(.ptr-step-arr){color:var(--muted);font-size:.84rem;line-height:1.4}
+.ptr-step-arr{position:absolute;right:-13px;top:50%;transform:translateY(-50%);z-index:2;color:var(--gold);background:var(--paper,#fff);border-radius:50%}
+/* benefity */
+.ptr-ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.ptr-ben{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.35rem}
+.ptr-ben-ic{width:42px;height:42px;border-radius:12px;background:#f6efdd;color:var(--gold);display:grid;place-items:center;margin-bottom:.2rem}
+.ptr-ben b{color:var(--ink);font-size:1.02rem}
+.ptr-ben span{color:var(--muted);font-size:.9rem;line-height:1.45}
+/* podmínky */
+.ptr-conds{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+.ptr-cond{display:flex;align-items:center;gap:.6rem;background:#fff;border:1px solid var(--line);border-radius:11px;padding:.7rem .9rem;font-weight:600;color:var(--ink)}
+.ptr-cond-ic{flex:none;width:24px;height:24px;border-radius:50%;background:#e2efe9;color:#2f5d57;display:grid;place-items:center}
+/* boost */
+.ptr-boost{background:linear-gradient(150deg,#231a10,#3a2a15);color:#fff;border-radius:20px;padding:1.7rem;border:1px solid #5a4526}
+.ptr-boost-head{display:flex;align-items:center;gap:.9rem;margin-bottom:.8rem}
+.ptr-boost-ic{width:54px;height:54px;border-radius:14px;background:linear-gradient(150deg,#f5a623,#d67c1a);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px rgba(214,124,26,.4);flex:none}
+.ptr-boost-tag{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l)}
+.ptr-boost-h{font-size:1.6rem;font-weight:800;margin:.1rem 0 0;color:#fff}
+.ptr-boost-lead{color:rgba(255,255,255,.85);line-height:1.5;margin:0 0 .9rem;max-width:640px}
+.ptr-boost-list{list-style:none;padding:0;margin:0 0 1.1rem;display:flex;flex-direction:column;gap:.5rem}
+.ptr-boost-list li{display:flex;align-items:flex-start;gap:.55rem;color:rgba(255,255,255,.92);font-size:.95rem}
+.ptr-boost-list li svg{color:var(--gold-l);flex:none;margin-top:.15rem}
+.ptr-boost-list li b{color:#fff}
+.ptr-boost-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:.4rem;border-top:1px solid rgba(255,255,255,.14);padding-top:1rem}
+.ptr-boost-price b{font-size:1.7rem;color:var(--gold-l);font-weight:800}
+.ptr-boost-price span{color:rgba(255,255,255,.7);font-size:.85rem}
+.ptr-boost-fine{color:rgba(255,255,255,.6);font-size:.82rem;margin:.8rem 0 0}
+/* proč / vize */
+.ptr-why{font-size:1.05rem;color:var(--ink);line-height:1.55;max-width:680px;margin:0 0 1.2rem}
+.ptr-vision{background:#eef4ef;border:1px solid #cfe0d7;border-radius:15px;padding:1.2rem}
+.ptr-vision-lab{display:block;color:var(--green);font-weight:700;margin-bottom:.7rem;font-size:.95rem}
+.ptr-vision-row{display:flex;flex-wrap:wrap;gap:.5rem}
+.ptr-vision-chip{display:inline-flex;align-items:center;gap:.4rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.4rem .8rem;font-weight:600;color:var(--ink);font-size:.9rem}
+.ptr-vision-chip em{font-style:normal;font-size:.68rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:6px}
+/* final CTA */
+.ptr-final{text-align:center;background:linear-gradient(135deg,#2c4a3b,#1c3025);color:#fff;border-radius:20px;padding:2.4rem 1.5rem;margin:2.6rem 0 0}
+.ptr-final h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin:0 0 .4rem;color:#fff}
+.ptr-final p{color:rgba(255,255,255,.82);margin:0 0 1.3rem}
+.ptr-final-btn{display:inline-flex;align-items:center;gap:.5rem}
+@media(max-width:900px){.ptr-steps{grid-template-columns:repeat(2,1fr)}.ptr-step-arr{display:none}.ptr-ben-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.ptr-steps,.ptr-ben-grid,.ptr-conds{grid-template-columns:1fr}.ptr-boost-foot{flex-direction:column;align-items:stretch}}
