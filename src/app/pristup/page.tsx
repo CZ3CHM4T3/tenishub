@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { PAYMENTS_LIVE } from "@/lib/launch";
 import { Lock, Star, Infinity as InfinityIcon, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -24,8 +25,19 @@ export default function PristupPage() {
         </div>
 
         <div className="wl-card rv d1">
-          <h2>Zapiš se na seznam</h2>
-          <WaitlistForm />
+          {PAYMENTS_LIVE ? (
+            <>
+              <h2>Pořídit členství HUB+</h2>
+              <p className="member-note">99 Kč/měsíc jako zakládající člen — cena ti zůstane napořád.</p>
+              {/* TODO při spuštění: napojit GoPay/Stripe checkout. */}
+              <Link href="/clenstvi#koupit" className="btn btn-gold" style={{ width: "100%" }}>Koupit HUB+ (99 Kč/měsíc)</Link>
+            </>
+          ) : (
+            <>
+              <h2>Zapiš se na seznam</h2>
+              <WaitlistForm />
+            </>
+          )}
         </div>
 
         <p className="rp-extra rv d1" style={{ marginTop: "1.4rem" }}>

@@ -124,12 +124,12 @@ export default function Home() {
   const [persona, setPersona] = useState(0);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [online, setOnline] = useState(42);
-  const [visits, setVisits] = useState(563);
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
   const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null }[]>([]);
   const [specCount, setSpecCount] = useState(0);
+  const [venueCount, setVenueCount] = useState(0);
+  const [waitCount, setWaitCount] = useState(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -152,21 +152,20 @@ export default function Home() {
 
   // scroll-reveal řeší globální <ScrollReveal /> v layoutu
 
-  // živé statistiky (online + návštěvy)
-  useEffect(() => {
-    const t1 = setInterval(() => setOnline((o) => Math.max(20, o + (Math.random() < 0.5 ? -1 : 1) * (Math.random() < 0.3 ? 2 : 1))), 3000);
-    const t2 = setInterval(() => setVisits((v) => v + Math.floor(Math.random() * 3) + 1), 4200);
-    return () => { [t1, t2].forEach(clearInterval); };
-  }, []);
-
-  // reální specialisté pro carousel
+  // reální specialisté + reálná čísla (žádné vymyšlené staty)
   useEffect(() => {
     const supabase = createClient();
     (async () => {
       const { data } = await supabase.from("specialists").select("id,name,kind,city,rating").eq("verified", true).limit(12);
       if (data) setFeatured(data as typeof featured);
-      const { count: sc } = await supabase.from("specialists").select("*", { count: "exact", head: true });
+      const [{ count: sc }, { count: vc }, { count: wc }] = await Promise.all([
+        supabase.from("specialists").select("*", { count: "exact", head: true }),
+        supabase.from("venues").select("*", { count: "exact", head: true }),
+        supabase.from("waitlist").select("*", { count: "exact", head: true }),
+      ]);
       if (sc != null) setSpecCount(sc);
+      if (vc != null) setVenueCount(vc);
+      if (wc != null) setWaitCount(wc);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -289,12 +288,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* statistiky po straně, ať neruší */}
-        <div className="hero-stats-side">
-          <span className="hss-item"><span className="live-dot" /> {online} online</span>
-          <span className="hss-item"><Award size={13} /> <b><Counter to={specCount} /></b> specialistů</span>
-          <span className="hss-item"><MapPin size={13} /> <b>{CITIES.length}</b> měst</span>
-          <span className="hss-item"><span className="live-dot" /> {visits.toLocaleString("cs-CZ")} dnes</span>
+        {/* reálné statistiky — horizontálně, count-up od 0 při načtení */}
+        <div className="hero-stats">
+          <span className="hstat"><b><Counter to={specCount} /></b><i>specialistů</i></span>
+          <span className="hstat"><b><Counter to={venueCount} /></b><i>klubů a areálů</i></span>
+          <span className="hstat"><b>{CITIES.length}</b><i>měst</i></span>
+          <span className="hstat"><b><Counter to={waitCount} /></b><i>zájemců o klub</i></span>
         </div>
         <div className="scrollcue">SCROLL ↓</div>
       </section>
