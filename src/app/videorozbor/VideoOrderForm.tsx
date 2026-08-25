@@ -57,7 +57,7 @@ export function VideoOrderForm() {
       <button className="btn btn-gold" disabled={busy || !ready} onClick={submit} style={{ width: "100%" }}>
         <Send size={16} /> {busy ? "Odesílám…" : "Odeslat objednávku"}
       </button>
-      <p className="vro-fine">Placená služba mimo HUBplus. Cenu a termín potvrdíme e-mailem před rozborem — nic se neplatí předem.</p>
+      <p className="vro-fine">Placená služba mimo HUB+. Cenu a termín potvrdíme e-mailem před rozborem — nic se neplatí předem.</p>
     </div>
   );
 }

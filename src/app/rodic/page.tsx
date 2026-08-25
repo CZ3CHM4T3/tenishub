@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 
 const QUICK = [
   { Icon: MapPin, t: "Najít trenéra / klub", s: "trenéři a kluby na mapě", href: "/mapa", c: "#7c6018", photo: "/najit-trener.png", badge: "" },
-  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", photo: "/moje-cesta.png", badge: "HUBplus" },
+  { Icon: Route, t: "Moje cesta", s: "celá sezóna dítěte přehledně", href: "/moje-cesta", c: "#7C4DD6", photo: "/moje-cesta.png", badge: "HUB+" },
   { Icon: Video, t: "Videorozbor", s: "proč to dítěti nejde — poradíme", href: "/videorozbor", c: "#864a59", photo: "/videorozbor-rodic.png", badge: "Placená služba" },
-  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", photo: "/sparring-rodic.png", badge: "HUBplus" },
+  { Icon: Handshake, t: "Sparring", s: "najít dítěti parťáka na zápas", href: "/sparring", c: "#8a5640", photo: "/sparring-rodic.png", badge: "HUB+" },
 ];
 
 const FAQ = [
@@ -44,19 +44,19 @@ export default function RodicPage() {
           {QUICK.map((q, i) => (
             <Link key={i} href={q.href} className={`rolepick rv z d${Math.min(i + 1, 4)}`} style={{ backgroundColor: q.c, backgroundImage: `url(${q.photo})` }}>
               <span className="rolepick-ic" style={{ color: q.c }}><q.Icon size={22} /></span>
-              <span className="rolepick-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUBplus" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
+              <span className="rolepick-txt"><b>{q.t}{q.badge && <span className={`hm-badge${q.badge === "HUB+" ? "" : " paid"}`}>{q.badge}</span>}</b><span>{q.s}</span></span>
               <span className="rolepick-arr"><ArrowRight size={18} /></span>
             </Link>
           ))}
         </div>
 
-        {/* KOMUNITA & OBSAH (HUBplus) */}
+        {/* KOMUNITA & OBSAH (HUB+) */}
         <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Komunita a obsah pro rodiče</h2>
-        <p className="lead rv" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUBplus — místo, kde rodiče nejsou na tenis sami.</p>
+        <p className="lead rv" style={{ marginTop: "-0.4rem" }}>Prémiové funkce HUB+ — místo, kde rodiče nejsou na tenis sami.</p>
         <div className="rolepick-grid rv d1">
           <Link href="/forum" className="rolepick" style={{ backgroundColor: "#2f5d57", backgroundImage: "url(/forum-rodice.png)" }}>
             <span className="rolepick-ic" style={{ color: "#2f5d57" }}><MessagesSquare size={22} /></span>
-            <span className="rolepick-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUBplus</span></b><span>zkušenosti, doporučení trenérů</span></span>
+            <span className="rolepick-txt"><b>Diskuzní fórum rodičů <span className="hm-badge">HUB+</span></b><span>zkušenosti, doporučení trenérů</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
           <Link href="/clanky" className="rolepick" style={{ backgroundColor: "#7C4DD6", backgroundImage: "url(/knihovna-rodic.png)" }}>
@@ -66,7 +66,7 @@ export default function RodicPage() {
           </Link>
           <Link href="/poradna" className="rolepick" style={{ backgroundColor: "#7c6018", backgroundImage: "url(/poradna.png)" }}>
             <span className="rolepick-ic" style={{ color: "#7c6018" }}><HelpCircle size={22} /></span>
-            <span className="rolepick-txt"><b>Poradna — zeptej se odborníka <span className="hm-badge">HUBplus</span></b><span>odpovědi na míru vašeho dítěte</span></span>
+            <span className="rolepick-txt"><b>Poradna — zeptej se odborníka <span className="hm-badge">HUB+</span></b><span>odpovědi na míru vašeho dítěte</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
           <Link href="/turnaje" className="rolepick" style={{ backgroundColor: "#3b5666", backgroundImage: "url(/turnaje-rodic.png)" }}>
@@ -76,13 +76,13 @@ export default function RodicPage() {
           </Link>
           <Link href="/bazar" className="rolepick" style={{ backgroundColor: "#8a5640", backgroundImage: "url(/bazar.png)" }}>
             <span className="rolepick-ic" style={{ color: "#8a5640" }}><Repeat size={22} /></span>
-            <span className="rolepick-txt"><b>Bazar vybavení <span className="hm-badge">HUBplus</span></b><span>rakety, boty, oblečení z druhé ruky</span></span>
+            <span className="rolepick-txt"><b>Bazar vybavení <span className="hm-badge">HUB+</span></b><span>rakety, boty, oblečení z druhé ruky</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
           <SpolujizdaTile />
         </div>
 
-        {/* ZDARMA vs HUBplus */}
+        {/* ZDARMA vs HUB+ */}
         <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Co pro rodiče v klubu máme</h2>
         <div className="rodic-plan-cols">
           <div className="rp-col rv l d1">
@@ -91,9 +91,9 @@ export default function RodicPage() {
             <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Staň se členem</Link>
           </div>
           <div className="rp-col rp-col-hub rv r d2">
-            <div className="rp-col-head"><h3>HUBplus</h3><span className="rp-tag rp-tag-hub">99 Kč/měs</span></div>
+            <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">99 Kč/měs</span></div>
             <ul className="rp-list rp-list-locked">{r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}</li>)}</ul>
-            <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUBplus</Link>
+            <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
           </div>
         </div>
 

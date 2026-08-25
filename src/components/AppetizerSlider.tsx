@@ -80,7 +80,7 @@ export function AppetizerSlider() {
       <div className="wrap">
         <span className="app-eyebrow rv"><Sparkles size={15} /> Podívejte se dovnitř klubu</span>
         <h2 className="app-h rv d1">První tenisový online klub pro vaše dítě <span className="g">za 99 Kč měsíčně</span></h2>
-        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>99 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
+        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství, žádné nástrahy, žádný balast.</p>
 
         <div className="app-stage rv d2">
           <button className="app-nav app-prev" onClick={() => go(-1)} aria-label="Předchozí"><ChevronLeft size={22} /></button>
@@ -104,7 +104,7 @@ export function AppetizerSlider() {
 
         <div className="app-cta rv d2">
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 99 Kč/měsíc <ArrowRight size={18} /></Link>
-          <span className="app-fine">Kompletní servis za 99 Kč měsíčně. Členství můžeš kdykoli zrušit.</span>
+          <span className="app-fine"><Link href="/clenstvi" className="app-fine-link">Co všechno je v ceně →</Link> · Členství můžeš kdykoli zrušit.</span>
         </div>
       </div>
     </section>

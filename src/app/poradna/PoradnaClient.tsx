@@ -72,7 +72,7 @@ export default function PoradnaClient() {
         <div className="pora-intro">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/poradna.png" alt="" className="pora-portrait" />
-          <p className="member-note" style={{ margin: 0 }}>Zeptejte se na cokoli kolem tenisu vašeho dítěte — výběr trenéra, trénink, motivaci, zdraví. Odpovídá odborník, odpovědi vidí všichni; ptát se můžou členové <b>HUBplus</b>.</p>
+          <p className="member-note" style={{ margin: 0 }}>Zeptejte se na cokoli kolem tenisu vašeho dítěte — výběr trenéra, trénink, motivaci, zdraví. Odpovídá odborník, odpovědi vidí všichni; ptát se můžou členové <b>HUB+</b>.</p>
         </div>
 
         {loading ? <p className="member-note">Načítám…</p> : items.length === 0 ? (
@@ -113,9 +113,9 @@ export default function PoradnaClient() {
         <div className="mc-modal" onClick={() => setGate(null)}>
           <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
-            <h3>{gate === "login" ? "Přihlaste se" : "Ptaní je součást HUBplus"}</h3>
-            <p className="member-note">{gate === "login" ? "Pro položení dotazu se přihlaste." : "Ptát se odborníků je součástí členství. Staňte se členem HUBplus."}</p>
-            <Link href={gate === "login" ? "/prihlaseni?next=/poradna" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUBplus</>}</Link>
+            <h3>{gate === "login" ? "Přihlaste se" : "Ptaní je součást HUB+"}</h3>
+            <p className="member-note">{gate === "login" ? "Pro položení dotazu se přihlaste." : "Ptát se odborníků je součástí členství. Staňte se členem HUB+."}</p>
+            <Link href={gate === "login" ? "/prihlaseni?next=/poradna" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUB+</>}</Link>
           </div>
         </div>
       )}

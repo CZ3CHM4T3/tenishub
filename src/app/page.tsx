@@ -20,7 +20,7 @@ import {
   CalendarDays, Target, BarChart3, History,
 } from "lucide-react";
 
-/* ── Persony: srovnání Zdarma vs HUBplus (placené = vše zdarma + navíc) ── */
+/* ── Persony: srovnání Zdarma vs HUB+ (placené = vše zdarma + navíc) ── */
 type IconType = ComponentType<{ size?: number; style?: Record<string, string> }>;
 type Persona = {
   key: string; Icon: IconType; label: string; promise: string;
@@ -302,11 +302,11 @@ export default function Home() {
       </section>
 
       {/* MOJE CESTA — hlavní produkt */}
-      {/* MOJE CESTA — hlavní bod HUBplus pro rodiče */}
+      {/* MOJE CESTA — hlavní bod HUB+ pro rodiče */}
       <section className="mcpromo">
         <div className="wrap mcpromo-in">
           <div className="mcpromo-txt rv l">
-            <span className="mcpromo-eyebrow">★ Hlavní výhoda HUBplus pro rodiče</span>
+            <span className="mcpromo-eyebrow">★ Hlavní výhoda HUB+ pro rodiče</span>
             <h2>Moje cesta — celá tenisová cesta dítěte <span className="g">na jednom místě</span></h2>
             <p>Provede hobby i závodního hráče <b>celou sezónou</b>: osa příprava → sezóna → mezisezóna, barevný kalendář (tréninky, turnaje i s výsledky, kondice), cíle a statistiky — a hlavně <b>volno a čas jen pro sebe</b>. Růst krok za krokem, bez vyhoření.</p>
             <div className="mcpromo-cta">
@@ -402,7 +402,7 @@ export default function Home() {
                 <tr>
                   <th />
                   <th>Zdarma</th>
-                  <th><span className="th-plus">HUBplus</span></th>
+                  <th><span className="th-plus">HUB+</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -425,7 +425,7 @@ export default function Home() {
 
             <div className="persona-cta">
               <Link href="/prihlaseni?tab=reg" className="btn btn-out">Staň se členem</Link>
-              <Link href="/ucet" className="btn btn-gold">Chci HUBplus <ArrowRight className="ic" size={18} /></Link>
+              <Link href="/ucet" className="btn btn-gold">Chci HUB+ <ArrowRight className="ic" size={18} /></Link>
             </div>
           </div>
         </div>

@@ -3175,3 +3175,28 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .cbot-input input:focus{outline:none;border-color:var(--gold-l)}
 .cbot-input button{background:var(--green);border:none;color:#fff;width:40px;border-radius:10px;cursor:pointer;display:grid;place-items:center;flex:none}
 @media(prefers-reduced-motion:reduce){.cbot-fab{transition:none}}
+
+/* ===== CO JE V CENĚ HUB+ — vše naráz vidět ===== */
+.cjc{margin:2.4rem 0}
+.cjc-head{text-align:center;max-width:640px;margin:0 auto 1.5rem}
+.cjc-eyebrow{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:var(--gold-soft,#f6efdd);border:1px solid var(--gold-l);padding:.28rem .7rem;border-radius:999px}
+.cjc-h{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;color:var(--green);margin:.6rem 0 .1rem;line-height:1.1}
+.cjc-price{display:inline-flex;align-items:baseline;gap:.25rem;font-size:1rem;color:var(--muted);font-weight:600}
+.cjc-price b{font-size:1.7rem;color:var(--gold);font-weight:800}
+.cjc-sub{color:var(--muted);margin:.5rem 0 0;font-size:.98rem}
+.cjc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.cjc-card{display:flex;align-items:flex-start;gap:.7rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;position:relative;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.cjc-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(44,74,59,.1);border-color:var(--gold-l)}
+.cjc-ic{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.cjc-txt{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.cjc-txt b{font-size:.98rem;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:.4rem}
+.cjc-txt span{font-size:.84rem;color:var(--muted);line-height:1.35}
+.cjc-soon{font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7C4DD6;background:#EEEDFE;padding:.1rem .35rem;border-radius:6px;flex:none}
+.cjc-in{position:absolute;top:.7rem;right:.7rem;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex:none}
+.cjc-foot{text-align:center;margin-top:1.4rem;display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.cjc-cta{display:inline-flex;align-items:center;gap:.5rem}
+.cjc-fine{font-size:.82rem;color:var(--muted);max-width:520px}
+@media(max-width:860px){.cjc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cjc-grid{grid-template-columns:1fr}}
+.app-fine-link{color:var(--gold);font-weight:700;text-decoration:none}
+.app-fine-link:hover{text-decoration:underline}
