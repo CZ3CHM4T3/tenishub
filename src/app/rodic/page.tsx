@@ -94,7 +94,7 @@ export default function RodicPage() {
             <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%" }}>Staň se členem</Link>
           </div>
           <div className="rp-col rp-col-hub rv r d2">
-            <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">199 Kč/měs</span></div>
+            <div className="rp-col-head"><h3>HUBmember</h3><span className="rp-tag rp-tag-hub">99 Kč/měs</span></div>
             <ul className="rp-list rp-list-locked">{r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}</li>)}</ul>
             <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUBmember</Link>
           </div>

@@ -81,7 +81,7 @@ export default function AdminPage() {
       await supabase.from("memberships").update({ expires_at: exp.toISOString() }).eq("id", cur.id);
     } else {
       const exp = new Date(); exp.setDate(exp.getDate() + days);
-      await supabase.from("memberships").insert({ profile_id: pid, plan: "hubplus", status: "active", expires_at: exp.toISOString(), auto_renew: true, price_czk: 199 });
+      await supabase.from("memberships").insert({ profile_id: pid, plan: "hubplus", status: "active", expires_at: exp.toISOString(), auto_renew: true, price_czk: 99 });
     }
     await load(); setBusy(null);
   };
@@ -180,7 +180,7 @@ export default function AdminPage() {
   const signups30 = profiles.filter((p) => new Date(p.created_at) >= since(30)).length;
   const paidBookings = bookings.filter((b) => b.status === "paid");
   const revenue = paidBookings.reduce((s, b) => s + (b.price_czk ?? 0), 0);
-  const mrr = activeCount * 199;
+  const mrr = activeCount * 99;
   const userOf = (id: string | null) => profiles.find((p) => p.id === id);
 
   return (

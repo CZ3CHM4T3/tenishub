@@ -64,7 +64,7 @@ export function SiteHeader() {
                 ))}
               </div></div>
             </div>
-            <Link className="nav-link" href="/mapa">Hledej</Link>
+            <Link className="nav-link" href="/mapa">Mapa služeb</Link>
             <Link className="nav-link" href="/clenstvi">Členství</Link>
             <Link className="nav-link" href="/o-nas">O nás</Link>
           </nav>
@@ -76,7 +76,7 @@ export function SiteHeader() {
         {mobileOpen && (
           <nav className="mnav" onClick={() => setMobileOpen(false)}>
             <Link href="/pro-koho">Pro koho</Link>
-            <Link href="/mapa">Hledej</Link>
+            <Link href="/mapa">Mapa služeb</Link>
             <Link href="/clenstvi">Členství</Link>
             <Link href="/o-nas">O nás</Link>
             <Link href="/rodic">Rodič &amp; dítě</Link>

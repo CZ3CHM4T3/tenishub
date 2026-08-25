@@ -1,7 +1,7 @@
 "use client";
 
 // APPETIZER — hlavní prodejní blok homepage. Slidy s ukázkami funkcí + proč jsou skvělé
-// + hook „kompletní klub za 199 Kč měsíčně". Žádné „zdarma" — registrace = rovnou členství.
+// + hook „kompletní klub za 99 Kč měsíčně". Žádné „zdarma" — registrace = rovnou členství.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, Trophy, MessageSquareHeart, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
@@ -79,8 +79,8 @@ export function AppetizerSlider() {
     <section className="appetizer" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div className="wrap">
         <span className="app-eyebrow rv"><Sparkles size={15} /> Podívejte se dovnitř klubu</span>
-        <h2 className="app-h rv d1">Kompletní tenisový klub pro vaše dítě <span className="g">za 199 Kč měsíčně</span></h2>
-        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>199 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
+        <h2 className="app-h rv d1">První tenisový online klub pro vaše dítě <span className="g">za 99 Kč měsíčně</span></h2>
+        <p className="app-sub rv d1">Všechno, co tenisový rodič potřebuje, na jednom místě. Jedno členství — <b>99 Kč měsíčně</b>. Žádné nástrahy, žádný balast.</p>
 
         <div className="app-stage rv d2">
           <button className="app-nav app-prev" onClick={() => go(-1)} aria-label="Předchozí"><ChevronLeft size={22} /></button>
@@ -103,8 +103,8 @@ export function AppetizerSlider() {
         </div>
 
         <div className="app-cta rv d2">
-          <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 199 Kč/měsíc <ArrowRight size={18} /></Link>
-          <span className="app-fine">Kompletní servis za 199 Kč měsíčně. Členství můžeš kdykoli zrušit.</span>
+          <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 99 Kč/měsíc <ArrowRight size={18} /></Link>
+          <span className="app-fine">Kompletní servis za 99 Kč měsíčně. Členství můžeš kdykoli zrušit.</span>
         </div>
       </div>
     </section>

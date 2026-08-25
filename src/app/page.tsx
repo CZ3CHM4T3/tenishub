@@ -188,7 +188,7 @@ export default function Home() {
                   <span className="drop-card drop-soon"><b>Kluby</b><span>připravujeme</span></span>
                 </div></div>
               </div>
-              <Link className="nav-link" href="/mapa">Hledej</Link>
+              <Link className="nav-link" href="/mapa">Mapa služeb</Link>
               <Link className="nav-link" href="/clenstvi">Členství</Link>
               <Link className="nav-link" href="/o-nas">O nás</Link>
             </nav>
@@ -200,7 +200,7 @@ export default function Home() {
           {mobileOpen && (
             <nav className="mnav" onClick={() => setMobileOpen(false)}>
               <Link href="/pro-koho">Pro koho</Link>
-              <Link href="/mapa">Hledej</Link>
+              <Link href="/mapa">Mapa služeb</Link>
               <Link href="/clenstvi">Členství</Link>
               <Link href="/o-nas">O nás</Link>
               <Link href="/videorozbor">Videorozbor</Link>
@@ -422,7 +422,7 @@ export default function Home() {
         <div className="wrap">
           <span className="eyebrow rv" style={{ justifyContent: "center", display: "flex" }}>Pojďme na to</span>
           <h2 className="rv">Pomozte dítěti začít, růst a vydržet u tenisu</h2>
-          <p className="rv d1">Přehled, podpora a kontakty na jednom místě — celý tenisový klub pro vaše dítě za 199 Kč měsíčně.</p>
+          <p className="rv d1">Přehled, podpora a kontakty na jednom místě — celý tenisový klub pro vaše dítě za 99 Kč měsíčně.</p>
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
         </div>
       </section>
@@ -435,7 +435,7 @@ export default function Home() {
               <p style={{ maxWidth: 320, fontSize: ".92rem", marginTop: ".9rem" }}>První český online tenisový klub — rodiče, děti a trenéři pohromadě.</p>
             </div>
             <div><h4>Pro koho</h4><div className="links"><Link href="/pro-koho?role=rodic">Rodič &amp; dítě</Link><Link href="/pro-koho?role=trener">Trenéři</Link><Link href="/pro-koho?role=sparring">Sparring</Link></div></div>
-            <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Hledej na mapě</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link></div></div>
+            <div><h4>TenisHub</h4><div className="links"><Link href="/clenstvi">Členství</Link><Link href="/o-nas">O nás</Link><Link href="/mapa">Mapa služeb</Link><Link href="/sparring">Sparring</Link><Link href="/soukromi">Soukromí a profily</Link></div></div>
           </div>
           <div className="foot-cities">
             <h4>Tenis ve městech</h4>

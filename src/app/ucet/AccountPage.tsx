@@ -62,7 +62,7 @@ export default function AccountPage() {
     const expires = new Date(); expires.setDate(expires.getDate() + 30);
     await supabase.from("memberships").insert({
       profile_id: profile.id, plan: "hubplus", status: "active",
-      expires_at: expires.toISOString(), auto_renew: true, price_czk: 199,
+      expires_at: expires.toISOString(), auto_renew: true, price_czk: 99,
     });
     await load(); setBusy(false);
   };
@@ -149,7 +149,7 @@ export default function AccountPage() {
           ) : (
             <>
               <p className="member-note">
-                Zatím nemáš členství. <b>HUBmember</b> odemkne rezervace, zprávy a všechny členské funkce za <b>199 Kč / měsíc</b>.
+                Zatím nemáš členství. <b>HUBmember</b> odemkne rezervace, zprávy a všechny členské funkce za <b>99 Kč / měsíc</b>.
                 Začalo a konec uvidíš vždy tady, prodloužení jde kdykoli vypnout.
               </p>
               <button className="btn btn-gold" onClick={activate} disabled={busy}>
