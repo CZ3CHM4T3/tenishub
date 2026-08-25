@@ -2971,3 +2971,30 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .dotaz-body{margin:.5rem 0 .6rem;color:var(--ink);line-height:1.5;white-space:pre-wrap}
 .dotaz-actions{display:flex;align-items:center;gap:.8rem}
 .dotaz-actions .btn{padding:.35rem .7rem;font-size:.82rem}
+
+/* ── Vědět víc: ukázky, lock, gate ── */
+.clanek-cardtop{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.3rem}
+.clanek-badge{font-size:.62rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:.1rem .45rem;flex:none}
+.clanek-badge.free{background:rgba(47,125,84,.14);color:#2f7d54}
+.clanek-badge.lock{background:var(--mist,#f1efe6);color:var(--muted)}
+.clanek-sample{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(47,125,84,.14);color:#2f7d54;border-radius:6px;padding:.14rem .5rem;margin-bottom:.5rem}
+.clanek-body-locked p:last-child{-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+.clanek-gate{margin-top:1.2rem;text-align:center;background:var(--soft,#faf7ef);border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.4rem}
+.clanek-gate-ic{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:rgba(191,154,71,.14);color:#9a7527;margin-bottom:.4rem}
+.clanek-gate h3{margin:.2rem 0 .3rem;color:var(--green)}
+.clanek-gate p{margin:0 auto 1rem;color:var(--muted);max-width:44ch;line-height:1.55}
+.clanek-gate-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+.clanek-samplechk{display:flex!important;flex-direction:row!important;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink)}
+.clanek-samplechk input{width:auto}
+
+/* ── Zdroje ── */
+.zdroje-wrap{display:flex;flex-direction:column;gap:1.6rem}
+.zdroje-h{display:flex;align-items:center;gap:.5rem;font-size:1.1rem;color:var(--green);margin:0 0 .6rem}
+.zdroje-h-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(191,154,71,.14);color:#9a7527}
+.zdroje-list{display:flex;flex-direction:column;gap:.5rem}
+.zdroj{display:flex;align-items:center;gap:1rem;background:var(--paper,#fff);border:1px solid var(--line);border-radius:12px;padding:.75rem .95rem;text-decoration:none;transition:.14s}
+.zdroj:hover{border-color:var(--gold-l);box-shadow:0 8px 20px -14px rgba(28,48,37,.3)}
+.zdroj-tx{flex:1;min-width:0}
+.zdroj-tx b{display:block;color:var(--ink)}
+.zdroj-tx span{display:block;color:var(--muted);font-size:.86rem;margin-top:.1rem}
+.zdroj-arr{color:var(--muted);flex:none}

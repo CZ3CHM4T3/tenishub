@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/rodic`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/forum`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
     { url: `${base}/clanky`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/zdroje`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${base}/poradna`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/turnaje`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${base}/bazar`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
