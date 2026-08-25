@@ -220,17 +220,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* PÁS RECENZÍ (pomalu jede pod lištou) */}
-      <div className="testi-strip" aria-label="Recenze členů">
-        <div className="testi-track">
-          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-            <span className="tstrip-item" key={i}>
-              <Star size={12} /> „{t.q}" <b>{t.a}</b> · {t.r}
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* HERO */}
       <section className="hero">
         <div className="hero-bg" />
@@ -239,6 +228,17 @@ export default function Home() {
           <div className="hero-center">
             <span className="hero-tagline rv">Jednička pro rodiče malých tenistů a jejich trenéry</span>
             <HeroCarousel />
+
+            {/* PÁS RECENZÍ / SPOTLIGHT — pomalý pás pod carouselem (i placené místo) */}
+            <div className="testi-strip rv" aria-label="Recenze členů">
+              <div className="testi-track">
+                {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                  <span className="tstrip-item" key={i}>
+                    <Star size={13} /> „{t.q}" <b>{t.a}</b> · {t.r}
+                  </span>
+                ))}
+              </div>
+            </div>
 
             {/* 2 SVĚTY — hlavní volba experience */}
             <div className="worlds rv d3">
