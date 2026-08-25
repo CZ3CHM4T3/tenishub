@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store, GraduationCap } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
@@ -15,7 +15,7 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
 ];
 
-type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
+type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean; is_coach: boolean };
 type Membership = { id: string; plan: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
 type Booking = { id: string; starts_at: string; price_czk: number | null; status: string };
 
@@ -43,7 +43,7 @@ export default function AccountPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/prihlaseni"); return; }
     const [p, m, b] = await Promise.all([
-      supabase.from("profiles").select("id,full_name,email,role,city,phone,is_admin").eq("id", user.id).single(),
+      supabase.from("profiles").select("id,full_name,email,role,city,phone,is_admin,is_coach").eq("id", user.id).single(),
       supabase.from("memberships").select("*").eq("profile_id", user.id).eq("status", "active")
         .gt("expires_at", new Date().toISOString()).order("expires_at", { ascending: false }).limit(1).maybeSingle(),
       supabase.from("bookings").select("id,starts_at,price_czk,status").eq("customer_id", user.id)
@@ -63,6 +63,14 @@ export default function AccountPage() {
     const supabase = createClient();
     await supabase.from("profiles").update({ full_name: name, city, phone }).eq("id", profile.id);
     setBusy(false); setSaved(true); setTimeout(() => setSaved(false), 2500);
+  };
+
+  const becomeCoach = async () => {
+    setBusy(true);
+    const supabase = createClient();
+    await supabase.rpc("become_coach");
+    setBusy(false);
+    router.push("/klub");
   };
 
   const toggleRenew = async () => {
@@ -149,6 +157,26 @@ export default function AccountPage() {
           </div>
           <button className="btn btn-green" onClick={saveProfile} disabled={busy}>{saved ? "✓ Uloženo" : "Uložit změny"}</button>
         </div>
+
+        {/* MOJE ROLE — jeden účet, víc klobouků */}
+        <div className="acct-card">
+          <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
+          <p className="member-note">Jeden účet, klidně víc rolí zároveň. Podle nich se ti odemykají prostory (najdeš je v menu vpravo nahoře).</p>
+          <div className="role-chips">
+            <span className="role-chip on">Rodič / člen</span>
+            {profile.is_coach && <span className="role-chip on">Trenér</span>}
+            {profile.is_admin && <span className="role-chip on">Administrátor</span>}
+          </div>
+          {profile.is_coach ? (
+            <Link href="/klub" className="btn btn-out" style={{ marginTop: ".8rem" }}><GraduationCap size={16} /> Otevřít trenérské rozhraní</Link>
+          ) : (
+            <div style={{ marginTop: ".8rem" }}>
+              <p className="member-note">Nabízíš i vlastní tenisové služby? Aktivuj si <b>trenérský profil</b> — je zdarma.</p>
+              <button className="btn btn-green" onClick={becomeCoach} disabled={busy}><GraduationCap size={16} /> Stát se i trenérem</button>
+            </div>
+          )}
+        </div>
+
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
 

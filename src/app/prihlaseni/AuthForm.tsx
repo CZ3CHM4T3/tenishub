@@ -20,8 +20,9 @@ export default function AuthForm() {
   const router = useRouter();
   const params = useSearchParams();
   const invite = params.get("invite") || "";
-  const canRegister = !!invite; // veřejná registrace zavřená — účet jen přes pozvánku (magic link)
-  const [tab, setTab] = useState<"login" | "reg">(invite ? "reg" : "login");
+  const isTrenerReg = params.get("role") === "trener"; // trenér má registraci OTEVŘENOU
+  const canRegister = !!invite || isTrenerReg; // rodič jen přes pozvánku, trenér volně
+  const [tab, setTab] = useState<"login" | "reg">(invite || isTrenerReg ? "reg" : "login");
   const [forgot, setForgot] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -42,14 +43,23 @@ export default function AuthForm() {
     setInfo("Hotovo — poslali jsme ti e-mail s odkazem pro nastavení nového hesla.");
   };
 
-  // Uplatní zvací kód (trenérská pozvánka nebo připojení pod trenéra) a přesměruje.
-  const applyInviteAndGo = async (supabase: ReturnType<typeof createClient>, code: string | null) => {
+  // Po přihlášení/registraci: uplatní pozvánku (trenér/rodič) nebo aktivuje trenéra a přesměruje.
+  const finishAuth = async (supabase: ReturnType<typeof createClient>) => {
+    let code: string | null = invite || null;
+    let becomeCoach = isTrenerReg;
+    try { code = code || localStorage.getItem("th_invite"); } catch { /* */ }
+    try { becomeCoach = becomeCoach || localStorage.getItem("th_become_coach") === "1"; } catch { /* */ }
     if (code) {
       try {
         const { data: res } = await supabase.rpc("apply_invite", { p_code: code });
         try { localStorage.removeItem("th_invite"); } catch { /* */ }
         if (res === "coach") { router.push("/klub"); return; }
       } catch { /* neplatný kód ignoruj */ }
+    }
+    if (becomeCoach) {
+      try { await supabase.rpc("become_coach"); } catch { /* */ }
+      try { localStorage.removeItem("th_become_coach"); } catch { /* */ }
+      router.push("/klub"); return;
     }
     router.push("/ucet");
   };
@@ -61,20 +71,21 @@ export default function AuthForm() {
     if (tab === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) { setErr(czError(error.message)); setBusy(false); return; }
-      let stashed: string | null = invite || null;
-      try { stashed = stashed || localStorage.getItem("th_invite"); } catch { /* */ }
-      await applyInviteAndGo(supabase, stashed);
+      await finishAuth(supabase);
     } else {
       if (invite) { try { localStorage.setItem("th_invite", invite); } catch { /* */ } }
+      if (isTrenerReg) { try { localStorage.setItem("th_become_coach", "1"); } catch { /* */ } }
       const { data, error } = await supabase.auth.signUp({
         email, password,
         options: { data: { full_name: name } },
       });
       if (error) { setErr(czError(error.message)); setBusy(false); return; }
       if (data.session) {
-        await applyInviteAndGo(supabase, invite || null);
+        await finishAuth(supabase);
       } else {
-        setInfo("Hotovo! Potvrď registraci kliknutím na odkaz v e-mailu a pak se přihlas — pozvánka se uplatní.");
+        setInfo(isTrenerReg
+          ? "Hotovo! Potvrď registraci v e-mailu a přihlas se — otevře se tvoje trenérské rozhraní."
+          : "Hotovo! Potvrď registraci kliknutím na odkaz v e-mailu a pak se přihlas — pozvánka se uplatní.");
         setBusy(false);
       }
     }
@@ -97,13 +108,15 @@ export default function AuthForm() {
           {canRegister && <button className={tab === "reg" && !forgot ? "on" : ""} onClick={() => { setTab("reg"); setForgot(false); setErr(null); }} type="button">Registrace</button>}
         </div>
 
-        {invite && !forgot && (
+        {(invite || isTrenerReg) && !forgot && tab === "reg" && (
           <div className="auth-info" style={{ marginBottom: "1rem" }}>
-            {invite.toUpperCase().startsWith("TRN")
+            {invite && invite.toUpperCase().startsWith("TRN")
               ? "Pozvánka pro trenéra — po registraci se otevře vaše trenérské rozhraní."
-              : invite.toUpperCase().startsWith("MEM")
+              : invite && invite.toUpperCase().startsWith("MEM")
               ? "Pozvánka do TenisHubu — po registraci máte přístup ke všem funkcím."
-              : "Pozvánka od trenéra — po registraci se připojíte do jeho klubu."}
+              : invite
+              ? "Pozvánka od trenéra — po registraci se připojíte do jeho klubu."
+              : "Registrace trenéra je zdarma. Po vytvoření profilu se otevře vaše trenérské rozhraní."}
           </div>
         )}
 
@@ -146,9 +159,9 @@ export default function AuthForm() {
         </form>
         )}
 
-        {!invite && (
+        {!canRegister && (
           <p className="auth-note">
-            Nový účet si teď založíš jen přes pozvánku — od svého trenéra, nebo od nás. Zajímá tě členství? <Link href="/clenstvi">Podívej se, co je v ceně →</Link>
+            Rodičovský účet teď založíme jen přes pozvánku (od trenéra nebo od nás). Jste trenér? <Link href="/pro-trenery">Založte si profil zdarma →</Link>
           </p>
         )}
       </div>
