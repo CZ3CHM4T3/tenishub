@@ -6,8 +6,9 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BookOpen, Lock } from "lucide-react";
 import { useMe } from "@/lib/useMe";
+import { ArticleSocial } from "@/components/ArticleSocial";
 
-type Article = { title: string; perex: string | null; body: string; author_name: string | null; created_at: string; is_sample: boolean };
+type Article = { id: string; title: string; perex: string | null; body: string; author_name: string | null; created_at: string; is_sample: boolean };
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 
 export default function ClanekClient({ slug }: { slug: string }) {
@@ -18,7 +19,7 @@ export default function ClanekClient({ slug }: { slug: string }) {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.from("articles").select("title,perex,body,author_name,created_at,is_sample").eq("slug", slug).maybeSingle();
+      const { data } = await supabase.from("articles").select("id,title,perex,body,author_name,created_at,is_sample").eq("slug", slug).maybeSingle();
       setA((data as Article) ?? null);
       setLoading(false);
     })();
@@ -36,6 +37,7 @@ export default function ClanekClient({ slug }: { slug: string }) {
         {loading ? <p className="member-note">Načítám…</p> : !a ? (
           <div className="acct-card mc-gate"><BookOpen size={30} /><h2>Článek nenalezen</h2><Link href="/clanky" className="btn btn-green">Zpět na Vědět víc</Link></div>
         ) : (
+          <>
           <article className="clanek">
             {a.is_sample && <span className="clanek-sample">Ukázka zdarma</span>}
             <h1>{a.title}</h1>
@@ -56,6 +58,8 @@ export default function ClanekClient({ slug }: { slug: string }) {
               </div>
             )}
           </article>
+          <ArticleSocial articleId={a.id} />
+          </>
         )}
       </div>
     </div>
