@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { CITIES, citySlug } from "@/lib/cities";
 import { isHiddenRole } from "@/lib/simplify";
 import { AppetizerSlider } from "@/components/AppetizerSlider";
+import { AskUs } from "@/components/AskUs";
 import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
@@ -426,6 +427,8 @@ export default function Home() {
           <Link href="/prihlaseni?tab=reg" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
         </div>
       </section>
+
+      <AskUs />
 
       <footer className="site">
         <div className="wrap">

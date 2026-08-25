@@ -12,6 +12,7 @@ import AdminVerify from "./AdminVerify";
 import AdminModerace from "./AdminModerace";
 import AdminFeedback from "./AdminFeedback";
 import AdminVideo from "./AdminVideo";
+import AdminDotazy from "./AdminDotazy";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -154,7 +155,7 @@ export default function AdminPage() {
   if (loading) return <div className="acct-loading">Načítám administraci…</div>;
 
   const TAB_GROUPS: [string, [string, string][]][] = [
-    ["Přehled a čísla", [["prehled", "Přehled"], ["feedback", "Zpětná vazba"]]],
+    ["Přehled a čísla", [["prehled", "Přehled"], ["feedback", "Zpětná vazba"], ["dotazy", "Dotazy"]]],
     ["Lidé a členství", [["uzivatele", "Uživatelé"]]],
     ["Katalog trenérů a areálů", [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]]],
     ["Komunita", [["recenze", "Recenze"], ["moderace", "Moderace"]]],
@@ -163,6 +164,7 @@ export default function AdminPage() {
   const TAB_INFO: Record<string, string> = {
     prehled: "Souhrn webu: počty účtů, aktivních členů, tržby a klíčová čísla.",
     feedback: "Konverzní trychtýř (návštěvy → účty → členové) a zpětná vazba od uživatelů.",
+    dotazy: "Dotazy z okna Zeptejte se nás na webu — spam je předfiltrovaný.",
     uzivatele: "Všichni registrovaní: nastavení a prodloužení členství, zrušení účtu.",
     subjekty: "Katalog trenérů a areálů — správa jejich profilů a údajů.",
     overeni: "Fronta žádostí o ověřený odznak — schválit nebo zamítnout.",
@@ -397,6 +399,7 @@ export default function AdminPage() {
         {tab === "feedback" && <AdminFeedback accounts={profiles.length} members={activeCount} signups7={signups7} signups30={signups30} />}
 
         {tab === "video" && <AdminVideo />}
+        {tab === "dotazy" && <AdminDotazy />}
 
         {tab === "rezervace" && (
         <div className="acct-card">

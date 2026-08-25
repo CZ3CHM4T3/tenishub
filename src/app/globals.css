@@ -2932,3 +2932,42 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .price-cta{width:100%;justify-content:center;font-size:1.02rem;padding:.85rem}
 .price-fine{display:block;color:var(--muted);font-size:.8rem;margin-top:.8rem;line-height:1.5}
 .price-rolelead{text-align:center;font-weight:700;color:var(--green);margin:2.4rem 0 .2rem}
+
+/* ── Zeptejte se nás ─────────────────────────────────── */
+.askus{background:linear-gradient(160deg,var(--green),#1c3025);color:#eef1e7;padding:2.6rem 0}
+.askus-in{max-width:960px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1.1fr;gap:2rem;align-items:center}
+@media(max-width:760px){.askus-in{grid-template-columns:1fr;gap:1.3rem}}
+.askus-ic{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.1);color:#e2c98e;margin-bottom:.6rem}
+.askus-l h2{font-size:1.5rem;margin:0 0 .5rem;color:#fff}
+.askus-l p{margin:0;color:#cfe0d6;line-height:1.6;max-width:46ch}
+.askus-form{display:flex;flex-direction:column;gap:.6rem;background:rgba(255,255,255,.06);
+  border:1px solid rgba(226,201,142,.25);border-radius:16px;padding:1.1rem;position:relative}
+.askus-row2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media(max-width:520px){.askus-row2{grid-template-columns:1fr}}
+.askus-form input,.askus-form textarea{background:rgba(255,255,255,.96);border:1px solid rgba(0,0,0,.08);
+  border-radius:10px;padding:.6rem .75rem;font-family:inherit;font-size:.95rem;color:#1b2620;width:100%}
+.askus-form textarea{resize:vertical;min-height:70px}
+.askus-form input:focus,.askus-form textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(226,201,142,.45)}
+.askus-hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.askus-err{color:#ffd2d2;font-size:.85rem;font-weight:600}
+.askus-send{justify-content:center}
+.askus-done{display:flex;flex-direction:column;align-items:center;gap:.3rem;text-align:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(226,201,142,.25);border-radius:16px;padding:1.6rem}
+.askus-done-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
+  background:rgba(226,201,142,.2);color:#e2c98e;margin-bottom:.3rem}
+.askus-done b{font-size:1.15rem;color:#fff}
+.askus-done span{color:#cfe0d6}
+
+/* ── Admin: dotazy ── */
+.dotazy-list{display:flex;flex-direction:column;gap:.7rem}
+.dotaz{background:var(--paper,#fff);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem}
+.dotaz.spam{opacity:.55}
+.dotaz.read{background:#f6fbf8}
+.dotaz-head{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.9rem}
+.dotaz-head b{color:var(--green)}
+.dotaz-head a{color:var(--green);font-weight:600}
+.dotaz-date{color:var(--muted);font-size:.82rem;margin-left:auto}
+.dotaz-tag{font-size:.68rem;font-weight:800;text-transform:uppercase;background:var(--mist,#f1efe6);color:var(--muted);border-radius:6px;padding:.1rem .45rem}
+.dotaz-body{margin:.5rem 0 .6rem;color:var(--ink);line-height:1.5;white-space:pre-wrap}
+.dotaz-actions{display:flex;align-items:center;gap:.8rem}
+.dotaz-actions .btn{padding:.35rem .7rem;font-size:.82rem}
