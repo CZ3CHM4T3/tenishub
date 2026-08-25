@@ -3,9 +3,10 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import {
   MapPin, Route, Video, Handshake, MessagesSquare, BookOpen, HelpCircle,
-  Check, Lock, ArrowRight, Calendar, Repeat, Car,
+  Check, Lock, ArrowRight, Calendar, Repeat,
 } from "lucide-react";
 import { ROLES } from "@/lib/roles";
+import { SpolujizdaTile } from "@/components/SpolujizdaTile";
 
 export const metadata: Metadata = {
   title: "Rodič & dítě — všechno pro tenisové rodiče na jednom místě",
@@ -78,11 +79,7 @@ export default function RodicPage() {
             <span className="rolepick-txt"><b>Bazar vybavení <span className="hm-badge">HUBplus</span></b><span>rakety, boty, oblečení z druhé ruky</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
-          <Link href="/bazar?tab=spolujizda" className="rolepick" style={{ backgroundColor: "#3b8a5a", backgroundImage: "url(/spolujizda.png)" }}>
-            <span className="rolepick-ic" style={{ color: "#3b8a5a" }}><Car size={22} /></span>
-            <span className="rolepick-txt"><b>Spolujízda <span className="hm-badge">HUBplus</span></b><span>odvoz na trénink i turnaj</span></span>
-            <span className="rolepick-arr"><ArrowRight size={18} /></span>
-          </Link>
+          <SpolujizdaTile />
         </div>
 
         {/* ZDARMA vs HUBplus */}
