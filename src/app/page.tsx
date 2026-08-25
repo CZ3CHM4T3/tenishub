@@ -292,14 +292,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* reálné statistiky — horizontálně, count-up od 0 při načtení */}
-        <div className="hero-stats">
+        <div className="scrollcue">SCROLL ↓</div>
+      </section>
+
+      {/* reálné statistiky — samostatný tenký pruh pod herem, netlačí do layoutu */}
+      <section className="statbar">
+        <div className="wrap hero-stats">
           <span className="hstat"><b><Counter to={specCount} /></b><i>specialistů</i></span>
           <span className="hstat"><b><Counter to={venueCount} /></b><i>klubů a areálů</i></span>
           <span className="hstat"><b>{CITIES.length}</b><i>měst</i></span>
           <span className="hstat"><b><Counter to={waitCount} /></b><i>zájemců o klub</i></span>
         </div>
-        <div className="scrollcue">SCROLL ↓</div>
       </section>
 
       {/* MOJE CESTA — hlavní produkt */}
