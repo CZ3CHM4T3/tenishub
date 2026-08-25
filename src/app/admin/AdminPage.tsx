@@ -269,8 +269,8 @@ export default function AdminPage() {
                         <button onClick={() => grant(p.id, 30)} disabled={busy === p.id}>+30 dní</button>
                         <button onClick={() => grant(p.id, 365)} disabled={busy === p.id}>+rok</button>
                         {m && m.auto_renew && <button onClick={() => stopRenew(p.id)} disabled={busy === p.id}>stop auto</button>}
-                        {m && <button className="danger" onClick={() => endNow(p.id)} disabled={busy === p.id}>ukončit</button>}
-                        <button className="danger" onClick={() => deleteUser(p)} disabled={busy === p.id}>Zrušit účet</button>
+                        {m && !p.is_admin && <button className="danger" onClick={() => endNow(p.id)} disabled={busy === p.id}>ukončit</button>}
+                        {p.is_admin ? <span className="admin-protected">chráněný účet</span> : <button className="danger" onClick={() => deleteUser(p)} disabled={busy === p.id}>Zrušit účet</button>}
                       </td>
                     </tr>
                   );

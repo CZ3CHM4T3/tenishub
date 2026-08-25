@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getViewAs } from "@/lib/viewAs";
 
 export type Me = { id: string; name: string } | null;
 export type MeState = { me: Me; canPost: boolean; isAdmin: boolean; ready: boolean };
 
 // Sdílené: kdo je přihlášený, má aktivní HUB+ (canPost), je admin.
+// Pro adminy respektuje náhledovou perspektivu (viewAs): rodič = člen, trenér/návštěvník = bez členství.
 export function useMe(): MeState {
   const [s, setS] = useState<MeState>({ me: null, canPost: false, isAdmin: false, ready: false });
   useEffect(() => {
@@ -19,7 +21,15 @@ export function useMe(): MeState {
         sb.from("memberships").select("id").eq("profile_id", user.id).eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle(),
       ]);
       const isAdmin = prof.data?.is_admin === true;
-      setS({ me: { id: user.id, name: prof.data?.full_name || prof.data?.email || "Člen" }, canPost: !!mem.data || isAdmin, isAdmin, ready: true });
+      const me: Me = { id: user.id, name: prof.data?.full_name || prof.data?.email || "Člen" };
+      // Náhled admina očima jiné role
+      if (isAdmin) {
+        const v = getViewAs();
+        if (v === "navstevnik") { setS({ me: null, canPost: false, isAdmin: false, ready: true }); return; }
+        if (v === "rodic") { setS({ me, canPost: true, isAdmin: false, ready: true }); return; }
+        if (v === "trener") { setS({ me, canPost: false, isAdmin: false, ready: true }); return; }
+      }
+      setS({ me, canPost: !!mem.data || isAdmin, isAdmin, ready: true });
     })();
   }, []);
   return s;

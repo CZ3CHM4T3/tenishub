@@ -3338,6 +3338,14 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .asub:hover{background:#f4efe2;color:var(--ink)}
 .asub.on{background:color-mix(in srgb,var(--amc,var(--green)) 12%,#fff);color:var(--amc,var(--green));border-left-color:var(--amc,var(--green))}
 .admin-content{min-width:0}
+.admin-protected{font-size:.72rem;color:var(--muted);font-style:italic;padding:.2rem .4rem}
+/* plovoucí lišta náhledu (admin) */
+.adminbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:.35rem;background:#1c3025;color:#fff;border:1px solid #395043;border-radius:999px;padding:.4rem .5rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.55);max-width:calc(100vw - 24px);overflow-x:auto}
+.adminbar.preview{background:#5a3a12;border-color:#8a5a1e}
+.adminbar-l{font-size:.74rem;font-weight:700;color:rgba(255,255,255,.7);padding:0 .35rem;white-space:nowrap}
+.adminbar-b{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.08);border:none;color:#fff;border-radius:999px;padding:.35rem .7rem;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap}
+.adminbar-b:hover{background:rgba(255,255,255,.18)}
+.adminbar-b.on{background:var(--gold);color:#231a10}
 @media(max-width:760px){
   .admin-layout{grid-template-columns:1fr;gap:.6rem}
   .admin-sub{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;position:static;max-height:none;border-right:none;border-bottom:1px solid var(--line);padding-bottom:.4rem}

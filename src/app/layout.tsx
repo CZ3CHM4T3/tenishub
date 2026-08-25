@@ -10,6 +10,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { SiteFeedback } from "@/components/SiteFeedback";
 import { MetaPixel } from "@/components/MetaPixel";
 import { Chatbot } from "@/components/Chatbot";
+import { AdminBar } from "@/components/AdminBar";
 
 export const metadata: Metadata = {
   title: {
@@ -67,6 +68,7 @@ export default function RootLayout({
         <SiteFeedback />
         <MetaPixel />
         <Chatbot />
+        <AdminBar />
       </body>
     </html>
   );
