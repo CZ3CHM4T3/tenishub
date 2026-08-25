@@ -2998,3 +2998,26 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .zdroj-tx b{display:block;color:var(--ink)}
 .zdroj-tx span{display:block;color:var(--muted);font-size:.86rem;margin-top:.1rem}
 .zdroj-arr{color:var(--muted);flex:none}
+
+/* ── Trenérská dlaždice na titulce (mapa ČR + Jirka + fakta) ── */
+.world-trainer{background:radial-gradient(120% 90% at 82% -12%, rgba(191,154,71,.24), transparent 46%),linear-gradient(158deg,#2c4a3b,#16271f)}
+.world-trainer::after{background:linear-gradient(to top, rgba(10,20,14,.62) 6%, rgba(10,20,14,.08) 58%, rgba(10,20,14,.28) 100%)}
+.wt-map{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.wt-map svg{width:88%;height:74%;transform:translate(4%,-8%)}
+.wt-map-shadow{fill:#0a1712;opacity:.55;transform:translate(7px,11px)}
+.wt-map-fill{fill:#35604a;stroke:#bf9a47;stroke-width:2.4;stroke-linejoin:round;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
+.wt-in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:.9rem;padding:1.5rem 1.6rem;width:100%}
+.wt-person{display:flex;align-items:center;gap:.95rem}
+.wt-photo{position:relative;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #bf9a47;
+  flex:none;background:#22382c;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+.wt-photo-fb{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;color:#e2c98e;font-size:1.4rem}
+.wt-photo img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.wt-facts{display:flex;flex-direction:column;gap:.3rem}
+.wt-fact{display:flex;align-items:center;gap:.45rem;color:#eaf2ec;font-weight:600;font-size:.86rem;line-height:1.25}
+.wt-fact svg{color:#7ed3a0;flex:none}
+@media(max-width:640px){
+  .wt-in{padding:1.1rem 1rem}
+  .wt-photo{width:54px;height:54px}
+  .wt-fact{font-size:.74rem}
+  .wt-map svg{width:96%;transform:translate(2%,-6%)}
+}

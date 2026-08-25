@@ -72,6 +72,15 @@ const PERSONA_COLOR: Record<string, { c: string; t: string }> = {
 // Zjednodušený web: skryté persony (fitness/fyzio/hráč) — viz lib/simplify.
 const VISIBLE_PERSONAS = PERSONAS.filter((p) => !isHiddenRole(p.key.split("-")[0]));
 
+// Obrys ČR pro dekorativní 3D mapu na trenérské dlaždici (z reálných souřadnic).
+const CZ_MAP =
+  "-70,207 -61,186 -45,192 -27,196 -6,192 19,178 56,165 81,144 117,139 148,122 153,99 161,90 176,93 187,101 " +
+  "190,120 213,119 230,98 248,101 260,120 270,135 307,139 336,162 356,156 372,152 381,165 362,196 381,212 " +
+  "392,236 408,244 423,226 428,191 453,197 482,215 500,215 512,205 516,225 537,247 548,257 574,266 599,274 " +
+  "601,300 628,335 599,366 558,409 551,424 526,432 493,449 456,441 431,480 401,454 340,459 318,441 247,428 " +
+  "233,457 208,486 173,485 161,489 133,483 110,456 76,424 42,391 12,364 -14,345 -38,297 -22,271 -29,258 " +
+  "-52,249 -59,231";
+
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
   physio: { label: "Fyzio", Icon: HeartPulse },
@@ -239,10 +248,27 @@ export default function Home() {
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
-              <Link href="/pro-koho?role=trener" className="world world-sluzby" style={{ backgroundImage: "url(/svet-sluzby.png)" }}>
-                <span className="world-in">
+              <Link href="/pro-koho?role=trener" className="world world-sluzby world-trainer">
+                <span className="wt-map" aria-hidden="true">
+                  <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
+                    <polygon className="wt-map-shadow" points={CZ_MAP} />
+                    <polygon className="wt-map-fill" points={CZ_MAP} />
+                  </svg>
+                </span>
+                <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
-                  <span className="world-sub">Jsem trenér — vedu svůj klub a svěřence</span>
+                  <span className="wt-person">
+                    <span className="wt-photo">
+                      <span className="wt-photo-fb" aria-hidden="true">JM</span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/jirka.png" alt="Jiří Machek" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                    </span>
+                    <span className="wt-facts">
+                      <span className="wt-fact"><Check size={15} /> Trenér II. třídy</span>
+                      <span className="wt-fact"><Check size={15} /> Spolumajitel akademie MS GEM</span>
+                      <span className="wt-fact"><Check size={15} /> 100+ dětí v péči</span>
+                    </span>
+                  </span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
