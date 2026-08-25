@@ -237,6 +237,7 @@ export default function Home() {
         <span className="orb orb1" /><span className="orb orb2" /><span className="orb orb3" />
         <div className="wrap">
           <div className="hero-center">
+            <span className="hero-tagline rv">Jednička pro rodiče malých tenistů a jejich trenéry</span>
             <HeroCarousel />
 
             {/* 2 SVĚTY — hlavní volba experience */}
@@ -257,6 +258,8 @@ export default function Home() {
                 </span>
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
+                  <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
+                  <span className="wt-sub">Vlastní klub, strom dovedností i služby — celé pod sebou a plně po svém.</span>
                   <span className="wt-person">
                     <span className="wt-photo">
                       <span className="wt-photo-fb" aria-hidden="true">JM</span>

@@ -60,11 +60,10 @@ export function Chatbot() {
                 </span>
               </div>
             ))}
-            {msgs.length <= 1 && (
-              <div className="cbot-quick">
-                {QUICK.map((q) => <button key={q} type="button" onClick={() => ask(q)}>{q}</button>)}
-              </div>
-            )}
+            <div className="cbot-quick">
+              {msgs.length > 1 && <span className="cbot-quick-l">Zeptat se dál:</span>}
+              {QUICK.map((q) => <button key={q} type="button" onClick={() => ask(q)}>{q}</button>)}
+            </div>
             <div ref={endRef} />
           </div>
           <form className="cbot-input" onSubmit={(e) => { e.preventDefault(); ask(input); }}>

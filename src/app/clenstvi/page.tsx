@@ -27,8 +27,9 @@ export default function ClenstviPage() {
           <div className="price-num"><b>99</b> Kč <span>/ měsíc</span></div>
           <p className="price-lock">
             Připoj se teď a máš <b>99 Kč/měsíc zamčených na celý první rok</b>. Po roce se
-            členství překlápí na běžnou cenu <b>199 Kč/měsíc</b> — kdo je členem dřív, platí míň.
+            členství překlápí na běžnou cenu <b>199 Kč/měsíc</b> — a tuhle cenu už <b>nikdy nezvýšíme</b>. Kdo je členem dřív, platí míň.
           </p>
+          <p className="price-guarantee">🔒 Garantujeme: cenu předplatného po prvním roce už nikdy nezvedneme.</p>
           <div className="price-opts">
             <div className="price-opt rec">
               <span className="po-lab">Ročně předem <span className="po-badge">Nejvýhodnější</span></span>
