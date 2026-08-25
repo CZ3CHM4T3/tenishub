@@ -13,6 +13,7 @@ import AdminModerace from "./AdminModerace";
 import AdminFeedback from "./AdminFeedback";
 import AdminVideo from "./AdminVideo";
 import AdminDotazy from "./AdminDotazy";
+import AdminProfily from "./AdminProfily";
 
 type Profile = { id: string; full_name: string | null; email: string | null; city: string | null; created_at: string; is_admin: boolean };
 type Membership = { id: string; profile_id: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -156,7 +157,7 @@ export default function AdminPage() {
 
   const TAB_GROUPS: [string, [string, string][]][] = [
     ["Přehled a čísla", [["prehled", "Přehled"], ["feedback", "Zpětná vazba"], ["dotazy", "Dotazy"]]],
-    ["Lidé a členství", [["uzivatele", "Uživatelé"]]],
+    ["Lidé a členství", [["profily", "Profily"], ["uzivatele", "Uživatelé"]]],
     ["Katalog trenérů a areálů", [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]]],
     ["Komunita", [["recenze", "Recenze"], ["moderace", "Moderace"]]],
     ["Služby a nástroje", [["video", "Videorozbor"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"]]],
@@ -165,6 +166,7 @@ export default function AdminPage() {
     prehled: "Souhrn webu: počty účtů, aktivních členů, tržby a klíčová čísla.",
     feedback: "Konverzní trychtýř (návštěvy → účty → členové) a zpětná vazba od uživatelů.",
     dotazy: "Dotazy z okna Zeptejte se nás na webu — spam je předfiltrovaný.",
+    profily: "Profily podle kategorií (trenéři/rodiče/hráči) a ruční ověřování trenérů.",
     uzivatele: "Všichni registrovaní: nastavení a prodloužení členství, zrušení účtu.",
     subjekty: "Katalog trenérů a areálů — správa jejich profilů a údajů.",
     overeni: "Fronta žádostí o ověřený odznak — schválit nebo zamítnout.",
@@ -400,6 +402,7 @@ export default function AdminPage() {
 
         {tab === "video" && <AdminVideo />}
         {tab === "dotazy" && <AdminDotazy />}
+        {tab === "profily" && <AdminProfily />}
 
         {tab === "rezervace" && (
         <div className="acct-card">

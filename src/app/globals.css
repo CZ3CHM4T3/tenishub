@@ -3130,6 +3130,16 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .klub-mtab{display:inline-flex;align-items:center;gap:.45rem;background:var(--paper,#fff);border:1.5px solid var(--line);border-radius:12px;padding:.6rem 1rem;font-family:inherit;font-weight:700;font-size:.92rem;color:var(--muted);cursor:pointer;transition:.14s}
 .klub-mtab:hover{border-color:var(--gold-l);color:var(--green)}
 .klub-mtab.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── Admin: Profily ── */
+.pf-h{display:flex;align-items:center;gap:.45rem;font-size:1rem;color:var(--green);margin:0 0 .6rem}
+.pf-list{display:flex;flex-direction:column;gap:.5rem}
+.pf-row{display:flex;align-items:center;gap:.7rem;background:var(--paper,#fff);border:1px solid var(--line);border-radius:12px;padding:.6rem .85rem}
+.pf-av{width:32px;height:32px;flex:none;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.pf-tx{flex:1;min-width:0}
+.pf-tx b{display:block;color:var(--ink)}
+.pf-tx span{color:var(--muted);font-size:.82rem}
+.pf-row .btn{padding:.35rem .7rem;font-size:.82rem}
 .cbot-quick button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;font-size:.8rem;font-family:inherit;color:var(--green);font-weight:600;cursor:pointer}
 .cbot-quick button:hover{border-color:var(--gold-l);background:rgba(191,154,71,.08)}
 .cbot-input{display:flex;gap:.5rem;padding:.7rem;border-top:1px solid var(--line);background:var(--paper,#fff)}
