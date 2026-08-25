@@ -4,8 +4,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ServiceMap } from "@/components/ServiceMap";
 
 export const metadata: Metadata = {
-  title: "Členství HUBmember — kompletní tenisový klub",
-  description: "Přehled všech rolí a jejich výhod v členství HUBmember (99 Kč/měsíc): konkurenční výhoda pro závodní hráče a klid pro rodiče.",
+  title: "Členství HUBplus — kompletní tenisový klub",
+  description: "Přehled všech rolí a jejich výhod v členství HUBplus (99 Kč/měsíc): konkurenční výhoda pro závodní hráče a klid pro rodiče.",
 };
 
 export default function ClenstviPage() {
@@ -17,13 +17,13 @@ export default function ClenstviPage() {
         <h1 className="rv">Členství</h1>
         <p className="lead rv d1">
           Jedno členství, <b>kompletní podpora</b>. Najít trenéra a připojit dítě do klubu je
-          zdarma — <b>HUBmember</b> odemyká rezervace, zprávy, Moje cesta a všechny nástroje.
+          zdarma — <b>HUBplus</b> odemyká rezervace, zprávy, Moje cesta a všechny nástroje.
         </p>
 
         {/* CENOVÁ SEKCE */}
         <div className="price-card rv d1">
           <span className="price-eyebrow">★ Zakládající cena</span>
-          <h2 className="price-name">HUBmember</h2>
+          <h2 className="price-name">HUBplus</h2>
           <div className="price-num"><b>99</b> Kč <span>/ měsíc</span></div>
           <p className="price-lock">
             Připoj se teď a máš <b>99 Kč/měsíc zamčených na celý první rok</b>. Po roce se
@@ -50,7 +50,7 @@ export default function ClenstviPage() {
         <div className="rv d1"><ServiceMap showMap={false} showCards={true} /></div>
 
         <p className="rp-extra" style={{ marginTop: "2rem" }}>
-          Pozn.: <b>Videorozbor a konzultace</b> je samostatná placená služba mimo HUBmember. <Link href="/videorozbor">Více →</Link>
+          Pozn.: <b>Videorozbor a konzultace</b> je samostatná placená služba mimo HUBplus. <Link href="/videorozbor">Více →</Link>
         </p>
       </div>
     </div>

@@ -71,7 +71,7 @@ export default function BazarClient() {
           <button className={`fcat${isBazar ? " on" : ""}`} onClick={() => setTab("bazar")}>Bazar vybavení</button>
           <button className={`fcat${!isBazar ? " on" : ""}`} onClick={() => setTab("spolujizda")}>Spolujízda</button>
         </div>
-        <p className="member-note" style={{ marginTop: "-0.6rem" }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUBmember." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUBmember."}</p>
+        <p className="member-note" style={{ marginTop: "-0.6rem" }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUBplus." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUBplus."}</p>
 
         {loading ? <p className="member-note">Načítám…</p> : shown.length === 0 ? (
           <div className="acct-card mc-gate"><Repeat size={30} /><h2>Zatím tu nic není</h2><p>Buďte první.</p></div>
@@ -127,9 +127,9 @@ export default function BazarClient() {
         <div className="mc-modal" onClick={() => setGate(null)}>
           <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
-            <h3>{gate === "login" ? "Přihlaste se" : "Přidávání je součást HUBmember"}</h3>
-            <p className="member-note">{gate === "login" ? "Pro přidání se přihlaste." : "Prohlížet můžou všichni. Přidávat inzeráty a odvozy můžou členové HUBmember."}</p>
-            <Link href={gate === "login" ? "/prihlaseni?next=/bazar" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUBmember</>}</Link>
+            <h3>{gate === "login" ? "Přihlaste se" : "Přidávání je součást HUBplus"}</h3>
+            <p className="member-note">{gate === "login" ? "Pro přidání se přihlaste." : "Prohlížet můžou všichni. Přidávat inzeráty a odvozy můžou členové HUBplus."}</p>
+            <Link href={gate === "login" ? "/prihlaseni?next=/bazar" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUBplus</>}</Link>
           </div>
         </div>
       )}

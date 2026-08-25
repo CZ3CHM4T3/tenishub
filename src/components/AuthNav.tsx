@@ -19,7 +19,7 @@ export function AuthNav() {
     return (
       <>
         <Link href="/ucet" className="login">Můj účet</Link>
-        <Link href="/ucet" className="btn btn-gold">HUBmember</Link>
+        <Link href="/ucet" className="btn btn-gold">HUBplus</Link>
       </>
     );
   }

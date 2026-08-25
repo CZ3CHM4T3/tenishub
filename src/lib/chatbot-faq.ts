@@ -11,7 +11,7 @@ export const FAQ: Qa[] = [
   { q: "Kolik stojí členství?", keys: ["kolik", "cena", "stoji", "cenik", "clenstvi cena", "penize", "platit", "kč", "kc"],
     a: "Zakládající cena je 99 Kč měsíčně a zamkne se ti na celý první rok. Po roce se překlápí na běžných 199 Kč. Platit můžeš měsíčně nebo ročně předem.", link: { label: "Členství", href: "/clenstvi" } },
   { q: "Je něco zdarma?", keys: ["zdarma", "free", "zadarmo", "neplatit", "bez placeni"],
-    a: "Ano — najít trenéra na mapě a připojit dítě do klubu je zdarma, i základní pokrok uvidíš. Členství HUBmember odemyká rezervace, zprávy, Moje cesta a všechny nástroje." },
+    a: "Ano — najít trenéra na mapě a připojit dítě do klubu je zdarma, i základní pokrok uvidíš. Členství HUBplus odemyká rezervace, zprávy, Moje cesta a všechny nástroje." },
   { q: "Jak najdu trenéra?", keys: ["najdu trenera", "hledat trenera", "trener", "kde trener", "mapa"],
     a: "Klikni na Mapu služeb — najdeš trenéry a kluby po celé ČR, filtruješ podle města a dojezdu.", link: { label: "Mapa služeb", href: "/mapa" } },
   { q: "Co je strom dovedností / kariéra dítěte?", keys: ["strom", "dovednosti", "kariera", "level", "pokrok", "skill"],

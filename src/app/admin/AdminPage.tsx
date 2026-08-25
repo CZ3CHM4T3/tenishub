@@ -254,7 +254,7 @@ export default function AdminPage() {
           <div className="admin-scroll">
             <table className="admin-table">
               <thead>
-                <tr><th>Uživatel</th><th>E-mail</th><th>Registrace</th><th>HUBmember</th><th>Od</th><th>Do</th><th>Prodloužení</th><th>Akce</th></tr>
+                <tr><th>Uživatel</th><th>E-mail</th><th>Registrace</th><th>HUBplus</th><th>Od</th><th>Do</th><th>Prodloužení</th><th>Akce</th></tr>
               </thead>
               <tbody>
                 {profiles.map((p) => {

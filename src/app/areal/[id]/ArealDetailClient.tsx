@@ -191,7 +191,7 @@ export default function ArealDetailClient({ id, initial }: { id: string; initial
               <Link href="/areal" className="btn btn-gold" style={{ width: "100%" }}>
                 Rezervovat kurt <ArrowRight size={16} />
               </Link>
-              <div className="note"><CheckCircle2 size={13} style={{ verticalAlign: "-2px" }} /> Online rezervace a platby jsou funkce HUBmember</div>
+              <div className="note"><CheckCircle2 size={13} style={{ verticalAlign: "-2px" }} /> Online rezervace a platby jsou funkce HUBplus</div>
             </div>
           </aside>
         </div>

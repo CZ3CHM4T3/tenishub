@@ -43,7 +43,7 @@ export default function ONasPage() {
         <h2 className="rv">Jak to děláme</h2>
         <p>
           Všechno hodnotné je součástí členství — jedna cena, kompletní podpora. Za 99 Kč měsíčně
-          dáváte dítěti konkurenční výhodu a sobě klid (HUBmember). Tak je to
+          dáváte dítěti konkurenční výhodu a sobě klid (HUBplus). Tak je to
           férové ke všem stranám.
         </p>
         <p className="vr-foot">

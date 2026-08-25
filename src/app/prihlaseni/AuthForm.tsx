@@ -145,7 +145,7 @@ export default function AuthForm() {
 
         {!invite && (
           <p className="auth-note">
-            Registrace tě rovnou zapojí do klubu. <b>HUBmember</b> 99 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
+            Registrace tě rovnou zapojí do klubu. <b>HUBplus</b> 99 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
           </p>
         )}
       </div>

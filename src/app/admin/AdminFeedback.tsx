@@ -69,7 +69,7 @@ export default function AdminFeedback({ accounts, members, signups7, signups30 }
         </div>
       </div>
       <p className="member-note" style={{ marginTop: "0.8rem" }}>
-        Návštěva = jeden prohlížeč za relaci. Procenta ukazují, kolik lidí postoupí dál (návštěva → registrace → placené HUBmember).
+        Návštěva = jeden prohlížeč za relaci. Procenta ukazují, kolik lidí postoupí dál (návštěva → registrace → placené HUBplus).
       </p>
     </div>
 

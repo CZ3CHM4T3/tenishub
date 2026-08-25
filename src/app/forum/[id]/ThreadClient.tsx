@@ -88,7 +88,7 @@ export default function ThreadClient({ id }: { id: string }) {
             {!me ? (
               <p className="member-note">Pro odpověď se <Link href="/prihlaseni?next=/forum" className="linklike">přihlaste</Link>.</p>
             ) : !canPost ? (
-              <p className="member-note"><Lock size={14} style={{ verticalAlign: "-2px" }} /> Odpovídat můžou členové <b>HUBmember</b>. <Link href="/ucet" className="linklike">Chci HUBmember</Link></p>
+              <p className="member-note"><Lock size={14} style={{ verticalAlign: "-2px" }} /> Odpovídat můžou členové <b>HUBplus</b>. <Link href="/ucet" className="linklike">Chci HUBplus</Link></p>
             ) : (<>
               <textarea rows={3} value={reply} onChange={(e) => setReply(e.target.value)} placeholder="Vaše odpověď…" className="freply-ta" />
               <button className="btn btn-green" disabled={busy} onClick={send}>Odpovědět</button>

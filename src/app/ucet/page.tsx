@@ -3,7 +3,7 @@ import AccountPage from "./AccountPage";
 
 export const metadata: Metadata = {
   title: "Můj účet",
-  description: "Tvůj profil, HUBmember a rezervace přehledně na jednom místě.",
+  description: "Tvůj profil, HUBplus a rezervace přehledně na jednom místě.",
 };
 
 export default function UcetPage() {
