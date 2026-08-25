@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
-import ArealDashboard from "./ArealDashboard";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Dashboard areálu — obsazenost a rezervace kurtů",
-  description:
-    "Správa obsazenosti kurtů, online rezervace a platby a nabídka volných kurtů se slevou. Model dashboardu pro tenisové areály.",
-};
-
+// Dashboard areálu (demo) je zatím pryč — vrátíme ho, až budeme dělat profily areálů.
+// Areály jsou k nalezení na mapě.
 export default function ArealPage() {
-  return <ArealDashboard />;
+  redirect("/mapa?type=club");
 }

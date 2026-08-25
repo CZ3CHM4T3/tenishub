@@ -188,10 +188,14 @@ export default function ArealDetailClient({ id, initial }: { id: string; initial
                   <Star size={18} /> <span style={{ fontSize: ".9rem" }}>Hodnocení {String(venue.rating ?? "—").replace(".", ",")} / 5</span>
                 </div>
               )}
-              <Link href="/areal" className="btn btn-gold" style={{ width: "100%" }}>
-                Rezervovat kurt <ArrowRight size={16} />
-              </Link>
-              <div className="note"><CheckCircle2 size={13} style={{ verticalAlign: "-2px" }} /> Online rezervace a platby jsou funkce HUB+</div>
+              {web ? (
+                <a href={web.startsWith("http") ? web : `https://${web}`} target="_blank" rel="noopener noreferrer" className="btn btn-gold" style={{ width: "100%" }}>
+                  Web areálu <ArrowRight size={16} />
+                </a>
+              ) : (
+                <Link href="/mapa?type=club" className="btn btn-out" style={{ width: "100%" }}>Zpět na mapu areálů</Link>
+              )}
+              <div className="note"><CheckCircle2 size={13} style={{ verticalAlign: "-2px" }} /> Online rezervace přímo u nás připravujeme.</div>
             </div>
           </aside>
         </div>

@@ -210,7 +210,6 @@ export default function AdminPage() {
       <div className="wrap acct-wrap admin-wrap">
         <div className="dash-head">
           <h1 className="acct-h1"><ShieldCheck size={26} style={{ verticalAlign: "-4px" }} /> Administrace</h1>
-          <Link href="/dashboard" className="btn btn-gold"><LayoutDashboard size={16} /> Provozní dashboard</Link>
         </div>
 
         {/* HLAVNÍ ZÁLOŽKY (barevné, s ikonou) */}
