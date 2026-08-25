@@ -3413,6 +3413,23 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .akce-meta{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;color:var(--muted);font-size:.85rem;margin-top:.3rem}
 .akce-body{margin:.4rem 0 0;color:var(--ink);font-size:.9rem}
 .akce-going{margin-top:.4rem;font-size:.82rem;color:var(--muted)}
+.akce-filter{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.akce-fbtn{font-size:.8rem;font-weight:600;padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.akce-fbtn.on{border-color:var(--green);background:var(--green);color:#fff}
+.akce-grp{display:inline-flex;align-items:center;gap:.25rem;font-size:.72rem;font-weight:700;color:var(--gold);background:#f6efdd;padding:.1rem .45rem;border-radius:999px}
+/* skupiny (šuplíky) */
+.skup-new{display:flex;gap:.5rem;margin-top:.6rem}
+.skup-new input{flex:1;padding:.55rem .8rem;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+.skup-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.skup-chip{display:inline-flex;align-items:center;gap:.3rem;background:#eef4ef;color:var(--green);border:1px solid #cfe0d7;border-radius:999px;padding:.25rem .3rem .25rem .7rem;font-weight:700;font-size:.82rem}
+.skup-x{border:none;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center;padding:.1rem}
+.skup-x:hover{color:#c0392b}
+.skup-members{display:flex;flex-direction:column;gap:.2rem;margin-top:.9rem}
+.skup-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.5rem 0;border-top:1px solid var(--line)}
+.skup-name{font-weight:600;color:var(--ink);min-width:120px}
+.skup-toggles{display:flex;flex-wrap:wrap;gap:.35rem}
+.skup-tog{font-size:.78rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;border:1px dashed var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.skup-tog.on{border-style:solid;border-color:var(--green);background:#eef4ef;color:var(--green)}
 
 /* ===== CoachFeed (rodič vidí svého trenéra) ===== */
 .cfeed{background:linear-gradient(180deg,#f5faf7,#fff);border:1px solid #cfe0d7;border-radius:16px;padding:1.1rem 1.2rem;margin:0 0 1.2rem}

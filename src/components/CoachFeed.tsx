@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Megaphone, CalendarDays, MapPin, Users, Check } from "lucide-react";
 
 type Post = { id: string; title: string | null; body: string; created_at: string };
-type Ev = { id: string; title: string; starts_at: string; place: string | null; body: string | null; capacity: number | null; allow_rsvp: boolean };
+type Ev = { id: string; title: string; starts_at: string; place: string | null; body: string | null; capacity: number | null; allow_rsvp: boolean; group_id: string | null };
 
 const fmtP = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" });
 const fmtD = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { weekday: "short", day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -27,19 +27,22 @@ export function CoachFeed() {
     if (!user) { setReady(true); return; }
     const prof = await supabase.from("profiles").select("full_name,email").eq("id", user.id).maybeSingle();
     setMe({ id: user.id, name: prof.data?.full_name || prof.data?.email || "Rodič" });
-    // aktivní trenér rodiče
-    const { data: r } = await supabase.from("coach_roster").select("coach_id").eq("member_id", user.id).eq("status", "active").limit(1).maybeSingle();
-    const coachId = (r as { coach_id?: string } | null)?.coach_id;
+    // aktivní trenér rodiče + do jakých skupin patří
+    const { data: r } = await supabase.from("coach_roster").select("coach_id,group_ids").eq("member_id", user.id).eq("status", "active").limit(1).maybeSingle();
+    const rr = r as { coach_id?: string; group_ids?: unknown } | null;
+    const coachId = rr?.coach_id;
+    const myGroups = Array.isArray(rr?.group_ids) ? (rr!.group_ids as string[]) : [];
     if (!coachId) { setReady(true); return; }
     const cp = await supabase.from("profiles").select("full_name,email").eq("id", coachId).maybeSingle();
     setCoach({ id: coachId, name: cp.data?.full_name || "Váš trenér" });
     const [{ data: po }, { data: ev }, { data: rs }] = await Promise.all([
       supabase.from("coach_posts").select("id,title,body,created_at").eq("coach_id", coachId).order("created_at", { ascending: false }).limit(8),
-      supabase.from("coach_events").select("id,title,starts_at,place,body,capacity,allow_rsvp").eq("coach_id", coachId).gte("starts_at", new Date(Date.now() - 12 * 3600e3).toISOString()).order("starts_at").limit(12),
+      supabase.from("coach_events").select("id,title,starts_at,place,body,capacity,allow_rsvp,group_id").eq("coach_id", coachId).gte("starts_at", new Date(Date.now() - 12 * 3600e3).toISOString()).order("starts_at").limit(20),
       supabase.from("event_rsvp").select("event_id,status").eq("member_id", user.id),
     ]);
     setPosts((po as Post[]) ?? []);
-    setEvents((ev as Ev[]) ?? []);
+    // rodič vidí akce pro celou komunitu (group_id null) nebo pro své skupiny
+    setEvents(((ev as Ev[]) ?? []).filter((e) => !e.group_id || myGroups.includes(e.group_id)));
     const m: Record<string, string> = {};
     ((rs as { event_id: string; status: string }[]) ?? []).forEach((x) => { m[x.event_id] = x.status; });
     setMine(m);

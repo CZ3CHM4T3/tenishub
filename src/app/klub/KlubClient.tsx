@@ -12,6 +12,7 @@ import StromEditor from "./StromEditor";
 import KlubOvereni from "./KlubOvereni";
 import { Nastenka } from "./Nastenka";
 import { Akce } from "./Akce";
+import { Skupiny } from "./Skupiny";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
@@ -249,6 +250,8 @@ export default function KlubClient() {
             </div>
           )}
         </div>
+
+        {uid && <Skupiny coachId={uid} />}
 
         {colleagues.length > 0 && (
           <div className="acct-card">
