@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeCheck, Check, X } from "lucide-react";
 
-type Spec = { id: string; name: string | null; city: string | null; website: string | null; photo_url: string | null; verified: boolean; license_declared: boolean | null };
+type Spec = { id: string; name: string | null; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; license_declared: boolean | null };
 
 export default function KlubOvereni() {
   const supabase = useMemo(() => createClient(), []);
@@ -17,7 +17,7 @@ export default function KlubOvereni() {
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setLoading(false); return; }
-    const { data: s } = await supabase.from("specialists").select("id,name,city,website,photo_url,verified,license_declared").eq("owner_id", user.id).limit(1).maybeSingle();
+    const { data: s } = await supabase.from("specialists").select("id,name,city,phone,website,photo_url,verified,license_declared").eq("owner_id", user.id).limit(1).maybeSingle();
     const sp = (s as Spec) ?? null;
     setSpec(sp);
     if (sp) {
@@ -39,6 +39,7 @@ export default function KlubOvereni() {
     { k: "name", label: "Jméno trenéra", ok: !!(spec.name && spec.name.trim() && spec.name !== "Nový trenér") },
     { k: "photo", label: "Profilová fotka s obličejem", ok: !!spec.photo_url },
     { k: "city", label: "Adresa / místo, kde trénujete", ok: !!(spec.city && spec.city.trim()) },
+    { k: "phone", label: "Telefonní číslo", ok: !!(spec.phone && spec.phone.trim()) },
     { k: "web", label: "Webová stránka (osobní nebo klubová)", ok: !!(spec.website && spec.website.trim()) },
     { k: "review", label: "Alespoň 1 hodnocení od někoho jiného", ok: reviews >= 1 },
     { k: "members", label: `Alespoň 10 platících členů v komunitě (${payingMembers}/10)`, ok: payingMembers >= 10 },

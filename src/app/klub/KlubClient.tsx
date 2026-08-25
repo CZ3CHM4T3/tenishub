@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame } from "lucide-react";
+import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame, CalendarDays, Info } from "lucide-react";
 import StromEditor from "./StromEditor";
 import KlubOvereni from "./KlubOvereni";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
@@ -27,6 +27,7 @@ export default function KlubClient() {
   const [copied, setCopied] = useState(false);
   const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
   const [showTree, setShowTree] = useState(false);
+  const [ktab, setKtab] = useState<"komunita" | "kalendar" | "informace">("komunita");
   const [kids, setKids] = useState<{ id: string; jmeno: string; prezdivka: string; level: number }[]>([]);
 
   const load = useCallback(async () => {
@@ -117,6 +118,27 @@ export default function KlubClient() {
 
         <KlubOvereni />
 
+        {/* MENU S IKONAMI */}
+        <div className="klub-menu">
+          <button type="button" className={`klub-mtab${ktab === "komunita" ? " on" : ""}`} onClick={() => setKtab("komunita")}><Users size={18} /> Komunita</button>
+          <button type="button" className={`klub-mtab${ktab === "kalendar" ? " on" : ""}`} onClick={() => setKtab("kalendar")}><CalendarDays size={18} /> Kalendář</button>
+          <button type="button" className={`klub-mtab${ktab === "informace" ? " on" : ""}`} onClick={() => setKtab("informace")}><Info size={18} /> Informace</button>
+        </div>
+
+        {ktab === "kalendar" && (
+          <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
+            <span className="klub-soon-tag">Brzy</span><CalendarDays size={26} />
+            <h3>Kalendář</h3><p>Tréninky, akce a termíny na jednom místě. Přidáváme.</p>
+          </div>
+        )}
+        {ktab === "informace" && (
+          <div className="acct-card">
+            <div className="acct-card-head"><Info size={20} /><h2>Informace</h2></div>
+            <p className="member-note">TenisHub je vaše <b>reklama a viditelnost</b> — nepřetahujeme vám byznys, jen vám pomáháme být vidět a vypadat profesionálně. Funkce přidáváme postupně; co byste tu chtěli, napište nám přes „Zeptejte se nás".</p>
+          </div>
+        )}
+
+        {ktab === "komunita" && (<>
         {/* POZVÁNKA */}
         <div className="acct-card klub-invite">
           <div className="acct-card-head"><Link2 size={20} /><h2>Pozvěte rodiče a kolegy</h2></div>
@@ -194,6 +216,7 @@ export default function KlubClient() {
           <h3>Sparing Cup</h3>
           <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
         </div>
+        </>)}
       </div>
     </div>
   );
