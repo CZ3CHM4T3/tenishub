@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import {
   Route, Plus, ChevronLeft, ChevronRight, Target, Trash2, Pencil,
   CalendarDays, CalendarRange, Grid3x3, TrendingUp, Lock, X,
@@ -535,10 +535,7 @@ export default function MojeCesta() {
 
   const Shell = (inner: React.ReactNode) => (
     <div className="acct-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/ucet" className="back">← Můj účet</Link>
-      </div></div></header>
+      <SiteHeader />
       <div className="wrap acct-wrap mc-wrap">{inner}</div>
     </div>
   );

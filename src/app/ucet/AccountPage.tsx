@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
-import { BadgeCheck, CalendarCheck, LogOut, ShieldCheck, UserRound, Mail, Route } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, Mail, Route } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
@@ -86,17 +86,12 @@ export default function AccountPage() {
 
   return (
     <div className="acct-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/" className="brand"><Wordmark /></Link>
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              {profile.is_admin && <Link href="/admin" className="back"><ShieldCheck size={15} style={{ verticalAlign: "-2px" }} /> Admin</Link>}
-              <Link href="/" className="back">← Zpět na web</Link>
-            </div>
-          </div>
+      <SiteHeader />
+      {profile.is_admin && (
+        <div className="wrap" style={{ paddingTop: ".6rem" }}>
+          <Link href="/admin" className="back"><BadgeCheck size={15} style={{ verticalAlign: "-2px" }} /> Administrace</Link>
         </div>
-      </header>
+      )}
 
       <div className="wrap acct-wrap">
         <h1 className="acct-h1">Můj účet</h1>

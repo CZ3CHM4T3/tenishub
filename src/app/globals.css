@@ -3033,13 +3033,13 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 }
 
 /* ── Chatbot Tenísek ── */
-.cbot-fab{position:fixed;right:18px;bottom:18px;z-index:200;width:58px;height:58px;border-radius:50%;
+.cbot-fab{position:fixed;left:18px;bottom:18px;z-index:200;width:58px;height:58px;border-radius:50%;
   border:none;cursor:pointer;background:linear-gradient(160deg,#2c4a3b,#16271f);color:#fff;
   box-shadow:0 12px 28px -8px rgba(0,0,0,.5);display:grid;place-items:center;transition:transform .16s}
 .cbot-fab:hover{transform:translateY(-2px) scale(1.04)}
 .cbot-ball{display:block;width:34px;height:34px}
 .cbot-ball.sm{width:30px;height:30px}
-.cbot-panel{position:fixed;right:18px;bottom:86px;z-index:200;width:min(360px,calc(100vw - 36px));
+.cbot-panel{position:fixed;left:18px;bottom:86px;z-index:200;width:min(360px,calc(100vw - 36px));
   height:min(520px,70vh);background:var(--paper,#fff);border:1px solid var(--line);border-radius:18px;
   box-shadow:0 26px 60px -24px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
 .cbot-head{display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;background:linear-gradient(160deg,#2c4a3b,#1c3025);color:#fff}
@@ -3200,3 +3200,43 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 @media(max-width:560px){.cjc-grid{grid-template-columns:1fr}}
 .app-fine-link{color:var(--gold);font-weight:700;text-decoration:none}
 .app-fine-link:hover{text-decoration:underline}
+
+/* ===== RODIČOVSKÝ HUB — objevování zdarma / nástroje v členství ===== */
+.rhub{margin:1.6rem 0 0}
+.rhub-sec{margin:1.4rem 0}
+.rhub-lab{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.32rem .7rem;border-radius:999px;margin-bottom:.7rem}
+.rhub-lab-free{color:#2f5d57;background:#e2efe9;border:1px solid #b9d8cc}
+.rhub-lab-hub{color:var(--gold);background:#f6efdd;border:1px solid var(--gold-l)}
+.rhub-lab-open{color:#7C4DD6;background:#EEEDFE;border:1px solid #cfc7f6}
+.rhub-sell{color:var(--muted);margin:-.2rem 0 .8rem;font-size:.96rem}
+.rhub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.rhub-grid-2{grid-template-columns:repeat(2,1fr)}
+.rhub-card{display:flex;align-items:flex-start;gap:.75rem;background:#fff;border:1px solid var(--line);border-radius:15px;padding:1rem;text-decoration:none;color:inherit;position:relative;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+.rhub-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(44,74,59,.12)}
+.rhub-ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;box-shadow:0 5px 12px rgba(0,0,0,.14)}
+.rhub-txt{display:flex;flex-direction:column;gap:.2rem;min-width:0}
+.rhub-txt b{font-size:1rem;color:var(--ink);font-weight:700}
+.rhub-desc{font-size:.86rem;color:var(--muted);line-height:1.4}
+.rhub-go{position:absolute;top:1rem;right:1rem;color:var(--gold);flex:none}
+.rhub-free:hover{border-color:#3b8a5a}
+.rhub-open:hover{border-color:#7C4DD6}
+.rhub-lock{position:absolute;top:.85rem;right:.85rem;width:26px;height:26px;border-radius:50%;background:#f1ede1;color:var(--gold);display:grid;place-items:center;flex:none;border:1px solid var(--gold-l)}
+.rhub-locked{background:linear-gradient(180deg,#fff,#faf7ef);border-color:#ece4cf}
+.rhub-locked:hover{border-color:var(--gold-l);box-shadow:0 12px 26px rgba(191,154,71,.16)}
+.rhub-locked .rhub-txt b{color:var(--green)}
+.rhub-cta{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.4rem;padding:1.3rem 1.5rem;border-radius:18px;background:linear-gradient(135deg,#2c4a3b,#1c3025);color:#fff}
+.rhub-cta-txt{display:flex;flex-direction:column;gap:.2rem}
+.rhub-cta-txt>b{font-size:1.15rem}
+.rhub-cta-txt>span{color:rgba(255,255,255,.82);font-size:.95rem}
+.rhub-cta-txt b b{color:var(--gold-l)}
+.rhub-cta-btn{flex:none}
+/* Proč TenisHub */
+.rodic-why{margin-top:2.4rem}
+.rodic-why>h2{font-size:1.4rem;color:var(--green);font-weight:800;margin-bottom:.9rem}
+.rodic-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.rodic-why-card{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem}
+.rodic-why-card .rww-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:#e2efe9;color:#2f5d57;margin-bottom:.2rem}
+.rodic-why-card b{color:var(--ink);font-size:1rem}
+.rodic-why-card span{color:var(--muted);font-size:.88rem;line-height:1.4}
+@media(max-width:820px){.rhub-grid,.rodic-why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.rhub-grid,.rhub-grid-2,.rodic-why-grid{grid-template-columns:1fr}.rhub-cta{flex-direction:column;align-items:stretch;text-align:center}.rhub-cta-btn{justify-content:center}}

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Send } from "lucide-react";
 import { notify } from "@/lib/notify";
 
@@ -90,10 +90,7 @@ export default function ZpravyClient() {
 
   return (
     <div className="acct-page">
-      <header className="subhdr"><div className="wrap"><div className="bar">
-        <Link href="/" className="brand"><Wordmark /></Link>
-        <Link href="/ucet" className="back">← Můj účet</Link>
-      </div></div></header>
+      <SiteHeader />
 
       <div className="wrap acct-wrap">
         <h1 className="acct-h1">Zprávy</h1>
