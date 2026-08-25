@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { RodicHub } from "@/components/RodicHub";
+import { CoachFeed } from "@/components/CoachFeed";
 import { ShieldCheck, Heart, Users } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RodicPage() {
         <h1 className="rv d1">Všechno pro tenisové rodiče na jednom místě</h1>
         <p className="lead rv d1">Najděte trenéra i kurt zdarma. A v členství veďte dítě celou sezónou bez vyhoření, ptejte se odborníků a sdílejte zkušenosti s ostatními rodiči.</p>
 
+        <div className="rv d1"><CoachFeed /></div>
         <div className="rv d1"><RodicHub /></div>
 
         {/* PROČ TO DĚLÁME */}

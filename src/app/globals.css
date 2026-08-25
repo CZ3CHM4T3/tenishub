@@ -3393,6 +3393,49 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rp-free{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#2f5d57;background:#e2efe9;padding:.1rem .35rem;border-radius:5px}
 .rp-hub{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:5px}
 .rp-exp{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#864a59;background:#f2e5e9;padding:.1rem .35rem;border-radius:5px}
+
+/* ===== Nástěnka + Akce (trenér) ===== */
+.nast-compose{display:flex;flex-direction:column;gap:.5rem;margin-top:.6rem}
+.nast-compose input,.nast-compose textarea{width:100%;padding:.6rem .8rem;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+.nast-compose textarea{resize:vertical}
+.nast-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.nast-post{border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;background:#fff}
+.nast-post-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem}
+.nast-post-h b{color:var(--ink);flex:1}
+.nast-date{font-size:.78rem;color:var(--muted)}
+.nast-post p{margin:0;color:var(--ink);white-space:pre-wrap;line-height:1.45}
+.akce-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.akce-item{border:1px solid var(--line);border-radius:12px;padding:.8rem .9rem;background:#fff}
+.akce-h{display:flex;align-items:center;gap:.6rem}
+.akce-h b{flex:1;color:var(--ink)}
+.akce-cap{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:700;color:#2f5d57;background:#e2efe9;padding:.15rem .5rem;border-radius:999px;white-space:nowrap}
+.akce-cap.full{color:#b23b2e;background:#f6e2df}
+.akce-meta{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;color:var(--muted);font-size:.85rem;margin-top:.3rem}
+.akce-body{margin:.4rem 0 0;color:var(--ink);font-size:.9rem}
+.akce-going{margin-top:.4rem;font-size:.82rem;color:var(--muted)}
+
+/* ===== CoachFeed (rodič vidí svého trenéra) ===== */
+.cfeed{background:linear-gradient(180deg,#f5faf7,#fff);border:1px solid #cfe0d7;border-radius:16px;padding:1.1rem 1.2rem;margin:0 0 1.2rem}
+.cfeed-head{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.8rem}
+.cfeed-lab{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#2f5d57}
+.cfeed-head b{color:var(--green);font-size:1.1rem}
+.cfeed-posts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.7rem}
+.cfeed-post{display:flex;gap:.6rem;background:#fff;border:1px solid var(--line);border-radius:11px;padding:.7rem .8rem}
+.cfeed-ic{flex:none;width:30px;height:30px;border-radius:8px;background:#eef4ef;color:var(--green);display:grid;place-items:center}
+.cfeed-post b{color:var(--ink);margin-right:.4rem}
+.cfeed-date{font-size:.75rem;color:var(--muted)}
+.cfeed-post p{margin:.25rem 0 0;color:var(--ink);white-space:pre-wrap;line-height:1.4;font-size:.9rem}
+.cfeed-events{display:flex;flex-direction:column;gap:.5rem}
+.cfeed-ev{display:flex;align-items:center;gap:.8rem;justify-content:space-between;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:11px;padding:.7rem .8rem}
+.cfeed-ev-main{display:flex;flex-direction:column;gap:.15rem;min-width:0;flex:1}
+.cfeed-ev-main b{color:var(--ink)}
+.cfeed-ev-meta{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;color:var(--muted);font-size:.82rem}
+.cfeed-ev-body{color:var(--muted);font-size:.84rem}
+.cfeed-rsvp{display:flex;gap:.4rem;flex:none}
+.cfeed-btn{font-size:.82rem;font-weight:700;padding:.4rem .7rem;border-radius:9px;border:1px solid var(--green);background:#fff;color:var(--green);cursor:pointer;display:inline-flex;align-items:center;gap:.3rem}
+.cfeed-btn.on{background:var(--green);color:#fff}
+.cfeed-btn.out{border-color:var(--line);color:var(--muted)}
+.cfeed-btn.out.on{background:#e9ece9;color:var(--ink)}
 .rp-soon{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#7C4DD6;background:#EEEDFE;padding:.1rem .35rem;border-radius:5px}
 
 /* ===== Předběžný přístup / founder lock (/pristup) ===== */

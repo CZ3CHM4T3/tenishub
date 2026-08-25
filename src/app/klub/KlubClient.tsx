@@ -7,18 +7,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame, CalendarDays, Info, SlidersHorizontal, Baby } from "lucide-react";
+import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame, CalendarDays, Info, SlidersHorizontal, Baby, Megaphone } from "lucide-react";
 import StromEditor from "./StromEditor";
 import KlubOvereni from "./KlubOvereni";
+import { Nastenka } from "./Nastenka";
+import { Akce } from "./Akce";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
 
 // Moduly trenérského rozhraní — trenér si vybere, co používá.
 const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] = [
+  { k: "nastenka", label: "Nástěnka", Icon: Megaphone, desc: "Oznámení a novinky celé komunitě rodičů." },
+  { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním (RSVP)." },
   { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
-  { k: "kalendar", label: "Kalendář", Icon: CalendarDays, desc: "Tréninky, akce a termíny (připravujeme)." },
   { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (odemkne se po ověření)." },
   { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (připravujeme)." },
   { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky." },
@@ -39,7 +42,7 @@ export default function KlubClient() {
   const [copied, setCopied] = useState(false);
   const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
   const [showTree, setShowTree] = useState(false);
-  const [ktab, setKtab] = useState<string>("komunita");
+  const [ktab, setKtab] = useState<string>("nastenka");
   const [verified, setVerified] = useState(false);
   const [kids, setKids] = useState<{ id: string; jmeno: string; prezdivka: string; level: number }[]>([]);
   const [mods, setMods] = useState<Record<string, boolean>>(() => Object.fromEntries(DEFAULT_MODS.map((k) => [k, true])));
@@ -188,13 +191,11 @@ export default function KlubClient() {
           </div>
         )}
 
-        {/* KALENDÁŘ */}
-        {active === "kalendar" && (
-          <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
-            <span className="klub-soon-tag">Brzy</span><CalendarDays size={26} />
-            <h3>Kalendář</h3><p>Tréninky, akce a termíny na jednom místě. Přidáváme.</p>
-          </div>
-        )}
+        {/* NÁSTĚNKA */}
+        {active === "nastenka" && uid && <Nastenka coachId={uid} />}
+
+        {/* AKCE / KALENDÁŘ */}
+        {active === "kalendar" && uid && <Akce coachId={uid} />}
 
         {/* INFORMACE */}
         {active === "informace" && (
