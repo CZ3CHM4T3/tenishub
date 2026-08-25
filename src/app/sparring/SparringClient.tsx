@@ -142,7 +142,7 @@ export default function SparringClient() {
             {myOffer && <span className="member-badge">NA ZDI</span>}
           </div>
           {!userId ? (
-            <p className="member-note">Chceš parťáka? <Link href="/prihlaseni?tab=reg" style={{ color: "var(--gold)", fontWeight: 700 }}>Staň se členem</Link> a publikuj svou kartu na zeď.</p>
+            <p className="member-note">Chceš parťáka? <Link href="/pristup" style={{ color: "var(--gold)", fontWeight: 700 }}>Staň se členem</Link> a publikuj svou kartu na zeď.</p>
           ) : !showForm ? (
             <>
               <p className="member-note">{myOffer ? "Tvoje karta je na zdi i na mapě. Můžeš ji upravit nebo stáhnout." : "Vyplň kartu a objevíš se na zdi i jako pin na mapě — ostatní tě osloví."}</p>

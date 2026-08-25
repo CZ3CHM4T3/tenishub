@@ -103,7 +103,7 @@ export function AppetizerSlider() {
         </div>
 
         <div className="app-cta rv d2">
-          <Link href="/prihlaseni?tab=reg" className="btn btn-gold app-join">Staň se členem — 99 Kč/měsíc <ArrowRight size={18} /></Link>
+          <Link href="/pristup" className="btn btn-gold app-join">Chci předběžný přístup — 99 Kč napořád <ArrowRight size={18} /></Link>
           <span className="app-fine"><Link href="/clenstvi" className="app-fine-link">Co všechno je v ceně →</Link> · Členství můžeš kdykoli zrušit.</span>
         </div>
       </div>

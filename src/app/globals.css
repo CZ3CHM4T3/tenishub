@@ -3389,6 +3389,25 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rp-free{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#2f5d57;background:#e2efe9;padding:.1rem .35rem;border-radius:5px}
 .rp-hub{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:5px}
 .rp-soon{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#7C4DD6;background:#EEEDFE;padding:.1rem .35rem;border-radius:5px}
+
+/* ===== Předběžný přístup / founder lock (/pristup) ===== */
+.founder-lock{display:flex;flex-direction:column;gap:.7rem;background:#faf6ec;border:1px solid var(--gold-l);border-radius:16px;padding:1.2rem;margin:1.2rem 0}
+.fl-row{display:flex;align-items:flex-start;gap:.8rem}
+.fl-ic{flex:none;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid var(--gold-l);color:var(--gold);display:grid;place-items:center}
+.fl-row b{display:block;color:var(--ink);font-size:1rem}
+.fl-row span{color:var(--muted);font-size:.88rem;line-height:1.4}
+.wl-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.4rem;margin-top:1.2rem}
+.wl-card h2{font-size:1.2rem;color:var(--green);margin:0 0 .8rem}
+.wl-form .wl-fields{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.8rem}
+.wl-opt{color:var(--muted);font-weight:400;font-size:.8rem}
+.wl-fine{color:var(--muted);font-size:.8rem;text-align:center;margin:.7rem 0 0}
+.wl-done{text-align:center;padding:1rem}
+.wl-done-ic{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#e2efe9;color:#2f5d57;margin-bottom:.6rem}
+.wl-done h3{color:var(--green);font-size:1.3rem;margin:0 0 .4rem}
+.wl-done p{color:var(--muted);line-height:1.5}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:520px){.wl-form .wl-fields{grid-template-columns:1fr}}
 /* plovoucí lišta náhledu (admin) */
 .adminbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:.35rem;background:#1c3025;color:#fff;border:1px solid #395043;border-radius:999px;padding:.4rem .5rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.55);max-width:calc(100vw - 24px);overflow-x:auto}
 .adminbar.preview{background:#5a3a12;border-color:#8a5a1e}

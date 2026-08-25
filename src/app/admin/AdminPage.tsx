@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy, MessagesSquare, Wrench } from "lucide-react";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy, MessagesSquare, Wrench, Mail } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [removals, setRemovals] = useState<Removal[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [waitlist, setWaitlist] = useState<{ id: string; email: string; name: string | null; converted: boolean; created_at: string }[]>([]);
   const [group, setGroup] = useState("prehled");
   const [tab, setTab] = useState("prehled");
   const [busy, setBusy] = useState<string | null>(null);
@@ -61,6 +62,8 @@ export default function AdminPage() {
       supabase.from("removal_requests").select("id,status,created_at,email,reason,specialists(name),venues(name)").eq("status", "open").order("created_at", { ascending: false }),
     ]);
     const rv = await supabase.from("reviews").select("id,created_at,author_name,rating,body,r_skill,r_kids,r_comm,r_progress,r_value,specialists(name)").eq("status", "pending").order("created_at", { ascending: false });
+    const wl = await supabase.from("waitlist").select("id,email,name,converted,created_at").order("created_at", { ascending: false });
+    setWaitlist((wl.data as { id: string; email: string; name: string | null; converted: boolean; created_at: string }[]) ?? []);
     setProfiles((p.data as Profile[]) ?? []);
     setMemberships((m.data as Membership[]) ?? []);
     setBookings((b.data as Booking[]) ?? []);
@@ -168,7 +171,7 @@ export default function AdminPage() {
 
   const GROUPS: { k: string; label: string; Icon: typeof Users; c: string; subs: [string, string][] }[] = [
     { k: "prehled", label: "Přehled & čísla", Icon: LayoutDashboard, c: "#3b5666", subs: [["prehled", "Přehled"], ["feedback", "Zpětná vazba"], ["dotazy", "Dotazy"]] },
-    { k: "lide", label: "Lidé & členství", Icon: Users, c: "#2f5d57", subs: [["profily", "Profily"], ["uzivatele", "Uživatelé"]] },
+    { k: "lide", label: "Lidé & členství", Icon: Users, c: "#2f5d57", subs: [["profily", "Profily"], ["uzivatele", "Uživatelé"], ["zajemci", "Zájemci"]] },
     { k: "katalog", label: "Katalog", Icon: MapPin, c: "#7c6018", subs: [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]] },
     { k: "komunita", label: "Komunita", Icon: MessagesSquare, c: "#7C4DD6", subs: [["recenze", "Recenze"], ["moderace", "Moderace"]] },
     { k: "sluzby", label: "Služby & nástroje", Icon: Wrench, c: "#864a59", subs: [["video", "Videorozbor"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"]] },
@@ -180,6 +183,7 @@ export default function AdminPage() {
     dotazy: "Dotazy z okna Zeptejte se nás na webu — spam je předfiltrovaný.",
     profily: "Profily podle kategorií (trenéři/rodiče/hráči) a ruční ověřování trenérů.",
     uzivatele: "Všichni registrovaní: nastavení a prodloužení členství, zrušení účtu.",
+    zajemci: "Předběžný přístup — e-maily zájemců o členství (zakládající cena 99 do konce roku).",
     subjekty: "Katalog trenérů a areálů — správa jejich profilů a údajů.",
     overeni: "Fronta žádostí o ověřený odznak — schválit nebo zamítnout.",
     zadosti: "Převzetí cizího profilu („to jsem já“) a žádosti o odstranění (GDPR).",
@@ -304,6 +308,32 @@ export default function AdminPage() {
           </div>
         </div>
 
+        )}
+
+        {tab === "zajemci" && (
+        <div className="acct-card">
+          <div className="acct-card-head"><Mail size={20} /><h2>Zájemci o členství ({waitlist.length})</h2></div>
+          <p className="member-note">Seznam z „předběžného přístupu". Kdo si koupí členství do konce roku, drží si zakládající cenu 99 Kč napořád — po spuštění plateb tu uvidíš, kdo se stal členem včas.</p>
+          {waitlist.length === 0 ? (
+            <p className="member-note">Zatím nikdo na seznamu.</p>
+          ) : (
+            <div className="admin-scroll">
+              <table className="admin-table">
+                <thead><tr><th>Zapsán</th><th>Jméno</th><th>E-mail</th><th>Stav</th></tr></thead>
+                <tbody>
+                  {waitlist.map((w) => (
+                    <tr key={w.id}>
+                      <td>{fmt(w.created_at)}</td>
+                      <td>{w.name || "—"}</td>
+                      <td>{w.email}</td>
+                      <td>{w.converted ? <span className="member-badge">ČLEN</span> : <span className="nomember">zájemce</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
         )}
 
         {tab === "zadosti" && (<>

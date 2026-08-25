@@ -539,7 +539,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             <h3>Nejdřív se přihlas</h3>
             <div className="msub">Rezervace termínu je součástí členství HUB+.</div>
             <Link href="/prihlaseni" className="btn btn-gold" style={{ width: "100%" }}>Přihlásit se</Link>
-            <Link href="/prihlaseni?tab=reg" className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }}>Staň se členem</Link>
+            <Link href="/pristup" className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }}>Staň se členem</Link>
           </div>
         </div>
       )}

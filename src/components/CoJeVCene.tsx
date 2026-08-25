@@ -47,7 +47,7 @@ export function CoJeVCene() {
       </div>
 
       <div className="cjc-foot">
-        <Link href="/prihlaseni?tab=reg" className="btn btn-gold cjc-cta">Staň se členem <ArrowRight size={18} /></Link>
+        <Link href="/pristup" className="btn btn-gold cjc-cta">Chci předběžný přístup <ArrowRight size={18} /></Link>
         <span className="cjc-fine">Členství kdykoli zrušíš. <b>Videorozbor a konzultace</b> je samostatná placená služba mimo členství.</span>
       </div>
     </section>

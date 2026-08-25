@@ -166,7 +166,7 @@ export default function AccountPage() {
                 <b>Členství HUB+ není aktivní.</b> Bez něj nemáš přístup k funkcím webu (Moje cesta, poradna, sparring, komunita…).
                 Členství aktivujeme přes pozvánku; po napojení plateb si ho obnovíš přímo tady.
               </p>
-              <Link href="/#zeptejte-se" className="btn btn-gold">Chci členství</Link>
+              <Link href="/pristup" className="btn btn-gold">Chci členství</Link>
             </>
           )}
         </div>

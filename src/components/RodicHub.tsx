@@ -68,7 +68,7 @@ export function RodicHub() {
             );
             return member
               ? <Link key={i} href={tl.href} className="rhub-card rhub-open">{Inner}</Link>
-              : <Link key={i} href="/prihlaseni?tab=reg&next=/rodic" className="rhub-card rhub-locked">{Inner}</Link>;
+              : <Link key={i} href="/pristup" className="rhub-card rhub-locked">{Inner}</Link>;
           })}
         </div>
       </div>
@@ -80,7 +80,7 @@ export function RodicHub() {
             <b>Vyzkoušej celý klub na měsíc</b>
             <span>Všechny nástroje výš, jedno členství. <b>99 Kč/měsíc</b>, kdykoli zrušíš — bez závazku.</span>
           </div>
-          <Link href="/prihlaseni?tab=reg&next=/rodic" className="btn btn-gold rhub-cta-btn">Stát se členem <ArrowRight size={18} /></Link>
+          <Link href="/pristup" className="btn btn-gold rhub-cta-btn">Chci předběžný přístup <ArrowRight size={18} /></Link>
         </div>
       )}
     </div>

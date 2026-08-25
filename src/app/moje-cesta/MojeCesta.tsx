@@ -554,7 +554,7 @@ export default function MojeCesta() {
       <img src="/moje-cesta.png" alt="" className="mc-gate-photo" />
       <Lock size={34} /><h1>Moje cesta je součást HUB+</h1>
       <p>Naplánuj celou sezónu — tréninky, turnaje, kondici i volno — a sleduj cíle a statistiky. Aktivuj HUB+ a máš to odemčené.</p>
-      <Link href="/ucet" className="btn btn-gold">Chci HUB+</Link></div>
+      <Link href="/pristup" className="btn btn-gold">Chci HUB+</Link></div>
   );
 
   const VIEWS: [View, string, React.ReactNode][] = [

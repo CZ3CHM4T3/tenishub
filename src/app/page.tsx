@@ -283,7 +283,7 @@ export default function Home() {
               <div className="help-opts">
                 <Link href="/mapa" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/videorozbor" className="help-opt"><span className="help-ic"><Video size={20} /></span><span>Dítě ztrácí radost / něco mu nejde</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/prihlaseni?tab=reg" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok a plánovat (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/pristup" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok a plánovat (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/sparring" className="help-opt"><span className="help-ic"><Handshake size={20} /></span><span>Najít sparring partnera</span><ArrowRight size={16} className="help-arr" /></Link>
                 <a href="mailto:info@tenishub.cz?subject=Dotaz" className="help-opt"><span className="help-ic"><MessageCircle size={20} /></span><span>Mám dotaz — poradíte mi?</span><ArrowRight size={16} className="help-arr" /></a>
               </div>
@@ -311,7 +311,7 @@ export default function Home() {
             <p>Provede hobby i závodního hráče <b>celou sezónou</b>: osa příprava → sezóna → mezisezóna, barevný kalendář (tréninky, turnaje i s výsledky, kondice), cíle a statistiky — a hlavně <b>volno a čas jen pro sebe</b>. Růst krok za krokem, bez vyhoření.</p>
             <div className="mcpromo-cta">
               <Link href="/moje-cesta" className="btn btn-green">Otevřít Moji cestu</Link>
-              <Link href="/prihlaseni?tab=reg" className="btn btn-out">Staň se členem</Link>
+              <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
             </div>
           </div>
           <div className="mcpromo-vis rv r" aria-hidden="true">
@@ -424,8 +424,8 @@ export default function Home() {
             </table>
 
             <div className="persona-cta">
-              <Link href="/prihlaseni?tab=reg" className="btn btn-out">Staň se členem</Link>
-              <Link href="/ucet" className="btn btn-gold">Chci HUB+ <ArrowRight className="ic" size={18} /></Link>
+              <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
+              <Link href="/pristup" className="btn btn-gold">Chci předběžný přístup <ArrowRight className="ic" size={18} /></Link>
             </div>
           </div>
         </div>
@@ -453,7 +453,7 @@ export default function Home() {
           <span className="eyebrow rv" style={{ justifyContent: "center", display: "flex" }}>Pojďme na to</span>
           <h2 className="rv">Pomozte dítěti začít, růst a vydržet u tenisu</h2>
           <p className="rv d1">Přehled, podpora a kontakty na jednom místě — celý tenisový klub pro vaše dítě za 99 Kč měsíčně.</p>
-          <Link href="/prihlaseni?tab=reg" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
+          <Link href="/pristup" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
         </div>
       </section>
 

@@ -147,7 +147,7 @@ export default function ProviderCard({ userId, fullName, isMember }: { userId: s
     <div className="card-lockbar">
       <Lock size={18} />
       <div><b>Vyplnění karty je součást HUB+</b><span>Základní zápis do katalogu a na mapu je bez poplatku. Fotku, ceník, bio i rezervace odemkne HUB+.</span></div>
-      <Link href="/clenstvi" className="btn btn-gold btn-sm">Chci HUB+</Link>
+      <Link href="/pristup" className="btn btn-gold btn-sm">Chci HUB+</Link>
     </div>
   );
 

@@ -52,7 +52,7 @@ export default function ClanekClient({ slug }: { slug: string }) {
                 <h3>Zbytek článku je pro členy</h3>
                 <p>Celou knihovnu rad a návodů pro tenisové rodiče i trenéry čtete s členstvím HUB+ — od 99 Kč měsíčně.</p>
                 <div className="clanek-gate-btns">
-                  <Link href="/prihlaseni?tab=reg" className="btn btn-gold">Staň se členem</Link>
+                  <Link href="/pristup" className="btn btn-gold">Staň se členem</Link>
                   <Link href="/clanky" className="btn btn-out">Zpět na ukázky</Link>
                 </div>
               </div>

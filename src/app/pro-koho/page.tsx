@@ -82,12 +82,12 @@ function RoleDetail({ r }: { r: Role }) {
           <ul className="rp-list rp-list-locked">
             {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>
-          <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
+          <Link href="/pristup" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
         </div>
       </div>
 
       <div className="role-cta">
-        <Link href="/prihlaseni?tab=reg" className="btn btn-out">Staň se členem</Link>
+        <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
         {r.provider && <span className="role-note">Jste {r.label.toLowerCase()}? Vytvořte si profil, ať vás lidé najdou.</span>}
       </div>
 

@@ -27,9 +27,9 @@ export default function ClenstviPage() {
             </div>
             <span className="pm-badge">★ zaváděcí cena pro zakládající členy</span>
           </div>
-          <p className="pm-note">Běžná cena <b>199 Kč/měsíc</b>. Teď zaváděcích <b>99 Kč/měsíc</b> — s ročním předplatným ušetříš ještě víc. Od Nového roku 199 Kč.</p>
+          <p className="pm-note">Běžně <b>199 Kč/měsíc</b>. Kdo se stane členem <b>do konce roku, drží si 99 Kč/měsíc napořád</b> (dokud členství nepřeruší). Od Nového roku už všichni noví 199 Kč.</p>
           <div className="pm-cta">
-            <Link href="/#zeptejte-se" className="btn btn-gold">Chci členství</Link>
+            <Link href="/pristup" className="btn btn-gold">Chci předběžný přístup</Link>
             <a href="#cena" className="pm-link">Co je v ceně ↓</a>
           </div>
         </div>
