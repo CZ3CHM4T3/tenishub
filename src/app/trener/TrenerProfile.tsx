@@ -553,7 +553,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
               Rezervace a zprávy jsou členská funkce. HUB+ stojí 99 Kč/měsíc, začátek i konec vidíš
               ve svém účtu a prodlužování kdykoli vypneš.
             </div>
-            <Link href="/ucet" className="btn btn-gold" style={{ width: "100%" }}>Aktivovat HUB+ v mém účtu</Link>
+            <Link href="/pristup" className="btn btn-gold" style={{ width: "100%" }}>Chci členství (HUB+)</Link>
             <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={() => setModal(null)}>Zatím ne</button>
           </div>
         </div>

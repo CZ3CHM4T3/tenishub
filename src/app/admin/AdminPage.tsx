@@ -262,7 +262,7 @@ export default function AdminPage() {
         {tab === "uzivatele" && (
         <div className="acct-card">
           <div className="acct-card-head"><UserPlus size={20} /><h2>Pozvat rodiče / člena (magic link)</h2></div>
-          <p className="member-note">Veřejná registrace je zavřená — nový účet vznikne <b>jen přes pozvánku</b>. Vygenerujte unikátní jednorázový odkaz a pošlete ho člověku, kterého chcete pustit dovnitř. Registrací přes něj dostane rovnou <b>HUB+ na rok</b> (comp).</p>
+          <p className="member-note">Registrace je otevřená (účet zdarma). Tímhle odkazem někomu <b>rovnou dáte HUB+ na rok zdarma</b> (comp) — pro pilotní rodiče, VIP, výhry. Registrací přes něj dostane členství bez placení.</p>
           <button className="btn btn-gold" onClick={genMemberInvite} disabled={memBusy}><Link2 size={16} /> {memBusy ? "Generuji…" : "Vygenerovat pozvánku pro člena"}</button>
           {memberLink && (
             <div className="klub-link" style={{ marginTop: "0.8rem" }}>

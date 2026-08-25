@@ -124,7 +124,7 @@ export default function ForumClient() {
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
             <h3>{gate === "login" ? "Přihlaste se" : "Psaní je součást HUB+"}</h3>
             <p className="member-note">{gate === "login" ? "Pro psaní do fóra se přihlaste nebo si vytvořte účet." : "Diskuze je součástí členství. Zakládat témata a odpovídat můžou členové HUB+."}</p>
-            <Link href={gate === "login" ? "/prihlaseni?next=/forum" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>
+            <Link href={gate === "login" ? "/prihlaseni?next=/forum" : "/pristup"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>
               {gate === "login" ? <>Přihlásit se</> : <><Lock size={15} /> Chci HUB+</>}
             </Link>
           </div>

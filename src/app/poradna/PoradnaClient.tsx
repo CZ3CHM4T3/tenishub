@@ -116,7 +116,7 @@ export default function PoradnaClient() {
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
             <h3>{gate === "login" ? "Přihlaste se" : "Ptaní je součást HUB+"}</h3>
             <p className="member-note">{gate === "login" ? "Pro položení dotazu se přihlaste." : "Ptát se odborníků je součástí členství. Staňte se členem HUB+."}</p>
-            <Link href={gate === "login" ? "/prihlaseni?next=/poradna" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUB+</>}</Link>
+            <Link href={gate === "login" ? "/prihlaseni?next=/poradna" : "/pristup"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUB+</>}</Link>
           </div>
         </div>
       )}

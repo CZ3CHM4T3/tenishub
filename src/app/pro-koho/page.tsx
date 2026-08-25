@@ -87,8 +87,9 @@ function RoleDetail({ r }: { r: Role }) {
       </div>
 
       <div className="role-cta">
-        <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
-        {r.provider && <span className="role-note">Jste {r.label.toLowerCase()}? Vytvořte si profil, ať vás lidé najdou.</span>}
+        {r.provider
+          ? <Link href="/prihlaseni?tab=reg" className="btn btn-out">Vytvořit profil zdarma</Link>
+          : <Link href="/pristup" className="btn btn-out">Chci členství</Link>}
       </div>
 
       <div className="role-others">

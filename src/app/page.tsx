@@ -192,10 +192,9 @@ export default function Home() {
               <div className="nav-item">
                 <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
                 <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
-                  <Link className="drop-card" href="/pro-koho?role=rodic"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
-                  <Link className="drop-card" href="/pro-koho?role=trener"><b>Trenér</b><span>vlastní klub &amp; svěřenci</span></Link>
+                  <Link className="drop-card" href="/rodic"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
+                  <Link className="drop-card" href="/pro-trenery"><b>Trenér</b><span>vlastní klub &amp; svěřenci</span></Link>
                   <Link className="drop-card" href="/pro-koho?role=sparring"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
-                  <span className="drop-card drop-soon"><b>Kluby</b><span>připravujeme</span></span>
                 </div></div>
               </div>
               <Link className="nav-link" href="/mapa">Mapa služeb</Link>
@@ -209,12 +208,11 @@ export default function Home() {
           </div>
           {mobileOpen && (
             <nav className="mnav" onClick={() => setMobileOpen(false)}>
-              <Link href="/pro-koho">Pro koho</Link>
+              <Link href="/rodic">Rodič &amp; dítě</Link>
+              <Link href="/pro-trenery">Trenér</Link>
               <Link href="/mapa">Mapa služeb</Link>
               <Link href="/clenstvi">Členství</Link>
               <Link href="/o-nas">O nás</Link>
-              <Link href="/videorozbor">Videorozbor</Link>
-              <Link href="/prihlaseni" className="mnav-login">Přihlásit se</Link>
             </nav>
           )}
         </div>

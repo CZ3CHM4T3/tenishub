@@ -131,7 +131,7 @@ export default function BazarClient({ only }: { only?: Kind }) {
             <button className="mc-x" onClick={() => setGate(null)}><X size={18} /></button>
             <h3>{gate === "login" ? "Přihlaste se" : "Přidávání je součást HUB+"}</h3>
             <p className="member-note">{gate === "login" ? "Pro přidání se přihlaste." : "Prohlížet můžou všichni. Přidávat inzeráty a odvozy můžou členové HUB+."}</p>
-            <Link href={gate === "login" ? "/prihlaseni?next=/bazar" : "/ucet"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUB+</>}</Link>
+            <Link href={gate === "login" ? "/prihlaseni?next=/bazar" : "/pristup"} className={`btn ${gate === "login" ? "btn-green" : "btn-gold"}`} style={{ width: "100%" }}>{gate === "login" ? "Přihlásit se" : <><Lock size={15} /> Chci HUB+</>}</Link>
           </div>
         </div>
       )}
