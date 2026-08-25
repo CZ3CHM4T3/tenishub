@@ -3302,3 +3302,18 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .ptr-final-btn{display:inline-flex;align-items:center;gap:.5rem}
 @media(max-width:900px){.ptr-steps{grid-template-columns:repeat(2,1fr)}.ptr-step-arr{display:none}.ptr-ben-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.ptr-steps,.ptr-ben-grid,.ptr-conds{grid-template-columns:1fr}.ptr-boost-foot{flex-direction:column;align-items:stretch}}
+
+/* moduly trenérského rozhraní (/klub → Nastavení) */
+.klub-mtab-set{margin-left:auto}
+.klub-mods{display:flex;flex-direction:column;gap:.5rem;margin-top:.8rem}
+.klub-mod{display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;position:relative}
+.klub-mod.on{border-color:#bcd8cb;background:#f5faf7}
+.klub-mod-ic{width:36px;height:36px;border-radius:10px;background:#eef4ef;color:var(--green);display:grid;place-items:center;flex:none}
+.klub-mod-txt{display:flex;flex-direction:column;gap:.1rem;flex:1;min-width:0}
+.klub-mod-txt b{color:var(--ink);font-size:.96rem}
+.klub-mod-txt span{color:var(--muted);font-size:.82rem;line-height:1.35}
+.klub-mod input{position:absolute;opacity:0;width:0;height:0}
+.klub-mod-sw{flex:none;width:42px;height:24px;border-radius:999px;background:#d3d8d5;position:relative;transition:background .18s}
+.klub-mod-sw::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
+.klub-mod.on .klub-mod-sw{background:var(--green)}
+.klub-mod.on .klub-mod-sw::after{transform:translateX(18px)}
