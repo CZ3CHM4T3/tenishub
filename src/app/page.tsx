@@ -88,11 +88,15 @@ const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   academy: { label: "Akademie", Icon: GraduationCap },
 };
 
-const TESTIMONIALS = [
-  { q: "Konečně najdu trenéra a rezervuju za minutu. Žádné telefonování.", a: "Petra M.", r: "rodič · Praha" },
-  { q: "Rodiče konečně vidí pokrok dítěte a míň se stresují.", a: "Jana P.", r: "trenérka · Brno" },
-  { q: "Sparring partnera na své úrovni jsem našel během chvilky.", a: "Tomáš K.", r: "hráč · Brno" },
-  { q: "Míň administrativy, víc klientů. Přesně co jsem potřeboval.", a: "Jiří N.", r: "trenér · Praha" },
+// Poctivé hodnotové hlášky (ne smyšlené recenze — ty přidáme, až budou reálné).
+const STRIP = [
+  "Najdi ověřeného trenéra i klub na mapě",
+  "Veď dítě celou sezónou — bez vyhoření",
+  "Zeptej se odborníka na cokoli kolem tenisu",
+  "Najdi dítěti sparring parťáka na jeho úroveň",
+  "Trenér má vlastní klubové rozhraní zdarma",
+  "Komunita rodičů, co jsou o krok dál",
+  "Turnaje, bazar i spolujízda na jednom místě",
 ];
 
 function Counter({ to, suffix }: { to: number; suffix?: string }) {
@@ -227,11 +231,11 @@ export default function Home() {
             <HeroCarousel />
 
             {/* PÁS RECENZÍ / SPOTLIGHT — pomalý pás pod carouselem (i placené místo) */}
-            <div className="testi-strip rv" aria-label="Recenze členů">
+            <div className="testi-strip rv" aria-label="Co TenisHub nabízí">
               <div className="testi-track">
-                {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                {[...STRIP, ...STRIP].map((s, i) => (
                   <span className="tstrip-item" key={i}>
-                    <Star size={13} /> „{t.q}" <b>{t.a}</b> · {t.r}
+                    <Star size={13} /> {s}
                   </span>
                 ))}
               </div>

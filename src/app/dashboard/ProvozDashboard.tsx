@@ -101,6 +101,7 @@ export default function ProvozDashboard() {
       <SiteHeader />
 
       <div className="wrap acct-wrap">
+        <div className="demo-banner">👁️ Ukázka (demo) — čísla jsou ilustrativní, ne reálná data. Slouží jen jako náhled, jak bude dashboard vypadat.</div>
         <div className="dash-head">
           <div>
             <h1 className="acct-h1"><LayoutDashboard size={26} style={{ verticalAlign: "-4px" }} /> Provozní dashboard</h1>

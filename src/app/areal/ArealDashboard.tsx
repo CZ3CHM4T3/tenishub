@@ -40,6 +40,7 @@ export default function ArealDashboard() {
       <SiteHeader />
 
       <div className="wrap">
+        <div className="demo-banner">👁️ Ukázka (demo) — ilustrativní data, jen náhled rozhraní areálu.</div>
         <div className="head">
           <h1>Přehled areálu</h1>
           <div className="sub">Čtvrtek 11. 6. 2026 · 4 kurty · správa obsazenosti a rezervací</div>
