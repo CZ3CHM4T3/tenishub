@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Baby, Plus, X, ArrowRight } from "lucide-react";
+import { JoinCoach } from "@/components/JoinCoach";
 
 type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null };
 
@@ -58,8 +59,10 @@ export default function DetiClient() {
           <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>
-          {coachId ? "Přidejte dítě a sledujte jeho kariéru — strom dovedností, level a Sparing Cup u vašeho trenéra." : "Zatím nejste u žádného trenéra. Přidejte dítě přes zvací odkaz od svého trenéra, ať se propojí s jeho klubem."}
+          {coachId ? "Přidejte dítě a sledujte jeho kariéru — strom dovedností, level a Sparing Cup u vašeho trenéra." : "Přidejte dítě a sledujte jeho pokrok. Připojení k trenérovi je nepovinné — jde to i solo."}
         </p>
+
+        <JoinCoach />
 
         {deti.length === 0 ? (
           <div className="acct-card mc-gate"><Baby size={30} /><h2>Zatím žádné dítě</h2><p>Přidejte první — uvidíte jeho kariéru a pokrok.</p></div>

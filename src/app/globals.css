@@ -3140,6 +3140,23 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .pf-tx b{display:block;color:var(--ink)}
 .pf-tx span{color:var(--muted);font-size:.82rem}
 .pf-row .btn{padding:.35rem .7rem;font-size:.82rem}
+
+/* ── Rodič: připojení k trenérovi ── */
+.jc-card{background:var(--soft,#faf7ef);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.2rem}
+.jc-card.jc-active{display:flex;align-items:center;gap:.5rem;color:#2f7d54;background:rgba(47,125,84,.08);border-color:rgba(47,125,84,.28)}
+.jc-ic{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(47,125,84,.16);color:#2f7d54;flex:none}
+.jc-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);display:inline-block;flex:none;box-shadow:0 0 0 3px rgba(191,154,71,.2)}
+.jc-head{display:flex;align-items:center;gap:.5rem;color:var(--green);font-size:1rem}
+.jc-search{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem;color:var(--muted)}
+.jc-search input{flex:1;border:none;background:none;font-family:inherit;font-size:.95rem;color:var(--ink)}
+.jc-search input:focus{outline:none}
+.jc-results{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.jc-res{display:flex;align-items:center;justify-content:space-between;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;font-family:inherit;cursor:pointer;text-align:left}
+.jc-res:hover{border-color:var(--gold-l)}
+.jc-res b{color:var(--ink)}
+.jc-res em{color:var(--muted);font-style:normal;font-size:.85rem}
+.jc-addb{color:var(--green);font-weight:700;font-size:.82rem;flex:none}
+.jc-card .ma-link{margin-left:auto}
 .cbot-quick button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;font-size:.8rem;font-family:inherit;color:var(--green);font-weight:600;cursor:pointer}
 .cbot-quick button:hover{border-color:var(--gold-l);background:rgba(191,154,71,.08)}
 .cbot-input{display:flex;gap:.5rem;padding:.7rem;border-top:1px solid var(--line);background:var(--paper,#fff)}

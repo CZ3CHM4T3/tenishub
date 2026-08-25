@@ -45,7 +45,7 @@ export default function KlubClient() {
     }
     const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }] = await Promise.all([
       supabase.rpc("my_coach_code"),
-      supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).eq("status", "active").order("created_at", { ascending: false }),
+      supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).in("status", ["active", "pending"]).order("created_at", { ascending: false }),
       supabase.from("coach_kurikulum").select("data").eq("coach_id", user.id).maybeSingle(),
       supabase.from("deti").select("id,jmeno,prezdivka,level").eq("coach_id", user.id).order("jmeno"),
     ]);
@@ -76,8 +76,12 @@ export default function KlubClient() {
     </div>
   );
 
-  const parents = roster.filter((m) => m.kind === "parent");
-  const colleagues = roster.filter((m) => m.kind === "colleague");
+  const parents = roster.filter((m) => m.kind === "parent" && m.status === "active");
+  const colleagues = roster.filter((m) => m.kind === "colleague" && m.status === "active");
+  const pending = roster.filter((m) => m.status === "pending");
+
+  const approve = async (id: string) => { await supabase.from("coach_roster").update({ status: "active" }).eq("id", id); load(); };
+  const reject = async (id: string) => { await supabase.from("coach_roster").delete().eq("id", id); load(); };
 
   return (
     <div className="acct-page">
@@ -149,6 +153,24 @@ export default function KlubClient() {
           </div>
           {code && <span className="klub-code">Váš kód: <b>{code}</b></span>}
         </div>
+
+        {/* ŽÁDOSTI O VSTUP */}
+        {pending.length > 0 && (
+          <div className="acct-card">
+            <div className="acct-card-head"><UserPlus size={20} /><h2>Žádosti o vstup ({pending.length})</h2></div>
+            <p className="member-note">Rodiče, kteří se hlásí do vaší komunity. Schvalte ty, které znáte.</p>
+            <div className="klub-list">
+              {pending.map((m) => (
+                <div className="klub-row" key={m.id}>
+                  <span className="klub-av">{(m.member_name || "?").charAt(0).toUpperCase()}</span>
+                  <div style={{ flex: 1 }}><b>{m.member_name || "Rodič"}</b><span>žádá o vstup · {fmt(m.created_at)}</span></div>
+                  <button className="btn btn-green" style={{ padding: ".35rem .7rem", fontSize: ".82rem" }} onClick={() => approve(m.id)}><Check size={14} /> Schválit</button>
+                  <button className="ma-link" onClick={() => reject(m.id)}>Odmítnout</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* SVĚŘENCI */}
         <div className="acct-card">
