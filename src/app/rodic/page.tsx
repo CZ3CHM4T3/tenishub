@@ -60,7 +60,7 @@ export default function RodicPage() {
           </Link>
           <Link href="/clanky" className="rolepick" style={{ backgroundColor: "#7C4DD6", backgroundImage: "url(/knihovna-rodic.png)" }}>
             <span className="rolepick-ic" style={{ color: "#7C4DD6" }}><BookOpen size={22} /></span>
-            <span className="rolepick-txt"><b>Knihovna článků a návodů</b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
+            <span className="rolepick-txt"><b>Vědět víc — články a návody</b><span>jak vybrat trenéra, výbavu, výživa…</span></span>
             <span className="rolepick-arr"><ArrowRight size={18} /></span>
           </Link>
           <Link href="/poradna" className="rolepick" style={{ backgroundColor: "#7c6018", backgroundImage: "url(/poradna.png)" }}>
