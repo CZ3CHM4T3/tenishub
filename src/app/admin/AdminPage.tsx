@@ -42,6 +42,8 @@ export default function AdminPage() {
   const [busy, setBusy] = useState<string | null>(null);
   const [inviteLink, setInviteLink] = useState<string | null>(null);
   const [invBusy, setInvBusy] = useState(false);
+  const [memberLink, setMemberLink] = useState<string | null>(null);
+  const [memBusy, setMemBusy] = useState(false);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -136,6 +138,14 @@ export default function AdminPage() {
     setInvBusy(false);
     if (error || !data) { alert("Nepodařilo se vygenerovat pozvánku: " + (error?.message ?? "")); return; }
     setInviteLink(`${window.location.origin}/prihlaseni?tab=reg&invite=${data}`);
+  };
+  const genMemberInvite = async () => {
+    setMemBusy(true);
+    const supabase = createClient();
+    const { data, error } = await supabase.rpc("gen_member_invite", { p_note: null });
+    setMemBusy(false);
+    if (error || !data) { alert("Nepodařilo se vygenerovat pozvánku: " + (error?.message ?? "")); return; }
+    setMemberLink(`${window.location.origin}/prihlaseni?tab=reg&invite=${data}`);
   };
   const deleteUser = async (p: Profile) => {
     const code = Math.random().toString(36).slice(2, 7).toUpperCase(); // náhodný 5-znakový kód
@@ -240,6 +250,20 @@ export default function AdminPage() {
             <div className="klub-link" style={{ marginTop: "0.8rem" }}>
               <input readOnly value={inviteLink} onFocus={(e) => e.currentTarget.select()} />
               <button className="btn btn-out" onClick={() => navigator.clipboard.writeText(inviteLink)}><Copy size={16} /> Kopírovat</button>
+            </div>
+          )}
+        </div>
+        )}
+
+        {tab === "uzivatele" && (
+        <div className="acct-card">
+          <div className="acct-card-head"><UserPlus size={20} /><h2>Pozvat rodiče / člena (magic link)</h2></div>
+          <p className="member-note">Veřejná registrace je zavřená — nový účet vznikne <b>jen přes pozvánku</b>. Vygenerujte unikátní jednorázový odkaz a pošlete ho člověku, kterého chcete pustit dovnitř. Registrací přes něj dostane rovnou <b>HUB+ na rok</b> (comp).</p>
+          <button className="btn btn-gold" onClick={genMemberInvite} disabled={memBusy}><Link2 size={16} /> {memBusy ? "Generuji…" : "Vygenerovat pozvánku pro člena"}</button>
+          {memberLink && (
+            <div className="klub-link" style={{ marginTop: "0.8rem" }}>
+              <input readOnly value={memberLink} onFocus={(e) => e.currentTarget.select()} />
+              <button className="btn btn-out" onClick={() => navigator.clipboard.writeText(memberLink)}><Copy size={16} /> Kopírovat</button>
             </div>
           )}
         </div>

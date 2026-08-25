@@ -20,7 +20,8 @@ export default function AuthForm() {
   const router = useRouter();
   const params = useSearchParams();
   const invite = params.get("invite") || "";
-  const [tab, setTab] = useState<"login" | "reg">(params.get("tab") === "reg" || invite ? "reg" : "login");
+  const canRegister = !!invite; // veřejná registrace zavřená — účet jen přes pozvánku (magic link)
+  const [tab, setTab] = useState<"login" | "reg">(invite ? "reg" : "login");
   const [forgot, setForgot] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,13 +94,15 @@ export default function AuthForm() {
       <div className="auth-box">
         <div className="auth-tabs">
           <button className={tab === "login" && !forgot ? "on" : ""} onClick={() => { setTab("login"); setForgot(false); setErr(null); }} type="button">Přihlášení</button>
-          <button className={tab === "reg" && !forgot ? "on" : ""} onClick={() => { setTab("reg"); setForgot(false); setErr(null); }} type="button">Registrace</button>
+          {canRegister && <button className={tab === "reg" && !forgot ? "on" : ""} onClick={() => { setTab("reg"); setForgot(false); setErr(null); }} type="button">Registrace</button>}
         </div>
 
         {invite && !forgot && (
           <div className="auth-info" style={{ marginBottom: "1rem" }}>
             {invite.toUpperCase().startsWith("TRN")
               ? "Pozvánka pro trenéra — po registraci se otevře vaše trenérské rozhraní."
+              : invite.toUpperCase().startsWith("MEM")
+              ? "Pozvánka do TenisHubu — po registraci máte přístup ke všem funkcím."
               : "Pozvánka od trenéra — po registraci se připojíte do jeho klubu."}
           </div>
         )}
@@ -145,7 +148,7 @@ export default function AuthForm() {
 
         {!invite && (
           <p className="auth-note">
-            Registrace tě rovnou zapojí do klubu. <b>HUB+</b> 99 Kč/měsíc, kdykoli zrušíš — žádné skryté platby.
+            Nový účet si teď založíš jen přes pozvánku — od svého trenéra, nebo od nás. Zajímá tě členství? <Link href="/clenstvi">Podívej se, co je v ceně →</Link>
           </p>
         )}
       </div>
