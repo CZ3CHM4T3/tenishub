@@ -3109,6 +3109,9 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .boost-price{font-size:.95rem;color:#eaf2ec;display:flex;flex-direction:column}
 .boost-price b{color:#e2c98e;font-size:1.15rem}
 .boost-price span{color:#a9bdb0;font-size:.78rem}
+.boost-why{background:rgba(255,255,255,.05);border:1px solid rgba(226,201,142,.2);border-radius:12px;padding:.8rem 1rem;margin-bottom:1rem}
+.boost-why-h{display:block;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#e2c98e;margin-bottom:.3rem}
+.boost-why-t{color:#dfe9e2;font-size:.9rem;line-height:1.55}
 /* ověření checklist */
 .ov-card.ov-done{border-color:rgba(47,125,84,.4)}
 .ov-badge{margin-left:auto;display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:800;

@@ -11,19 +11,25 @@ export default function KlubOvereni() {
   const supabase = useMemo(() => createClient(), []);
   const [spec, setSpec] = useState<Spec | null>(null);
   const [reviews, setReviews] = useState(0);
+  const [payingMembers, setPayingMembers] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [meId, setMeId] = useState<string>("");
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setLoading(false); return; }
-    setMeId(user.id);
     const { data: s } = await supabase.from("specialists").select("id,name,city,website,photo_url,verified,license_declared").eq("owner_id", user.id).limit(1).maybeSingle();
     const sp = (s as Spec) ?? null;
     setSpec(sp);
     if (sp) {
       const { count } = await supabase.from("reviews").select("id", { count: "exact", head: true }).eq("specialist_id", sp.id).neq("author_id", user.id);
       setReviews(count ?? 0);
+    }
+    // ≥10 platících členů v komunitě: členové rosteru s aktivním členstvím
+    const { data: roster } = await supabase.from("coach_roster").select("member_id").eq("coach_id", user.id).eq("status", "active");
+    const ids = ((roster as { member_id: string }[]) ?? []).map((r) => r.member_id).filter(Boolean);
+    if (ids.length) {
+      const { count } = await supabase.from("memberships").select("id", { count: "exact", head: true }).in("profile_id", ids).eq("status", "active").gt("expires_at", new Date().toISOString());
+      setPayingMembers(count ?? 0);
     }
     setLoading(false);
   }, [supabase]);
@@ -35,6 +41,7 @@ export default function KlubOvereni() {
     { k: "city", label: "Adresa / místo, kde trénujete", ok: !!(spec.city && spec.city.trim()) },
     { k: "web", label: "Webová stránka (osobní nebo klubová)", ok: !!(spec.website && spec.website.trim()) },
     { k: "review", label: "Alespoň 1 hodnocení od někoho jiného", ok: reviews >= 1 },
+    { k: "members", label: `Alespoň 10 platících členů v komunitě (${payingMembers}/10)`, ok: payingMembers >= 10 },
     { k: "license", label: "Čestné prohlášení o pravosti licence a údajů", ok: !!spec.license_declared, declare: true },
   ] : [];
   const doneCount = items.filter((i) => i.ok).length;

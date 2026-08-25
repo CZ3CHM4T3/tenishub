@@ -105,6 +105,10 @@ export default function KlubClient() {
             <li><b>Interní soutěž (Sparing Cup)</b> — děti mezi sebou měří síly. Rodiče si ji z velké části organizují sami, vy jen dohlížíte, řešíte ceny a vyhlašování.</li>
             <li><b>Zábava, motivace a engagement</b>, jaké u tenisu ještě nezažily — a důvod, proč u vás zůstanou.</li>
           </ul>
+          <div className="boost-why">
+            <span className="boost-why-h">Co vám to přinese</span>
+            <span className="boost-why-t">Děti se těší na trénink a u tenisu zůstávají (míň odchodů = stabilní příjem), rodiče vidí pokrok a doporučují vás dál, a vy vypadáte jako trenér s vlastní promyšlenou metodou. Jednorázová investice, náskok napořád.</span>
+          </div>
           <div className="boost-cta">
             <span className="boost-price">Jednorázově od <b>5 000 Kč</b><span>Zaplatíte jednou a máte napořád · cena brzy poroste</span></span>
             <Link href="/#zeptejte-se" className="btn btn-gold">Chci Boost</Link>
