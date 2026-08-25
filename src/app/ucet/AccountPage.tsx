@@ -5,11 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, Mail, Route, LayoutGrid, Store } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
-  { k: "prehled", label: "Přehled", Icon: LayoutGrid },
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
   { k: "profil", label: "Profil", Icon: UserRound },
   { k: "karta", label: "Moje karta", Icon: Store },
@@ -32,8 +31,12 @@ export default function AccountPage() {
   const [name, setName] = useState(""); const [city, setCity] = useState(""); const [phone, setPhone] = useState("");
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [unread, setUnread] = useState(0);
-  const [atab, setAtab] = useState("prehled");
+  const [atab, setAtab] = useState("clenstvi");
+
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("tab");
+    if (t && ["clenstvi", "profil", "karta", "rezervace"].includes(t)) setAtab(t);
+  }, []);
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -49,8 +52,6 @@ export default function AccountPage() {
     if (p.data) { setProfile(p.data); setName(p.data.full_name ?? ""); setCity(p.data.city ?? ""); setPhone(p.data.phone ?? ""); }
     setMembership((m.data as Membership) ?? null);
     setBookings((b.data as Booking[]) ?? []);
-    const un = await supabase.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
-    setUnread(un.count ?? 0);
     setLoading(false);
   }, [router]);
 
@@ -62,18 +63,6 @@ export default function AccountPage() {
     const supabase = createClient();
     await supabase.from("profiles").update({ full_name: name, city, phone }).eq("id", profile.id);
     setBusy(false); setSaved(true); setTimeout(() => setSaved(false), 2500);
-  };
-
-  const activate = async () => {
-    if (!profile) return;
-    setBusy(true);
-    const supabase = createClient();
-    const expires = new Date(); expires.setDate(expires.getDate() + 30);
-    await supabase.from("memberships").insert({
-      profile_id: profile.id, plan: "hubplus", status: "active",
-      expires_at: expires.toISOString(), auto_renew: true, price_czk: 99,
-    });
-    await load(); setBusy(false);
   };
 
   const toggleRenew = async () => {
@@ -109,37 +98,17 @@ export default function AccountPage() {
           ))}
         </div>
 
-        {/* PŘEHLED — rychlé odkazy */}
-        {atab === "prehled" && (<>
-        <Link href="/zpravy" className="acct-card msgs-link">
-          <span className="msgs-ic"><Mail size={20} /></span>
-          <span className="msgs-txt"><b>Zprávy</b><span>{unread > 0 ? `${unread} nepřečtených — někdo ti napsal` : "Tvoje konverzace s trenéry a hráči"}</span></span>
-          {unread > 0 && <span className="chat-badge">{unread}</span>}
-          <span className="msgs-arr">→</span>
-        </Link>
-
-        <Link href="/moje-cesta" className="acct-card msgs-link">
-          <span className="msgs-ic"><Route size={20} /></span>
-          <span className="msgs-txt"><b>Moje cesta</b><span>Naplánuj sezónu — tréninky, turnaje, cíle a statistiky{membership ? "" : " (HUB+)"}</span></span>
-          <span className="msgs-arr">→</span>
-        </Link>
-
-        <Link href="/deti" className="acct-card msgs-link">
-          <span className="msgs-ic"><Route size={20} /></span>
-          <span className="msgs-txt"><b>Moje děti</b><span>Kariéra a pokrok dítěte u vašeho trenéra — strom dovedností, level a Sparing Cup</span></span>
-          <span className="msgs-arr">→</span>
-        </Link>
-        </>)}
-
         {/* ČLENSTVÍ */}
         {atab === "clenstvi" && (
-        <div className={`acct-card member-card${membership ? " on" : ""}`}>
+        <div className={`acct-card member-card${membership || profile.is_admin ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
             <h2>HUB+</h2>
-            {membership && <span className="member-badge">AKTIVNÍ</span>}
+            {profile.is_admin ? <span className="member-badge">ADMIN</span> : membership && <span className="member-badge">AKTIVNÍ</span>}
           </div>
-          {membership ? (
+          {profile.is_admin ? (
+            <p className="member-note">Jako <b>administrátor</b> máš přístup ke všem funkcím webu — členství HUB+ neřešíš.</p>
+          ) : membership ? (
             <>
               <div className="member-rows">
                 <div className="mrow"><span>Začalo</span><b>{fmt(membership.started_at)}</b></div>
@@ -150,7 +119,7 @@ export default function AccountPage() {
               <p className="member-note">
                 {membership.auto_renew
                   ? <>Členství se {fmt(membership.expires_at)} automaticky prodlouží o měsíc ({membership.price_czk} Kč). Prodlužování můžeš kdykoli vypnout — žádná překvapení.</>
-                  : <>Prodlužování je vypnuté. Členství doběhne {fmt(membership.expires_at)} a pak nic neplatíš.</>}
+                  : <>Prodlužování je vypnuté. Členství doběhne {fmt(membership.expires_at)} a pak ztratíš přístup k funkcím — tady ho obnovíš.</>}
               </p>
               <button className="btn btn-out" onClick={toggleRenew} disabled={busy}>
                 {membership.auto_renew ? "Vypnout automatické prodloužení" : "Zapnout automatické prodloužení"}
@@ -159,12 +128,10 @@ export default function AccountPage() {
           ) : (
             <>
               <p className="member-note">
-                Zatím nemáš členství. <b>HUB+</b> odemkne rezervace, zprávy a všechny členské funkce za <b>99 Kč / měsíc</b>.
-                Začalo a konec uvidíš vždy tady, prodloužení jde kdykoli vypnout.
+                <b>Členství HUB+ není aktivní.</b> Bez něj nemáš přístup k funkcím webu (Moje cesta, poradna, sparring, komunita…).
+                Členství aktivujeme přes pozvánku; po napojení plateb si ho obnovíš přímo tady.
               </p>
-              <button className="btn btn-gold" onClick={activate} disabled={busy}>
-                Aktivovat HUB+ (30 dní na zkoušku)
-              </button>
+              <Link href="/#zeptejte-se" className="btn btn-gold">Chci členství</Link>
             </>
           )}
         </div>
