@@ -38,12 +38,17 @@ export default function DetiClient() {
   const submit = async () => {
     if (!form.jmeno.trim()) return;
     setBusy(true);
-    const { error } = await supabase.from("deti").insert({
+    const { data: kid, error } = await supabase.from("deti").insert({
       rodic_id: me, coach_id: coachId, jmeno: form.jmeno.trim(),
       datum_narozeni: form.datum || null, program: form.program,
-    });
+    }).select("id").single();
+    if (error) { setBusy(false); alert("Nepodařilo se přidat: " + error.message); return; }
+    // zrcadlo do Mojí cesty — rodič nezadává dítě dvakrát (best-effort, nevadí když selže)
+    try {
+      const { data: pl } = await supabase.from("cesta_players").insert({ owner_id: me, name: form.jmeno.trim() }).select("id").single();
+      if (pl?.id && kid?.id) await supabase.from("deti").update({ player_id: pl.id }).eq("id", kid.id);
+    } catch { /* dítě je založené, jen se nezrcadlilo do Mojí cesty */ }
     setBusy(false);
-    if (error) { alert("Nepodařilo se přidat: " + error.message); return; }
     setForm({ open: false, jmeno: "", datum: "", program: "hobby" });
     await load();
   };
