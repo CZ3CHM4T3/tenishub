@@ -3124,6 +3124,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .ov-lab{flex:1}
 .ov-declare{background:var(--green);border:none;color:#fff;border-radius:8px;padding:.3rem .7rem;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer}
 .ov-fill{margin-top:1rem}
+.ov-cta{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-top:1rem}
+.ov-wait{color:var(--muted);font-size:.85rem}
 .klub-menu{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0 1.1rem}
 .klub-mtab{display:inline-flex;align-items:center;gap:.45rem;background:var(--paper,#fff);border:1.5px solid var(--line);border-radius:12px;padding:.6rem 1rem;font-family:inherit;font-weight:700;font-size:.92rem;color:var(--muted);cursor:pointer;transition:.14s}
 .klub-mtab:hover{border-color:var(--gold-l);color:var(--green)}

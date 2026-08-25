@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeCheck, Check, X } from "lucide-react";
 
-type Spec = { id: string; name: string | null; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; license_declared: boolean | null };
+type Spec = { id: string; name: string | null; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; verify_requested: boolean | null; license_declared: boolean | null };
 
 export default function KlubOvereni() {
   const supabase = useMemo(() => createClient(), []);
@@ -17,7 +17,7 @@ export default function KlubOvereni() {
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setLoading(false); return; }
-    const { data: s } = await supabase.from("specialists").select("id,name,city,phone,website,photo_url,verified,license_declared").eq("owner_id", user.id).limit(1).maybeSingle();
+    const { data: s } = await supabase.from("specialists").select("id,name,city,phone,website,photo_url,verified,verify_requested,license_declared").eq("owner_id", user.id).limit(1).maybeSingle();
     const sp = (s as Spec) ?? null;
     setSpec(sp);
     if (sp) {
@@ -48,12 +48,11 @@ export default function KlubOvereni() {
   const doneCount = items.filter((i) => i.ok).length;
   const allDone = spec && doneCount === items.length;
 
-  // auto-checkmark: jakmile je splněno vše, nastav verified
-  useEffect(() => {
-    if (spec && allDone && !spec.verified) {
-      supabase.from("specialists").update({ verified: true }).eq("id", spec.id).then(() => setSpec((s) => s ? { ...s, verified: true } : s));
-    }
-  }, [spec, allDone, supabase]);
+  const requestVerify = async () => {
+    if (!spec) return;
+    setSpec({ ...spec, verify_requested: true });
+    await supabase.from("specialists").update({ verify_requested: true }).eq("id", spec.id);
+  };
 
   const toggleLicense = async () => {
     if (!spec) return;
@@ -80,8 +79,10 @@ export default function KlubOvereni() {
       </div>
       <p className="member-note">
         {spec.verified
-          ? "Splňujete všechny podmínky — máte ověřený odznak ✓ všude na webu. Ověřeno se nekupuje, je za reálnou kvalitou."
-          : `Splněno ${doneCount} ze ${items.length}. Jakmile máte vše, dostanete odznak ✓ automaticky. Chybějící doplníte ve svém profilu.`}
+          ? "Máte ověřený odznak ✓ všude na webu. Ověřeno se nekupuje — je za reálnou kvalitou."
+          : spec.verify_requested
+            ? `Žádost o ověření odeslána — TenisHub ji zkontroluje a odznak ✓ vám udělí. Splněno ${doneCount}/${items.length}.`
+            : `Splněno ${doneCount} z ${items.length}. Jakmile máte vše, požádejte o ověření — my ho ručně potvrdíme a odemknou se vám funkce.`}
       </p>
       <ul className="ov-list">
         {items.map((it) => (
@@ -94,7 +95,13 @@ export default function KlubOvereni() {
           </li>
         ))}
       </ul>
-      {!spec.verified && <Link href="/ucet" className="btn btn-out ov-fill">Doplnit profil</Link>}
+      {!spec.verified && (
+        <div className="ov-cta">
+          {allDone && !spec.verify_requested && <button className="btn btn-green" onClick={requestVerify}>Požádat o ověření</button>}
+          {spec.verify_requested && !allDone && <span className="ov-wait">Doplňte i zbývající podmínky.</span>}
+          <Link href="/ucet" className="btn btn-out">Doplnit profil</Link>
+        </div>
+      )}
     </div>
   );
 }
