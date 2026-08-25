@@ -3157,6 +3157,9 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .jc-res em{color:var(--muted);font-style:normal;font-size:.85rem}
 .jc-addb{color:var(--green);font-weight:700;font-size:.82rem;flex:none}
 .jc-card .ma-link{margin-left:auto}
+.klub-locked{display:flex;align-items:flex-start;gap:.8rem;background:var(--soft,#faf7ef);border:1px dashed var(--line);border-radius:12px;padding:.9rem 1rem}
+.klub-locked-ic{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:10px;background:rgba(191,154,71,.14);color:#9a7527}
+.klub-locked .member-note{margin:0}
 .cbot-quick button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;font-size:.8rem;font-family:inherit;color:var(--green);font-weight:600;cursor:pointer}
 .cbot-quick button:hover{border-color:var(--gold-l);background:rgba(191,154,71,.08)}
 .cbot-input{display:flex;gap:.5rem;padding:.7rem;border-top:1px solid var(--line);background:var(--paper,#fff)}

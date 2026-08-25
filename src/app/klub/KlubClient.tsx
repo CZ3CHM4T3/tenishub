@@ -28,6 +28,7 @@ export default function KlubClient() {
   const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
   const [showTree, setShowTree] = useState(false);
   const [ktab, setKtab] = useState<"komunita" | "kalendar" | "informace">("komunita");
+  const [verified, setVerified] = useState(false);
   const [kids, setKids] = useState<{ id: string; jmeno: string; prezdivka: string; level: number }[]>([]);
 
   const load = useCallback(async () => {
@@ -43,12 +44,14 @@ export default function KlubClient() {
       // Admin náhled: prázdná data + výchozí strom, ať vidí, jak rozhraní vypadá.
       setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
     }
-    const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }] = await Promise.all([
+    const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }, { data: sp }] = await Promise.all([
       supabase.rpc("my_coach_code"),
       supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).in("status", ["active", "pending"]).order("created_at", { ascending: false }),
       supabase.from("coach_kurikulum").select("data").eq("coach_id", user.id).maybeSingle(),
       supabase.from("deti").select("id,jmeno,prezdivka,level").eq("coach_id", user.id).order("jmeno"),
+      supabase.from("specialists").select("verified").eq("owner_id", user.id).maybeSingle(),
     ]);
+    setVerified(!!(sp as { verified?: boolean } | null)?.verified);
     setCode(typeof c === "string" ? c : null);
     setRoster((r as Member[]) ?? []);
     setKids((kd2 as { id: string; jmeno: string; prezdivka: string; level: number }[]) ?? []);
@@ -79,6 +82,7 @@ export default function KlubClient() {
   const parents = roster.filter((m) => m.kind === "parent" && m.status === "active");
   const colleagues = roster.filter((m) => m.kind === "colleague" && m.status === "active");
   const pending = roster.filter((m) => m.status === "pending");
+  const canGame = verified || preview; // herní vrstva až po ověření profilu (admin náhled odemčeno)
 
   const approve = async (id: string) => { await supabase.from("coach_roster").update({ status: "active" }).eq("id", id); load(); };
   const reject = async (id: string) => { await supabase.from("coach_roster").delete().eq("id", id); load(); };
@@ -221,15 +225,24 @@ export default function KlubClient() {
           </div>
         )}
 
-        {/* STROM DOVEDNOSTÍ (tech tree) */}
+        {/* STROM DOVEDNOSTÍ (tech tree) — odemčeno až po ověření */}
         <div className="acct-card">
           <div className="acct-card-head"><GitBranch size={20} /><h2>Strom dovedností — vaše metoda</h2></div>
-          <p className="member-note">Postavte si vlastní strom dovedností. Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou. Máte hotový výchozí strom, klidně ho upravte.</p>
-          <button className="btn btn-green" onClick={() => setShowTree((v) => !v)}>
-            <ChevronDown size={16} style={{ transform: showTree ? "rotate(180deg)" : "none", transition: "0.2s" }} /> {showTree ? "Skrýt editor stromu" : "Otevřít editor stromu"}
-          </button>
+          {canGame ? (
+            <>
+              <p className="member-note">Postavte si vlastní strom dovedností. Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou. Máte hotový výchozí strom, klidně ho upravte.</p>
+              <button className="btn btn-green" onClick={() => setShowTree((v) => !v)}>
+                <ChevronDown size={16} style={{ transform: showTree ? "rotate(180deg)" : "none", transition: "0.2s" }} /> {showTree ? "Skrýt editor stromu" : "Otevřít editor stromu"}
+              </button>
+            </>
+          ) : (
+            <div className="klub-locked">
+              <span className="klub-locked-ic"><Lock size={22} /></span>
+              <p className="member-note">Herní vrstva (strom dovedností + Sparing Cup) se odemkne po <b>ověření vašeho profilu</b>. Vyplňte podmínky výše a požádejte o ověření — my ho potvrdíme.</p>
+            </div>
+          )}
         </div>
-        {showTree && <StromEditor initial={kurikula} />}
+        {canGame && showTree && <StromEditor initial={kurikula} />}
 
         {/* SPARING CUP — brzy */}
         <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
