@@ -35,7 +35,7 @@ export default function RodicPage() {
           <div className="rodic-why-grid">
             <div className="rodic-why-card"><span className="rww-ic"><ShieldCheck size={20} /></span><b>Ověřené a bezpečné</b><span>Trenéry i kluby prověřujeme. Pro děti chceme prostředí, kterému se dá věřit.</span></div>
             <div className="rodic-why-card"><span className="rww-ic"><Heart size={20} /></span><b>Aby dítě vydrželo</b><span>Nejde jen o výsledky. Pomáháme udržet radost ze hry a předejít vyhoření.</span></div>
-            <div className="rodic-why-card"><span className="rww-ic"><Users size={20} /></span><b>Nejsi na to sama</b><span>Komunita rodičů, odborníci a rady na jednom místě — místo bloudění po internetu.</span></div>
+            <div className="rodic-why-card"><span className="rww-ic"><Users size={20} /></span><b>Nejste na to sami</b><span>Komunita rodičů, odborníci a rady na jednom místě — místo bloudění po internetu.</span></div>
           </div>
         </div>
 

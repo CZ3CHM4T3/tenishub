@@ -20,9 +20,9 @@ const FREE = [
 // V ČLENSTVÍ — nástroje (zamčené pro nečlena, prodejní popis)
 const TOOLS = [
   { Icon: Route, c: "#7C4DD6", t: "Moje cesta", d: "Celá sezóna dítěte přehledně — kalendář tréninků, turnajů i volna, cíle a statistiky. Konečně vidíš, kam to směřuje, a pohlídáš, ať dítě nevyhoří.", href: "/moje-cesta" },
-  { Icon: MessageSquareHeart, c: "#864a59", t: "Poradna", d: "Nejsi si jistá výběrem trenéra, tréninkem nebo zdravím dítěte? Zeptáš se a odborník odpoví do 48 hodin. Klid místo nekonečného googlení.", href: "/poradna" },
+  { Icon: MessageSquareHeart, c: "#864a59", t: "Poradna", d: "Výběr trenéra, trénink nebo zdraví dítěte? Zeptáte se a odborník odpoví do 48 hodin. Klid místo nekonečného googlení.", href: "/poradna" },
   { Icon: Handshake, c: "#8a5640", t: "Sparring", d: "Najdi dítěti parťáka na úrovni — podle věku, lokality i stylu hry. Víc odehraných zápasů = rychlejší růst a víc radosti ze hry.", href: "/sparring" },
-  { Icon: MessagesSquare, c: "#2f5d57", t: "Fórum rodičů", d: "Nejsi na to sama. Zkušenosti, tipy a doporučení trenérů od rodičů, kteří jsou o krok dál. Zeptej se na cokoli.", href: "/forum" },
+  { Icon: MessagesSquare, c: "#2f5d57", t: "Fórum rodičů", d: "Nejste na to sami — zkušenosti, tipy a doporučení trenérů od rodičů, kteří jsou o krok dál.", href: "/forum" },
   { Icon: BookOpen, c: "#7c6018", t: "Vědět víc — knihovna", d: "Ověřené návody a články celé, bez zámku: jak vybrat raketu i trenéra, výživa malého sportovce, prevence zranění.", href: "/clanky" },
   { Icon: CalendarDays, c: "#3b5666", t: "Kalendář turnajů", d: "Turnaje ve tvém okolí i s přihláškami na jednom místě. Už nezmeškáš termín ani uzávěrku.", href: "/turnaje" },
   { Icon: Repeat, c: "#8a5640", t: "Bazar vybavení", d: "Rakety, boty a oblečení z druhé ruky mezi rodiči. Děti rostou rychle — ušetři.", href: "/bazar" },
