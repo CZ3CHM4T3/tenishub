@@ -6,8 +6,9 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { MessagesSquare, Plus, Pin, X, Lock } from "lucide-react";
 import { FORUM_CATS, catLabel } from "@/lib/forum";
+import { AdminTag } from "@/components/AdminTag";
 
-type Thread = { id: string; author_name: string | null; category: string; title: string; pinned: boolean; reply_count: number; last_at: string; created_at: string };
+type Thread = { id: string; author_name: string | null; category: string; title: string; pinned: boolean; reply_count: number; last_at: string; created_at: string; author_is_admin?: boolean };
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 
@@ -23,7 +24,7 @@ export default function ForumClient() {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const { data } = await supabase.from("forum_threads").select("id,author_name,category,title,pinned,reply_count,last_at,created_at")
+    const { data } = await supabase.from("forum_threads").select("*")
       .order("pinned", { ascending: false }).order("last_at", { ascending: false }).limit(200);
     setThreads((data as Thread[]) ?? []);
     setLoading(false);
@@ -91,7 +92,7 @@ export default function ForumClient() {
                 {t.pinned && <Pin size={14} className="fpin" />}
                 <div className="fthread-main">
                   <b>{t.title}</b>
-                  <span className="fthread-meta">{catLabel(t.category)} · {t.author_name || "Člen"} · {fmt(t.last_at)}</span>
+                  <span className="fthread-meta">{catLabel(t.category)} · {t.author_name || "Člen"}{t.author_is_admin && <AdminTag />} · {fmt(t.last_at)}</span>
                 </div>
                 <span className="fthread-reps">{t.reply_count}<small>odpovědí</small></span>
               </Link>

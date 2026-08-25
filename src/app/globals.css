@@ -3339,6 +3339,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .asub.on{background:color-mix(in srgb,var(--amc,var(--green)) 12%,#fff);color:var(--amc,var(--green));border-left-color:var(--amc,var(--green))}
 .admin-content{min-width:0}
 .admin-protected{font-size:.72rem;color:var(--muted);font-style:italic;padding:.2rem .4rem}
+.admin-tag{display:inline-block;margin:0 .35rem;font-size:.6rem;font-weight:800;letter-spacing:.07em;color:#fff;background:linear-gradient(135deg,var(--gold),#a67c2e);padding:.1rem .34rem;border-radius:5px;vertical-align:middle;line-height:1.4}
 /* plovoucí lišta náhledu (admin) */
 .adminbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:.35rem;background:#1c3025;color:#fff;border:1px solid #395043;border-radius:999px;padding:.4rem .5rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.55);max-width:calc(100vw - 24px);overflow-x:auto}
 .adminbar.preview{background:#5a3a12;border-color:#8a5a1e}

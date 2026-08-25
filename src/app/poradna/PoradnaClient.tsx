@@ -7,8 +7,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { HelpCircle, Plus, X, Lock, CheckCircle2 } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 import { notify } from "@/lib/notify";
+import { AdminTag } from "@/components/AdminTag";
 
-type Q = { id: string; author_name: string | null; topic: string; body: string; answer: string | null; answered_by: string | null; created_at: string };
+type Q = { id: string; author_name: string | null; topic: string; body: string; answer: string | null; answered_by: string | null; created_at: string; author_is_admin?: boolean };
 
 const TOPICS: [string, string][] = [
   ["trener", "Výběr trenéra/klubu"], ["trenink", "Trénink a rozvoj"], ["turnaje", "Turnaje a závody"],
@@ -28,7 +29,7 @@ export default function PoradnaClient() {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const { data } = await supabase.from("advice").select("id,author_name,topic,body,answer,answered_by,created_at").order("created_at", { ascending: false }).limit(200);
+    const { data } = await supabase.from("advice").select("*").order("created_at", { ascending: false }).limit(200);
     setItems((data as Q[]) ?? []);
     setLoading(false);
   }, [supabase]);
@@ -81,7 +82,7 @@ export default function PoradnaClient() {
           <div className="fposts">
             {items.map((q) => (
               <div className="acct-card pora-item" key={q.id}>
-                <div className="fpost-head"><span className="pora-topic">{topicLabel(q.topic)}</span><b>{q.author_name || "Rodič"}</b><span>{fmt(q.created_at)}</span></div>
+                <div className="fpost-head"><span className="pora-topic">{topicLabel(q.topic)}</span><b>{q.author_name || "Rodič"}</b>{q.author_is_admin && <AdminTag />}<span>{fmt(q.created_at)}</span></div>
                 <p className="pora-q">{q.body}</p>
                 {q.answer ? (
                   <div className="pora-a"><span className="pora-a-head"><CheckCircle2 size={15} /> Odpověď{q.answered_by ? ` — ${q.answered_by}` : ""}</span><p>{q.answer}</p></div>

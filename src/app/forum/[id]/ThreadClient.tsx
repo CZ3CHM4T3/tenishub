@@ -7,9 +7,10 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { MessagesSquare, Lock, CornerDownRight } from "lucide-react";
 import { catLabel } from "@/lib/forum";
 import { notify } from "@/lib/notify";
+import { AdminTag } from "@/components/AdminTag";
 
-type Thread = { id: string; author_name: string | null; category: string; title: string; body: string; created_at: string };
-type Post = { id: string; author_name: string | null; body: string; created_at: string };
+type Thread = { id: string; author_name: string | null; category: string; title: string; body: string; created_at: string; author_is_admin?: boolean };
+type Post = { id: string; author_name: string | null; body: string; created_at: string; author_is_admin?: boolean };
 
 const fmt = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
@@ -24,7 +25,7 @@ export default function ThreadClient({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
 
   const loadPosts = useCallback(async () => {
-    const { data } = await supabase.from("forum_posts").select("id,author_name,body,created_at").eq("thread_id", id).order("created_at");
+    const { data } = await supabase.from("forum_posts").select("*").eq("thread_id", id).order("created_at");
     setPosts((data as Post[]) ?? []);
   }, [supabase, id]);
 
@@ -39,7 +40,7 @@ export default function ThreadClient({ id }: { id: string }) {
         setMe({ id: user.id, name: prof.data?.full_name || prof.data?.email || "Člen" });
         setCanPost(!!mem.data || prof.data?.is_admin === true);
       }
-      const { data: t } = await supabase.from("forum_threads").select("id,author_name,category,title,body,created_at").eq("id", id).maybeSingle();
+      const { data: t } = await supabase.from("forum_threads").select("*").eq("id", id).maybeSingle();
       setThread((t as Thread) ?? null);
       await loadPosts();
       setLoading(false);
@@ -69,7 +70,7 @@ export default function ThreadClient({ id }: { id: string }) {
           <span className="eyebrow">{catLabel(thread.category)}</span>
           <h1 className="acct-h1" style={{ marginBottom: "0.3rem" }}>{thread.title}</h1>
           <div className="fpost fpost-op">
-            <div className="fpost-head"><b>{thread.author_name || "Člen"}</b><span>{fmt(thread.created_at)}</span></div>
+            <div className="fpost-head"><b>{thread.author_name || "Člen"}</b>{thread.author_is_admin && <AdminTag />}<span>{fmt(thread.created_at)}</span></div>
             <p>{thread.body}</p>
           </div>
 
@@ -77,7 +78,7 @@ export default function ThreadClient({ id }: { id: string }) {
           <div className="fposts">
             {posts.map((p) => (
               <div className="fpost" key={p.id}>
-                <div className="fpost-head"><CornerDownRight size={14} /><b>{p.author_name || "Člen"}</b><span>{fmt(p.created_at)}</span></div>
+                <div className="fpost-head"><CornerDownRight size={14} /><b>{p.author_name || "Člen"}</b>{p.author_is_admin && <AdminTag />}<span>{fmt(p.created_at)}</span></div>
                 <p>{p.body}</p>
               </div>
             ))}
