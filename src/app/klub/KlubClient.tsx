@@ -7,8 +7,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight } from "lucide-react";
+import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame } from "lucide-react";
 import StromEditor from "./StromEditor";
+import KlubOvereni from "./KlubOvereni";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
@@ -88,8 +89,29 @@ export default function KlubClient() {
         )}
         <div className="mc-head">
           <h1 className="acct-h1"><Users size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
+          <span className="klub-free">Zdarma · žádné členství</span>
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Vaše rozhraní na TenisHubu — zvěte rodiče a spravujte svěřence. Herní systém (tech tree + Sparring Cup) přidáváme právě teď.</p>
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Vaše trenérské rozhraní a profil na TenisHubu jsou <b>zdarma</b> — členství neplatíte. Zvěte rodiče a spravujte svěřence.</p>
+
+        {/* TRENÉRSKÝ BOOST */}
+        <div className="acct-card boost-card">
+          <div className="boost-head">
+            <span className="boost-flame"><Flame size={26} /></span>
+            <div><span className="boost-eyebrow">Vaše nefér výhoda</span><h2>Trenérský Boost</h2></div>
+          </div>
+          <p className="member-note">Profil a rozhraní máte zdarma. <b>Boost</b> je jednorázový balíček, kterým dáte dětem něco, co u tenisu ještě neměly — a sobě náskok před konkurencí:</p>
+          <ul className="boost-list">
+            <li><b>Customizovatelný strom dovedností</b> — vaše vlastní metoda. Děti odemykají uzly a levelují svou postavu.</li>
+            <li><b>Interní soutěž (Sparing Cup)</b> — děti mezi sebou měří síly. Rodiče si ji z velké části organizují sami, vy jen dohlížíte, řešíte ceny a vyhlašování.</li>
+            <li><b>Zábava, motivace a engagement</b>, jaké u tenisu ještě nezažily — a důvod, proč u vás zůstanou.</li>
+          </ul>
+          <div className="boost-cta">
+            <span className="boost-price">Jednorázově od <b>5 000 Kč</b><span>Zaplatíte jednou a máte napořád · cena brzy poroste</span></span>
+            <Link href="/#zeptejte-se" className="btn btn-gold">Chci Boost</Link>
+          </div>
+        </div>
+
+        <KlubOvereni />
 
         {/* POZVÁNKA */}
         <div className="acct-card klub-invite">

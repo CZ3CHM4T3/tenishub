@@ -259,7 +259,7 @@ export default function Home() {
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
                   <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
-                  <span className="wt-sub">Vlastní klub, strom dovedností i služby — celé pod sebou a plně po svém.</span>
+                  <span className="wt-sub">Profil a rozhraní <b>zdarma</b> — bez členství. Vlastní klub a strom dovedností plně po svém.</span>
                   <span className="wt-person">
                     <span className="wt-photo">
                       <span className="wt-photo-fb" aria-hidden="true">JM</span>
