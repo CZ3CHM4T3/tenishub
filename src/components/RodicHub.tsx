@@ -26,7 +26,7 @@ const TOOLS = [
   { Icon: BookOpen, c: "#7c6018", t: "Vědět víc — knihovna", d: "Ověřené návody a články celé, bez zámku: jak vybrat raketu i trenéra, výživa malého sportovce, prevence zranění.", href: "/clanky" },
   { Icon: CalendarDays, c: "#3b5666", t: "Kalendář turnajů", d: "Turnaje ve tvém okolí i s přihláškami na jednom místě. Už nezmeškáš termín ani uzávěrku.", href: "/turnaje" },
   { Icon: Repeat, c: "#8a5640", t: "Bazar vybavení", d: "Rakety, boty a oblečení z druhé ruky mezi rodiči. Děti rostou rychle — ušetři.", href: "/bazar" },
-  { Icon: Car, c: "#3b8a5a", t: "Spolujízda", d: "Domluv odvoz na trénink i turnaj s rodiči z klubu. Ušetříš čas, nervy i palivo.", href: "/bazar?tab=spolujizda" },
+  { Icon: Car, c: "#3b8a5a", t: "Spolujízda", d: "Domluv odvoz na trénink i turnaj s rodiči z klubu. Ušetříš čas, nervy i palivo.", href: "/spolujizda" },
 ];
 
 export function RodicHub() {

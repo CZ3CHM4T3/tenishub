@@ -29,7 +29,7 @@ export function SpolujizdaTile() {
   );
 
   return (
-    <Link href="/bazar?tab=spolujizda" className="rolepick" style={{ backgroundColor: "#3b8a5a", backgroundImage: "url(/spolujizda.png)" }}>
+    <Link href="/spolujizda" className="rolepick" style={{ backgroundColor: "#3b8a5a", backgroundImage: "url(/spolujizda.png)" }}>
       <span className="rolepick-ic" style={{ color: "#3b8a5a" }}><Car size={22} /></span>
       <span className="rolepick-txt"><b>Spolujízda <span className="hm-badge">HUB+</span></b><span>odvoz na trénink i turnaj</span></span>
       <span className="rolepick-arr"><ArrowRight size={18} /></span>

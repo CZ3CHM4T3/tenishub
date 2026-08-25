@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import BazarClient from "./BazarClient";
 
 export const metadata: Metadata = {
-  title: "Bazar a spolujízda pro tenisové rodiče | TenisHub",
-  description: "Vybavení z druhé ruky (rakety, boty, oblečení) a spolujízda na tréninky i turnaje mezi rodiči.",
+  title: "Bazar vybavení pro tenisové rodiče | TenisHub",
+  description: "Tenisové vybavení z druhé ruky mezi rodiči — rakety, boty, oblečení a doplňky.",
 };
 
 export default function Page() {
-  return <BazarClient />;
+  return <BazarClient only="bazar" />;
 }

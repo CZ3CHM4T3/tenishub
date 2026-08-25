@@ -15,12 +15,12 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
 ];
 
-// Role = „klobouky". Trenér zdarma (návnada); ostatní role odemyká HUB+.
-const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; soon?: boolean }[] = [
-  { k: "trener", label: "Trenér", desc: "Vlastní klub, svěřenci, kalendář, strom dovedností.", free: true },
-  { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false },
-  { k: "sparring", label: "Sparing hráč", desc: "Vlastní karta na zeď, hledání parťáků.", free: false },
-  { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky.", free: false, soon: true },
+// Role = „klobouky". Trenér zdarma (návnada); spotřebitel = HUB+, poskytovatel = Trenér+/Expert+.
+const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; badge?: string; cls?: string; soon?: boolean }[] = [
+  { k: "trener", label: "Trenér", desc: "Vlastní klub, svěřenci, kalendář, strom dovedností. Prémium Trenér+ = víc viditelnosti.", free: true, badge: "zdarma", cls: "rp-free" },
+  { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false, badge: "HUB+", cls: "rp-hub" },
+  { k: "sparring", label: "Sparing hráč", desc: "Vlastní karta na zeď, hledání parťáků.", free: false, badge: "HUB+", cls: "rp-hub" },
+  { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky, být k nalezení.", free: false, badge: "Expert+", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
   { k: "fitness", label: "Kondiční trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
@@ -189,7 +189,7 @@ export default function AccountPage() {
         <div className="acct-card">
           <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
           <p className="member-note">Jeden účet, klidně víc rolí zároveň. <b>Trenér je zdarma</b>; ostatní role odemyká <b>HUB+</b>. Podle rolí se ti objeví prostory v menu vpravo nahoře.</p>
-          {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Bez HUB+ si můžeš aktivovat jen trenéra. HUB+ odemkne všechny role.</p>}
+          {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, sparring) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
           <div className="rolepicker">
             {ACCOUNT_ROLES.map((r) => {
               const on = roles.includes(r.k);
@@ -198,7 +198,7 @@ export default function AccountPage() {
               return (
                 <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
                   <span className="rp-check">{on ? <Check size={15} /> : null}</span>
-                  <span className="rp-txt"><b>{r.label}{r.free && <span className="rp-free">zdarma</span>}{!r.free && !r.soon && <span className="rp-hub">HUB+</span>}{r.soon && <span className="rp-soon">brzy</span>}</b><span>{r.desc}</span></span>
+                  <span className="rp-txt"><b>{r.label}{r.soon ? <span className="rp-soon">brzy</span> : <span className={r.cls}>{r.badge}</span>}</b><span>{r.desc}</span></span>
                 </button>
               );
             })}

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Repeat, Plus, X, Lock, Trash2, MapPin } from "lucide-react";
+import { Repeat, Plus, X, Lock, Trash2, MapPin, Car } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 
 type Kind = "bazar" | "spolujizda";
@@ -13,10 +13,10 @@ type L = { id: string; kind: Kind; author_id: string | null; author_name: string
 const BAZAR_CATS = ["Raketa", "Boty", "Oblečení", "Doplňky", "Ostatní"];
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 
-export default function BazarClient() {
+export default function BazarClient({ only }: { only?: Kind }) {
   const supabase = useMemo(() => createClient(), []);
   const { me, canPost } = useMe();
-  const [tab, setTab] = useState<Kind>("bazar");
+  const [tab, setTab] = useState<Kind>(only ?? "bazar");
   const [items, setItems] = useState<L[]>([]);
   const [loading, setLoading] = useState(true);
   const [gate, setGate] = useState<null | "login" | "hub">(null);
@@ -30,7 +30,7 @@ export default function BazarClient() {
     setLoading(false);
   }, [supabase]);
   useEffect(() => { load(); }, [load]);
-  useEffect(() => { if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("tab") === "spolujizda") setTab("spolujizda"); }, []);
+  useEffect(() => { if (!only && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("tab") === "spolujizda") setTab("spolujizda"); }, [only]);
 
   const add = () => {
     if (!me) { setGate("login"); return; }
@@ -63,15 +63,17 @@ export default function BazarClient() {
 
       <div className="wrap acct-wrap" style={{ maxWidth: 880 }}>
         <div className="mc-head">
-          <h1 className="acct-h1"><Repeat size={26} style={{ verticalAlign: "-4px" }} /> Bazar a spolujízda</h1>
+          <h1 className="acct-h1">{isBazar ? <><Repeat size={26} style={{ verticalAlign: "-4px" }} /> Bazar vybavení</> : <><Car size={26} style={{ verticalAlign: "-4px" }} /> Spolujízda</>}</h1>
           <button className="btn btn-green" onClick={add}><Plus size={16} /> {isBazar ? "Přidat inzerát" : "Nabídnout odvoz"}</button>
         </div>
 
-        <div className="fcats">
-          <button className={`fcat${isBazar ? " on" : ""}`} onClick={() => setTab("bazar")}>Bazar vybavení</button>
-          <button className={`fcat${!isBazar ? " on" : ""}`} onClick={() => setTab("spolujizda")}>Spolujízda</button>
-        </div>
-        <p className="member-note" style={{ marginTop: "-0.6rem" }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUB+." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUB+."}</p>
+        {!only && (
+          <div className="fcats">
+            <button className={`fcat${isBazar ? " on" : ""}`} onClick={() => setTab("bazar")}>Bazar vybavení</button>
+            <button className={`fcat${!isBazar ? " on" : ""}`} onClick={() => setTab("spolujizda")}>Spolujízda</button>
+          </div>
+        )}
+        <p className="member-note" style={{ marginTop: only ? 0 : "-0.6rem" }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUB+." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUB+."}</p>
 
         {loading ? <p className="member-note">Načítám…</p> : shown.length === 0 ? (
           <div className="acct-card mc-gate"><Repeat size={30} /><h2>Zatím tu nic není</h2><p>Buďte první.</p></div>
