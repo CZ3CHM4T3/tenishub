@@ -5,12 +5,13 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
-import { Handshake, MapPin, Clock, Send } from "lucide-react";
+import { Handshake, MapPin, Clock, Send, BadgeCheck } from "lucide-react";
 
 type Offer = {
   id: string; profile_id: string; level: string | null; city: string | null;
   availability: string | null; note: string | null; author_name: string | null; created_at: string;
   age: number | null; play_type: string | null; gender: string | null; handedness: string | null; surface: string | null;
+  cts_url: string | null; cts_verified: boolean | null;
 };
 
 const LEVELS = ["hobby", "začátečník", "mírně pokročilý", "II. třída", "závodní"];
@@ -20,7 +21,7 @@ const HAND: [string, string][] = [["right", "pravák"], ["left", "levák"]];
 const SURFACE: [string, string][] = [["antuka", "antuka"], ["hala", "hala"], ["tvrdy", "tvrdý"], ["any", "nezáleží"]];
 const lbl = (arr: [string, string][], v: string | null) => arr.find((x) => x[0] === v)?.[1] ?? v ?? "";
 
-const empty = { level: "hobby", cityIdx: 0, age: "", play_type: "amateur", gender: "any", handedness: "right", surface: "any", availability: "", note: "" };
+const empty = { level: "hobby", cityIdx: 0, age: "", play_type: "amateur", gender: "any", handedness: "right", surface: "any", availability: "", note: "", cts: "", ctsVerified: false };
 
 export default function SparringClient() {
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -34,6 +35,8 @@ export default function SparringClient() {
   const [contact, setContact] = useState<Offer | null>(null);
   const [cText, setCText] = useState("");
   const [done, setDone] = useState(false);
+  const [ctsBusy, setCtsBusy] = useState(false);
+  const [ctsMsg, setCtsMsg] = useState("");
 
   const [fCity, setFCity] = useState(""); const [fLevel, setFLevel] = useState(""); const [fPlay, setFPlay] = useState(""); const [fGender, setFGender] = useState("");
 
@@ -58,7 +61,7 @@ export default function SparringClient() {
           const o = mine as Offer;
           setMyOffer(o);
           const ci = CITIES.findIndex((c) => c[0] === o.city);
-          setForm({ level: o.level ?? "hobby", cityIdx: ci >= 0 ? ci : 0, age: o.age ? String(o.age) : "", play_type: o.play_type ?? "amateur", gender: o.gender ?? "any", handedness: o.handedness ?? "right", surface: o.surface ?? "any", availability: o.availability ?? "", note: o.note ?? "" });
+          setForm({ level: o.level ?? "hobby", cityIdx: ci >= 0 ? ci : 0, age: o.age ? String(o.age) : "", play_type: o.play_type ?? "amateur", gender: o.gender ?? "any", handedness: o.handedness ?? "right", surface: o.surface ?? "any", availability: o.availability ?? "", note: o.note ?? "", cts: o.cts_url ?? "", ctsVerified: !!o.cts_verified });
         }
       }
       await loadOffers();
@@ -76,6 +79,7 @@ export default function SparringClient() {
       profile_id: userId, level: form.level, city: c[0], lat: c[1], lng: c[2],
       age: form.age ? Number(form.age) : null, play_type: form.play_type, gender: form.gender,
       handedness: form.handedness, surface: form.surface, availability: form.availability, note: form.note,
+      cts_url: form.cts || null, cts_verified: form.ctsVerified,
       author_name: authorName || "Hráč", active: true,
     };
     if (myOffer) await sb.from("sparring_offers").update(row).eq("id", myOffer.id);
@@ -92,6 +96,18 @@ export default function SparringClient() {
     const sb = createClient();
     await sb.from("sparring_offers").update({ active: false }).eq("id", myOffer.id);
     setBusy(false); setMyOffer(null); await loadOffers();
+  };
+
+  const verifyCts = async () => {
+    if (!form.cts.trim()) { setCtsMsg("Vlož odkaz na profil z cesky-tenis.cz nebo číslo hráče."); return; }
+    setCtsBusy(true); setCtsMsg("");
+    try {
+      const r = await fetch(`/api/cesky-tenis?url=${encodeURIComponent(form.cts.trim())}`);
+      const j = await r.json();
+      if (j.name) { setForm((f) => ({ ...f, ctsVerified: true })); setCtsMsg(`Ověřeno: ${j.name}`); }
+      else { setForm((f) => ({ ...f, ctsVerified: false })); setCtsMsg(j.error || "Hráč se na ČTS nenašel."); }
+    } catch { setCtsMsg("Ověření se teď nepodařilo, zkuste to prosím později."); }
+    setCtsBusy(false);
   };
 
   const sendContact = async () => {
@@ -148,6 +164,14 @@ export default function SparringClient() {
                 <div className="fld"><label>Dostupnost</label><input value={form.availability} onChange={(e) => setForm({ ...form, availability: e.target.value })} placeholder="večery, víkendy" /></div>
               </div>
               <div className="fld"><label>Pár slov</label><textarea rows={2} value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} placeholder="Hledám vyrovnaného soupeře na pravidelné hraní…" /></div>
+              <div className="fld">
+                <label>Ověření ČTS (nepovinné — hráči registrovaní ve svazu)</label>
+                <div className="cts-row">
+                  <input value={form.cts} onChange={(e) => setForm({ ...form, cts: e.target.value, ctsVerified: false })} placeholder="odkaz na profil z cesky-tenis.cz nebo číslo hráče" />
+                  <button type="button" className="btn btn-out" onClick={verifyCts} disabled={ctsBusy}>{ctsBusy ? "Ověřuji…" : "Ověřit"}</button>
+                </div>
+                {form.ctsVerified ? <span className="cts-ok"><BadgeCheck size={14} /> Ověřeno ČTS</span> : ctsMsg && <span className="cts-msg">{ctsMsg}</span>}
+              </div>
               <div className="card-actions">
                 <button className="btn btn-gold" type="submit" disabled={busy}>{busy ? "Ukládám…" : "Publikovat na zeď"}</button>
                 <button className="btn btn-out" type="button" onClick={() => setShowForm(false)}>Zrušit</button>
@@ -173,6 +197,7 @@ export default function SparringClient() {
               <div className="spar-card" key={o.id}>
                 <div className="spar-top">
                   <span className="spar-level">{o.level || "hobby"}</span>
+                  {o.cts_verified && <span className="spar-cts"><BadgeCheck size={13} /> ČTS</span>}
                   {o.city && <span className="spar-city"><MapPin size={14} /> {o.city}</span>}
                 </div>
                 <div className="spar-tags">
