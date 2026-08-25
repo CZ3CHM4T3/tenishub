@@ -3317,3 +3317,30 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .klub-mod-sw::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
 .klub-mod.on .klub-mod-sw{background:var(--green)}
 .klub-mod.on .klub-mod-sw::after{transform:translateX(18px)}
+
+/* záložkové menu účtu */
+.acct-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:0 0 1.3rem;border-bottom:1px solid var(--line)}
+.acct-tab{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem .95rem;border:none;background:none;cursor:pointer;font-weight:600;color:var(--muted);font-size:.92rem;border-bottom:2px solid transparent;margin-bottom:-1px}
+.acct-tab:hover{color:var(--ink)}
+.acct-tab.on{color:var(--green);border-bottom-color:var(--gold)}
+@media(max-width:560px){.acct-tabs{gap:0;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}.acct-tab{flex:none;padding:.6rem .7rem}}
+
+/* ===== ADMIN — hlavní barevné záložky + vertikální podzáložky ===== */
+.admin-maintabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.2rem}
+.amain{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border:1px solid var(--line);background:#fff;border-radius:12px;cursor:pointer;font-weight:700;color:var(--muted);font-size:.92rem;transition:all .15s}
+.amain svg{color:var(--amc,var(--green))}
+.amain:hover{border-color:var(--amc,var(--green));color:var(--ink)}
+.amain.on{background:var(--amc,var(--green));border-color:var(--amc,var(--green));color:#fff}
+.amain.on svg{color:#fff}
+.admin-layout{display:grid;grid-template-columns:210px 1fr;gap:1.2rem;align-items:start}
+.admin-sub{display:flex;flex-direction:column;gap:.25rem;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:.3rem;border-right:1px solid var(--line)}
+.asub{text-align:left;padding:.6rem .8rem;border:none;background:none;border-radius:9px;cursor:pointer;font-weight:600;color:var(--muted);font-size:.92rem;border-left:3px solid transparent}
+.asub:hover{background:#f4efe2;color:var(--ink)}
+.asub.on{background:color-mix(in srgb,var(--amc,var(--green)) 12%,#fff);color:var(--amc,var(--green));border-left-color:var(--amc,var(--green))}
+.admin-content{min-width:0}
+@media(max-width:760px){
+  .admin-layout{grid-template-columns:1fr;gap:.6rem}
+  .admin-sub{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;position:static;max-height:none;border-right:none;border-bottom:1px solid var(--line);padding-bottom:.4rem}
+  .asub{flex:none;border-left:none;border-bottom:2px solid transparent}
+  .asub.on{border-left:none;border-bottom-color:var(--amc,var(--green))}
+}

@@ -5,8 +5,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, Mail, Route } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, Mail, Route, LayoutGrid, Store } from "lucide-react";
 import ProviderCard from "./ProviderCard";
+
+const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
+  { k: "prehled", label: "Přehled", Icon: LayoutGrid },
+  { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
+  { k: "profil", label: "Profil", Icon: UserRound },
+  { k: "karta", label: "Moje karta", Icon: Store },
+  { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
+];
 
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean };
 type Membership = { id: string; plan: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
@@ -25,6 +33,7 @@ export default function AccountPage() {
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
   const [unread, setUnread] = useState(0);
+  const [atab, setAtab] = useState("prehled");
 
   const load = useCallback(async () => {
     const supabase = createClient();
@@ -87,16 +96,21 @@ export default function AccountPage() {
   return (
     <div className="acct-page">
       <SiteHeader />
-      {profile.is_admin && (
-        <div className="wrap" style={{ paddingTop: ".6rem" }}>
-          <Link href="/admin" className="back"><BadgeCheck size={15} style={{ verticalAlign: "-2px" }} /> Administrace</Link>
-        </div>
-      )}
 
       <div className="wrap acct-wrap">
         <h1 className="acct-h1">Můj účet</h1>
 
-        {/* ZPRÁVY (nevyřízená pošta) */}
+        {/* ZÁLOŽKOVÉ MENU */}
+        <div className="acct-tabs">
+          {ATABS.map((t) => (
+            <button key={t.k} type="button" className={`acct-tab${atab === t.k ? " on" : ""}`} onClick={() => setAtab(t.k)}>
+              <t.Icon size={17} /> {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* PŘEHLED — rychlé odkazy */}
+        {atab === "prehled" && (<>
         <Link href="/zpravy" className="acct-card msgs-link">
           <span className="msgs-ic"><Mail size={20} /></span>
           <span className="msgs-txt"><b>Zprávy</b><span>{unread > 0 ? `${unread} nepřečtených — někdo ti napsal` : "Tvoje konverzace s trenéry a hráči"}</span></span>
@@ -104,7 +118,6 @@ export default function AccountPage() {
           <span className="msgs-arr">→</span>
         </Link>
 
-        {/* MOJE CESTA */}
         <Link href="/moje-cesta" className="acct-card msgs-link">
           <span className="msgs-ic"><Route size={20} /></span>
           <span className="msgs-txt"><b>Moje cesta</b><span>Naplánuj sezónu — tréninky, turnaje, cíle a statistiky{membership ? "" : " (HUB+)"}</span></span>
@@ -116,8 +129,10 @@ export default function AccountPage() {
           <span className="msgs-txt"><b>Moje děti</b><span>Kariéra a pokrok dítěte u vašeho trenéra — strom dovedností, level a Sparing Cup</span></span>
           <span className="msgs-arr">→</span>
         </Link>
+        </>)}
 
         {/* ČLENSTVÍ */}
+        {atab === "clenstvi" && (
         <div className={`acct-card member-card${membership ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
@@ -153,8 +168,10 @@ export default function AccountPage() {
             </>
           )}
         </div>
+        )}
 
         {/* PROFIL */}
+        {atab === "profil" && (<>
         <div className="acct-card">
           <div className="acct-card-head"><UserRound size={20} /><h2>Profil</h2></div>
           <div className="acct-grid">
@@ -165,11 +182,16 @@ export default function AccountPage() {
           </div>
           <button className="btn btn-green" onClick={saveProfile} disabled={busy}>{saved ? "✓ Uloženo" : "Uložit změny"}</button>
         </div>
+        <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
+        </>)}
 
         {/* MOJE KARTA (samospráva trenér/areál) */}
-        <ProviderCard userId={profile.id} fullName={name} isMember={!!membership || profile.is_admin} />
+        {atab === "karta" && (
+          <ProviderCard userId={profile.id} fullName={name} isMember={!!membership || profile.is_admin} />
+        )}
 
         {/* REZERVACE */}
+        {atab === "rezervace" && (
         <div className="acct-card">
           <div className="acct-card-head"><CalendarCheck size={20} /><h2>Moje rezervace</h2></div>
           {bookings.length === 0 ? (
@@ -185,8 +207,7 @@ export default function AccountPage() {
             </div>
           )}
         </div>
-
-        <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
+        )}
       </div>
     </div>
   );

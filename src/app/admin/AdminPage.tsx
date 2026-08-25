@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Wordmark } from "@/components/Wordmark";
-import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy, Eye, Baby, GraduationCap } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+import { ShieldCheck, Users, BadgeCheck, CalendarCheck, Banknote, MapPin, UserCheck, Flag, Star, LayoutDashboard, UserPlus, Link2, Copy, MessagesSquare, Wrench } from "lucide-react";
 import AdminSubjects from "./AdminSubjects";
 import AdminCesta from "./AdminCesta";
 import AdminVerify from "./AdminVerify";
@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [removals, setRemovals] = useState<Removal[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [group, setGroup] = useState("prehled");
   const [tab, setTab] = useState("prehled");
   const [busy, setBusy] = useState<string | null>(null);
   const [inviteLink, setInviteLink] = useState<string | null>(null);
@@ -155,13 +156,14 @@ export default function AdminPage() {
   };
   if (loading) return <div className="acct-loading">Načítám administraci…</div>;
 
-  const TAB_GROUPS: [string, [string, string][]][] = [
-    ["Přehled a čísla", [["prehled", "Přehled"], ["feedback", "Zpětná vazba"], ["dotazy", "Dotazy"]]],
-    ["Lidé a členství", [["profily", "Profily"], ["uzivatele", "Uživatelé"]]],
-    ["Katalog trenérů a areálů", [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]]],
-    ["Komunita", [["recenze", "Recenze"], ["moderace", "Moderace"]]],
-    ["Služby a nástroje", [["video", "Videorozbor"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"]]],
+  const GROUPS: { k: string; label: string; Icon: typeof Users; c: string; subs: [string, string][] }[] = [
+    { k: "prehled", label: "Přehled & čísla", Icon: LayoutDashboard, c: "#3b5666", subs: [["prehled", "Přehled"], ["feedback", "Zpětná vazba"], ["dotazy", "Dotazy"]] },
+    { k: "lide", label: "Lidé & členství", Icon: Users, c: "#2f5d57", subs: [["profily", "Profily"], ["uzivatele", "Uživatelé"]] },
+    { k: "katalog", label: "Katalog", Icon: MapPin, c: "#7c6018", subs: [["subjekty", "Subjekty"], ["overeni", "Ověření"], ["zadosti", "Žádosti"]] },
+    { k: "komunita", label: "Komunita", Icon: MessagesSquare, c: "#7C4DD6", subs: [["recenze", "Recenze"], ["moderace", "Moderace"]] },
+    { k: "sluzby", label: "Služby & nástroje", Icon: Wrench, c: "#864a59", subs: [["video", "Videorozbor"], ["rezervace", "Rezervace"], ["cesta", "Moje cesta"]] },
   ];
+  const curGroup = GROUPS.find((g) => g.k === group) ?? GROUPS[0];
   const TAB_INFO: Record<string, string> = {
     prehled: "Souhrn webu: počty účtů, aktivních členů, tržby a klíčová čísla.",
     feedback: "Konverzní trychtýř (návštěvy → účty → členové) a zpětná vazba od uživatelů.",
@@ -189,14 +191,7 @@ export default function AdminPage() {
 
   return (
     <div className="acct-page">
-      <header className="subhdr">
-        <div className="wrap">
-          <div className="bar">
-            <Link href="/" className="brand"><Wordmark /></Link>
-            <Link href="/ucet" className="back">← Můj účet</Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <div className="wrap acct-wrap admin-wrap">
         <div className="dash-head">
@@ -204,25 +199,25 @@ export default function AdminPage() {
           <Link href="/dashboard" className="btn btn-gold"><LayoutDashboard size={16} /> Provozní dashboard</Link>
         </div>
 
-        <div className="admin-viewas">
-          <span className="admin-viewas-l"><Eye size={15} /> Náhled webu jako:</span>
-          <Link href="/rodic" className="btn btn-out"><Baby size={15} /> Rodič &amp; dítě</Link>
-          <Link href="/klub" className="btn btn-out"><GraduationCap size={15} /> Trenér</Link>
-          <Link href="/" className="btn btn-out">Návštěvník (homepage)</Link>
-        </div>
-        <div className="admin-tabgroups">
-          {TAB_GROUPS.map(([label, tabs]) => (
-            <div className="admin-tabgroup" key={label}>
-              <span className="admin-tabgroup-l">{label}</span>
-              <div className="admin-tabs">
-                {tabs.map(([k, l]) => (
-                  <button key={k} type="button" className={`atab${tab === k ? " on" : ""}`} onClick={() => setTab(k)}>{l}</button>
-                ))}
-              </div>
-            </div>
+        {/* HLAVNÍ ZÁLOŽKY (barevné, s ikonou) */}
+        <div className="admin-maintabs">
+          {GROUPS.map((g) => (
+            <button key={g.k} type="button" className={`amain${group === g.k ? " on" : ""}`} style={{ "--amc": g.c } as CSSProperties} onClick={() => { setGroup(g.k); setTab(g.subs[0][0]); }}>
+              <g.Icon size={18} /> {g.label}
+            </button>
           ))}
         </div>
-        {TAB_INFO[tab] && <p className="admin-tabdesc">{TAB_INFO[tab]}</p>}
+
+        <div className="admin-layout">
+          {/* VERTIKÁLNÍ PODZÁLOŽKY */}
+          <aside className="admin-sub">
+            {curGroup.subs.map(([k, l]) => (
+              <button key={k} type="button" className={`asub${tab === k ? " on" : ""}`} style={{ "--amc": curGroup.c } as CSSProperties} onClick={() => setTab(k)}>{l}</button>
+            ))}
+          </aside>
+
+          <div className="admin-content">
+            {TAB_INFO[tab] && <p className="admin-tabdesc">{TAB_INFO[tab]}</p>}
 
         {tab === "prehled" && (
         <div className="admin-stats">
@@ -437,6 +432,8 @@ export default function AdminPage() {
           </p>
         </div>
         )}
+          </div>{/* admin-content */}
+        </div>{/* admin-layout */}
       </div>
     </div>
   );
