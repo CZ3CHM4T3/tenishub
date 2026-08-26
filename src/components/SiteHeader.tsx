@@ -123,9 +123,9 @@ export function SiteHeader() {
           <div className="nav-r">
             {ready && logged ? (
               <div className="shu">
-                <Link href="/zpravy" className="shu-mail" aria-label="Zprávy" title="Zprávy"><Mail size={19} />{unread > 0 && <span className="authr-dot">{unread}</span>}</Link>
+                <Link href="/zpravy" className="shu-mail" aria-label="Zprávy" title="Zprávy"><Mail size={18} /> <span className="shu-lbl">Zprávy</span>{unread > 0 && <span className="authr-dot">{unread}</span>}</Link>
                 {isAdmin && <Link href="/admin" className="shu-btn" aria-label="Administrace" title="Administrace"><ShieldCheck size={18} /></Link>}
-                <button type="button" className="shu-btn shu-logout" onClick={logout} aria-label="Odhlásit se" title="Odhlásit se"><LogOut size={18} /></button>
+                <button type="button" className="shu-btn shu-logout" onClick={logout} aria-label="Odhlásit se" title="Odhlásit se"><LogOut size={17} /> <span className="shu-lbl">Odhlásit</span></button>
               </div>
             ) : ready ? (
               <Link href="/prihlaseni" className="btn btn-gold">Přihlásit se</Link>

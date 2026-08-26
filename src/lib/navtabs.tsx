@@ -7,11 +7,7 @@ export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent?: 
 // zbytek = skupiny služeb. Vše ovladatelné z lišty, bez složitého proklikávání.
 export const ROLE_TABS: Record<string, NavTab[]> = {
   rodic: [
-    { label: "Profil", Icon: UserRound, group: [
-      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
-      { label: "Členství HUB+", href: "/ucet?tab=clenstvi" },
-    ] },
-    { label: "Moje cesta", href: "/moje-cesta", Icon: Route },
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
     { label: "Můj klub", Icon: School, accent: "office", group: [
       { label: "Moje děti a pokrok", href: "/deti" },
       { label: "Napojení na trenéra", href: "/deti" },
@@ -25,6 +21,7 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
       { label: "Spolujízda", href: "/spolujizda" },
     ] },
     { label: "Služby a okolí", Icon: Compass, group: [
+      { label: "Moje cesta", href: "/moje-cesta" },
       { label: "Sparring", href: "/sparring" },
       { label: "Kalendář turnajů", href: "/turnaje" },
       { label: "Videorozbor", href: "/videorozbor" },
@@ -32,10 +29,7 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
     ] },
   ],
   trener: [
-    { label: "Profil", Icon: UserRound, group: [
-      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
-      { label: "Členství", href: "/ucet?tab=clenstvi" },
-    ] },
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
     { label: "Můj klub", href: "/klub", Icon: School, accent: "office" },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
     { label: "Komunita", Icon: MessagesSquare, group: [
@@ -49,10 +43,7 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
     ] },
   ],
   vyplet: [
-    { label: "Profil", Icon: UserRound, group: [
-      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
-      { label: "Členství", href: "/ucet?tab=clenstvi" },
-    ] },
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
     { label: "Objednávky", href: "/ucet?tab=profil", Icon: Package },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
     { label: "Počasí", href: "/pocasi", Icon: Compass },
