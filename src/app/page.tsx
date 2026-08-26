@@ -143,7 +143,7 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null }[]>([]);
+  const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null }[]>([]);
   const [specCount, setSpecCount] = useState(0);
   const [venueCount, setVenueCount] = useState(0);
   const [waitCount, setWaitCount] = useState(0);
@@ -173,7 +173,7 @@ export default function Home() {
   useEffect(() => {
     const supabase = createClient();
     (async () => {
-      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating").eq("verified", true).limit(12);
+      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating,photo_url").eq("verified", true).order("rating", { ascending: false, nullsFirst: false }).limit(14);
       if (data) setFeatured(data as typeof featured);
       const [{ count: sc }, { count: vc }, { count: wc }] = await Promise.all([
         supabase.from("specialists").select("*", { count: "exact", head: true }),
@@ -191,6 +191,10 @@ export default function Home() {
   const PIcon = p.Icon;
   const pc = PERSONA_COLOR[p.key];
   const marquee = featured.length ? [...featured, ...featured] : [];
+  // pás ověřených lidí s hodnocením (reální; když jich je málo, padne to na hodnotové hlášky)
+  const stripPeople = featured.filter((f) => f.rating != null);
+  const useRealStrip = stripPeople.length >= 3;
+  const stripLoop = [...stripPeople, ...stripPeople];
 
   return (
     <>
@@ -243,14 +247,26 @@ export default function Home() {
             <span className="hero-tagline rv">Jednička pro rodiče malých tenistů a jejich trenéry</span>
             <HeroCarousel />
 
-            {/* PÁS RECENZÍ / SPOTLIGHT — pomalý pás pod carouselem (i placené místo) */}
-            <div className="testi-strip rv" aria-label="Co TenisHub nabízí">
+            {/* PÁS OVĚŘENÝCH LIDÍ — reální ověření specialisté s hodnocením (přes celou šířku) */}
+            <div className={`testi-strip rv${useRealStrip ? " testi-strip-people" : ""}`} aria-label="Ověření specialisté na TenisHubu">
               <div className="testi-track">
-                {[...STRIP, ...STRIP].map((s, i) => (
-                  <span className="tstrip-item" key={i}>
-                    <Star size={13} /> {s}
-                  </span>
-                ))}
+                {useRealStrip
+                  ? stripLoop.map((f, i) => (
+                    <Link href={`/trener/${f.id}`} className="tstrip-person" key={i}>
+                      <span className="tsp-ava" style={f.photo_url ? { backgroundImage: `url(${f.photo_url})` } : undefined}>
+                        {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
+                      </span>
+                      <span className="tsp-txt">
+                        <b>{f.name}</b>
+                        <span>{(KIND_META[f.kind]?.label ?? "Trenér")}{f.city ? ` · ${f.city}` : ""}</span>
+                      </span>
+                      <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span>
+                      <span className="tsp-verif"><Check size={12} /> Ověřeno</span>
+                    </Link>
+                  ))
+                  : [...STRIP, ...STRIP].map((s, i) => (
+                    <span className="tstrip-item" key={i}><Star size={13} /> {s}</span>
+                  ))}
               </div>
             </div>
 
