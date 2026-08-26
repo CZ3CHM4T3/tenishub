@@ -3465,6 +3465,17 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .skup-tog{font-size:.78rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;border:1px dashed var(--line);background:#fff;color:var(--muted);cursor:pointer}
 .skup-tog.on{border-style:solid;border-color:var(--green);background:#eef4ef;color:var(--green)}
 .demo-banner{background:#fff6e0;border:1px solid #e8c877;color:#7a5a12;border-radius:10px;padding:.6rem .9rem;font-size:.85rem;font-weight:600;margin-bottom:1rem}
+/* admin filtry + stavy ověření */
+.admin-filters{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.8rem 0}
+.afbtn{font-size:.82rem;font-weight:600;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+.afbtn.on{background:var(--green);color:#fff;border-color:var(--green)}
+.afsearch{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line);border-radius:999px;padding:.25rem .6rem;color:var(--muted);margin-left:auto}
+.afsearch input{border:none;background:none;font:inherit;color:var(--ink);outline:none;width:150px}
+.afsearch button{border:none;background:none;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.cond{font-family:monospace;font-weight:700;font-size:.82rem;color:var(--muted)}
+.cond.ok{color:#2f5d57;background:#e2efe9;padding:.05rem .4rem;border-radius:6px}
+.admin-linkbtn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;color:var(--green-2);text-decoration:none;padding:.25rem .5rem;border:1px solid var(--line);border-radius:7px}
+.admin-linkbtn:hover{background:#f4efe2}
 
 /* ===== CoachFeed (rodič vidí svého trenéra) ===== */
 .cfeed{background:linear-gradient(180deg,#f5faf7,#fff);border:1px solid #cfe0d7;border-radius:16px;padding:1.1rem 1.2rem;margin:0 0 1.2rem}

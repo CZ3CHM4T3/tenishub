@@ -185,7 +185,7 @@ export default function AdminPage() {
     uzivatele: "Všichni registrovaní: nastavení a prodloužení členství, zrušení účtu.",
     zajemci: "Předběžný přístup — e-maily zájemců o členství (zakládající cena 99 do konce roku).",
     subjekty: "Katalog trenérů a areálů — správa jejich profilů a údajů.",
-    overeni: "Fronta žádostí o ověřený odznak — schválit nebo zamítnout.",
+    overeni: "Všichni poskytovatelé se stavem (splněné podmínky / ověřeno), filtry a udělení odznaku prokliknutím profilu.",
     zadosti: "Převzetí cizího profilu („to jsem já“) a žádosti o odstranění (GDPR).",
     recenze: "Nové recenze čekající na schválení, než se zveřejní.",
     moderace: "Skrývání a mazání příspěvků ve fóru, poradně a bazaru.",
