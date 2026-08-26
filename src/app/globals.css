@@ -3462,6 +3462,11 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .authr-mail{position:relative;display:inline-flex;color:var(--ink);text-decoration:none;padding:.3rem}
 .authr-mail:hover{color:var(--green)}
 .authr-dot{position:absolute;top:-2px;right:-4px;background:#e0483d;color:#fff;font-size:.62rem;font-weight:800;min-width:15px;height:15px;border-radius:100px;display:grid;place-items:center;padding:0 3px;border:1.5px solid var(--paper,#fff)}
+/* utility ikonky v členské liště (Zprávy / Administrace / Odhlásit) */
+.shu{display:flex;align-items:center;gap:.3rem}
+.shu-mail,.shu-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;color:var(--ink);text-decoration:none;border:none;background:none;cursor:pointer}
+.shu-mail:hover,.shu-btn:hover{background:var(--soft,#f4efe2);color:var(--green)}
+.mnav-logout{display:block;width:100%;text-align:left;background:none;border:none;font:inherit;color:#c0392b;font-weight:700;cursor:pointer;padding:.55rem 0}
 .um-hint{margin-left:auto;font-size:.72rem;color:var(--muted)}
 
 /* ===== Malé cenové okno (/clenstvi) ===== */

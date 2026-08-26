@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { isHiddenRole } from "@/lib/simplify";
-import { ChevronDown } from "lucide-react";
-import { AuthNav } from "./AuthNav";
+import { ChevronDown, Mail, ShieldCheck, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getViewAs } from "@/lib/viewAs";
 import { tabsForRoles, type NavTab } from "@/lib/navtabs";
@@ -28,6 +28,9 @@ export function SiteHeader() {
   const [ready, setReady] = useState(false);
   const [logged, setLogged] = useState(false);
   const [tabs, setTabs] = useState<NavTab[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [unread, setUnread] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -35,9 +38,9 @@ export function SiteHeader() {
       const { data: { user } } = await sb.auth.getUser();
       if (!user) { setLogged(false); setReady(true); return; }
       const { data: prof } = await sb.from("profiles").select("is_admin,is_coach,roles").eq("id", user.id).maybeSingle();
-      const isAdmin = prof?.is_admin === true;
+      const admin = prof?.is_admin === true;
       let roles: string[] = Array.isArray(prof?.roles) && (prof!.roles as string[]).length ? (prof!.roles as string[]) : (prof?.is_coach ? ["trener"] : ["rodic"]);
-      if (isAdmin) {
+      if (admin) {
         const v = getViewAs();
         if (v === "navstevnik") { setLogged(false); setReady(true); return; }
         if (v === "rodic") roles = ["rodic"];
@@ -45,10 +48,15 @@ export function SiteHeader() {
       }
       roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
       setTabs(tabsForRoles(roles.length ? roles : ["rodic"]));
+      setIsAdmin(admin);
+      const un = await sb.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
+      setUnread(un.count ?? 0);
       setLogged(true);
       setReady(true);
     })();
   }, []);
+
+  const logout = async () => { const sb = createClient(); await sb.auth.signOut(); router.push("/"); };
 
   useEffect(() => {
     const h = (e: MouseEvent) => { if (!(e.target as HTMLElement).closest(".nav-item")) setOpenMenu(null); };
@@ -113,18 +121,29 @@ export function SiteHeader() {
           )}
 
           <div className="nav-r">
-            <AuthNav />
+            {ready && logged ? (
+              <div className="shu">
+                <Link href="/zpravy" className="shu-mail" aria-label="Zprávy" title="Zprávy"><Mail size={19} />{unread > 0 && <span className="authr-dot">{unread}</span>}</Link>
+                {isAdmin && <Link href="/admin" className="shu-btn" aria-label="Administrace" title="Administrace"><ShieldCheck size={18} /></Link>}
+                <button type="button" className="shu-btn" onClick={logout} aria-label="Odhlásit se" title="Odhlásit se"><LogOut size={18} /></button>
+              </div>
+            ) : ready ? (
+              <Link href="/prihlaseni" className="btn btn-gold">Přihlásit se</Link>
+            ) : null}
             <button className="burger" aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}>{mobileOpen ? "✕" : "☰"}</button>
           </div>
         </div>
 
         {mobileOpen && (
           <nav className="mnav" onClick={() => setMobileOpen(false)}>
-            {ready && logged ? (
-              tabs.flatMap((t) => t.group
+            {ready && logged ? (<>
+              {tabs.flatMap((t) => t.group
                 ? t.group.map((s) => <Link key={s.href} href={s.href}>{s.label}</Link>)
-                : [<Link key={t.label} href={t.href!}>{t.label}</Link>])
-            ) : (<>
+                : [<Link key={t.label} href={t.href!}>{t.label}</Link>])}
+              <Link href="/zpravy">Zprávy{unread > 0 ? ` (${unread})` : ""}</Link>
+              {isAdmin && <Link href="/admin">Administrace</Link>}
+              <button type="button" className="mnav-logout" onClick={logout}>Odhlásit se</button>
+            </>) : (<>
               <Link href="/rodic">Rodič &amp; dítě</Link>
               <Link href="/pro-trenery">Trenér</Link>
               <Link href="/mapa">Mapa služeb</Link>

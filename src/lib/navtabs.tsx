@@ -8,8 +8,7 @@ export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent?: 
 export const ROLE_TABS: Record<string, NavTab[]> = {
   rodic: [
     { label: "Profil", Icon: UserRound, group: [
-      { label: "Moje údaje", href: "/ucet?tab=profil" },
-      { label: "Role a karty", href: "/ucet?tab=profil" },
+      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
       { label: "Členství HUB+", href: "/ucet?tab=clenstvi" },
     ] },
     { label: "Moje cesta", href: "/moje-cesta", Icon: Route },
@@ -34,8 +33,7 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
   ],
   trener: [
     { label: "Profil", Icon: UserRound, group: [
-      { label: "Moje karta (veřejný profil)", href: "/ucet?tab=profil" },
-      { label: "Role a karty", href: "/ucet?tab=profil" },
+      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
       { label: "Členství", href: "/ucet?tab=clenstvi" },
     ] },
     { label: "Můj klub", href: "/klub", Icon: School, accent: "office" },
@@ -52,7 +50,7 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
   ],
   vyplet: [
     { label: "Profil", Icon: UserRound, group: [
-      { label: "Moje karta", href: "/ucet?tab=profil" },
+      { label: "Osobní údaje a role", href: "/ucet?tab=profil" },
       { label: "Členství", href: "/ucet?tab=clenstvi" },
     ] },
     { label: "Objednávky", href: "/ucet?tab=profil", Icon: Package },
