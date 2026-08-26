@@ -3436,7 +3436,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 /* role-záložky v liště */
 .shmenu{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
 .shtab{display:inline-flex;align-items:center;gap:5px;padding:.4rem .7rem;border-radius:9px;font-size:.9rem;font-weight:600;color:var(--ink);text-decoration:none;background:none;border:none;cursor:pointer;white-space:nowrap}
-.shtab svg{color:var(--muted)}
+.shtab svg{color:var(--green)}
 .shtab:hover,.shtab.open{background:#eee6d3}
 .shtab-map{background:var(--gold,#bf9a47);color:#1c2a16;font-weight:800;box-shadow:0 3px 10px -5px rgba(191,154,71,.7)}
 .shtab-map svg{color:#1c2a16}

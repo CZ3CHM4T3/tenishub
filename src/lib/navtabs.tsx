@@ -1,10 +1,10 @@
-import { UserRound, Route, School, MapPin, MessagesSquare, Compass, Package, type LucideIcon } from "lucide-react";
+import { UserRound, School, MapPin, LayoutGrid, type LucideIcon } from "lucide-react";
 
 export type SubItem = { label: string; href: string };
 export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent?: "map" | "office"; group?: SubItem[] };
 
-// Lišta podle role. Profil + Můj klub jako dlaždice, Mapa služeb zvýrazněná (hlavní věc),
-// zbytek = skupiny služeb. Vše ovladatelné z lišty, bez složitého proklikávání.
+// Lišta = jen hlavní rozcestníky. Všechny služby jsou v dlaždicích na landing (/domu);
+// tlačítko „Služby" vede zpět na tuto landing.
 export const ROLE_TABS: Record<string, NavTab[]> = {
   rodic: [
     { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
@@ -13,40 +13,18 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
       { label: "Napojení na trenéra", href: "/deti" },
     ] },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Komunita", Icon: MessagesSquare, group: [
-      { label: "Fórum rodičů", href: "/forum" },
-      { label: "Poradna", href: "/poradna" },
-      { label: "Knihovna", href: "/clanky" },
-      { label: "Bazar", href: "/bazar" },
-      { label: "Spolujízda", href: "/spolujizda" },
-    ] },
-    { label: "Služby a okolí", Icon: Compass, group: [
-      { label: "Moje cesta", href: "/moje-cesta" },
-      { label: "Sparring", href: "/sparring" },
-      { label: "Kalendář turnajů", href: "/turnaje" },
-      { label: "Videorozbor", href: "/videorozbor" },
-      { label: "Počasí na týden", href: "/pocasi" },
-    ] },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],
   trener: [
     { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
     { label: "Můj klub", href: "/klub", Icon: School, accent: "office" },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Komunita", Icon: MessagesSquare, group: [
-      { label: "Fórum", href: "/forum" },
-      { label: "Poradna", href: "/poradna" },
-      { label: "Knihovna", href: "/clanky" },
-    ] },
-    { label: "Služby a okolí", Icon: Compass, group: [
-      { label: "Kalendář turnajů", href: "/turnaje" },
-      { label: "Počasí na týden", href: "/pocasi" },
-    ] },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],
   vyplet: [
     { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Objednávky", href: "/ucet?tab=profil", Icon: Package },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Počasí", href: "/pocasi", Icon: Compass },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],
 };
 
