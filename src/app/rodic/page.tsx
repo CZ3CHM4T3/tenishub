@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 const FAQ = [
-  { q: "Jak vybrat prvního trenéra pro dítě?", a: "Hledejte podle místa a recenzí na mapě, mrkněte na ceník a přístup k dětem. U ověřených profilů máte jistotu, že subjekt prověřil TenisHub. Klidně napište víc trenérům přímo v aplikaci — to je zdarma." },
-  { q: "Co je zdarma a co je v členství?", a: "Najít trenéra i kurt na mapě, prohlédnout profily, ceníky a recenze a napsat trenérovi je zdarma. Členství HUB+ (99 Kč/měsíc) odemyká nástroje: Moje cesta, poradna, sparring, komunitu, knihovnu, bazar a spolujízdu." },
+  { q: "Jak vybrat prvního trenéra pro dítě?", a: "Hledejte podle místa a recenzí na mapě, mrkněte na ceník a přístup k dětem. U ověřených profilů máte jistotu, že subjekt prověřil TenisHub. S členstvím pak napíšete víc trenérům přímo v aplikaci." },
+  { q: "Co všechno je v členství HUB+?", a: "Členství HUB+ (99 Kč/měsíc, zakládající cena napořád) odemyká úplně vše: najít a kontaktovat trenéra i klub na mapě, Moje cesta, poradnu, sparring, komunitu, knihovnu, bazar i spolujízdu. Bez členství si web prohlédnete jako ochutnávku, ale kontakt a nástroje jsou v HUB+." },
   { q: "Od kolika let má smysl začít?", a: "Babytenis a minitenis zvládnou děti už od 4–5 let formou hry. Důležitější než věk je radost a pravidelnost — s tím pomáhá i Moje cesta (hlídá poměr tréninku a volna, aby dítě nevyhořelo)." },
   { q: "Kolikrát týdně trénovat?", a: "Hobby stačí 1–2× týdně, u závodního se objem zvyšuje postupně podle fáze sezóny. V Moji cestě vidíte křivku zátěže, ať to nepřeženete." },
   { q: "Co když dítě začíná ztrácet radost?", a: "Je to častější, než si rodiče myslí — většinou za tím není talent, ale frustrace. Pomůže nezávislý videorozbor a konzultace: objektivně řekneme, v čem je problém a jak dál." },
