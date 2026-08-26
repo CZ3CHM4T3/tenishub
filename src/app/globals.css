@@ -3313,7 +3313,20 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 @media(max-width:560px){.ptr-steps,.ptr-ben-grid,.ptr-conds{grid-template-columns:1fr}.ptr-boost-foot{flex-direction:column;align-items:stretch}}
 
 /* moduly trenérského rozhraní (/klub → Nastavení) */
-.klub-mtab-set{margin-left:auto}
+.klub-mtab-set{margin-left:auto;color:var(--green);border-color:#cfe0d7}
+.klub-mtab-set svg{color:var(--green)}
+.klub-mtab-set.on{background:var(--green);color:#fff}
+.klub-mtab-set.on svg{color:#fff}
+/* rozbalovací info karty v klubu (jen nadpis) */
+.klub-fold{border:1px solid var(--line);border-radius:12px;margin-bottom:.7rem;background:#fff}
+.klub-fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.5rem;padding:.8rem 1rem;font-weight:700;color:var(--ink);font-size:.98rem}
+.klub-fold>summary::-webkit-details-marker{display:none}
+.klub-fold>summary::after{content:"▾";margin-left:auto;color:var(--muted);transition:transform .2s}
+.klub-fold[open]>summary::after{transform:rotate(180deg)}
+.klub-fold>summary svg{color:var(--gold)}
+.klub-fold>summary em{font-style:normal;font-weight:500;color:var(--muted);font-size:.82rem}
+.klub-fold[open]>summary{border-bottom:1px solid var(--line)}
+.klub-fold .acct-card,.klub-fold .ov-card{border:none;margin:0;box-shadow:none;border-radius:0}
 .klub-mods{display:flex;flex-direction:column;gap:.5rem;margin-top:.8rem}
 .klub-mod{display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;position:relative}
 .klub-mod.on{border-color:#bcd8cb;background:#f5faf7}

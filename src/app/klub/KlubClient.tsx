@@ -138,7 +138,9 @@ export default function KlubClient() {
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>Vaše trenérské rozhraní a profil na TenisHubu jsou <b>zdarma</b> — členství neplatíte. Zvěte rodiče a spravujte svěřence.</p>
 
-        {/* TRENÉRSKÝ BOOST */}
+        {/* TRENÉRSKÝ BOOST (rozbalovací — jen nadpis, ať netlačí menu dolů) */}
+        <details className="klub-fold">
+          <summary><Flame size={16} /> Trenérský Boost <em>vaše nefér výhoda</em></summary>
         <div className="acct-card boost-card">
           <div className="boost-head">
             <span className="boost-flame"><Flame size={26} /></span>
@@ -159,8 +161,12 @@ export default function KlubClient() {
             <Link href="/#zeptejte-se" className="btn btn-gold">Chci Boost</Link>
           </div>
         </div>
+        </details>
 
-        <KlubOvereni />
+        <details className="klub-fold">
+          <summary><Check size={16} /> Ověřeno TenisHubem <em>podmínky a stav</em></summary>
+          <KlubOvereni />
+        </details>
 
         {/* MODULÁRNÍ MENU */}
         <div className="klub-menu">
