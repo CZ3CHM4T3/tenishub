@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, Store, GraduationCap, Check } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
   { k: "profil", label: "Profil", Icon: UserRound },
-  { k: "karta", label: "Moje karta", Icon: Store },
   { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
 ];
 
@@ -48,7 +47,8 @@ export default function AccountPage() {
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("tab");
-    if (t && ["clenstvi", "profil", "karta", "rezervace"].includes(t)) setAtab(t);
+    if (t === "karta") setAtab("profil"); // karta se sloučila do profilu
+    else if (t && ["clenstvi", "profil", "rezervace"].includes(t)) setAtab(t);
   }, []);
 
   const load = useCallback(async () => {
@@ -209,13 +209,11 @@ export default function AccountPage() {
           </div>
         </div>
 
+        {/* KARTY ROLÍ — poskytovatelské oddíly profilu (to, co uvidí ostatní na mapě / v reklamě) */}
+        <ProviderCard userId={profile.id} fullName={name} />
+
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
-
-        {/* MOJE KARTA (samospráva trenér/areál) */}
-        {atab === "karta" && (
-          <ProviderCard userId={profile.id} fullName={name} />
-        )}
 
         {/* REZERVACE */}
         {atab === "rezervace" && (

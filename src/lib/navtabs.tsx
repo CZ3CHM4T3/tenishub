@@ -22,12 +22,12 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
   ],
   trener: [
     { label: "Můj klub", href: "/klub", Icon: School, accent: "office" },
-    { label: "Moje karta", href: "/ucet?tab=karta", Icon: Store },
+    { label: "Moje karta", href: "/ucet?tab=profil", Icon: Store },
     { label: "Mapa", href: "/mapa", Icon: MapPin, accent: "map" },
   ],
   vyplet: [
-    { label: "Moje karta", href: "/ucet?tab=karta", Icon: Store },
-    { label: "Objednávky", href: "/ucet?tab=karta", Icon: Package },
+    { label: "Moje karta", href: "/ucet?tab=profil", Icon: Store },
+    { label: "Objednávky", href: "/ucet?tab=profil", Icon: Package },
     { label: "Mapa", href: "/mapa", Icon: MapPin, accent: "map" },
   ],
 };
