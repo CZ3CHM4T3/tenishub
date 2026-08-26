@@ -3366,6 +3366,24 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .um-badge{margin-left:auto;background:#e0483d;color:#fff;font-size:.7rem;font-weight:800;padding:.05rem .4rem;border-radius:999px}
 @media(max-width:560px){.usermenu-name{display:none}}
 
+/* role-záložky v liště */
+.shmenu{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.shtab{display:inline-flex;align-items:center;gap:5px;padding:.4rem .7rem;border-radius:9px;font-size:.9rem;font-weight:600;color:var(--ink);text-decoration:none;background:none;border:none;cursor:pointer;white-space:nowrap}
+.shtab svg{color:var(--muted)}
+.shtab:hover,.shtab.open{background:#eee6d3}
+.shtab-map{background:#e6f1fb;color:#0c447c}
+.shtab-map svg{color:#0c447c}
+.shtab-map:hover{background:#d3e6f8}
+.shtab-office{background:#f6efdd;color:#7c6018}
+.shtab-office svg{color:#7c6018}
+.shtab-office:hover{background:#efe4c6}
+/* pravý roh: obálka + kolečko */
+.authr{display:flex;align-items:center;gap:.5rem;position:relative}
+.authr-mail{position:relative;display:inline-flex;color:var(--ink);text-decoration:none;padding:.3rem}
+.authr-mail:hover{color:var(--green)}
+.authr-dot{position:absolute;top:-2px;right:-4px;background:#e0483d;color:#fff;font-size:.62rem;font-weight:800;min-width:15px;height:15px;border-radius:100px;display:grid;place-items:center;padding:0 3px;border:1.5px solid var(--paper,#fff)}
+.um-hint{margin-left:auto;font-size:.72rem;color:var(--muted)}
+
 /* ===== Malé cenové okno (/clenstvi) ===== */
 .price-mini{background:linear-gradient(135deg,#fff,#faf6ec);border:1px solid var(--gold-l);border-radius:16px;padding:1.1rem 1.3rem;max-width:540px;margin:1rem 0 1.6rem;box-shadow:0 12px 30px -16px rgba(191,154,71,.5)}
 .pm-top{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
