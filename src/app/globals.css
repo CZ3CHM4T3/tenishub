@@ -446,6 +446,10 @@
 
 /* napojení na svaz */
 .mc-sync { border: 1px dashed var(--line); border-radius: 12px; padding: 0.7rem; margin-bottom: 0.8rem; background: rgba(44,74,59,0.03); }
+details.mc-sync > summary { cursor: pointer; list-style: none; }
+details.mc-sync > summary::-webkit-details-marker { display: none; }
+details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
+.mc-namesug { margin-top: -2px; margin-bottom: 0.6rem; }
 .mc-syncrow { display: flex; gap: 0.5rem; }
 .mc-syncrow input { flex: 1; border: 1px solid var(--line); border-radius: 9px; padding: 0.5rem 0.6rem; font: inherit; }
 .mc-syncrow .btn { white-space: nowrap; }

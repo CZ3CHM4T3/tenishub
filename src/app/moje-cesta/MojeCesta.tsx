@@ -206,6 +206,8 @@ export default function MojeCesta() {
 
   const [syncInput, setSyncInput] = useState("");
   const [searchResults, setSearchResults] = useState<{ id: string; name: string; birth_year: number | null; club: string | null }[]>([]);
+  const [nameSug, setNameSug] = useState<{ id: string; name: string; birth_year: number | null; club: string | null }[]>([]);
+  const [nameSugBusy, setNameSugBusy] = useState(false);
   const toggleStat = (k: string) => setStatKeys((prev) => {
     const next = prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k];
     try { localStorage.setItem("mc_stats", JSON.stringify(next)); } catch {}
@@ -249,6 +251,26 @@ export default function MojeCesta() {
     setSyncing(false);
   };
 
+  // našeptávač: jak píšu jméno hráče, hledám ho na cesky-tenis.cz (jen dokud není napojený)
+  useEffect(() => {
+    if (!pForm.open) return;
+    const q = pForm.name.trim();
+    if (q.length < 3 || pForm.cts) { setNameSug([]); setNameSugBusy(false); return; }
+    let cancel = false;
+    setNameSugBusy(true);
+    const t = setTimeout(async () => {
+      try {
+        const r = await fetch(`/api/cesky-tenis?search=${encodeURIComponent(q)}`);
+        const d = await r.json();
+        if (!cancel) setNameSug(r.ok ? (d.results ?? []) : []);
+      } catch { if (!cancel) setNameSug([]); }
+      if (!cancel) setNameSugBusy(false);
+    }, 450);
+    return () => { cancel = true; clearTimeout(t); };
+  }, [pForm.name, pForm.open, pForm.cts]);
+
+  const pickCtProfile = (id: string) => { setNameSug([]); setSearchResults([]); loadProfile(`id=${id}`); };
+
   const selectPlayer = async (id: string) => { setPid(id); await loadPlayerData(id); };
 
   const savePlayer = async () => {
@@ -277,9 +299,9 @@ export default function MojeCesta() {
     }
     setPForm(PCLOSED); setBusy(false);
   };
-  const openNewPlayer = () => { setSyncInput(""); setSyncMsg(null); setSearchResults([]); setPForm({ ...PCLOSED, open: true }); };
+  const openNewPlayer = () => { setSyncInput(""); setSyncMsg(null); setSearchResults([]); setNameSug([]); setPForm({ ...PCLOSED, open: true }); };
   const editPlayer = (p: Player) => {
-    setSyncInput(""); setSyncMsg(null); setSearchResults([]);
+    setSyncInput(""); setSyncMsg(null); setSearchResults([]); setNameSug([]);
     setPForm({
       open: true, id: p.id, name: p.name, level: p.level, year: p.birth_year ? String(p.birth_year) : "",
       category: p.category ?? "", ranking: p.ranking != null ? String(p.ranking) : "", cts: p.cts_id ?? "",
@@ -850,31 +872,46 @@ export default function MojeCesta() {
         <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
           <button className="mc-x" onClick={() => setPForm(PCLOSED)}><X size={18} /></button>
           <h3>{pForm.id ? "Upravit hráče" : "Nový hráč"}</h3>
-          <label>Jméno<input value={pForm.name} onChange={(e) => setPForm({ ...pForm, name: e.target.value })} placeholder="Např. Klárka / Já" /></label>
+          <label>Jméno dítěte / hráče
+            <input value={pForm.name} onChange={(e) => setPForm({ ...pForm, name: e.target.value, cts: pForm.cts && e.target.value !== pForm.name ? "" : pForm.cts })} placeholder="Např. Klárka Nováková" />
+          </label>
+          {!pForm.cts && (nameSug.length > 0 || nameSugBusy) && (
+            <div className="mc-sresults mc-namesug">
+              {nameSug.map((s) => (
+                <button type="button" key={s.id} className="mc-sres" onClick={() => pickCtProfile(s.id)}>
+                  <b>{s.name}</b><span>{[s.birth_year ? `*${s.birth_year}` : null, s.club].filter(Boolean).join(" · ") || "cesky-tenis.cz"}</span>
+                </button>
+              ))}
+              {nameSugBusy && !nameSug.length && <p className="mc-syncmsg" style={{ margin: 0 }}>Hledám na cesky-tenis.cz…</p>}
+            </div>
+          )}
+          {pForm.cts && <p className="mc-syncmsg" style={{ color: "var(--green-2)" }}>✓ Napojeno na cesky-tenis.cz (č. {pForm.cts}) — po uložení dej <b>Aktualizovat</b> a natáhnou se zápasy.</p>}
+          <p className="member-note" style={{ margin: "-2px 0 2px" }}>U závodního hráče stačí psát jméno — <b>rovnou ho najdeme na cesky-tenis.cz</b>. Vyber ze seznamu = doplní ročník i žebříček. Hobby dítě jen napiš.</p>
           <label>Úroveň
             <select value={pForm.level} onChange={(e) => setPForm({ ...pForm, level: e.target.value as "hobby" | "competitive" })}>
               <option value="hobby">Hobby</option><option value="competitive">Závodní</option>
             </select>
           </label>
           {pForm.level === "competitive" && (<>
-            <div className="mc-sync">
-              <span className="mc-setlbl">Automatické načtení postavení a zápasů</span>
+            {!pForm.cts && (
+            <details className="mc-sync">
+              <summary className="mc-setlbl">Nenašlo se podle jména? Vlož odkaz na profil nebo číslo hráče</summary>
               <div className="mc-syncrow">
-                <input value={syncInput} onChange={(e) => setSyncInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); syncCT(); } }} placeholder="Napiš jméno (např. Schröffel Jan) nebo vlož odkaz/číslo" />
-                <button type="button" className="btn btn-green" disabled={syncing} onClick={syncCT}><RefreshCw size={14} /> {syncing ? "Hledám…" : "Najít"}</button>
+                <input value={syncInput} onChange={(e) => setSyncInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); syncCT(); } }} placeholder="odkaz na cesky-tenis.cz/hrac/… nebo číslo 1071630" />
+                <button type="button" className="btn btn-green" disabled={syncing} onClick={syncCT}><RefreshCw size={14} /> {syncing ? "Hledám…" : "Načíst"}</button>
               </div>
               {searchResults.length > 0 && (
                 <div className="mc-sresults">
                   {searchResults.map((s) => (
-                    <button type="button" key={s.id} className="mc-sres" onClick={() => loadProfile(`id=${s.id}`)}>
+                    <button type="button" key={s.id} className="mc-sres" onClick={() => pickCtProfile(s.id)}>
                       <b>{s.name}</b><span>{[s.birth_year ? `*${s.birth_year}` : null, s.club].filter(Boolean).join(" · ")}</span>
                     </button>
                   ))}
                 </div>
               )}
               {syncMsg && <p className="mc-syncmsg">{syncMsg}</p>}
-              <p className="member-note" style={{ margin: "2px 0 0" }}>Napiš <b>jméno</b> a vyber se ze seznamu — doplní ročník i žebříček a po uložení tlačítkem <b>Aktualizovat</b> natáhne i zápasy a termíny.</p>
-            </div>
+            </details>
+            )}
             <label>Soutěž / třída<input value={pForm.category} onChange={(e) => setPForm({ ...pForm, category: e.target.value })} placeholder="Např. 4. třída D, mladší žactvo" /></label>
             <div className="mc-row2">
               <label>Místo v žebříčku<input value={pForm.ranking} onChange={(e) => setPForm({ ...pForm, ranking: e.target.value.replace(/\D/g, "").slice(0, 6) })} placeholder="152" /></label>
