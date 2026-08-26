@@ -83,14 +83,17 @@ const CZ_MAP =
 
 // Piny služeb ve stylu /mapa (kapka + ikona role); 2 „ověřené" mají zlatý prsten + ✓.
 // Poloha v % dlaždice — horní pruh NAD textem a kolem Jirkovy hlavy, ať neleží přes copy.
-const WT_PINS: { top: number; left: number; c: string; icon: string; verified?: boolean }[] = [
-  { top: 18, left: 55, c: "#c8a24c", icon: '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>', verified: true },     // trenér ✓
-  { top: 10, left: 63, c: "#2e7d4f", icon: '<path d="M5 20V9l7-4 7 4v11"/><path d="M5 20h14"/><path d="M10 20v-5h4v5"/>', verified: true },            // klub ✓
-  { top: 13, left: 72, c: "#7a5bc0", icon: '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>' },      // akademie
-  { top: 9, left: 81, c: "#d9534f", icon: '<path d="M3 12h4l2 5 4-12 2 7h6"/>' },                                                                      // fyzio
-  { top: 16, left: 88, c: "#2f6fb0", icon: '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>' },                                                   // fitness
-  { top: 20, left: 67, c: "#5a6470", icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>' },             // vyplétač
+// Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. 2 „ověřené" = zlatý prsten + ✓.
+const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boolean }[] = [
+  { x: 40, y: 205, c: "#c8a24c", icon: '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>', verified: true },        // trenér ✓ (západ)
+  { x: 165, y: 160, c: "#2e7d4f", icon: '<path d="M5 20V9l7-4 7 4v11"/><path d="M5 20h14"/><path d="M10 20v-5h4v5"/>', verified: true },              // klub ✓ (SZ)
+  { x: 275, y: 245, c: "#7a5bc0", icon: '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>' },         // akademie (střed)
+  { x: 415, y: 240, c: "#d9534f", icon: '<path d="M3 12h4l2 5 4-12 2 7h6"/>' },                                                                       // fyzio (východ-střed)
+  { x: 355, y: 395, c: "#2f6fb0", icon: '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>' },                                                     // fitness (jih)
+  { x: 545, y: 265, c: "#5a6470", icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>' },               // vyplétač (východ)
 ];
+// tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
+const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
 
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
@@ -282,36 +285,37 @@ export default function Home() {
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
                     <polygon className="wt-map-shadow" points={CZ_MAP} />
                     <polygon className="wt-map-fill" points={CZ_MAP} />
+                    {WT_PINS.map((p, i) => (
+                      <g key={i} transform={`translate(${p.x},${p.y})`}>
+                        {p.verified && <circle className="wt-pin-ring" cx="0" cy="-26" r="16.5" />}
+                        <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
+                        <g className="wt-pin-ic" transform="translate(-7.5,-33.5) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
+                        {p.verified && (
+                          <g transform="translate(12,-37)">
+                            <circle className="wt-pin-badge" r="7.5" />
+                            <text className="wt-pin-tick" x="0" y="0.5" textAnchor="middle" dominantBaseline="central">✓</text>
+                          </g>
+                        )}
+                      </g>
+                    ))}
                   </svg>
                 </span>
-                {/* piny služeb v horním pruhu (nad textem) */}
-                <span className="wt-pins" aria-hidden="true">
-                  {WT_PINS.map((p, i) => (
-                    <span key={i} className={`wt-pin2${p.verified ? " ver" : ""}`} style={{ top: `${p.top}%`, left: `${p.left}%`, background: p.c }}>
-                      <svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: p.icon }} />
-                      {p.verified && <em>✓</em>}
-                    </span>
-                  ))}
-                </span>
-                {/* Jirka — stojící postava před mapou */}
+                {/* Jirka — stojící postava před mapou (mírně doleva) */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img className="wt-figure" src="/jirka.png" alt="Jiří Machek — spoluzakladatel akademie MS GEM" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
-                {/* jmenovka u Jirkových nohou — kredibilita bez zahlcení copy */}
-                <span className="wt-nametag">
-                  <span className="wt-nt-logo" aria-hidden="true">
-                    <span className="wt-nt-fb">MS GEM</span>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                  </span>
-                  <span className="wt-nt-txt">
-                    <b>Jiří Machek</b>
-                    <span>Spoluzakladatel MS GEM · Trenér II. třídy</span>
-                  </span>
-                </span>
+                {/* text dole vpravo — zrcadlově k „Rodič & dítě" vlevo */}
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
                   <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
                   <span className="wt-sub">Profil a rozhraní <b>zdarma</b>. Vlastní klub a strom dovedností po svém.</span>
+                  <span className="wt-cred">
+                    <span className="wt-cred-logo" aria-hidden="true">
+                      <span className="wt-nt-fb">MS GEM</span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                    </span>
+                    <span className="wt-cred-txt"><b>Jiří Machek</b><span>spoluzakladatel tenisové a fitness akademie MS GEM</span></span>
+                  </span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
