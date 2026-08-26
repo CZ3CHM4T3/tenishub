@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Users, Link2, Copy, Check, GitBranch, Trophy, UserPlus, Lock, ChevronDown, ArrowRight, Flame, CalendarDays, Info, SlidersHorizontal, Baby, Megaphone } from "lucide-react";
 import StromEditor from "./StromEditor";
+import GameLockPreview from "./GameLockPreview";
 import KlubOvereni from "./KlubOvereni";
 import { Nastenka } from "./Nastenka";
 import { Akce } from "./Akce";
@@ -23,8 +24,8 @@ const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] 
   { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním (RSVP)." },
   { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
-  { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (odemkne se po ověření)." },
-  { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (připravujeme)." },
+  { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (TRENÉR+)." },
+  { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (TRENÉR+)." },
   { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky." },
 ];
 const DEFAULT_MODS = MODULES.map((m) => m.k);
@@ -44,7 +45,6 @@ export default function KlubClient() {
   const [kurikula, setKurikula] = useState<Kurikula>(DEFAULT_KURIKULA);
   const [showTree, setShowTree] = useState(false);
   const [ktab, setKtab] = useState<string>("nastenka");
-  const [verified, setVerified] = useState(false);
   const [kids, setKids] = useState<{ id: string; jmeno: string; prezdivka: string; level: number }[]>([]);
   const [mods, setMods] = useState<Record<string, boolean>>(() => Object.fromEntries(DEFAULT_MODS.map((k) => [k, true])));
   const [savingMods, setSavingMods] = useState(false);
@@ -63,14 +63,12 @@ export default function KlubClient() {
     if (adminPreview) {
       setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
     }
-    const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }, { data: sp }] = await Promise.all([
+    const [{ data: c }, { data: r }, { data: ck }, { data: kd2 }] = await Promise.all([
       supabase.rpc("my_coach_code"),
       supabase.from("coach_roster").select("id,member_name,kind,status,created_at").eq("coach_id", user.id).in("status", ["active", "pending"]).order("created_at", { ascending: false }),
       supabase.from("coach_kurikulum").select("data").eq("coach_id", user.id).maybeSingle(),
       supabase.from("deti").select("id,jmeno,prezdivka,level").eq("coach_id", user.id).order("jmeno"),
-      supabase.from("specialists").select("verified").eq("owner_id", user.id).maybeSingle(),
     ]);
-    setVerified(!!(sp as { verified?: boolean } | null)?.verified);
     // Moduly zvlášť — kdyby sloupec ještě neexistoval (SQL neproběhla), zůstanou výchozí.
     const md = await supabase.from("specialists").select("modules").eq("owner_id", user.id).maybeSingle();
     const arr = (md.data as { modules?: string[] | null } | null)?.modules;
@@ -113,7 +111,8 @@ export default function KlubClient() {
   const parents = roster.filter((m) => m.kind === "parent" && m.status === "active");
   const colleagues = roster.filter((m) => m.kind === "colleague" && m.status === "active");
   const pending = roster.filter((m) => m.status === "pending");
-  const canGame = verified || preview;
+  // Herní vrstva (strom + Sparing Cup) = placený TRENÉR+ (zatím náhled; admin má preview).
+  const canGame = preview;
 
   const approve = async (id: string) => { await supabase.from("coach_roster").update({ status: "active" }).eq("id", id); load(); };
   const reject = async (id: string) => { await supabase.from("coach_roster").delete().eq("id", id); load(); };
@@ -295,34 +294,27 @@ export default function KlubClient() {
         )}
 
         {/* STROM DOVEDNOSTÍ */}
-        {active === "strom" && (<>
+        {active === "strom" && (canGame ? (<>
           <div className="acct-card">
             <div className="acct-card-head"><GitBranch size={20} /><h2>Strom dovedností — vaše metoda</h2></div>
-            {canGame ? (
-              <>
-                <p className="member-note">Postavte si vlastní strom dovedností. Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou. Máte hotový výchozí strom, klidně ho upravte.</p>
-                <button className="btn btn-green" onClick={() => setShowTree((v) => !v)}>
-                  <ChevronDown size={16} style={{ transform: showTree ? "rotate(180deg)" : "none", transition: "0.2s" }} /> {showTree ? "Skrýt editor stromu" : "Otevřít editor stromu"}
-                </button>
-              </>
-            ) : (
-              <div className="klub-locked">
-                <span className="klub-locked-ic"><Lock size={22} /></span>
-                <p className="member-note">Herní vrstva (strom dovedností + Sparing Cup) se odemkne po <b>ověření vašeho profilu</b>. Vyplňte podmínky výše a požádejte o ověření — my ho potvrdíme.</p>
-              </div>
-            )}
+            <p className="member-note">Postavte si vlastní strom dovedností. Děti odemykají uzly, levelují svého tenistu a vidí pokrok — vy vypadáte jako trenér s vlastní metodou. Máte hotový výchozí strom, klidně ho upravte.</p>
+            <button className="btn btn-green" onClick={() => setShowTree((v) => !v)}>
+              <ChevronDown size={16} style={{ transform: showTree ? "rotate(180deg)" : "none", transition: "0.2s" }} /> {showTree ? "Skrýt editor stromu" : "Otevřít editor stromu"}
+            </button>
           </div>
-          {canGame && showTree && <StromEditor initial={kurikula} />}
-        </>)}
+          {showTree && <StromEditor initial={kurikula} />}
+        </>) : <GameLockPreview variant="strom" />)}
 
         {/* SPARING CUP */}
         {active === "cup" && (
-          <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
-            <span className="klub-soon-tag">Brzy</span>
-            <Trophy size={26} />
-            <h3>Sparing Cup</h3>
-            <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
-          </div>
+          canGame ? (
+            <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
+              <span className="klub-soon-tag">Brzy</span>
+              <Trophy size={26} />
+              <h3>Sparing Cup</h3>
+              <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
+            </div>
+          ) : <GameLockPreview variant="cup" />
         )}
       </div>
     </div>

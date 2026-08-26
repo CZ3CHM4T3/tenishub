@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
+import { WeatherWeek } from "@/components/WeatherWeek";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
@@ -142,6 +143,9 @@ export default function AccountPage() {
 
       <div className="wrap acct-wrap">
         <h1 className="acct-h1">Můj účet</h1>
+
+        {/* POČASÍ — hned po přihlášení, podle města z profilu */}
+        <div style={{ marginBottom: "1.1rem" }}><WeatherWeek /></div>
 
         {/* ZÁLOŽKOVÉ MENU */}
         <div className="acct-tabs">
