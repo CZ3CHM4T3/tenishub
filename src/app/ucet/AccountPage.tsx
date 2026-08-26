@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
+import KidsCard from "./KidsCard";
 import { WeatherWeek } from "@/components/WeatherWeek";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
@@ -242,6 +243,9 @@ export default function AccountPage() {
             {roles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
           </div>
         </div>
+
+        {/* DĚTI — zadání v Profilu, propis do Moje cesta i Můj klub (jen pro rodiče) */}
+        {roles.includes("rodic") && <KidsCard userId={profile.id} />}
 
         {/* KARTY ROLÍ — poskytovatelské oddíly profilu (to, co uvidí ostatní na mapě / v reklamě) */}
         <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />
