@@ -38,14 +38,15 @@ function CupMock() {
   );
 }
 
-export default function GameLockPreview({ variant }: { variant: "strom" | "cup" }) {
+export default function GameLockPreview({ variant, audience = "trener" }: { variant: "strom" | "cup"; audience?: "trener" | "rodic" }) {
   const isTree = variant === "strom";
+  const isParent = audience === "rodic";
   return (
     <div className="acct-card glp">
       <div className="acct-card-head">
         {isTree ? <GitBranch size={20} /> : <Trophy size={20} />}
         <h2>{isTree ? "Strom dovedností" : "Sparing Cup"}</h2>
-        <span className="glp-badge"><Lock size={12} /> TRENÉR+</span>
+        <span className="glp-badge"><Lock size={12} /> {isParent ? "HUB+ · trenér BOOST" : "TRENÉR+"}</span>
       </div>
       <div className="glp-stage">
         {isTree ? <TreeMock /> : <CupMock />}
@@ -63,8 +64,12 @@ export default function GameLockPreview({ variant }: { variant: "strom" | "cup" 
         ).map((t) => <li key={t}><Check size={14} /> {t}</li>)}
       </ul>
       <div className="glp-cta">
-        <Link href="/#zeptejte-se" className="btn btn-gold"><Lock size={15} /> Odemknout v TRENÉR+</Link>
-        <span className="glp-note">Součást balíčku Boost — jednorázově.</span>
+        {isParent ? (
+          <span className="glp-note" style={{ maxWidth: "34ch" }}>Rozsvítí se, až <b>tvůj trenér pořídí BOOST</b> a ty budeš mít HUB+. Dej mu vědět, že bys to chtěl — děti to milují.</span>
+        ) : (<>
+          <Link href="/#zeptejte-se" className="btn btn-gold"><Lock size={15} /> Odemknout v TRENÉR+</Link>
+          <span className="glp-note">Součást balíčku Boost — jednorázově.</span>
+        </>)}
       </div>
     </div>
   );

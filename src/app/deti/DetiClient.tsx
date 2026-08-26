@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Baby, Plus, X, ArrowRight, Pencil, BadgeCheck } from "lucide-react";
+import { Baby, Plus, X, ArrowRight, Pencil, BadgeCheck, GraduationCap } from "lucide-react";
 import { JoinCoach } from "@/components/JoinCoach";
 import { AVATARS, avatarByKey } from "@/lib/avatars";
+import ClubBoard from "@/components/ClubBoard";
+import GameLockPreview from "@/app/klub/GameLockPreview";
 
 type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null; avatar: string | null };
 
@@ -19,6 +21,8 @@ export default function DetiClient() {
   const [me, setMe] = useState<string>("");
   const [coachId, setCoachId] = useState<string | null>(null);
   const [coachName, setCoachName] = useState<string>("");
+  const [isCoach, setIsCoach] = useState(false);
+  const [myName, setMyName] = useState("");
   const [deti, setDeti] = useState<Dite[]>([]);
   const [form, setForm] = useState({ open: false, jmeno: "", datum: "", program: "hobby" });
   const [avatarFor, setAvatarFor] = useState<string | null>(null);
@@ -28,10 +32,13 @@ export default function DetiClient() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/prihlaseni?next=/deti"); return; }
     setMe(user.id);
-    const [{ data: d }, { data: cr }] = await Promise.all([
+    const [{ data: d }, { data: cr }, { data: prof }] = await Promise.all([
       supabase.from("deti").select("id,jmeno,prezdivka,level,program,coach_id,avatar").eq("rodic_id", user.id).order("vytvoreno", { ascending: true }),
       supabase.from("coach_roster").select("coach_id").eq("member_id", user.id).eq("status", "active").limit(1).maybeSingle(),
+      supabase.from("profiles").select("is_coach,full_name").eq("id", user.id).maybeSingle(),
     ]);
+    setIsCoach(!!(prof as { is_coach?: boolean } | null)?.is_coach);
+    setMyName((prof as { full_name?: string } | null)?.full_name ?? "");
     setDeti((d as Dite[]) ?? []);
     const cid = (cr as { coach_id: string } | null)?.coach_id ?? null;
     setCoachId(cid);
@@ -74,8 +81,11 @@ export default function DetiClient() {
       <SiteHeader />
       <div className="wrap acct-wrap" style={{ maxWidth: 720 }}>
         <div className="mc-head">
-          <h1 className="acct-h1"><Baby size={26} style={{ verticalAlign: "-4px" }} /> Moje děti</h1>
-          <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
+          <h1 className="acct-h1"><Baby size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
+          <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
+            {isCoach && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
+            <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
+          </div>
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>
           {coachId
@@ -114,6 +124,13 @@ export default function DetiClient() {
             })}
           </div>
         )}
+
+        {/* Připojený klub: nástěnka + oboustranný kalendář + herní vrstva (náhled) */}
+        {coachId && (<>
+          <ClubBoard coachId={coachId} authorName={myName} />
+          <GameLockPreview variant="strom" audience="rodic" />
+          <GameLockPreview variant="cup" audience="rodic" />
+        </>)}
       </div>
 
       {form.open && (

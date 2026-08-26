@@ -3536,6 +3536,22 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .glp-list li svg{color:var(--green-2,#2c4a3b);flex:none}
 .glp-cta{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
 .glp-note{font-size:.76rem;color:var(--muted)}
+/* Můj klub — nástěnka + kalendář (ClubBoard) */
+.cb-posts{display:flex;flex-direction:column;gap:.6rem}
+.cb-post{background:var(--soft,#f6f4ee);border:1px solid var(--line);border-radius:11px;padding:.6rem .8rem}
+.cb-post b{display:block;color:var(--ink);margin-bottom:.15rem}
+.cb-post p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.45;white-space:pre-wrap}
+.cb-date{display:block;font-size:.72rem;color:var(--muted);margin-top:.35rem}
+.cb-form{background:var(--soft,#f6f4ee);border:1px dashed var(--line);border-radius:12px;padding:.8rem;margin-bottom:.8rem}
+.cb-events{display:flex;flex-direction:column;gap:.4rem}
+.cb-event{display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem}
+.cb-ev-when{font-size:.76rem;font-weight:700;color:var(--green-2,#2c4a3b);min-width:88px;flex:none}
+.cb-ev-main{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2}
+.cb-ev-main b{color:var(--ink)}
+.cb-ev-main span{font-size:.76rem;color:var(--muted)}
+.cb-ev-by{display:inline-flex;align-items:center;gap:.2rem;font-size:.72rem;font-weight:700;color:#7a5a12;background:#f3e6c2;border-radius:100px;padding:.1rem .5rem;flex:none}
+.cb-ev-by.cb-ev-coach{color:#2f5d57;background:#e2efe9}
+.btn-sm{padding:.3rem .6rem;font-size:.82rem}
 /* Savings karta zakládajícího člena */
 .savings-card{display:flex;align-items:center;gap:.9rem;margin-top:.8rem;padding:.8rem 1rem;border-radius:12px;background:linear-gradient(135deg,#fbf3dd,#f3e6c2);border:1px solid #e6cf94}
 .savings-big{font-size:1.6rem;font-weight:800;color:#7a5a12;line-height:1;flex:none}
