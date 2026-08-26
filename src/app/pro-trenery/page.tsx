@@ -42,7 +42,7 @@ const CONDS = [
 
 const VISION = [
   { Icon: HeartPulse, t: "Fyzioterapeuti" },
-  { Icon: Dumbbell, t: "Kondiční trenéři" },
+  { Icon: Dumbbell, t: "Fitness trenéři" },
   { Icon: Scissors, t: "Vyplétači" },
   { Icon: Building2, t: "Areály a kluby" },
 ];

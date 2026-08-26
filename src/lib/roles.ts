@@ -110,7 +110,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   fitness: {
-    key: "fitness", label: "Kondiční trenér", tagline: "kondiční příprava tenistů", color: "#4a5b86", fill: "#E8ECF4", icon: "fitness", photo: "/role-fitness.png", provider: true,
+    key: "fitness", label: "Fitness trenér", tagline: "kondiční příprava tenistů", color: "#4a5b86", fill: "#E8ECF4", icon: "fitness", photo: "/role-fitness.png", provider: true,
     find: { label: "Najít kondičního na mapě", href: "/mapa?type=fitness" },
     free: [
       { label: "Profil kondičního trenéra na mapě" },

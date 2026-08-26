@@ -22,7 +22,7 @@ const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; ba
   { k: "sparring", label: "Sparing hráč", desc: "Vlastní karta na zeď, hledání parťáků.", free: false, badge: "HUB+", cls: "rp-hub" },
   { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky, být k nalezení.", free: false, badge: "Expert+", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
-  { k: "fitness", label: "Kondiční trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
+  { k: "fitness", label: "Fitness trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
 ];
 

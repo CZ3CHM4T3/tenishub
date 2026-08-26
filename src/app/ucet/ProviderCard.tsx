@@ -24,7 +24,7 @@ type Avail = { weekday: number; from: string; to: string; slot: number };
 
 const KINDS: [string, string][] = [
   ["coach", "Tenisový trenér"], ["physio", "Fyzioterapeut"],
-  ["fitness", "Kondiční trenér"], ["academy", "Tenisová škola / akademie"],
+  ["fitness", "Fitness trenér"], ["academy", "Tenisová škola / akademie"],
   ["stringer", "Vyplétač (servis raket)"],
 ];
 const WEEKDAYS: [number, string][] = [

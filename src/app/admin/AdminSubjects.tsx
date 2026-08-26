@@ -11,10 +11,10 @@ type Subj = {
 type Filter = "all" | "verified" | "unverified" | "hidden";
 
 const KIND_LABEL: Record<string, string> = {
-  coach: "Trenér", physio: "Fyzio", fitness: "Kondiční", academy: "Škola", stringer: "Vyplétač", venue: "Areál",
+  coach: "Trenér", physio: "Fyzio", fitness: "Fitness", academy: "Škola", stringer: "Vyplétač", venue: "Areál",
 };
 const ADD_KINDS: [string, string][] = [
-  ["coach", "Tenisový trenér"], ["physio", "Fyzioterapeut"], ["fitness", "Kondiční trenér"],
+  ["coach", "Tenisový trenér"], ["physio", "Fyzioterapeut"], ["fitness", "Fitness trenér"],
   ["academy", "Tenisová škola / akademie"], ["stringer", "Vyplétač"], ["venue", "Areál / klub"],
 ];
 

@@ -145,6 +145,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
     e.preventDefault();
     if (!userId) { setModal("auth"); return; }
     if (!spec) return;
+    if (spec.owner_id && spec.owner_id === userId) { alert("Na svůj vlastní profil recenzi přidat nelze."); return; }
     setRBusy(true);
     const overall = Math.round((cats.skill + cats.kids + cats.comm + cats.progress + cats.value) / 5);
     const supabase = createClient();
@@ -412,7 +413,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
                     );
                   })}
 
-                  <form className="rev-form" onSubmit={submitReview}>
+                  <form className="rev-form" onSubmit={submitReview} style={spec?.owner_id && spec.owner_id === userId ? { display: "none" } : undefined}>
                     <div className="rev-form-head">Napsat recenzi</div>
                     <div className="rev-cats">
                       {([["skill", "Odbornost"], ["kids", "Přístup k dětem"], ["comm", "Komunikace a spolehlivost"], ["progress", "Přínos / posun"], ["value", "Cena / hodnota"]] as const).map(([key, label]) => (

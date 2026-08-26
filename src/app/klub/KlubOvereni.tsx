@@ -48,12 +48,6 @@ export default function KlubOvereni() {
   const doneCount = items.filter((i) => i.ok).length;
   const allDone = spec && doneCount === items.length;
 
-  const requestVerify = async () => {
-    if (!spec) return;
-    setSpec({ ...spec, verify_requested: true });
-    await supabase.from("specialists").update({ verify_requested: true }).eq("id", spec.id);
-  };
-
   const toggleLicense = async () => {
     if (!spec) return;
     const v = !spec.license_declared;
@@ -80,9 +74,7 @@ export default function KlubOvereni() {
       <p className="member-note">
         {spec.verified
           ? "Máte ověřený odznak ✓ všude na webu. Ověřeno se nekupuje — je za reálnou kvalitou."
-          : spec.verify_requested
-            ? `Žádost o ověření odeslána — TenisHub ji zkontroluje a odznak ✓ vám udělí. Splněno ${doneCount}/${items.length}.`
-            : `Splněno ${doneCount} z ${items.length}. Jakmile máte vše, požádejte o ověření — my ho ručně potvrdíme a odemknou se vám funkce.`}
+          : `Splněno ${doneCount} z ${items.length}. Odznak ✓ udělujeme ručně — jakmile máte vše splněné, TenisHub vám ho udělí (nemusíte o nic žádat).`}
       </p>
       <ul className="ov-list">
         {items.map((it) => (
@@ -97,9 +89,8 @@ export default function KlubOvereni() {
       </ul>
       {!spec.verified && (
         <div className="ov-cta">
-          {allDone && !spec.verify_requested && <button className="btn btn-green" onClick={requestVerify}>Požádat o ověření</button>}
-          {spec.verify_requested && !allDone && <span className="ov-wait">Doplňte i zbývající podmínky.</span>}
-          <Link href="/ucet" className="btn btn-out">Doplnit profil</Link>
+          <span className="ov-wait">{allDone ? "Splňujete všechny podmínky — odznak vám brzy udělíme." : "Doplňte zbývající podmínky, ať vám odznak můžeme udělit."}</span>
+          <Link href="/ucet?tab=karta" className="btn btn-out">Doplnit profil</Link>
         </div>
       )}
     </div>

@@ -81,12 +81,12 @@ const SERVICES: Svc[] = [
     ],
   },
   {
-    slug: "kondice", label: "Kondiční trenér pro tenisty", kinds: ["fitness"],
-    h1: (c) => `Kondiční trenér pro tenisty ${c}`,
-    metaTitle: (c) => `Kondiční trenér pro tenisty ${c} — síla, rychlost, prevence`,
+    slug: "kondice", label: "Fitness trenér pro tenisty", kinds: ["fitness"],
+    h1: (c) => `Fitness trenér pro tenisty ${c}`,
+    metaTitle: (c) => `Fitness trenér pro tenisty ${c} — síla, rychlost, prevence`,
     metaDesc: (c) => `Kondiční příprava pro tenisty v ${c}. Síla, rychlost, obratnost a prevence zranění pro děti i dospělé hráče — najdi trenéra na TenisHubu.`,
     intro: (c) => [
-      `Chceš na kurtu vydržet a být rychlejší? Kondiční trenéři v ${c} připraví hráče po fyzické stránce — síla, rychlost, obratnost i prevence zranění.`,
+      `Chceš na kurtu vydržet a být rychlejší? Fitness trenéři v ${c} připraví hráče po fyzické stránce — síla, rychlost, obratnost i prevence zranění.`,
       `Vyber trenéra podle lokality a zkušeností s tenisty a domluv se na spolupráci.`,
     ],
     faq: (c) => [

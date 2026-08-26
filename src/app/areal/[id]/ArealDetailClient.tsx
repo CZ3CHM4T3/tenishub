@@ -14,7 +14,7 @@ type Venue = {
 type Court = { name: string; indoor: boolean; surface: string | null };
 type Trainer = { id: string; name: string; kind: string };
 
-const KIND_LABEL: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Kondiční trenér", academy: "Tenisová škola" };
+const KIND_LABEL: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Fitness trenér", academy: "Tenisová škola" };
 
 type Modal = null | "claim" | "claimSent" | "remove" | "removeSent";
 

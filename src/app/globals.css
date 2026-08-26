@@ -991,7 +991,7 @@
 .vr-photo-a { width: 72%; height: 72%; top: 8%; left: 5%; transform: rotate(-3deg); }
 .vr-photo-b { width: 40%; height: 58%; bottom: 6%; right: 6%; transform: rotate(4deg); border: 5px solid #fff; }
 /* /sluzby stránka */
-.sluzby-wrap { max-width: 1000px; padding: 2.2rem 1.2rem 4rem; }
+.sluzby-wrap { max-width: 1120px; padding: 2.2rem 1.2rem 4rem; }
 .sluzby-wrap h1 { font-family: var(--font-jakarta), sans-serif; font-size: 2rem; color: var(--green); margin: 0 0 0.5rem; }
 .sluzby-wrap .lead { color: var(--muted); font-size: 1.05rem; margin: 0 0 1.5rem; }
 .sluzby-najdi { max-width: 100% !important; margin: 0 0 1.6rem !important; }
@@ -1365,7 +1365,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .auth-forgot:hover { color: var(--gold); text-decoration: underline; }
 .auth-note b { color: var(--gold); }
 
-.acct-wrap { max-width: 760px; padding: 2.2rem 0 4rem; }
+.acct-wrap { max-width: 1120px; padding: 2.2rem 1.2rem 4rem; }
 .acct-h1 { font-size: 1.8rem; color: var(--green-d); margin-bottom: 1.4rem; }
 .acct-card { background: #fff; border: 0.5px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-s); padding: 1.5rem; margin-bottom: 1.2rem; }
 .acct-card-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; color: var(--green-2); }

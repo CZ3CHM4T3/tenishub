@@ -12,7 +12,7 @@ export function generateStaticParams() {
 }
 
 const KIND_LABEL: Record<string, string> = {
-  coach: "Tenisový trenér", academy: "Tenisová škola", physio: "Fyzioterapeut", fitness: "Kondiční trenér",
+  coach: "Tenisový trenér", academy: "Tenisová škola", physio: "Fyzioterapeut", fitness: "Fitness trenér",
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ mesto: string }> }): Promise<Metadata> {
