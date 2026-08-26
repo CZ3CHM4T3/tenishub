@@ -5,10 +5,22 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CalendarDays, Plus, X, ExternalLink, Trash2 } from "lucide-react";
 import { useMe } from "@/lib/useMe";
+import { CITIES } from "@/lib/cities";
 
 type T = { id: string; name: string; date: string; city: string | null; category: string | null; surface: string | null; signup_url: string | null; note: string | null };
 const fmt = (iso: string) => new Date(iso + "T00:00:00").toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "numeric", year: "numeric" });
 const todayISO = () => new Date().toISOString().slice(0, 10);
+const coordOf = (name: string | null): [number, number] | null => {
+  if (!name) return null;
+  const h = CITIES.find((c) => c[0].toLowerCase() === name.trim().toLowerCase());
+  return h ? [h[1], h[2]] : null;
+};
+const distKm = (a: [number, number], b: [number, number]) => {
+  const R = 6371, dLat = (b[0] - a[0]) * Math.PI / 180, dLng = (b[1] - a[1]) * Math.PI / 180;
+  const la1 = a[0] * Math.PI / 180, la2 = b[0] * Math.PI / 180;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+};
 
 export default function TurnajeClient() {
   const supabase = useMemo(() => createClient(), []);
@@ -17,6 +29,9 @@ export default function TurnajeClient() {
   const [loading, setLoading] = useState(true);
   const [city, setCity] = useState("");
   const [past, setPast] = useState(false);
+  const [home, setHome] = useState<[number, number] | null>(null);
+  const [homeName, setHomeName] = useState("");
+  const [radius, setRadius] = useState(0);
   const [form, setForm] = useState<{ open: boolean; name: string; date: string; city: string; category: string; surface: string; signup_url: string; note: string }>({ open: false, name: "", date: "", city: "", category: "", surface: "", signup_url: "", note: "" });
   const [busy, setBusy] = useState(false);
   const [impUrl, setImpUrl] = useState("");
@@ -29,6 +44,15 @@ export default function TurnajeClient() {
     setLoading(false);
   }, [supabase]);
   useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: p } = await supabase.from("profiles").select("city").eq("id", user.id).maybeSingle();
+      const c = (p as { city: string | null } | null)?.city ?? "";
+      if (c) { setHomeName(c); setHome(coordOf(c)); }
+    })();
+  }, [supabase]);
 
   const submit = async () => {
     if (!form.name.trim() || !form.date) return;
@@ -68,7 +92,13 @@ export default function TurnajeClient() {
 
   const cities = [...new Set(items.map((t) => t.city).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b, "cs"));
   const t0 = todayISO();
-  const shown = items.filter((t) => (past ? true : t.date >= t0) && (!city || t.city === city));
+  const radiusOn = radius > 0 && !!home;
+  const shown = items.filter((t) => {
+    if (!past && t.date < t0) return false;
+    if (radiusOn) { const c = coordOf(t.city); return c ? distKm(home!, c) <= radius : false; }
+    return !city || t.city === city;
+  });
+  const noGeoCount = radiusOn ? items.filter((t) => (past || t.date >= t0) && !coordOf(t.city)).length : 0;
 
   return (
     <div className="acct-page">
@@ -93,11 +123,25 @@ export default function TurnajeClient() {
           </div>
         )}
 
+        {home ? (
+          <div className="fcats" style={{ marginBottom: ".5rem" }}>
+            <span className="member-note" style={{ margin: "0 .2rem 0 0", alignSelf: "center" }}>V okolí ({homeName}):</span>
+            {[0, 25, 50, 100].map((r) => (
+              <button key={r} className={`fcat${radius === r ? " on" : ""}`} onClick={() => setRadius(r)}>{r === 0 ? "vypnuto" : `${r} km`}</button>
+            ))}
+          </div>
+        ) : (
+          <p className="member-note" style={{ marginBottom: ".5rem" }}>Chceš turnaje <b>ve svém okolí</b>? Doplň si město bydliště v <a href="/ucet?tab=profil" style={{ color: "var(--gold)", fontWeight: 700 }}>Profilu</a>.</p>
+        )}
+
         <div className="fcats">
-          <button className={`fcat${city === "" ? " on" : ""}`} onClick={() => setCity("")}>Vše</button>
-          {cities.map((c) => <button key={c} className={`fcat${city === c ? " on" : ""}`} onClick={() => setCity(c)}>{c}</button>)}
+          {!radiusOn && <>
+            <button className={`fcat${city === "" ? " on" : ""}`} onClick={() => setCity("")}>Vše</button>
+            {cities.map((c) => <button key={c} className={`fcat${city === c ? " on" : ""}`} onClick={() => setCity(c)}>{c}</button>)}
+          </>}
           <button className={`fcat${past ? " on" : ""}`} style={{ marginLeft: "auto" }} onClick={() => setPast((p) => !p)}>{past ? "Skrýt proběhlé" : "I proběhlé"}</button>
         </div>
+        {radiusOn && noGeoCount > 0 && <p className="member-note" style={{ marginTop: "-0.2rem" }}>+ {noGeoCount} turnajů bez určeného města (nezahrnuto do okolí).</p>}
 
         {loading ? <p className="member-note">Načítám…</p> : shown.length === 0 ? (
           <div className="acct-card mc-gate"><CalendarDays size={30} /><h2>Žádné turnaje</h2><p>Zatím tu nic není{isAdmin ? " — přidejte první." : "."}</p></div>
