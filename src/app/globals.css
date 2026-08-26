@@ -3030,16 +3030,14 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .world-trainer::after{background:linear-gradient(to top, rgba(10,20,14,.62) 6%, rgba(10,20,14,.08) 58%, rgba(10,20,14,.28) 100%)}
 .wt-map{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
 .wt-map svg{width:90%;height:80%;transform:translate(2%,-6%);overflow:visible}
-.wt-map-shadow{fill:#0a1712;opacity:.5;transform:translate(9px,14px);filter:blur(3px)}
+.wt-map-shadow{fill:#0a1712;opacity:.5;transform:translate(9px,14px)}
 .wt-map-fill{fill:#35604a;stroke:#c7a355;stroke-width:2.2;stroke-linejoin:round;filter:drop-shadow(0 12px 22px rgba(0,0,0,.45))}
-/* piny služeb na mapě (náznak jak to funguje) */
-.wt-pin{display:block}
-.wt-pin-b{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#fff;
-  border:2px solid rgba(255,255,255,.92);box-shadow:0 4px 9px rgba(0,0,0,.4);animation:wtpin 3.4s ease-in-out infinite}
-.wt-pin:nth-child(3) .wt-pin-b{animation-delay:.5s}
-.wt-pin:nth-child(5) .wt-pin-b{animation-delay:1s}
-.wt-pin:nth-child(7) .wt-pin-b{animation-delay:1.5s}
-@keyframes wtpin{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* piny služeb na mapě — stejný styl jako /mapa (kapka + ikona role, 2 ověřené) */
+.wt-pin-drop{stroke:#fff;stroke-width:2.4;filter:drop-shadow(0 3px 5px rgba(0,0,0,.4))}
+.wt-pin-ic{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.wt-pin-ring{fill:none;stroke:#e9c877;stroke-width:3}
+.wt-pin-badge{fill:#e9c877;stroke:#fff;stroke-width:1.6}
+.wt-pin-tick{fill:#1c2a16;font-size:9px;font-weight:800}
 /* Jirka — stojící postava před mapou, mírně vystupující */
 .wt-figure{position:absolute;right:0;bottom:0;height:92%;width:auto;z-index:2;pointer-events:none;
   filter:drop-shadow(-12px 14px 22px rgba(0,0,0,.45));object-fit:contain;object-position:bottom right}

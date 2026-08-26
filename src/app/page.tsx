@@ -17,7 +17,7 @@ import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, type LucideIcon,
-  CalendarDays, Target, BarChart3, History, Wrench,
+  CalendarDays, Target, BarChart3, History,
 } from "lucide-react";
 
 /* ── Persony: srovnání Zdarma vs HUB+ (placené = vše zdarma + navíc) ── */
@@ -81,31 +81,18 @@ const CZ_MAP =
   "233,457 208,486 173,485 161,489 133,483 110,456 76,424 42,391 12,364 -14,345 -38,297 -22,271 -29,258 " +
   "-52,249 -59,231";
 
-// Hladký uzavřený obrys (Catmull-Rom → Bézier) — méně „lomené" hrany než u polygonu.
-const CZ_PTS: [number, number][] = CZ_MAP.trim().split(/\s+/).map((s) => s.split(",").map(Number) as [number, number]);
-function smoothClosedPath(pts: [number, number][], k = 1): string {
-  const n = pts.length;
-  if (n < 3) return "";
-  let d = `M${pts[0][0]},${pts[0][1]}`;
-  for (let i = 0; i < n; i++) {
-    const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
-    const c1x = p1[0] + ((p2[0] - p0[0]) / 6) * k, c1y = p1[1] + ((p2[1] - p0[1]) / 6) * k;
-    const c2x = p2[0] - ((p3[0] - p1[0]) / 6) * k, c2y = p2[1] - ((p3[1] - p1[1]) / 6) * k;
-    d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0]},${p2[1]}`;
-  }
-  return d + "Z";
-}
-const CZ_PATH = smoothClosedPath(CZ_PTS);
-
-// Náznak „jak to funguje": rozmístěné piny služeb na mapě (východ/střed zůstává vidět po diagonálním ořezu).
-const WT_PINS: { x: number; y: number; c: string; Icon: LucideIcon }[] = [
-  { x: 360, y: 205, c: "#3b8a5a", Icon: Award },          // trenér
-  { x: 430, y: 250, c: "#2f8f86", Icon: Building2 },       // klub / areál
-  { x: 525, y: 210, c: "#bf9a47", Icon: GraduationCap },   // akademie
-  { x: 470, y: 405, c: "#a65b6b", Icon: HeartPulse },      // fyzio
-  { x: 350, y: 428, c: "#4a5b86", Icon: Dumbbell },        // fitness
-  { x: 565, y: 320, c: "#b5763f", Icon: Wrench },          // vyplétač
+// Piny služeb na mapě ve stylu /mapa (kapka + ikona role); 2 „ověřené" mají zlatý prsten + ✓.
+// Ikony a barvy jsou stejné jako v MapExplorer (ICONS/TYPES) kvůli jednotě.
+const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boolean }[] = [
+  { x: 330, y: 235, c: "#c8a24c", icon: '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>', verified: true },        // trenér ✓
+  { x: 445, y: 300, c: "#2e7d4f", icon: '<path d="M5 20V9l7-4 7 4v11"/><path d="M5 20h14"/><path d="M10 20v-5h4v5"/>', verified: true },              // klub ✓
+  { x: 470, y: 230, c: "#7a5bc0", icon: '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>' },        // akademie
+  { x: 355, y: 375, c: "#d9534f", icon: '<path d="M3 12h4l2 5 4-12 2 7h6"/>' },                                                                       // fyzio
+  { x: 465, y: 400, c: "#2f6fb0", icon: '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>' },                                                     // fitness
+  { x: 460, y: 340, c: "#5a6470", icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>' },               // vyplétač
 ];
+// tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
+const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
 
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
@@ -279,18 +266,21 @@ export default function Home() {
               <Link href="/pro-trenery" className="world world-sluzby world-trainer">
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
-                    <path className="wt-map-shadow" d={CZ_PATH} />
-                    <path className="wt-map-fill" d={CZ_PATH} />
-                    {WT_PINS.map((p, i) => {
-                      const Ic = p.Icon;
-                      return (
-                        <foreignObject key={i} x={p.x - 26} y={p.y - 52} width="52" height="60">
-                          <span className="wt-pin">
-                            <span className="wt-pin-b" style={{ backgroundColor: p.c }}><Ic size={22} /></span>
-                          </span>
-                        </foreignObject>
-                      );
-                    })}
+                    <polygon className="wt-map-shadow" points={CZ_MAP} />
+                    <polygon className="wt-map-fill" points={CZ_MAP} />
+                    {WT_PINS.map((p, i) => (
+                      <g key={i} className="wt-pin" transform={`translate(${p.x},${p.y})`}>
+                        {p.verified && <circle className="wt-pin-ring" cx="0" cy="-26" r="16.5" />}
+                        <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
+                        <g className="wt-pin-ic" transform="translate(-7.5,-33.5) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
+                        {p.verified && (
+                          <g transform="translate(12,-37)">
+                            <circle className="wt-pin-badge" r="7.5" />
+                            <text className="wt-pin-tick" x="0" y="0.5" textAnchor="middle" dominantBaseline="central">✓</text>
+                          </g>
+                        )}
+                      </g>
+                    ))}
                   </svg>
                 </span>
                 {/* Jirka — stojící postava před mapou */}
