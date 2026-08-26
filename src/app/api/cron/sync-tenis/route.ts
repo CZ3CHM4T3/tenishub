@@ -13,9 +13,13 @@ export const maxDuration = 60;
 type Ev = { player_id: string; date: string; type: string; title: string; opponent: string; score: string | null; sets: unknown; win: boolean | null; ext_id: string };
 
 export async function GET(req: NextRequest) {
+  // Vercel Cron posílá Authorization: Bearer <CRON_SECRET>. Pro ruční test z prohlížeče
+  // lze použít i ?key=<CRON_SECRET>.
   const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Neautorizováno." }, { status: 401 });
+  if (secret) {
+    const okHeader = req.headers.get("authorization") === `Bearer ${secret}`;
+    const okQuery = new URL(req.url).searchParams.get("key") === secret;
+    if (!okHeader && !okQuery) return NextResponse.json({ error: "Neautorizováno." }, { status: 401 });
   }
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const service = process.env.SUPABASE_SERVICE_ROLE_KEY;
