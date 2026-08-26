@@ -238,6 +238,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   };
 
   // data z DB, nebo demo model
+  const isDemo = !spec;   // /trener bez id = ukázkový model; /trener/[id] = reálný profil (nic nevymýšlíme)
   const unclaimed = spec?.status === "unclaimed";
   const name = spec?.name ?? "Jiří Novák";
   const firstName = name.replace(/^(Mgr\.|Ing\.|Bc\.|MUDr\.)\s*/i, "").split(" ")[0];
@@ -332,11 +333,13 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             <div className="card">
               <h2>O mně</h2>
               <p>{bio || "Specialista zatím nedoplnil popis."}</p>
-              <div className="tags">
-                <span className="tag">Děti od 5 let</span><span className="tag">Dospělí</span>
-                <span className="tag">Technika</span><span className="tag">Kondice</span>
-                <span className="tag">Čeština / English</span>
-              </div>
+              {isDemo && (
+                <div className="tags">
+                  <span className="tag">Děti od 5 let</span><span className="tag">Dospělí</span>
+                  <span className="tag">Technika</span><span className="tag">Kondice</span>
+                  <span className="tag">Čeština / English</span>
+                </div>
+              )}
             </div>
 
             {spec ? (
@@ -438,20 +441,27 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
 
           <aside className="side">
             <div className="bcard">
-              <div className="price">{dbServices.length > 0 ? dbServices[dbServices.length - 1].price_czk : price} Kč <small>/ {dbServices.length > 0 ? dbServices[dbServices.length - 1].duration_min : 55} min</small></div>
-              <div style={{ margin: "1rem 0" }}>
-                {dbServices.length > 0 ? (
-                  dbServices.map((s) => (
+              {dbServices.length > 0 ? (<>
+                <div className="price">{dbServices[dbServices.length - 1].price_czk} Kč <small>/ {dbServices[dbServices.length - 1].duration_min ?? 55} min</small></div>
+                <div style={{ margin: "1rem 0" }}>
+                  {dbServices.map((s) => (
                     <div className="ln" key={s.name}><span>{s.name}{s.duration_min ? ` · ${s.duration_min} min` : ""}</span><span>{s.price_czk} Kč</span></div>
-                  ))
-                ) : (
-                  <>
-                    <div className="ln"><span>Individuální lekce</span><span>{price} Kč</span></div>
-                    <div className="ln"><span>Ve dvojici (za osobu)</span><span>{Math.round(price * 0.6 / 10) * 10} Kč</span></div>
-                    <div className="ln"><span>Skupina 4 hráči</span><span>{Math.round(price * 0.45 / 10) * 10} Kč</span></div>
-                  </>
-                )}
-              </div>
+                  ))}
+                </div>
+              </>) : isDemo ? (<>
+                <div className="price">{price} Kč <small>/ 55 min</small></div>
+                <div style={{ margin: "1rem 0" }}>
+                  <div className="ln"><span>Individuální lekce</span><span>{price} Kč</span></div>
+                  <div className="ln"><span>Ve dvojici (za osobu)</span><span>{Math.round(price * 0.6 / 10) * 10} Kč</span></div>
+                  <div className="ln"><span>Skupina 4 hráči</span><span>{Math.round(price * 0.45 / 10) * 10} Kč</span></div>
+                </div>
+              </>) : (
+                <div style={{ margin: "0 0 1rem" }}>
+                  {spec?.price_from && spec.price_from > 0
+                    ? <div className="price">od {spec.price_from} Kč</div>
+                    : <p className="member-note" style={{ margin: 0 }}>Ceník trenér zatím neuvedl.</p>}
+                </div>
+              )}
               <button className="btn btn-gold" style={{ width: "100%" }} onClick={scrollToCal}>Vybrat termín →</button>
               <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={openMsg}>Napsat zprávu</button>
               <div className="note">Platba kartou online · bezplatné storno 24 h předem</div>
