@@ -104,6 +104,10 @@ const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boole
   { x: 450, y: 220, c: "#7a5bc0", icon: IC_ACADEMY },               // + SV
   { x: 490, y: 350, c: "#c8a24c", icon: IC_COACH },                 // + JV
   { x: 565, y: 300, c: "#d9534f", icon: IC_PHYSIO },                // + daleký východ
+  { x: 200, y: 210, c: "#2f6fb0", icon: IC_FITNESS },              // + SZ-střed
+  { x: 330, y: 300, c: "#5a6470", icon: IC_STRINGER },             // + střed-jih
+  { x: 430, y: 300, c: "#2e7d4f", icon: IC_CLUB },                 // + JV-střed
+  { x: 505, y: 235, c: "#c8a24c", icon: IC_COACH },                // + SV
 ];
 // tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
 const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
