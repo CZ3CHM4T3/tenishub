@@ -3540,6 +3540,35 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .glp-list li svg{color:var(--green-2,#2c4a3b);flex:none}
 .glp-cta{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
 .glp-note{font-size:.76rem;color:var(--muted)}
+/* Homepage — infografika členství (HUB+ / PRO / BOOST) */
+.cena-sec{background:#fff}
+.cena-eyebrow{display:inline-block;font-weight:800;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold,#bf9a47);margin-bottom:.4rem}
+.cena-h{font-size:clamp(1.5rem,3vw,2.2rem);color:var(--green-d,#1c3025);margin:0 0 .5rem;line-height:1.1}
+.cena-h .g{color:var(--gold,#bf9a47)}
+.cena-sub{color:var(--muted);max-width:60ch;margin:0 0 1.6rem;line-height:1.6}
+.cena-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem}
+.cena-card{background:var(--paper,#fff);border:1px solid var(--line);border-radius:16px;padding:1.4rem;display:flex;flex-direction:column;box-shadow:0 12px 30px -22px rgba(20,40,28,.4)}
+.cena-pro{border-color:#e6cf94;background:linear-gradient(180deg,#fffdf6,#fff)}
+.cena-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.cena-badge{display:inline-flex;align-items:center;gap:.35rem;font-weight:800;font-size:.85rem;padding:.28rem .7rem;border-radius:100px}
+.cena-badge.hubp{background:#e2efe9;color:#2f5d57}
+.cena-badge.prop{background:linear-gradient(135deg,#f3e2b6,#e9c877);color:#7a5a12}
+.cena-price b{font-size:1.8rem;color:var(--ink);line-height:1}
+.cena-price span{color:var(--muted);font-size:.85rem;margin-left:.15rem}
+.cena-for{color:var(--muted);font-size:.9rem;margin:.1rem 0 .8rem}
+.cena-list{list-style:none;padding:0;margin:0 0 .9rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+.cena-list li{display:flex;gap:.5rem;font-size:.92rem;line-height:1.4;color:var(--ink)}
+.cena-list li svg{color:var(--green);flex:none;margin-top:.15rem}
+.cena-value{background:var(--soft,#f4efe2);border-radius:10px;padding:.6rem .8rem;font-size:.9rem;color:var(--green-d);margin:0 0 .9rem}
+.cena-cta{width:100%;justify-content:center}
+.cena-note{font-size:.76rem;color:var(--muted);margin:.5rem 0 0;text-align:center}
+.cena-boost{display:flex;align-items:center;gap:1rem;margin-top:1.1rem;padding:1rem 1.2rem;border-radius:16px;background:linear-gradient(120deg,#2c4a3b,#16271f);color:#fff}
+.cena-boost-ic{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:rgba(233,200,119,.18);color:#e9c877;flex:none}
+.cena-boost-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+.cena-boost-tx b{font-size:1.02rem}
+.cena-boost-tx span{color:#dfe9e2;font-size:.86rem;line-height:1.45}
+.cena-boost-link{display:inline-flex;align-items:center;gap:.3rem;color:#e9c877;font-weight:700;font-size:.88rem;text-decoration:none;white-space:nowrap;flex:none}
+@media(max-width:760px){.cena-grid{grid-template-columns:1fr}.cena-boost{flex-direction:column;text-align:center}.cena-boost-tx{align-items:center}}
 /* Rodičovská landing /domu */
 .dh-top{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
 .dh-tile{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem;border-radius:14px;text-decoration:none;border:1px solid var(--line);background:#fff;transition:transform .14s ease,box-shadow .14s ease}

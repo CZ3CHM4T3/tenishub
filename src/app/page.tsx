@@ -12,6 +12,7 @@ import { AskUs } from "@/components/AskUs";
 import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
+import { CenaClenstvi } from "@/components/CenaClenstvi";
 import { VideoNudge } from "@/components/VideoNudge";
 import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
@@ -510,6 +511,9 @@ export default function Home() {
         </div>
       </section>
       )}
+
+      {/* CENA / ČLENSTVÍ — HUB+ vs PRO + BOOST */}
+      <CenaClenstvi />
 
       {/* CTA */}
       <section className="sec cta" id="cta">
