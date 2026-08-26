@@ -1970,6 +1970,22 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .pf-akt-date{color:var(--muted);font-size:.78rem}
 
 .dite-cta { display: inline-flex; align-items: center; gap: 4px; font-size: 0.82rem; font-weight: 700; color: var(--gold, #bf9a47); white-space: nowrap; }
+/* Děti — řádky s avatarem a stavem u trenéra */
+.deti-row { display: flex; align-items: center; gap: 0.7rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.6rem 0.8rem; }
+.deti-row + .deti-row { margin-top: 0.5rem; }
+.deti-row b { display: block; color: var(--ink); }
+.deti-row > div > span { font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px; }
+.deti-row-off { background: #faf9f6; border-style: dashed; }
+.deti-row-off .deti-av { filter: grayscale(0.55) opacity(0.85); }
+.deti-av { position: relative; width: 46px; height: 46px; border-radius: 13px; color: #fff; display: grid; place-items: center; flex: none; border: none; cursor: pointer; }
+.deti-av-edit { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 50%; background: #fff; color: var(--green); display: grid; place-items: center; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.deti-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; font-weight: 700; color: var(--muted); background: #eee7d7; border-radius: 100px; padding: 0.08rem 0.5rem; }
+.deti-chip.on { color: #2f5d57; background: #e2efe9; }
+.deti-chip.on svg { color: #2f8f86; }
+.avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; margin: 0.4rem 0 0.2rem; }
+.avatar-opt { aspect-ratio: 1; border-radius: 14px; color: #fff; display: grid; place-items: center; border: 3px solid transparent; cursor: pointer; }
+.avatar-opt.on { border-color: var(--ink); box-shadow: 0 0 0 2px #fff inset; }
+@media (max-width: 480px) { .avatar-grid { grid-template-columns: repeat(4, 1fr); } }
 
 /* ===== PORT z MS GEM: EDITOR AVATARA + ProgressEditor (pe-*) + tier ===== */
 /* ===================== EDITOR AVATARA ===================== */

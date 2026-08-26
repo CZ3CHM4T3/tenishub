@@ -6,10 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Baby, Plus, X, ArrowRight } from "lucide-react";
+import { Baby, Plus, X, ArrowRight, Pencil, BadgeCheck } from "lucide-react";
 import { JoinCoach } from "@/components/JoinCoach";
+import { AVATARS, avatarByKey } from "@/lib/avatars";
 
-type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null };
+type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null; avatar: string | null };
 
 export default function DetiClient() {
   const router = useRouter();
@@ -17,8 +18,10 @@ export default function DetiClient() {
   const [loading, setLoading] = useState(true);
   const [me, setMe] = useState<string>("");
   const [coachId, setCoachId] = useState<string | null>(null);
+  const [coachName, setCoachName] = useState<string>("");
   const [deti, setDeti] = useState<Dite[]>([]);
   const [form, setForm] = useState({ open: false, jmeno: "", datum: "", program: "hobby" });
+  const [avatarFor, setAvatarFor] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
@@ -26,11 +29,16 @@ export default function DetiClient() {
     if (!user) { router.replace("/prihlaseni?next=/deti"); return; }
     setMe(user.id);
     const [{ data: d }, { data: cr }] = await Promise.all([
-      supabase.from("deti").select("id,jmeno,prezdivka,level,program,coach_id").eq("rodic_id", user.id).order("vytvoreno", { ascending: true }),
+      supabase.from("deti").select("id,jmeno,prezdivka,level,program,coach_id,avatar").eq("rodic_id", user.id).order("vytvoreno", { ascending: true }),
       supabase.from("coach_roster").select("coach_id").eq("member_id", user.id).eq("status", "active").limit(1).maybeSingle(),
     ]);
     setDeti((d as Dite[]) ?? []);
-    setCoachId((cr as { coach_id: string } | null)?.coach_id ?? null);
+    const cid = (cr as { coach_id: string } | null)?.coach_id ?? null;
+    setCoachId(cid);
+    if (cid) {
+      const { data: sp } = await supabase.from("specialists").select("name").eq("owner_id", cid).limit(1).maybeSingle();
+      setCoachName((sp as { name: string } | null)?.name ?? "trenér");
+    } else setCoachName("");
     setLoading(false);
   }, [supabase, router]);
   useEffect(() => { load(); }, [load]);
@@ -53,6 +61,12 @@ export default function DetiClient() {
     await load();
   };
 
+  const chooseAvatar = async (kidId: string, key: string) => {
+    setAvatarFor(null);
+    setDeti((ds) => ds.map((x) => x.id === kidId ? { ...x, avatar: key } : x));
+    await supabase.from("deti").update({ avatar: key }).eq("id", kidId);
+  };
+
   if (loading) return <div className="acct-loading">Načítám…</div>;
 
   return (
@@ -64,7 +78,9 @@ export default function DetiClient() {
           <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>
-          {coachId ? "Přidejte dítě a sledujte jeho kariéru — strom dovedností, level a Sparing Cup u vašeho trenéra." : "Přidejte dítě a sledujte jeho pokrok. Připojení k trenérovi je nepovinné — jde to i solo."}
+          {coachId
+            ? <>Vaše děti jsou u trenéra <b>{coachName}</b> — sbírají odznaky, level a postup ve stromu dovedností i Sparing Cupu. Klikněte na dítě pro jeho kariéru.</>
+            : <>Přidejte dítě a hlavně ho <b>napojte na trenéra</b> — u trenéra sbírá odznaky a postup ve hře a vy vidíte, jak roste. Bez trenéra jsou karty šedé.</>}
         </p>
 
         <JoinCoach />
@@ -73,13 +89,29 @@ export default function DetiClient() {
           <div className="acct-card mc-gate"><Baby size={30} /><h2>Zatím žádné dítě</h2><p>Přidejte první — uvidíte jeho kariéru a pokrok.</p></div>
         ) : (
           <div className="klub-list">
-            {deti.map((d) => (
-              <Link href={`/deti/${d.id}`} className="klub-row" key={d.id} style={{ textDecoration: "none" }}>
-                <span className="klub-av">{d.jmeno.charAt(0).toUpperCase()}</span>
-                <div style={{ flex: 1 }}><b>{d.jmeno}</b><span>{d.prezdivka} · level {d.level} · {d.program === "pro" ? "závodní" : "hobby"}</span></div>
-                <span className="dite-cta">Kariéra <ArrowRight size={15} /></span>
-              </Link>
-            ))}
+            {deti.map((d) => {
+              const av = avatarByKey(d.avatar);
+              const AvIcon = av.Icon;
+              return (
+              <div className={`deti-row${coachId ? "" : " deti-row-off"}`} key={d.id}>
+                <button type="button" className="deti-av" style={{ background: av.color }} onClick={() => setAvatarFor(d.id)} aria-label="Změnit avatara">
+                  <AvIcon size={22} /><span className="deti-av-edit"><Pencil size={11} /></span>
+                </button>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <b>{d.jmeno}</b>
+                  <span>
+                    {coachId
+                      ? <span className="deti-chip on"><BadgeCheck size={12} /> U trenéra {coachName}</span>
+                      : <span className="deti-chip">Zatím bez trenéra</span>}
+                    {" "}· {d.program === "pro" ? "závodní" : "hobby"}{coachId ? ` · level ${d.level}` : ""}
+                  </span>
+                </div>
+                <Link href={`/deti/${d.id}`} className="dite-cta" style={{ textDecoration: "none" }}>
+                  {coachId ? "Kariéra" : "Otevřít"} <ArrowRight size={15} />
+                </Link>
+              </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -95,6 +127,26 @@ export default function DetiClient() {
               <label>Program<select value={form.program} onChange={(e) => setForm({ ...form, program: e.target.value })}><option value="hobby">Hobby</option><option value="pro">Závodní</option></select></label>
             </div>
             <button className="btn btn-green" disabled={busy || !form.jmeno.trim()} onClick={submit}>Přidat</button>
+          </div>
+        </div>
+      )}
+
+      {avatarFor && (
+        <div className="mc-modal" onClick={() => setAvatarFor(null)}>
+          <div className="mc-modal-in" onClick={(e) => e.stopPropagation()}>
+            <button className="mc-x" onClick={() => setAvatarFor(null)}><X size={18} /></button>
+            <h3>Vyber avatara</h3>
+            <div className="avatar-grid">
+              {AVATARS.map((a) => {
+                const AIcon = a.Icon;
+                const cur = deti.find((x) => x.id === avatarFor)?.avatar;
+                return (
+                  <button key={a.key} type="button" className={`avatar-opt${cur === a.key ? " on" : ""}`} style={{ background: a.color }} onClick={() => chooseAvatar(avatarFor, a.key)}>
+                    <AIcon size={26} />
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
