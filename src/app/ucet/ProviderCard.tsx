@@ -34,7 +34,9 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 const minToStr = (m: number) => `${pad2(Math.floor(m / 60))}:${pad2(m % 60)}`;
 const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); return (h || 0) * 60 + (m || 0); };
 
-export default function ProviderCard({ userId, fullName }: { userId: string; fullName: string }) {
+type Identity = { fullName: string; city: string; phone: string; email: string | null; photoUrl: string | null };
+
+export default function ProviderCard({ userId, identity }: { userId: string; identity: Identity }) {
   const [loading, setLoading] = useState(true);
   const [spec, setSpec] = useState<Spec | null>(null);
   const [venue, setVenue] = useState<Venue | null>(null);
@@ -71,13 +73,17 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
   const createSpecialist = async (kind: string) => {
     setBusy(true);
     const sb = createClient();
-    await sb.from("specialists").insert({ owner_id: userId, kind, name: fullName || "Nový trenér", status: "claimed" });
+    await sb.from("specialists").insert({
+      owner_id: userId, kind, status: "claimed",
+      name: identity.fullName || "Nový trenér", city: identity.city || null,
+      phone: identity.phone || null, email: identity.email, photo_url: identity.photoUrl,
+    });
     await load(); setBusy(false);
   };
   const createVenue = async () => {
     setBusy(true);
     const sb = createClient();
-    await sb.from("venues").insert({ owner_id: userId, name: fullName ? `Areál ${fullName}` : "Nový areál", status: "claimed" });
+    await sb.from("venues").insert({ owner_id: userId, name: identity.fullName ? `Areál ${identity.fullName}` : "Nový areál", city: identity.city || null, status: "claimed" });
     await load(); setBusy(false);
   };
 
@@ -98,9 +104,9 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
     if (!spec) return;
     setBusy(true);
     const sb = createClient();
+    // jméno/město/telefon/e-mail/foto se řídí Osobními údaji (identita) — tady jen obor, cena, web, bio
     await sb.from("specialists").update({
-      name: spec.name, kind: spec.kind, city: spec.city, bio: spec.bio,
-      phone: spec.phone, email: spec.email, website: spec.website, price_from: spec.price_from,
+      kind: spec.kind, bio: spec.bio, website: spec.website, price_from: spec.price_from,
     }).eq("id", spec.id);
     // ceník: smaž a vlož znovu (jednoduché a spolehlivé pro krátký seznam)
     await sb.from("services").delete().eq("specialist_id", spec.id);
@@ -163,31 +169,24 @@ export default function ProviderCard({ userId, fullName }: { userId: string; ful
           </div>
 
           <div>
-          <div className="card-photo">
-            <div className="card-photo-prev" style={spec.photo_url ? { backgroundImage: `url(${spec.photo_url})` } : undefined}>
-              {!spec.photo_url && <ImagePlus size={26} />}
+          <div className="card-identity">
+            <div className="card-photo-prev sm" style={identity.photoUrl ? { backgroundImage: `url(${identity.photoUrl})` } : undefined}>
+              {!identity.photoUrl && <UserCog size={22} />}
             </div>
-            <div>
-              <button className="btn btn-out" disabled={busy} onClick={() => fileRef.current?.click()}><ImagePlus size={15} /> {spec.photo_url ? "Změnit fotku" : "Nahrát fotku"}</button>
-              <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadPhoto(e.target.files[0], "spec")} />
-              <p className="hint">Čtvercová fotka vypadá nejlíp.</p>
+            <div className="card-identity-txt">
+              <b>{identity.fullName || "Bez jména"}</b>
+              <span>{[identity.city || "město neuvedeno", identity.phone].filter(Boolean).join(" · ")}</span>
+              <p className="hint">Jméno, město, telefon i fotka se berou z <b>Osobních údajů</b> nahoře — uprav je jednou tam a propíšou se sem i na veřejný profil.</p>
             </div>
           </div>
 
           <div className="acct-grid">
-            <div className="fld"><label>Jméno / název</label><input value={spec.name} onChange={(e) => setSpec({ ...spec, name: e.target.value })} /></div>
-            <div className="fld"><label>Typ</label>
+            <div className="fld"><label>Typ služby</label>
               <select value={spec.kind} onChange={(e) => setSpec({ ...spec, kind: e.target.value })}>
                 {KINDS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}
               </select>
             </div>
-            <div className="fld"><label>Město</label>
-              <input list="cities-dl" value={spec.city ?? ""} onChange={(e) => setSpec({ ...spec, city: e.target.value })} placeholder="Praha" />
-              <datalist id="cities-dl">{CITIES.map((c) => <option key={c[0]} value={c[0]} />)}</datalist>
-            </div>
             <div className="fld"><label>Cena od (Kč / lekce)</label><input type="number" value={spec.price_from ?? ""} onChange={(e) => setSpec({ ...spec, price_from: e.target.value ? Number(e.target.value) : null })} placeholder="500" /></div>
-            <div className="fld"><label>Telefon</label><input value={spec.phone ?? ""} onChange={(e) => setSpec({ ...spec, phone: e.target.value })} placeholder="+420 …" /></div>
-            <div className="fld"><label>E-mail (pro poptávky)</label><input value={spec.email ?? ""} onChange={(e) => setSpec({ ...spec, email: e.target.value })} placeholder="ty@email.cz" /></div>
             <div className="fld"><label>Web</label><input value={spec.website ?? ""} onChange={(e) => setSpec({ ...spec, website: e.target.value })} placeholder="www.tvujweb.cz" /></div>
           </div>
           <div className="fld"><label>O mně (bio)</label><textarea rows={4} value={spec.bio ?? ""} onChange={(e) => setSpec({ ...spec, bio: e.target.value })} placeholder="Čemu se věnuješ, pro koho, zkušenosti…" /></div>

@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
@@ -25,7 +25,7 @@ const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; ba
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
 ];
 
-type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; is_admin: boolean; is_coach: boolean };
+type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; photo_url: string | null; is_admin: boolean; is_coach: boolean };
 type Membership = { id: string; plan: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
 type Booking = { id: string; starts_at: string; price_czk: number | null; status: string };
 
@@ -39,6 +39,8 @@ export default function AccountPage() {
   const [membership, setMembership] = useState<Membership | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [name, setName] = useState(""); const [city, setCity] = useState(""); const [phone, setPhone] = useState("");
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
   const [atab, setAtab] = useState("clenstvi");
@@ -56,13 +58,13 @@ export default function AccountPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/prihlaseni"); return; }
     const [p, m, b] = await Promise.all([
-      supabase.from("profiles").select("id,full_name,email,role,city,phone,is_admin,is_coach").eq("id", user.id).single(),
+      supabase.from("profiles").select("id,full_name,email,role,city,phone,photo_url,is_admin,is_coach").eq("id", user.id).single(),
       supabase.from("memberships").select("*").eq("profile_id", user.id).eq("status", "active")
         .gt("expires_at", new Date().toISOString()).order("expires_at", { ascending: false }).limit(1).maybeSingle(),
       supabase.from("bookings").select("id,starts_at,price_czk,status").eq("customer_id", user.id)
         .order("starts_at", { ascending: false }).limit(10),
     ]);
-    if (p.data) { setProfile(p.data); setName(p.data.full_name ?? ""); setCity(p.data.city ?? ""); setPhone(p.data.phone ?? ""); }
+    if (p.data) { setProfile(p.data); setName(p.data.full_name ?? ""); setCity(p.data.city ?? ""); setPhone(p.data.phone ?? ""); setPhotoUrl(p.data.photo_url ?? null); }
     setMembership((m.data as Membership) ?? null);
     setBookings((b.data as Booking[]) ?? []);
     // role (klobouky) — zvlášť, ať to nespadne, kdyby sloupec ještě nebyl
@@ -78,8 +80,25 @@ export default function AccountPage() {
     if (!profile) return;
     setBusy(true);
     const supabase = createClient();
-    await supabase.from("profiles").update({ full_name: name, city, phone }).eq("id", profile.id);
+    await supabase.from("profiles").update({ full_name: name, city, phone, photo_url: photoUrl }).eq("id", profile.id);
+    // sdílená identita → propíše se do veřejných karet (jméno/město/telefon/e-mail/foto se nevyplňují dvakrát)
+    await supabase.from("specialists").update({ name, city, phone, email: profile.email, photo_url: photoUrl }).eq("owner_id", profile.id);
     setBusy(false); setSaved(true); setTimeout(() => setSaved(false), 2500);
+  };
+
+  const uploadAvatar = async (file: File) => {
+    if (!profile) return;
+    setBusy(true);
+    const supabase = createClient();
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const path = `${profile.id}/avatar-${Date.now()}.${ext}`;
+    const up = await supabase.storage.from("photos").upload(path, file, { upsert: true });
+    if (up.error) { setBusy(false); return; }
+    const url = supabase.storage.from("photos").getPublicUrl(path).data.publicUrl;
+    setPhotoUrl(url);
+    await supabase.from("profiles").update({ photo_url: url }).eq("id", profile.id);
+    await supabase.from("specialists").update({ photo_url: url }).eq("owner_id", profile.id);
+    setBusy(false);
   };
 
   const isMember = !!membership || (profile?.is_admin ?? false);
@@ -175,7 +194,18 @@ export default function AccountPage() {
         {/* PROFIL */}
         {atab === "profil" && (<>
         <div className="acct-card">
-          <div className="acct-card-head"><UserRound size={20} /><h2>Profil</h2></div>
+          <div className="acct-card-head"><UserRound size={20} /><h2>Osobní údaje</h2></div>
+          <p className="member-note">Vyplň jednou — použije se všude (v účtu i na tvé veřejné kartě). Role níž ti profil jen doplní o obor, cenu a bio.</p>
+          <div className="card-photo">
+            <div className="card-photo-prev" style={photoUrl ? { backgroundImage: `url(${photoUrl})` } : undefined}>
+              {!photoUrl && <ImagePlus size={26} />}
+            </div>
+            <div>
+              <button className="btn btn-out" disabled={busy} onClick={() => fileRef.current?.click()}><ImagePlus size={15} /> {photoUrl ? "Změnit fotku" : "Nahrát fotku"}</button>
+              <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])} />
+              <p className="hint">Tvoje profilová fotka — uvidí ji hráči na kartě.</p>
+            </div>
+          </div>
           <div className="acct-grid">
             <div className="fld"><label>Jméno a příjmení</label><input value={name} onChange={(e) => setName(e.target.value)} /></div>
             <div className="fld"><label>E-mail</label><input value={profile.email ?? ""} disabled /></div>
@@ -210,7 +240,7 @@ export default function AccountPage() {
         </div>
 
         {/* KARTY ROLÍ — poskytovatelské oddíly profilu (to, co uvidí ostatní na mapě / v reklamě) */}
-        <ProviderCard userId={profile.id} fullName={name} />
+        <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
