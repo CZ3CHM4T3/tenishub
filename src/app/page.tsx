@@ -294,7 +294,7 @@ export default function Home() {
                 </span>
               </Link>
               <Link href="/pro-trenery" className="world world-sluzby world-trainer">
-                <span className="wt-bg" aria-hidden="true" style={{ backgroundImage: "url(/trener-bg.jpg)" }} />
+                <span className="wt-bg" aria-hidden="true" style={{ backgroundImage: "url(/trener-bg.png)" }} />
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
                     <polygon className="wt-map-shadow" points={CZ_MAP} />

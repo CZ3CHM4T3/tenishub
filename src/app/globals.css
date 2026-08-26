@@ -3058,7 +3058,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .world-trainer{background:radial-gradient(120% 90% at 82% -12%, rgba(191,154,71,.24), transparent 46%),linear-gradient(158deg,#2c4a3b,#16271f)}
 .world-trainer::after{background:linear-gradient(to top, rgba(10,20,14,.62) 6%, rgba(10,20,14,.08) 58%, rgba(10,20,14,.28) 100%)}
 /* fotka za mapou (jemná textura, zatím /trener-bg.jpg — když chybí, jede jen gradient) */
-.wt-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:.28;filter:saturate(.85)}
+.wt-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:.5;mix-blend-mode:soft-light}
 /* mapa = měkká silueta vzadu (ne dominantní drátěný obrys) */
 .wt-map{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
 .wt-map svg{width:86%;height:82%;transform:translate(3%,-3%)}
