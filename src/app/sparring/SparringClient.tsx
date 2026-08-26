@@ -26,6 +26,7 @@ const empty = { level: "hobby", cityIdx: 0, age: "", play_type: "amateur", gende
 export default function SparringClient() {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [member, setMember] = useState(false);
   const [authorName, setAuthorName] = useState("");
   const [myOffer, setMyOffer] = useState<Offer | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,11 +53,13 @@ export default function SparringClient() {
       const { data: { user } } = await sb.auth.getUser();
       if (user) {
         setUserId(user.id);
-        const [{ data: p }, { data: mine }] = await Promise.all([
-          sb.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
+        const [{ data: p }, { data: mine }, { data: m }] = await Promise.all([
+          sb.from("profiles").select("full_name,is_admin").eq("id", user.id).maybeSingle(),
           sb.from("sparring_offers").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+          sb.from("memberships").select("id").eq("profile_id", user.id).eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle(),
         ]);
         setAuthorName(p?.full_name ?? "");
+        setMember(!!m || !!(p as { is_admin?: boolean } | null)?.is_admin);
         if (mine) {
           const o = mine as Offer;
           setMyOffer(o);
@@ -212,7 +215,7 @@ export default function SparringClient() {
                 <div className="spar-foot">
                   <span className="spar-author">{o.author_name || "Hráč"}</span>
                   {o.profile_id !== userId && (
-                    <button className="btn btn-out spar-btn" onClick={() => { if (!userId) { window.location.href = "/prihlaseni"; return; } setContact(o); setCText(`Ahoj, mám zájem o sparring${o.city ? ` v ${o.city}` : ""}. Kdy se ti to hodí?`); setDone(false); }}>Napsat</button>
+                    <button className="btn btn-out spar-btn" onClick={() => { if (!userId) { window.location.href = "/prihlaseni"; return; } if (!member) { if (confirm("Napsat parťákovi je funkce členství HUB+ (99 Kč/měsíc). Chceš členství?")) window.location.href = "/pristup"; return; } setContact(o); setCText(`Ahoj, mám zájem o sparring${o.city ? ` v ${o.city}` : ""}. Kdy se ti to hodí?`); setDone(false); }}>Napsat</button>
                   )}
                 </div>
               </div>

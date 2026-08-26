@@ -175,6 +175,17 @@ export default function AccountPage() {
                 <div className="mrow"><span>Cena</span><b>{membership.price_czk} Kč / měsíc</b></div>
                 <div className="mrow"><span>Automatické prodloužení</span><b>{membership.auto_renew ? "zapnuto" : "vypnuto"}</b></div>
               </div>
+              {(() => {
+                const perMonth = 199 - membership.price_czk;
+                if (perMonth <= 0) return null;
+                const months = Math.max(1, Math.floor((Date.now() - new Date(membership.started_at).getTime()) / (1000 * 60 * 60 * 24 * 30)) + 1);
+                return (
+                  <div className="savings-card">
+                    <div className="savings-big">{(months * perMonth).toLocaleString("cs-CZ")} Kč</div>
+                    <div className="savings-txt">už jsi ušetřil jako <b>zakládající člen</b> (99 místo 199 Kč / měsíc). A drží ti to napořád — {perMonth} Kč každý další měsíc.</div>
+                  </div>
+                );
+              })()}
               <p className="member-note">
                 {membership.auto_renew
                   ? <>Členství se {fmt(membership.expires_at)} automaticky prodlouží o měsíc ({membership.price_czk} Kč). Prodlužování můžeš kdykoli vypnout — žádná překvapení.</>

@@ -79,12 +79,12 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
       if (!user) return;
       setUserId(user.id);
       const [{ data: p }, { data: m }] = await Promise.all([
-        supabase.from("profiles").select("full_name").eq("id", user.id).single(),
+        supabase.from("profiles").select("full_name,is_admin").eq("id", user.id).single(),
         supabase.from("memberships").select("id").eq("profile_id", user.id)
           .eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle(),
       ]);
       setUserName(p?.full_name ?? "");
-      setHasMember(!!m);
+      setHasMember(!!m || !!p?.is_admin);
     })();
   }, []);
 
@@ -220,12 +220,14 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
   // zprávy trenérovi = ZDARMA (jen přihlášení), drží likviditu
   const openMsg = () => {
     if (!userId) { setModal("auth"); return; }
+    if (!hasMember) { setModal("member"); return; } // napsat zprávu = funkce HUB+
     setModal("msg");
   };
 
   const sendMessage = async () => {
     if (!spec) { setModal("sent"); return; }        // demo /trener
     if (!userId) { setModal("auth"); return; }
+    if (!hasMember) { setModal("member"); return; }
     if (!spec.owner_id) { setModal("noowner"); return; }
     if (!msgText.trim()) return;
     setMsgBusy(true);
