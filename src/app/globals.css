@@ -3025,27 +3025,43 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .world-trainer{background:radial-gradient(120% 90% at 82% -12%, rgba(191,154,71,.24), transparent 46%),linear-gradient(158deg,#2c4a3b,#16271f)}
 .world-trainer::after{background:linear-gradient(to top, rgba(10,20,14,.62) 6%, rgba(10,20,14,.08) 58%, rgba(10,20,14,.28) 100%)}
 .wt-map{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
-.wt-map svg{width:88%;height:74%;transform:translate(4%,-8%)}
-.wt-map-shadow{fill:#0a1712;opacity:.55;transform:translate(7px,11px)}
-.wt-map-fill{fill:#35604a;stroke:#bf9a47;stroke-width:2.4;stroke-linejoin:round;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
-.wt-in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:.7rem;padding:1.5rem 1.6rem;width:100%}
-.wt-head{font-weight:800;font-size:clamp(1.05rem,1.7vw,1.4rem);color:#fff;line-height:1.15;max-width:17ch;text-wrap:balance}
-.wt-sub{color:#dfe9e2;font-size:.85rem;line-height:1.4;max-width:28ch;margin-top:-.2rem}
+.wt-map svg{width:90%;height:80%;transform:translate(2%,-6%);overflow:visible}
+.wt-map-shadow{fill:#0a1712;opacity:.5;transform:translate(9px,14px);filter:blur(3px)}
+.wt-map-fill{fill:#35604a;stroke:#c7a355;stroke-width:2.2;stroke-linejoin:round;filter:drop-shadow(0 12px 22px rgba(0,0,0,.45))}
+/* piny služeb na mapě (náznak jak to funguje) */
+.wt-pin{display:block}
+.wt-pin-b{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:#fff;
+  border:2px solid rgba(255,255,255,.92);box-shadow:0 4px 9px rgba(0,0,0,.4);animation:wtpin 3.4s ease-in-out infinite}
+.wt-pin:nth-child(3) .wt-pin-b{animation-delay:.5s}
+.wt-pin:nth-child(5) .wt-pin-b{animation-delay:1s}
+.wt-pin:nth-child(7) .wt-pin-b{animation-delay:1.5s}
+@keyframes wtpin{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* Jirka — stojící postava před mapou, mírně vystupující */
+.wt-figure{position:absolute;right:0;bottom:0;height:92%;width:auto;z-index:2;pointer-events:none;
+  filter:drop-shadow(-12px 14px 22px rgba(0,0,0,.45));object-fit:contain;object-position:bottom right}
+.wt-in{position:relative;z-index:3;display:flex;flex-direction:column;align-items:flex-end;text-align:right;
+  margin-left:auto;margin-right:min(360px,33%);gap:.6rem;padding:1.4rem 1rem 1.4rem 0;max-width:14rem;align-self:flex-end}
+.wt-head{font-weight:800;font-size:clamp(1.05rem,1.7vw,1.4rem);color:#fff;line-height:1.15;max-width:15ch;text-wrap:balance;
+  text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.wt-sub{color:#dfe9e2;font-size:.85rem;line-height:1.4;max-width:24ch;margin-top:-.2rem;text-shadow:0 1px 6px rgba(0,0,0,.4)}
 @media(max-width:640px){.wt-head{font-size:1rem}.wt-sub{display:none}}
-.wt-person{display:flex;align-items:center;gap:.95rem}
-.wt-photo{position:relative;width:70px;height:70px;border-radius:50%;overflow:hidden;border:3px solid #bf9a47;
-  flex:none;background:#22382c;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
-.wt-photo-fb{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;color:#e2c98e;font-size:1.4rem}
-.wt-photo img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.wt-person{display:flex;align-items:center;gap:.7rem}
+.wt-badge{position:relative;display:grid;place-items:center;height:44px;min-width:44px;padding:.3rem .55rem;border-radius:12px;flex:none;
+  background:#fff;box-shadow:0 6px 16px -6px rgba(0,0,0,.5)}
+.wt-badge-fb{font-weight:800;font-size:.78rem;letter-spacing:.02em;color:#1b3a63;line-height:1}
+.wt-badge img{position:absolute;inset:0;margin:auto;max-height:28px;max-width:calc(100% - 10px);width:auto;display:block;background:#fff}
 .wt-facts{display:flex;flex-direction:column;gap:.3rem}
-.wt-fact{display:flex;align-items:center;gap:.45rem;color:#eaf2ec;font-weight:600;font-size:.86rem;line-height:1.25}
+.wt-fact{display:flex;align-items:center;gap:.45rem;color:#eaf2ec;font-weight:600;font-size:.84rem;line-height:1.25;
+  text-shadow:0 1px 5px rgba(0,0,0,.45)}
 .wt-fact svg{color:#7ed3a0;flex:none}
-@media(max-width:640px){
-  .wt-in{padding:1.1rem 1rem}
-  .wt-photo{width:54px;height:54px}
-  .wt-fact{font-size:.74rem}
-  .wt-map svg{width:96%;transform:translate(2%,-6%)}
+@media(max-width:700px){
+  .wt-in{margin-right:130px;padding:1rem .8rem 1rem 0;max-width:12rem}
+  .wt-fact{font-size:.72rem}
+  .wt-badge{height:34px}.wt-badge img{height:19px}
+  .wt-figure{height:88%}
+  .wt-map svg{width:100%;transform:translate(0,-2%)}
 }
+@media(max-width:640px){.wt-sub{display:none}}
 
 /* ── Chatbot Tenísek ── */
 .cbot-fab{position:fixed;left:18px;bottom:18px;z-index:200;width:58px;height:58px;border-radius:50%;

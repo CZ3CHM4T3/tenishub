@@ -17,7 +17,7 @@ import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, type LucideIcon,
-  CalendarDays, Target, BarChart3, History,
+  CalendarDays, Target, BarChart3, History, Wrench,
 } from "lucide-react";
 
 /* ── Persony: srovnání Zdarma vs HUB+ (placené = vše zdarma + navíc) ── */
@@ -80,6 +80,32 @@ const CZ_MAP =
   "601,300 628,335 599,366 558,409 551,424 526,432 493,449 456,441 431,480 401,454 340,459 318,441 247,428 " +
   "233,457 208,486 173,485 161,489 133,483 110,456 76,424 42,391 12,364 -14,345 -38,297 -22,271 -29,258 " +
   "-52,249 -59,231";
+
+// Hladký uzavřený obrys (Catmull-Rom → Bézier) — méně „lomené" hrany než u polygonu.
+const CZ_PTS: [number, number][] = CZ_MAP.trim().split(/\s+/).map((s) => s.split(",").map(Number) as [number, number]);
+function smoothClosedPath(pts: [number, number][], k = 1): string {
+  const n = pts.length;
+  if (n < 3) return "";
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+    const c1x = p1[0] + ((p2[0] - p0[0]) / 6) * k, c1y = p1[1] + ((p2[1] - p0[1]) / 6) * k;
+    const c2x = p2[0] - ((p3[0] - p1[0]) / 6) * k, c2y = p2[1] - ((p3[1] - p1[1]) / 6) * k;
+    d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0]},${p2[1]}`;
+  }
+  return d + "Z";
+}
+const CZ_PATH = smoothClosedPath(CZ_PTS);
+
+// Náznak „jak to funguje": rozmístěné piny služeb na mapě (východ/střed zůstává vidět po diagonálním ořezu).
+const WT_PINS: { x: number; y: number; c: string; Icon: LucideIcon }[] = [
+  { x: 360, y: 205, c: "#3b8a5a", Icon: Award },          // trenér
+  { x: 430, y: 250, c: "#2f8f86", Icon: Building2 },       // klub / areál
+  { x: 525, y: 210, c: "#bf9a47", Icon: GraduationCap },   // akademie
+  { x: 470, y: 405, c: "#a65b6b", Icon: HeartPulse },      // fyzio
+  { x: 350, y: 428, c: "#4a5b86", Icon: Dumbbell },        // fitness
+  { x: 565, y: 320, c: "#b5763f", Icon: Wrench },          // vyplétač
+];
 
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
@@ -253,23 +279,36 @@ export default function Home() {
               <Link href="/pro-trenery" className="world world-sluzby world-trainer">
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
-                    <polygon className="wt-map-shadow" points={CZ_MAP} />
-                    <polygon className="wt-map-fill" points={CZ_MAP} />
+                    <path className="wt-map-shadow" d={CZ_PATH} />
+                    <path className="wt-map-fill" d={CZ_PATH} />
+                    {WT_PINS.map((p, i) => {
+                      const Ic = p.Icon;
+                      return (
+                        <foreignObject key={i} x={p.x - 26} y={p.y - 52} width="52" height="60">
+                          <span className="wt-pin">
+                            <span className="wt-pin-b" style={{ backgroundColor: p.c }}><Ic size={22} /></span>
+                          </span>
+                        </foreignObject>
+                      );
+                    })}
                   </svg>
                 </span>
+                {/* Jirka — stojící postava před mapou */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="wt-figure" src="/jirka.png" alt="Jiří Machek — spoluzakladatel akademie MS GEM" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
                   <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
                   <span className="wt-sub">Profil a rozhraní <b>zdarma</b> — bez členství. Vlastní klub a strom dovedností plně po svém.</span>
                   <span className="wt-person">
-                    <span className="wt-photo">
-                      <span className="wt-photo-fb" aria-hidden="true">JM</span>
+                    <span className="wt-badge" aria-hidden="true">
+                      <span className="wt-badge-fb">MS GEM</span>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/jirka.png" alt="Jiří Machek" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                      <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     </span>
                     <span className="wt-facts">
                       <span className="wt-fact"><Check size={15} /> Trenér II. třídy</span>
-                      <span className="wt-fact"><Check size={15} /> Spolumajitel akademie MS GEM</span>
+                      <span className="wt-fact"><Check size={15} /> Spoluzakladatel akademie MS GEM</span>
                       <span className="wt-fact"><Check size={15} /> 100+ dětí v péči</span>
                     </span>
                   </span>
