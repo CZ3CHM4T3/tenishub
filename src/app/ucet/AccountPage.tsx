@@ -214,7 +214,7 @@ export default function AccountPage() {
 
         {/* MOJE KARTA (samospráva trenér/areál) */}
         {atab === "karta" && (
-          <ProviderCard userId={profile.id} fullName={name} isMember={!!membership || profile.is_admin} />
+          <ProviderCard userId={profile.id} fullName={name} />
         )}
 
         {/* REZERVACE */}

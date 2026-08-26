@@ -848,6 +848,8 @@
 .cenik-head { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem; }
 .cenik-row { display: grid; grid-template-columns: 1fr 90px 80px 40px; gap: 0.5rem; margin-bottom: 0.5rem; }
 .cenik-row input { width: 100%; }
+.cenik-row2 { display: grid; grid-template-columns: 1fr 120px 40px; gap: 0.5rem; margin-bottom: 0.5rem; }
+.cenik-row2 input { width: 100%; }
 .cenik-del { border: 1px solid var(--line); background: #fff; border-radius: 9px; color: #b14; cursor: pointer; display: grid; place-items: center; }
 .cenik-del:hover { background: #fdecec; }
 .cenik-add { margin-top: 0.2rem; }
