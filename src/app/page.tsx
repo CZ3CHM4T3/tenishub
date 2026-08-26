@@ -83,14 +83,27 @@ const CZ_MAP =
 
 // Piny služeb ve stylu /mapa (kapka + ikona role); 2 „ověřené" mají zlatý prsten + ✓.
 // Poloha v % dlaždice — horní pruh NAD textem a kolem Jirkovy hlavy, ať neleží přes copy.
-// Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. 2 „ověřené" = zlatý prsten + ✓.
+// ikony rolí (stejné jako /mapa)
+const IC_COACH = '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>';
+const IC_CLUB = '<path d="M5 20V9l7-4 7 4v11"/><path d="M5 20h14"/><path d="M10 20v-5h4v5"/>';
+const IC_ACADEMY = '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>';
+const IC_PHYSIO = '<path d="M3 12h4l2 5 4-12 2 7h6"/>';
+const IC_FITNESS = '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>';
+const IC_STRINGER = '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>';
+// Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. Jen 2 jsou „ověřené" (zlatý prsten + ✓).
 const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boolean }[] = [
-  { x: 40, y: 205, c: "#c8a24c", icon: '<circle cx="12" cy="8" r="3.2"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/>', verified: true },        // trenér ✓ (západ)
-  { x: 165, y: 160, c: "#2e7d4f", icon: '<path d="M5 20V9l7-4 7 4v11"/><path d="M5 20h14"/><path d="M10 20v-5h4v5"/>', verified: true },              // klub ✓ (SZ)
-  { x: 275, y: 245, c: "#7a5bc0", icon: '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2.6 2.2 5.5 2.2s5.5-1 5.5-2.2v-4"/>' },         // akademie (střed)
-  { x: 415, y: 240, c: "#d9534f", icon: '<path d="M3 12h4l2 5 4-12 2 7h6"/>' },                                                                       // fyzio (východ-střed)
-  { x: 355, y: 395, c: "#2f6fb0", icon: '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>' },                                                     // fitness (jih)
-  { x: 545, y: 265, c: "#5a6470", icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>' },               // vyplétač (východ)
+  { x: 40, y: 205, c: "#c8a24c", icon: IC_COACH, verified: true },   // trenér ✓ (západ)
+  { x: 165, y: 160, c: "#2e7d4f", icon: IC_CLUB, verified: true },   // klub ✓ (SZ)
+  { x: 275, y: 245, c: "#7a5bc0", icon: IC_ACADEMY },                // akademie (střed)
+  { x: 415, y: 240, c: "#d9534f", icon: IC_PHYSIO },                 // fyzio (východ-střed)
+  { x: 355, y: 395, c: "#2f6fb0", icon: IC_FITNESS },               // fitness (jih)
+  { x: 545, y: 265, c: "#5a6470", icon: IC_STRINGER },              // vyplétač (východ)
+  { x: 110, y: 265, c: "#2e7d4f", icon: IC_CLUB },                  // + JZ
+  { x: 235, y: 345, c: "#c8a24c", icon: IC_COACH },                 // + jih-střed
+  { x: 315, y: 180, c: "#2f6fb0", icon: IC_FITNESS },              // + sever-střed
+  { x: 450, y: 220, c: "#7a5bc0", icon: IC_ACADEMY },               // + SV
+  { x: 490, y: 350, c: "#c8a24c", icon: IC_COACH },                 // + JV
+  { x: 565, y: 300, c: "#d9534f", icon: IC_PHYSIO },                // + daleký východ
 ];
 // tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
 const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
@@ -281,6 +294,7 @@ export default function Home() {
                 </span>
               </Link>
               <Link href="/pro-trenery" className="world world-sluzby world-trainer">
+                <span className="wt-bg" aria-hidden="true" style={{ backgroundImage: "url(/trener-bg.jpg)" }} />
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
                     <polygon className="wt-map-shadow" points={CZ_MAP} />
@@ -291,9 +305,9 @@ export default function Home() {
                         <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
                         <g className="wt-pin-ic" transform="translate(-7.5,-33.5) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
                         {p.verified && (
-                          <g transform="translate(12,-37)">
+                          <g transform="translate(11,-37)">
                             <circle className="wt-pin-badge" r="7.5" />
-                            <text className="wt-pin-tick" x="0" y="0.5" textAnchor="middle" dominantBaseline="central">✓</text>
+                            <path className="wt-pin-tick" d="M-3.2,0.2 L-1,2.6 L3.4,-2.8" />
                           </g>
                         )}
                       </g>
@@ -310,7 +324,6 @@ export default function Home() {
                   <span className="wt-sub">Profil a rozhraní <b>zdarma</b>. Vlastní klub a strom dovedností po svém.</span>
                   <span className="wt-cred">
                     <span className="wt-cred-logo" aria-hidden="true">
-                      <span className="wt-nt-fb">MS GEM</span>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     </span>

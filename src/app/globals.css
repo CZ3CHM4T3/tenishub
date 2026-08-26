@@ -3057,6 +3057,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 /* ── Trenérská dlaždice na titulce (mapa ČR + Jirka + fakta) ── */
 .world-trainer{background:radial-gradient(120% 90% at 82% -12%, rgba(191,154,71,.24), transparent 46%),linear-gradient(158deg,#2c4a3b,#16271f)}
 .world-trainer::after{background:linear-gradient(to top, rgba(10,20,14,.62) 6%, rgba(10,20,14,.08) 58%, rgba(10,20,14,.28) 100%)}
+/* fotka za mapou (jemná textura, zatím /trener-bg.jpg — když chybí, jede jen gradient) */
+.wt-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:.28;filter:saturate(.85)}
 /* mapa = měkká silueta vzadu (ne dominantní drátěný obrys) */
 .wt-map{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:1}
 .wt-map svg{width:86%;height:82%;transform:translate(3%,-3%)}
@@ -3067,7 +3069,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-pin-ic{fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .wt-pin-ring{fill:none;stroke:#e9c877;stroke-width:3}
 .wt-pin-badge{fill:#e9c877;stroke:#fff;stroke-width:1.6}
-.wt-pin-tick{fill:#1c2a16;font-size:9px;font-weight:800}
+.wt-pin-tick{fill:none;stroke:#1c2a16;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 /* Jirka — mírně doleva, před mapou */
 .wt-figure{position:absolute;right:20%;bottom:0;height:92%;width:auto;z-index:3;pointer-events:none;
   filter:drop-shadow(9px 14px 22px rgba(0,0,0,.42));object-fit:contain;object-position:bottom center}
@@ -3081,9 +3083,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-cred-txt{display:flex;flex-direction:column;text-align:right;line-height:1.2;min-width:0}
 .wt-cred-txt b{color:#fff;font-size:.9rem;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 .wt-cred-txt>span{color:#dfe9e2;font-size:.74rem;max-width:22ch;text-wrap:balance;text-shadow:0 1px 6px rgba(0,0,0,.5)}
-.wt-cred-logo{position:relative;background:#fff;border-radius:8px;padding:.22rem .34rem;display:grid;place-items:center;flex:none;min-width:38px;min-height:34px}
-.wt-nt-fb{font-weight:800;font-size:.7rem;color:#1b3a63;line-height:1}
-.wt-cred-logo img{position:absolute;inset:0;margin:auto;max-height:26px;max-width:calc(100% - 8px);width:auto;background:#fff}
+.wt-cred-logo{background:#fff;border-radius:8px;padding:.28rem .45rem;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.wt-cred-logo img{height:26px;width:auto;display:block;object-fit:contain}
 @media(max-width:640px){.wt-head{font-size:1rem}.wt-sub{display:none}}
 @media(max-width:700px){
   .wt-in{max-width:66%}
