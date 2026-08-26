@@ -60,7 +60,8 @@ export default function AuthForm() {
       try { localStorage.removeItem("th_become_coach"); } catch { /* */ }
       router.push("/klub"); return;
     }
-    router.push("/ucet");
+    const next = params.get("next");
+    router.push(next && next.startsWith("/") ? next : "/domu");
   };
 
   const submit = async (e: React.FormEvent) => {

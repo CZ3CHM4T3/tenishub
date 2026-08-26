@@ -3540,6 +3540,30 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .glp-list li svg{color:var(--green-2,#2c4a3b);flex:none}
 .glp-cta{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
 .glp-note{font-size:.76rem;color:var(--muted)}
+/* Rodičovská landing /domu */
+.dh-top{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.dh-tile{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem;border-radius:14px;text-decoration:none;border:1px solid var(--line);background:#fff;transition:transform .14s ease,box-shadow .14s ease}
+.dh-tile:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(20,40,28,.4)}
+.dh-ic{display:grid;place-items:center;width:48px;height:48px;border-radius:12px;flex:none;background:var(--soft,#f4efe2);color:var(--green)}
+.dh-tx{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.dh-tx b{color:var(--ink);font-size:1.02rem}
+.dh-tx>span{font-size:.8rem;color:var(--muted)}
+.dh-arr{color:var(--muted);flex:none;margin-left:auto}
+.dh-klub{background:#f6efdd;border-color:#e6d3a2}.dh-klub .dh-ic{background:#efe3c2;color:#7c6018}
+.dh-mapa{background:var(--gold,#bf9a47);border-color:#a9863c}.dh-mapa .dh-tx b,.dh-mapa .dh-tx>span,.dh-mapa .dh-arr{color:#1c2a16}.dh-mapa .dh-ic{background:#fff;color:#7c6018}
+.dh-h2{font-size:1.1rem;color:var(--green-d,#1c3025);margin:0 0 .7rem}
+.dh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.dh-svc{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;border-radius:12px;text-decoration:none;border:1px solid var(--line);background:#fff;transition:transform .14s ease,border-color .14s}
+.dh-svc:hover{transform:translateY(-2px);border-color:var(--gold-l,#d9c48a)}
+.dh-svc-ic{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;flex:none;background:var(--soft,#f4efe2);color:var(--green)}
+.dh-svc-tx{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.dh-svc-tx b{color:var(--ink);font-size:.92rem}
+.dh-svc-tx>span{font-size:.75rem;color:var(--muted)}
+.dh-hero{grid-column:span 3;background:linear-gradient(120deg,#eef6f0,#e2efe6);border-color:#c7e0d0}
+.dh-hero .dh-svc-ic{background:var(--green);color:#fff}
+.dh-hero .dh-svc-tx b{font-size:1.05rem}
+@media(max-width:820px){.dh-top{grid-template-columns:1fr}.dh-grid{grid-template-columns:repeat(2,1fr)}.dh-hero{grid-column:span 2}}
+@media(max-width:520px){.dh-grid{grid-template-columns:1fr}.dh-hero{grid-column:span 1}}
 /* Můj klub — nástěnka + kalendář (ClubBoard) */
 .cb-posts{display:flex;flex-direction:column;gap:.6rem}
 .cb-post{background:var(--soft,#f6f4ee);border:1px solid var(--line);border-radius:11px;padding:.6rem .8rem}
