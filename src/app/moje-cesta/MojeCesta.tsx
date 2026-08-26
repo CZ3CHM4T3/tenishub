@@ -251,7 +251,8 @@ export default function MojeCesta() {
     setSyncing(false);
   };
 
-  // našeptávač: jak píšu jméno hráče, hledám ho na cesky-tenis.cz (jen dokud není napojený)
+  // našeptávač: jak píšu jméno (+ ročník) hráče, hledám ho na cesky-tenis.cz.
+  // Jednoznačná shoda (jméno + ročník) = napojí se sama.
   useEffect(() => {
     if (!pForm.open) return;
     const q = pForm.name.trim();
@@ -262,12 +263,21 @@ export default function MojeCesta() {
       try {
         const r = await fetch(`/api/cesky-tenis?search=${encodeURIComponent(q)}`);
         const d = await r.json();
-        if (!cancel) setNameSug(r.ok ? (d.results ?? []) : []);
+        const results: { id: string; name: string; birth_year: number | null; club: string | null }[] = r.ok ? (d.results ?? []) : [];
+        if (cancel) return;
+        const yr = pForm.year.trim();
+        if (yr.length === 4) {
+          const exact = results.filter((x) => String(x.birth_year) === yr);
+          if (exact.length === 1) { pickCtProfile(exact[0].id); return; } // jednoznačná shoda → napojit samo
+          setNameSug(exact.length ? exact : results);
+        } else {
+          setNameSug(results);
+        }
       } catch { if (!cancel) setNameSug([]); }
       if (!cancel) setNameSugBusy(false);
     }, 450);
     return () => { cancel = true; clearTimeout(t); };
-  }, [pForm.name, pForm.open, pForm.cts]);
+  }, [pForm.name, pForm.year, pForm.open, pForm.cts]);
 
   const pickCtProfile = (id: string) => { setNameSug([]); setSearchResults([]); loadProfile(`id=${id}`); };
 
@@ -885,8 +895,9 @@ export default function MojeCesta() {
               {nameSugBusy && !nameSug.length && <p className="mc-syncmsg" style={{ margin: 0 }}>Hledám na cesky-tenis.cz…</p>}
             </div>
           )}
-          {pForm.cts && <p className="mc-syncmsg" style={{ color: "var(--green-2)" }}>✓ Napojeno na cesky-tenis.cz (č. {pForm.cts}) — po uložení dej <b>Aktualizovat</b> a natáhnou se zápasy.</p>}
-          <p className="member-note" style={{ margin: "-2px 0 2px" }}>U závodního hráče stačí psát jméno — <b>rovnou ho najdeme na cesky-tenis.cz</b>. Vyber ze seznamu = doplní ročník i žebříček. Hobby dítě jen napiš.</p>
+          {pForm.cts && <p className="mc-syncmsg" style={{ color: "var(--green-2)" }}>✓ Napojeno na cesky-tenis.cz (č. {pForm.cts}) — od teď se profil aktualizuje sám každý den (žebříček i zápasy).</p>}
+          <label>Rok narození<input value={pForm.year} onChange={(e) => setPForm({ ...pForm, year: e.target.value.replace(/\D/g, "").slice(0, 4) })} placeholder="2014" inputMode="numeric" /></label>
+          <p className="member-note" style={{ margin: "-2px 0 2px" }}>Vyplň <b>jméno + ročník</b> — u závodního hráče ho podle toho <b>sami najdeme na cesky-tenis.cz</b> a při jediné shodě rovnou napojíme. Hobby dítě jen napiš.</p>
           <label>Úroveň
             <select value={pForm.level} onChange={(e) => setPForm({ ...pForm, level: e.target.value as "hobby" | "competitive" })}>
               <option value="hobby">Hobby</option><option value="competitive">Závodní</option>
@@ -918,7 +929,6 @@ export default function MojeCesta() {
               <label>Číslo hráče (ČT)<input value={pForm.cts} onChange={(e) => setPForm({ ...pForm, cts: e.target.value })} placeholder="1071630" /></label>
             </div>
           </>)}
-          <label>Rok narození (nepovinné)<input value={pForm.year} onChange={(e) => setPForm({ ...pForm, year: e.target.value.replace(/\D/g, "").slice(0, 4) })} placeholder="2014" /></label>
           <div className="mc-modal-actions">
             {pForm.id && <button className="btn btn-out danger" onClick={() => deletePlayer(players.find((x) => x.id === pForm.id)!)}><Trash2 size={14} /> Smazat hráče</button>}
             <button className="btn btn-green" disabled={busy} onClick={savePlayer}>{pForm.id ? "Uložit" : "Přidat hráče"}</button>
