@@ -55,6 +55,14 @@ export function HeroCarousel() {
     if (t) t.scrollTo({ left: n * t.clientWidth, behavior: "smooth" });
   };
 
+  // Po načtení / refreshi vždy začni na prvním slide (identita) — prohlížeč jinak
+  // obnoví poslední scroll pozici kontejneru a ukázal by se náhodný slide.
+  useEffect(() => {
+    const t = trackRef.current;
+    if (t) t.scrollLeft = 0;
+    setI(0);
+  }, []);
+
   useEffect(() => {
     const id = setInterval(() => {
       const t = trackRef.current;

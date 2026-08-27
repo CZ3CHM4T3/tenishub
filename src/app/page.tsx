@@ -273,7 +273,6 @@ export default function Home() {
         <span className="orb orb1" /><span className="orb orb2" /><span className="orb orb3" />
         <div className="wrap">
           <div className="hero-center">
-            <span className="hero-tagline rv">Jednička pro rodiče malých tenistů a jejich trenéry</span>
             <HeroCarousel />
 
             {/* PÁS OVĚŘENÝCH PROFILŮ S RECENZEMI — klik = profil (psát/rezervovat) */}
