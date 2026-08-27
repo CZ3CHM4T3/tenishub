@@ -3605,6 +3605,11 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .dh-klub{background:#f6efdd;border-color:#e6d3a2}.dh-klub .dh-ic{background:#efe3c2;color:#7c6018}
 .dh-mapa{background:var(--gold,#bf9a47);border-color:#a9863c}.dh-mapa .dh-tx b,.dh-mapa .dh-tx>span,.dh-mapa .dh-arr{color:#1c2a16}.dh-mapa .dh-ic{background:#fff;color:#7c6018}
 .dh-h2{font-size:1.1rem;color:var(--green-d,#1c3025);margin:0 0 .7rem}
+.dh-roles{display:flex;flex-wrap:wrap;gap:.6rem}
+.dh-role{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-radius:100px;text-decoration:none;background:#e2efe9;border:1px solid #cfe3d9;color:var(--green-d,#1c3025);font-weight:700;font-size:.9rem}
+.dh-role:hover{background:#d6e8df}
+.dh-role-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#fff;color:var(--green)}
+.dh-role .dh-arr{margin-left:.1rem}
 .dh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
 .dh-svc{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;border-radius:12px;text-decoration:none;border:1px solid var(--line);background:#fff;transition:transform .14s ease,border-color .14s}
 .dh-svc:hover{transform:translateY(-2px);border-color:var(--gold-l,#d9c48a)}

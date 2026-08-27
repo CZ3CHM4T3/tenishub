@@ -8,7 +8,20 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WeatherWeek } from "@/components/WeatherWeek";
-import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight } from "lucide-react";
+import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight, Baby, Dumbbell, HeartPulse, Grip, type LucideIcon } from "lucide-react";
+
+// Zkratky na funkce podle zapnutých rolí (Profil → role). Každá role má svůj domov.
+const ROLE_HOME: Record<string, { href: string; label: string; Icon: LucideIcon }[]> = {
+  rodic: [
+    { href: "/deti", label: "Moje děti a klub", Icon: Baby },
+    { href: "/moje-cesta", label: "Moje cesta", Icon: Route },
+  ],
+  sparring: [{ href: "/sparring", label: "Moje sparring karta", Icon: Handshake }],
+  trener: [{ href: "/klub", label: "Můj klub (trenér)", Icon: School }],
+  vyplet: [{ href: "/ucet?tab=profil", label: "Moje vyplétací karta", Icon: Grip }],
+  fyzio: [{ href: "/ucet?tab=profil", label: "Moje fyzio karta", Icon: HeartPulse }],
+  fitness: [{ href: "/ucet?tab=profil", label: "Moje fitness karta", Icon: Dumbbell }],
+};
 
 const TOP = [
   { href: "/ucet?tab=profil", label: "Profil", desc: "Údaje, role, členství", Icon: UserRound, cls: "dh-profil" },
@@ -32,6 +45,7 @@ const SERVICES = [
 export default function DomuClient() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [roles, setRoles] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -39,11 +53,17 @@ export default function DomuClient() {
       const sb = createClient();
       const { data: { user } } = await sb.auth.getUser();
       if (!user) { router.replace("/prihlaseni?next=/domu"); return; }
-      const { data: p } = await sb.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
+      const { data: p } = await sb.from("profiles").select("full_name,roles,is_coach").eq("id", user.id).maybeSingle();
       setName((p?.full_name || "").split(" ")[0]);
+      const arr = (p as { roles?: string[] | null } | null)?.roles;
+      let rs = Array.isArray(arr) ? arr : ((p as { is_coach?: boolean } | null)?.is_coach ? ["trener"] : ["rodic"]);
+      if (rs.length === 0) rs = ["rodic"];
+      setRoles(rs);
       setReady(true);
     })();
   }, [router]);
+
+  const shortcuts = roles.flatMap((r) => ROLE_HOME[r] ?? []);
 
   if (!ready) return <div className="acct-loading">Načítám…</div>;
 
@@ -63,6 +83,20 @@ export default function DomuClient() {
             </Link>
           ))}
         </div>
+
+        {shortcuts.length > 0 && (<>
+          <h2 className="dh-h2" style={{ marginTop: "1.4rem" }}>Tvoje role</h2>
+          <p className="member-note" style={{ marginTop: "-0.5rem" }}>Podle rolí zapnutých v Profilu. Funkce každé role najdeš na její stránce.</p>
+          <div className="dh-roles">
+            {shortcuts.map((s) => (
+              <Link href={s.href} key={s.label} className="dh-role">
+                <span className="dh-role-ic"><s.Icon size={18} /></span>
+                <b>{s.label}</b>
+                <ArrowRight size={15} className="dh-arr" />
+              </Link>
+            ))}
+          </div>
+        </>)}
 
         <div style={{ margin: "1.2rem 0" }}><WeatherWeek /></div>
 
