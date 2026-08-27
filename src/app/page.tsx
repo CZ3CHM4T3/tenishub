@@ -327,8 +327,8 @@ export default function Home() {
                 </span>
                 {/* Vějíř karet profíků — Jirka uprostřed (čitelný), 2 po stranách ztlumené; před mapou */}
                 <span className="wt-fan" aria-hidden="true">
-                  <span className="wt-fan-card wt-fan-l"><span className="wt-fan-gph a" /><span className="wt-fan-lines"><i /><i /></span></span>
-                  <span className="wt-fan-card wt-fan-r"><span className="wt-fan-gph b" /><span className="wt-fan-lines"><i /><i /></span></span>
+                  <span className="wt-fan-card wt-fan-l"><span className="wt-fan-sym"><Users size={26} /></span><span className="wt-fan-lines"><i /></span></span>
+                  <span className="wt-fan-card wt-fan-r"><span className="wt-fan-sym"><HeartPulse size={26} /></span><span className="wt-fan-lines"><i /></span></span>
                   <span className="wt-fan-card wt-fan-c">
                     <span className="wt-fan-badge"><Check size={11} /> Ověřeno</span>
                     <span className="wt-fan-photo">
