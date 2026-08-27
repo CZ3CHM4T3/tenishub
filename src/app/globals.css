@@ -3295,6 +3295,11 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rodic-why{margin-top:2.4rem}
 .rodic-why>h2{font-size:1.4rem;color:var(--green);font-weight:800;margin-bottom:.9rem}
 .rodic-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem}
+.rodic-why-grid.four{grid-template-columns:repeat(4,1fr)}
+.rodic-why-cta{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1rem;padding:1rem 1.2rem;border-radius:14px;background:var(--soft,#f4efe2);border:1px solid var(--line)}
+.rodic-why-cta b{color:var(--green-d,#1c3025);font-size:1.05rem}
+.rodic-why-cta span{color:var(--muted);font-size:.88rem}
+@media(max-width:900px){.rodic-why-grid.four{grid-template-columns:repeat(2,1fr)}}
 .rodic-why-card{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem}
 .rodic-why-card .rww-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:#e2efe9;color:#2f5d57;margin-bottom:.2rem}
 .rodic-why-card b{color:var(--ink);font-size:1rem}
@@ -3562,6 +3567,10 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .cena-h .g{color:var(--gold,#bf9a47)}
 .cena-sub{color:var(--muted);max-width:60ch;margin:0 0 1.6rem;line-height:1.6}
 .cena-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem}
+.cena-grid.three{grid-template-columns:repeat(3,1fr)}
+.cena-badge.trenp{background:var(--gold,#bf9a47);color:#1c2a16}
+.cena-list li svg.lucide-flame,.cena-list li .lucide-flame{color:#d9534f}
+@media(max-width:900px){.cena-grid.three{grid-template-columns:1fr}}
 .cena-card{background:var(--paper,#fff);border:1px solid var(--line);border-radius:16px;padding:1.4rem;display:flex;flex-direction:column;box-shadow:0 12px 30px -22px rgba(20,40,28,.4)}
 .cena-pro{border-color:#e6cf94;background:linear-gradient(180deg,#fffdf6,#fff)}
 .cena-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}

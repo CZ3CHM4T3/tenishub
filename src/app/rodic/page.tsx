@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { RodicHub } from "@/components/RodicHub";
 import { CoachFeed } from "@/components/CoachFeed";
-import { ShieldCheck, Heart, Users } from "lucide-react";
+import Link from "next/link";
+import { ShieldCheck, Heart, BookOpen, Gauge, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Rodič & dítě — všechno pro tenisové rodiče na jednom místě",
-  description: "Najděte trenéra i kurt zdarma, a v členství HUB+ veďte dítě celou sezónou, ptejte se odborníků a sdílejte zkušenosti s ostatními rodiči.",
+  description: "V členství HUB+ vedete dítě celou sezónou bez vyhoření, najdete ověřeného trenéra i kurt, ptáte se odborníků a máte komunitu rodičů po ruce.",
 };
 
 const FAQ = [
@@ -26,18 +27,24 @@ export default function RodicPage() {
       <div className="wrap sluzby-wrap">
         <span className="eyebrow rv">Rodič &amp; dítě</span>
         <h1 className="rv d1">Všechno pro tenisové rodiče na jednom místě</h1>
-        <p className="lead rv d1">Najděte trenéra i kurt zdarma. A v členství veďte dítě celou sezónou bez vyhoření, ptejte se odborníků a sdílejte zkušenosti s ostatními rodiči.</p>
+        <p className="lead rv d1">Chceme vás <b>informovat</b>, vaše dítě <b>chránit</b>, zkvalitnit mu <b>přípravu</b> — a hlavně vám <b>ušetřit stres</b>. Najděte ověřeného trenéra i kurt, veďte dítě celou sezónou bez vyhoření a mějte odborníky i komunitu po ruce. To je členství <b>HUB+</b>.</p>
 
         <div className="rv d1"><CoachFeed /></div>
         <div className="rv d1"><RodicHub /></div>
 
-        {/* PROČ TO DĚLÁME */}
+        {/* PROČ TO DĚLÁME — rodičovská infografika */}
         <div className="rodic-why rv d1">
-          <h2>Proč TenisHub</h2>
-          <div className="rodic-why-grid">
-            <div className="rodic-why-card"><span className="rww-ic"><ShieldCheck size={20} /></span><b>Ověřené a bezpečné</b><span>Trenéry i kluby prověřujeme. Pro děti chceme prostředí, kterému se dá věřit.</span></div>
-            <div className="rodic-why-card"><span className="rww-ic"><Heart size={20} /></span><b>Aby dítě vydrželo</b><span>Nejde jen o výsledky. Pomáháme udržet radost ze hry a předejít vyhoření.</span></div>
-            <div className="rodic-why-card"><span className="rww-ic"><Users size={20} /></span><b>Nejste na to sami</b><span>Komunita rodičů, odborníci a rady na jednom místě — místo bloudění po internetu.</span></div>
+          <span className="cena-eyebrow">Proč platíme za HUB+ (a proč to dává smysl)</span>
+          <h2>Co pro vás a vaše dítě děláme</h2>
+          <div className="rodic-why-grid four">
+            <div className="rodic-why-card"><span className="rww-ic"><BookOpen size={20} /></span><b>Informujeme</b><span>Rady odborníků, návody, poradna a kalendář — víte, co a proč, místo bloudění po internetu.</span></div>
+            <div className="rodic-why-card"><span className="rww-ic"><ShieldCheck size={20} /></span><b>Chráníme</b><span>Ověření trenéři a kluby. Pro děti chceme prostředí, kterému se dá věřit.</span></div>
+            <div className="rodic-why-card"><span className="rww-ic"><Gauge size={20} /></span><b>Zkvalitňujeme přípravu</b><span>Moje cesta hlídá poměr tréninku a volna, výsledky i formu — dítě roste bez přetížení.</span></div>
+            <div className="rodic-why-card"><span className="rww-ic"><Heart size={20} /></span><b>Šetříme vám stres</b><span>Najít, rezervovat, poradit se, sledovat pokrok — na pár kliků. Míň starostí, víc klidu.</span></div>
+          </div>
+          <div className="rodic-why-cta">
+            <div><b>To všechno za 99 Kč / měsíc</b><span> — zlomek ceny jediné lekce. Zakládající cena napořád (od Nového roku 199).</span></div>
+            <Link href="/pristup" className="btn btn-green">Chci HUB+ <ArrowRight size={16} /></Link>
           </div>
         </div>
 
