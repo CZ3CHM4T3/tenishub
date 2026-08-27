@@ -51,15 +51,15 @@ export function CenaClenstvi() {
           <div className="cena-card cena-pro">
             <div className="cena-top">
               <span className="cena-badge trenp"><GraduationCap size={15} /> TRENÉR+</span>
-              <div className="cena-price"><b>499 Kč</b><span>/ měs</span></div>
+              <div className="cena-price"><b>299 Kč</b><span>/ měs</span></div>
             </div>
-            <p className="cena-for">Pro <b>trenéry</b> — vaše nefér výhoda proti konkurenci.</p>
+            <p className="cena-for">Pro <b>trenéry</b> — celý klub na jednom místě.</p>
             <ul className="cena-list">
-              <li><Check size={16} /> <span><b>Všechno z PRO</b> + vlastní klubové rozhraní a správa svěřenců.</span></li>
-              <li><Check size={16} /> <span><Flame size={14} /> <b>BOOST — herní vrstva:</b> strom dovedností a Sparing Cup. Děti sbírají odznaky, levelují a soupeří.</span></li>
-              <li><Check size={16} /> <span>Něco, co konkurence nemá — a důvod, proč u vás děti zůstanou.</span></li>
+              <li><Check size={16} /> <span><b>Všechno z PRO</b> — leady, mapa, ověření, karta, rezervace a platby.</span></li>
+              <li><Check size={16} /> <span><b>Vlastní klub:</b> správa svěřenců, skupiny, nástěnka, kalendář, docházka.</span></li>
+              <li><Check size={16} /> <span><b>Rodiče vidí pokrok dětí</b> (napojení na Moji cestu) — děti u vás zůstanou.</span></li>
             </ul>
-            <p className="cena-value">Rodiče vidí pokrok, děti se baví — <b>vy máte plno</b>.</p>
+            <p className="cena-value">Jedno místo pro celý klub — a <b>rodiče vás nepustí</b>.</p>
             <Link href="/pro-trenery" className="btn btn-gold cena-cta">Chci TRENÉR+ <ArrowRight size={16} /></Link>
             <p className="cena-note">Zakládající cena pro první trenéry.</p>
           </div>
@@ -68,8 +68,8 @@ export function CenaClenstvi() {
         <div className="cena-boost">
           <span className="cena-boost-ic"><Flame size={22} /></span>
           <div className="cena-boost-tx">
-            <b>BOOST = vaše nefér výhoda</b>
-            <span>Herní vrstva (strom dovedností + Sparing Cup) je součást TRENÉR+. Je to competitive edge: děti u vás sbírají odznaky a soupeří, rodiče vidí pokrok — konkurence tohle nenabídne.</span>
+            <b>BOOST — volitelný doplněk (kupuje se zvlášť)</b>
+            <span>Herní vrstva: strom dovedností + Sparing Cup. Děti u vás sbírají odznaky, levelují a soupeří, rodiče vidí pokrok — nefér výhoda, kterou konkurence nemá. Jednorázově, k jakémukoli členství.</span>
           </div>
           <Link href="/pro-trenery" className="cena-boost-link">Jak to funguje <ArrowRight size={15} /></Link>
         </div>
