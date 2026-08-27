@@ -26,6 +26,13 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
     { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],
+  // Hráč (dospělý/amatér) — sparring je jedna z jeho funkcí, ne samostatná role.
+  hrac: [
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
+    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
+  ],
+  // alias pro starší účty, které mají v rolích „sparring" (mapuje na totéž co hráč)
   sparring: [
     { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },

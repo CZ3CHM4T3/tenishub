@@ -7,7 +7,6 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
-import KidsCard from "./KidsCard";
 import { WeatherWeek } from "@/components/WeatherWeek";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
@@ -20,7 +19,7 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
 const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; badge?: string; cls?: string; soon?: boolean }[] = [
   { k: "trener", label: "Trenér", desc: "Vlastní klub, svěřenci, kalendář, strom dovedností. Prémium Trenér+ = víc viditelnosti.", free: true, badge: "zdarma", cls: "rp-free" },
   { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false, badge: "HUB+", cls: "rp-hub" },
-  { k: "sparring", label: "Sparing hráč", desc: "Vlastní karta na zeď, hledání parťáků.", free: false, badge: "HUB+", cls: "rp-hub" },
+  { k: "hrac", label: "Hráč", desc: "Rezervace kurtů, statistiky zápasů — a sparring: najdi si parťáka.", free: false, badge: "HUB+", cls: "rp-hub" },
   { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky, být k nalezení.", free: false, badge: "Expert+", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
   { k: "fitness", label: "Fitness trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
@@ -104,6 +103,9 @@ export default function AccountPage() {
   };
 
   const isMember = !!membership || (profile?.is_admin ?? false);
+  // Poskytovatel = má veřejnou kartu (trenér/vyplétač/…); rodič a hráč jsou spotřebitelé.
+  const PROVIDER_ROLES = ["trener", "vyplet", "fyzio", "fitness", "areal"];
+  const isProvider = roles.some((r) => PROVIDER_ROLES.includes(r));
 
   const toggleRole = (k: string, free: boolean, soon?: boolean) => {
     if (soon) return;
@@ -134,6 +136,29 @@ export default function AccountPage() {
     await supabase.auth.signOut();
     router.push("/");
   };
+
+  const rolePickerUI = (
+    <>
+      {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, hráč) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
+      <div className="rolepicker">
+        {ACCOUNT_ROLES.map((r) => {
+          const on = roles.includes(r.k);
+          const locked = !r.free && !isMember;
+          const disabled = r.soon || locked;
+          return (
+            <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
+              <span className="rp-check">{on ? <Check size={15} /> : null}</span>
+              <span className="rp-txt"><b>{r.label}{r.soon ? <span className="rp-soon">brzy</span> : <span className={r.cls}>{r.badge}</span>}</b><span>{r.desc}</span></span>
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginTop: ".9rem" }}>
+        <button className="btn btn-green" onClick={saveRoles} disabled={busy}>{rolesSaved ? "✓ Uloženo" : "Uložit role"}</button>
+        {roles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
+      </div>
+    </>
+  );
 
   if (loading) return <div className="acct-loading">Načítám účet…</div>;
   if (!profile) return null;
@@ -211,7 +236,7 @@ export default function AccountPage() {
         {atab === "profil" && (<>
         <div className="acct-card">
           <div className="acct-card-head"><UserRound size={20} /><h2>Osobní údaje</h2></div>
-          <p className="member-note">Vyplň jednou — použije se všude (v účtu i na tvé veřejné kartě). Role níž ti profil jen doplní o obor, cenu a bio.</p>
+          <p className="member-note">Vyplň jednou — použije se v celém účtu{isProvider ? " i na tvé veřejné kartě" : ""}.</p>
           <div className="card-photo">
             <div className="card-photo-prev" style={photoUrl ? { backgroundImage: `url(${photoUrl})` } : undefined}>
               {!photoUrl && <ImagePlus size={26} />}
@@ -219,7 +244,7 @@ export default function AccountPage() {
             <div>
               <button className="btn btn-out" disabled={busy} onClick={() => fileRef.current?.click()}><ImagePlus size={15} /> {photoUrl ? "Změnit fotku" : "Nahrát fotku"}</button>
               <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])} />
-              <p className="hint">Tvoje profilová fotka — uvidí ji hráči na kartě.</p>
+              <p className="hint">{isProvider ? "Tvoje profilová fotka — uvidí ji hráči na kartě." : "Tvoje profilová fotka (nepovinné)."}</p>
             </div>
           </div>
           <div className="acct-grid">
@@ -231,35 +256,23 @@ export default function AccountPage() {
           <button className="btn btn-green" onClick={saveProfile} disabled={busy}>{saved ? "✓ Uloženo" : "Uložit změny"}</button>
         </div>
 
-        {/* MOJE ROLE — jeden účet, víc klobouků */}
-        <div className="acct-card">
-          <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
-          <p className="member-note">Jeden účet, klidně víc rolí zároveň. <b>Trenér je zdarma</b>; ostatní role odemyká <b>HUB+</b>. Podle rolí se ti objeví prostory v menu vpravo nahoře.</p>
-          {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, sparring) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
-          <div className="rolepicker">
-            {ACCOUNT_ROLES.map((r) => {
-              const on = roles.includes(r.k);
-              const locked = !r.free && !isMember;
-              const disabled = r.soon || locked;
-              return (
-                <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
-                  <span className="rp-check">{on ? <Check size={15} /> : null}</span>
-                  <span className="rp-txt"><b>{r.label}{r.soon ? <span className="rp-soon">brzy</span> : <span className={r.cls}>{r.badge}</span>}</b><span>{r.desc}</span></span>
-                </button>
-              );
-            })}
+        {/* MOJE ROLE — poskytovatel to řeší přímo; rodič/hráč má schované pod „chci i podnikat" */}
+        {isProvider ? (
+          <div className="acct-card">
+            <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
+            <p className="member-note">Jeden účet, klidně víc rolí zároveň. <b>Trenér je zdarma</b>; ostatní role odemyká <b>HUB+</b>. Podle rolí se ti objeví prostory v menu vpravo nahoře.</p>
+            {rolePickerUI}
           </div>
-          <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginTop: ".9rem" }}>
-            <button className="btn btn-green" onClick={saveRoles} disabled={busy}>{rolesSaved ? "✓ Uloženo" : "Uložit role"}</button>
-            {roles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
-          </div>
-        </div>
+        ) : (
+          <details className="acct-card role-expander">
+            <summary><GraduationCap size={16} /> Chci tu i podnikat — jsem trenér nebo jiný profík</summary>
+            <p className="member-note">Přidej si roli poskytovatele. <b>Trenér je zdarma</b>, ostatní odemyká členství. Objeví se ti pak vlastní prostory v menu.</p>
+            {rolePickerUI}
+          </details>
+        )}
 
-        {/* DĚTI — zadání v Profilu, propis do Moje cesta i Můj klub (jen pro rodiče) */}
-        {roles.includes("rodic") && <KidsCard userId={profile.id} />}
-
-        {/* KARTY ROLÍ — poskytovatelské oddíly profilu (to, co uvidí ostatní na mapě / v reklamě) */}
-        <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />
+        {/* VEŘEJNÁ KARTA — jen pro poskytovatele (rodič/hráč ji nemá) */}
+        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />}
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}

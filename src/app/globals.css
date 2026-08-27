@@ -3524,6 +3524,10 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rolepick-row.dis{opacity:.55;cursor:not-allowed}
 .rp-check{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;color:#fff;margin-top:.05rem}
 .rolepick-row.on .rp-check{background:var(--green);border-color:var(--green)}
+.role-expander>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:.5rem;font-weight:700;color:var(--muted);font-size:.92rem}
+.role-expander>summary::-webkit-details-marker{display:none}
+.role-expander>summary:hover{color:var(--ink)}
+.role-expander[open]>summary{margin-bottom:.7rem;color:var(--ink)}
 .rp-txt{display:flex;flex-direction:column;gap:.15rem;min-width:0}
 .rp-txt b{display:flex;align-items:center;gap:.4rem;color:var(--ink);font-size:.96rem}
 .rp-txt>span{color:var(--muted);font-size:.84rem;line-height:1.35}
