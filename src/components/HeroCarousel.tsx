@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Users, GraduationCap, Trophy, Search, Handshake, type LucideIcon } from "lucide-react";
+import { Users, GraduationCap, Trophy, Search, Handshake, Sparkles, type LucideIcon } from "lucide-react";
 
 type Slide = { who: string; title: ReactNode; sub: string; Icon: LucideIcon };
 
-// Pořadí: rodič → trenér → kariéra dítěte → najít trenéra → sparring.
+// Vždy první (identita webu) → rodič → trenér → kariéra dítěte → najít trenéra → sparring.
 const SLIDES: Slide[] = [
+  {
+    Icon: Sparkles,
+    who: "První online tenisový klub",
+    title: <>Konec bloudění — <span className="g">celý tenis dítěte</span> na jednom místě</>,
+    sub: "Ověření trenéři, kluby a odborníci, nástroje pro rodiče i profíky a komunita, co to myslí vážně. Vyzkoušejte týden zdarma — a zakládající cena vám pak zůstane.",
+  },
   {
     Icon: Users,
     who: "Pro rodiče malých tenistů",
