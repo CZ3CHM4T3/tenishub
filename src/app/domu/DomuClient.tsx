@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WeatherWeek } from "@/components/WeatherWeek";
-import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight, Baby, Dumbbell, HeartPulse, Grip, type LucideIcon } from "lucide-react";
+import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight, Baby, Dumbbell, HeartPulse, Grip, IdCard, Mail, BadgeCheck, type LucideIcon } from "lucide-react";
 
 // Zkratky na funkce podle zapnutých rolí (Profil → role). Každá role má svůj domov.
 const ROLE_HOME: Record<string, { href: string; label: string; Icon: LucideIcon }[]> = {
@@ -23,10 +23,13 @@ const ROLE_HOME: Record<string, { href: string; label: string; Icon: LucideIcon 
   fitness: [{ href: "/ucet?tab=profil", label: "Moje fitness karta", Icon: Dumbbell }],
 };
 
-const TOP = [
-  { href: "/ucet?tab=profil", label: "Profil", desc: "Údaje, role, členství", Icon: UserRound, cls: "dh-profil" },
-  { href: "/deti", label: "Můj klub", desc: "Děti, trenér, pokrok", Icon: School, cls: "dh-klub" },
-  { href: "/mapa", label: "Mapa služeb", desc: "Najdi trenéra i kurt", Icon: MapPin, cls: "dh-mapa" },
+// Podnikatelské dlaždice pro experty (trenér/vyplétač/fyzio/fitness).
+const PROVIDER_SERVICES = [
+  { href: "/ucet?tab=profil", label: "Moje karta", desc: "Profil, ceník a foto — co vidí klienti", Icon: IdCard, hero: true },
+  { href: "/zpravy", label: "Zprávy a poptávky", desc: "Klienti, co vás oslovili", Icon: Mail },
+  { href: "/ucet?tab=profil", label: "Ověření a Boost", desc: "Odznak důvěry a nefér výhoda", Icon: BadgeCheck },
+  { href: "/mapa", label: "Mapa služeb", desc: "Kde vás klienti najdou", Icon: MapPin },
+  { href: "/pocasi", label: "Počasí", desc: "Na týden ve vašem okolí", Icon: CloudSun },
 ];
 
 const SERVICES = [
@@ -64,6 +67,18 @@ export default function DomuClient() {
   }, [router]);
 
   const shortcuts = roles.flatMap((r) => ROLE_HOME[r] ?? []);
+  const isConsumer = roles.some((r) => ["rodic", "sparring", "hrac"].includes(r));
+  const isProvider = roles.some((r) => ["trener", "vyplet", "fyzio", "fitness"].includes(r));
+  const middleTile = roles.includes("trener")
+    ? { href: "/klub", label: "Můj klub", desc: "Klub, svěřenci, hra", Icon: School, cls: "dh-klub" }
+    : isConsumer
+      ? { href: "/deti", label: "Můj klub", desc: "Děti, trenér, pokrok", Icon: School, cls: "dh-klub" }
+      : { href: "/ucet?tab=profil", label: "Moje karta", desc: "Váš profil pro klienty", Icon: IdCard, cls: "dh-klub" };
+  const topTiles = [
+    { href: "/ucet?tab=profil", label: "Profil", desc: "Údaje, role, členství", Icon: UserRound, cls: "dh-profil" },
+    middleTile,
+    { href: "/mapa", label: "Mapa služeb", desc: "Najdi trenéra i kurt", Icon: MapPin, cls: "dh-mapa" },
+  ];
 
   if (!ready) return <div className="acct-loading">Načítám…</div>;
 
@@ -75,7 +90,7 @@ export default function DomuClient() {
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>Tvůj tenisový klub na jednom místě.</p>
 
         <div className="dh-top">
-          {TOP.map((t) => (
+          {topTiles.map((t) => (
             <Link href={t.href} key={t.href} className={`dh-tile ${t.cls}`}>
               <span className="dh-ic"><t.Icon size={26} /></span>
               <span className="dh-tx"><b>{t.label}</b><span>{t.desc}</span></span>
@@ -100,15 +115,30 @@ export default function DomuClient() {
 
         <div style={{ margin: "1.2rem 0" }}><WeatherWeek /></div>
 
-        <h2 className="dh-h2">Služby</h2>
-        <div className="dh-grid">
-          {SERVICES.map((s) => (
-            <Link href={s.href} key={s.href} className={`dh-svc${s.hero ? " dh-hero" : ""}`}>
-              <span className="dh-svc-ic"><s.Icon size={22} /></span>
-              <span className="dh-svc-tx"><b>{s.label}</b><span>{s.desc}</span></span>
-            </Link>
-          ))}
-        </div>
+        {isProvider && (<>
+          <h2 className="dh-h2">Vaše podnikání</h2>
+          <div className="dh-grid">
+            {PROVIDER_SERVICES.map((s) => (
+              <Link href={s.href} key={s.label} className={`dh-svc${s.hero ? " dh-hero" : ""}`}>
+                <span className="dh-svc-ic"><s.Icon size={22} /></span>
+                <span className="dh-svc-tx"><b>{s.label}</b><span>{s.desc}</span></span>
+              </Link>
+            ))}
+          </div>
+          <p className="member-note" style={{ marginTop: ".5rem" }}>Kalendář, online rezervace a objednávky přibývají s <b>PRO</b>.</p>
+        </>)}
+
+        {isConsumer && (<>
+          <h2 className="dh-h2" style={{ marginTop: isProvider ? "1.6rem" : undefined }}>Služby</h2>
+          <div className="dh-grid">
+            {SERVICES.map((s) => (
+              <Link href={s.href} key={s.href} className={`dh-svc${s.hero ? " dh-hero" : ""}`}>
+                <span className="dh-svc-ic"><s.Icon size={22} /></span>
+                <span className="dh-svc-tx"><b>{s.label}</b><span>{s.desc}</span></span>
+              </Link>
+            ))}
+          </div>
+        </>)}
       </div>
     </div>
   );

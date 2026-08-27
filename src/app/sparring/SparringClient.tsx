@@ -129,14 +129,12 @@ export default function SparringClient() {
     <div className="profile-page">
       <SiteHeader />
 
-      <section className="phero"><div className="wrap"><div className="row">
-        <div className="avatar" style={{ background: "linear-gradient(135deg,#f0d9cd,#d8a98f)" }}><Handshake size={44} /></div>
-        <div className="who">
-          <span className="verif">Sparring partneři</span>
-          <h1>Najdi s kým hrát</h1>
-          <div className="typ">Parťáci na tenis po celé ČR — podle úrovně, místa i stylu hry</div>
-        </div>
-      </div></div></section>
+      <section className="rolehero"><div className="wrap">
+        <span className="rolehero-ic"><Handshake size={24} /></span>
+        <span className="rolehero-tag">Sparring partneři</span>
+        <h1>Najdi s kým hrát</h1>
+        <p>Parťáci na tenis po celé ČR — podle úrovně, místa i stylu hry.</p>
+      </div></section>
 
       <div className="wrap" style={{ padding: "2rem 0 4rem" }}>
         {/* MOJE SPARRING KARTA */}

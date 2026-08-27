@@ -814,6 +814,14 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .profile-page { background: var(--soft); min-height: 100vh; }
 .profile-page .wrap { width: min(1100px, 92%); }
 .profile-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
+/* Moderní role-hero (sladěný napříč rolemi) — malý ikonový čip + čistý text */
+.rolehero { background: linear-gradient(150deg, var(--green), var(--green-d, #16271f)); color: #fff; padding: 2.2rem 0 2rem; position: relative; overflow: hidden; }
+.rolehero::before { content: ""; position: absolute; right: -4%; top: -50%; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(200,162,76,0.16), transparent 60%); }
+.rolehero .wrap { position: relative; }
+.rolehero-ic { display: inline-grid; place-items: center; width: 46px; height: 46px; border-radius: 13px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); color: #e9c877; margin-bottom: 0.7rem; }
+.rolehero-tag { display: inline-block; margin-left: 0.6rem; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gold-l, #e2c98e); vertical-align: 0.7rem; }
+.rolehero h1 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); color: #fff; line-height: 1.1; margin: 0; }
+.rolehero p { color: #cfe0d4; margin: 0.4rem 0 0; font-size: 1rem; max-width: 52ch; line-height: 1.5; }
 .phero { background: linear-gradient(160deg, var(--green), var(--green-d)); color: #fff; padding: 2.4rem 0 2rem; position: relative; overflow: hidden; }
 .phero::before { content: ""; position: absolute; right: -5%; top: -40%; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(200, 162, 76, 0.16), transparent 60%); }
 .phero .row { display: flex; gap: 1.6rem; align-items: flex-end; position: relative; flex-wrap: wrap; }
