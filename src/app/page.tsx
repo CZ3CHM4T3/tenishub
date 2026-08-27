@@ -104,11 +104,16 @@ const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boole
   { x: 315, y: 180, c: "#2f6fb0", icon: IC_FITNESS },              // + sever-střed
   { x: 450, y: 220, c: "#7a5bc0", icon: IC_ACADEMY },               // + SV
   { x: 490, y: 350, c: "#c8a24c", icon: IC_COACH },                 // + JV
-  { x: 565, y: 300, c: "#d9534f", icon: IC_PHYSIO },                // + daleký východ
+  { x: 565, y: 300, c: "#d9534f", icon: IC_PHYSIO, verified: true }, // + daleký východ ✓
   { x: 200, y: 210, c: "#2f6fb0", icon: IC_FITNESS },              // + SZ-střed
   { x: 330, y: 300, c: "#5a6470", icon: IC_STRINGER },             // + střed-jih
   { x: 430, y: 300, c: "#2e7d4f", icon: IC_CLUB },                 // + JV-střed
   { x: 505, y: 235, c: "#c8a24c", icon: IC_COACH },                // + SV
+  { x: 60, y: 300, c: "#2e7d4f", icon: IC_CLUB },                  // JZ
+  { x: 105, y: 345, c: "#c8a24c", icon: IC_COACH },               // JZ
+  { x: 155, y: 310, c: "#7a5bc0", icon: IC_ACADEMY },             // JZ
+  { x: 45, y: 255, c: "#2f6fb0", icon: IC_FITNESS },              // JZ-západ
+  { x: 120, y: 385, c: "#5a6470", icon: IC_STRINGER },            // JZ-jih
 ];
 // tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
 const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
@@ -309,7 +314,7 @@ export default function Home() {
                         <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
                         <g className="wt-pin-ic" transform="translate(-7.5,-33.5) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
                         {p.verified && (
-                          <g transform="translate(11,-37)">
+                          <g transform="translate(0,-43)">
                             <circle className="wt-pin-badge" r="7.5" />
                             <path className="wt-pin-tick" d="M-3.2,0.2 L-1,2.6 L3.4,-2.8" />
                           </g>
