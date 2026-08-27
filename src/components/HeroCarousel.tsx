@@ -15,7 +15,7 @@ const SLIDES: Slide[] = [
   },
   {
     Icon: GraduationCap,
-    who: "Pro trenéry a kluby",
+    who: "Pro trenéry",
     title: <>Buďte vidět — <span className="g">klienti si vás najdou</span>. Zdarma.</>,
     sub: "Profil na mapě, kalendář, rezervace i správa svěřenců — vše přehledně na jednom místě, bez poplatku za rozhraní.",
   },
@@ -73,6 +73,7 @@ export function HeroCarousel() {
     if (!t) return;
     drag.current = { active: true, startX: e.clientX, startScroll: t.scrollLeft };
     t.style.scrollSnapType = "none";
+    try { t.setPointerCapture(e.pointerId); } catch { /* */ }
   };
   const move = (e: React.PointerEvent) => {
     if (!drag.current.active) return;

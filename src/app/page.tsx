@@ -157,7 +157,7 @@ export default function Home() {
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
   const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null }[]>([]);
-  const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; rvText: string; rvAuthor: string | null }[]>([]);
+  const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; rvText: string | null; rvAuthor: string | null }[]>([]);
   const [specCount, setSpecCount] = useState(0);
   const [venueCount, setVenueCount] = useState(0);
   const [waitCount, setWaitCount] = useState(0);
@@ -195,7 +195,7 @@ export default function Home() {
         const { data: rv } = await supabase.from("reviews").select("specialist_id,author_name,rating,body").in("specialist_id", ids).not("body", "is", null).order("created_at", { ascending: false });
         const byId: Record<string, { author_name: string | null; body: string }> = {};
         ((rv as { specialist_id: string; author_name: string | null; body: string }[]) ?? []).forEach((r) => { if (r.body && !byId[r.specialist_id]) byId[r.specialist_id] = { author_name: r.author_name, body: r.body }; });
-        const sd = (data as typeof featured).filter((d) => byId[d.id]).map((d) => ({ ...d, rvText: byId[d.id].body, rvAuthor: byId[d.id].author_name }));
+        const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
       const [{ count: sc }, { count: vc }, { count: wc }] = await Promise.all([
@@ -281,7 +281,9 @@ export default function Home() {
                     </span>
                     <span className="tsp-txt">
                       <b>{f.name} <span className="tsp-verif"><Check size={11} /> Ověřeno</span></b>
-                      <span className="tsp-rv">„{f.rvText}"{f.rvAuthor ? <em> — {f.rvAuthor}</em> : null}</span>
+                      {f.rvText
+                        ? <span className="tsp-rv">„{f.rvText}"{f.rvAuthor ? <em> — {f.rvAuthor}</em> : null}</span>
+                        : <span className="tsp-rv">{(KIND_META[f.kind]?.label ?? "Trenér")}{f.city ? ` · ${f.city}` : ""}</span>}
                     </span>
                     {f.rating != null && <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span>}
                   </Link>

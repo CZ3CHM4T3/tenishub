@@ -1329,7 +1329,7 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .hero-center .hero-chips { justify-content: center; }
 /* Textový carousel v hero */
 .hcaro { width: 100%; display: flex; flex-direction: column; align-items: center; }
-.hcaro-track { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; cursor: grab; scrollbar-width: none; -ms-overflow-style: none; }
+.hcaro-track { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x proximity; cursor: grab; scrollbar-width: none; -ms-overflow-style: none; }
 .hcaro-track::-webkit-scrollbar { display: none; }
 .hcaro-track:active { cursor: grabbing; }
 .hcaro-ic { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 13px; background: rgba(200,162,76,0.14); color: var(--gold); margin-bottom: 0.7rem; }
