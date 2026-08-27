@@ -109,9 +109,10 @@ export default function MapExplorer() {
       Lref.current = L;
       const map = L.map(mapEl.current, { scrollWheelZoom: true, zoomControl: true }).setView([49.82, 15.47], 7);
       mapRef.current = map;
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
-        attribution: "© OpenStreetMap © CARTO",
+        subdomains: "abc",
+        attribution: "© OpenStreetMap",
       }).addTo(map);
       layerRef.current = L.layerGroup().addTo(map);
       circleRef.current = L.circle([CITIES[0][1], CITIES[0][2]], {

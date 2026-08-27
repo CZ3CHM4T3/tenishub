@@ -302,8 +302,12 @@ export default function Home() {
                 <span className="wt-bg" aria-hidden="true" style={{ backgroundImage: "url(/trener-bg.png)" }} />
                 <span className="wt-map" aria-hidden="true">
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
-                    <polygon className="wt-map-shadow" points={CZ_MAP} />
-                    <polygon className="wt-map-fill" points={CZ_MAP} />
+                    <defs>
+                      <pattern id="wtdots" width="13" height="13" patternUnits="userSpaceOnUse">
+                        <circle cx="6.5" cy="6.5" r="2.3" fill="#c46a3a" />
+                      </pattern>
+                    </defs>
+                    <polygon className="wt-map-dots" points={CZ_MAP} />
                     {WT_PINS.map((p, i) => (
                       <g key={i} transform={`translate(${p.x},${p.y})`}>
                         {p.verified && <circle className="wt-pin-ring" cx="0" cy="-26" r="16.5" />}

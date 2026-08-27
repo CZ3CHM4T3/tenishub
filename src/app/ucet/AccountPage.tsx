@@ -143,7 +143,7 @@ export default function AccountPage() {
       <SiteHeader />
 
       <div className="wrap acct-wrap">
-        <h1 className="acct-h1">Můj účet</h1>
+        <h1 className="acct-h1">Profil</h1>
 
         {/* POČASÍ — hned po přihlášení, podle města z profilu */}
         <div style={{ marginBottom: "1.1rem" }}><WeatherWeek /></div>
