@@ -3,38 +3,50 @@
 // Lákavý ZAMČENÝ náhled placené herní vrstvy (TRENÉR+): strom dovedností + Sparing Cup.
 // Ukáže ochutnávku (rozmazaná mock grafika) + zámek s odznakem TRENÉR+ a CTA.
 import Link from "next/link";
-import { Lock, Check, GitBranch, Trophy } from "lucide-react";
+import { Lock, Check, GitBranch, Trophy, Star, Zap, Award, Crown, Medal, Target } from "lucide-react";
 
-const TREE_NODES = [
-  { x: 50, y: 20, on: true }, { x: 22, y: 46, on: true }, { x: 78, y: 46, on: true },
-  { x: 12, y: 76, on: false }, { x: 36, y: 76, on: false }, { x: 64, y: 76, on: false }, { x: 88, y: 76, on: false },
-];
-const TREE_LINKS = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6]];
-
+// mock „screenshotu" stromu dovedností — vypadá jako reálný budoucí screen
 function TreeMock() {
+  const nodes = [
+    { Icon: Star, on: true }, { Icon: Zap, on: true }, { Icon: Award, on: true },
+    { Icon: Target, on: false }, { Icon: GitBranch, on: false }, { Icon: Star, on: false }, { Icon: Zap, on: false }, { Icon: Award, on: false },
+  ];
   return (
-    <svg className="glp-art" viewBox="0 0 100 96" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      {TREE_LINKS.map(([a, b], i) => (
-        <line key={i} x1={TREE_NODES[a].x} y1={TREE_NODES[a].y} x2={TREE_NODES[b].x} y2={TREE_NODES[b].y} stroke="#c7a355" strokeWidth="1.4" opacity="0.6" />
-      ))}
-      {TREE_NODES.map((n, i) => (
-        <g key={i}>
-          <circle cx={n.x} cy={n.y} r="7.5" fill={n.on ? "#bf9a47" : "#e7ddc9"} stroke="#fff" strokeWidth="1.6" />
-          {n.on && <circle cx={n.x} cy={n.y} r="2.4" fill="#fff" />}
-        </g>
-      ))}
-    </svg>
+    <div className="glp-shot" aria-hidden="true">
+      <div className="glp-shot-head"><span className="glp-shot-title"><GitBranch size={13} /> Strom dovedností</span><span className="glp-shot-lvl">Level 7</span></div>
+      <div className="glp-xp"><span style={{ width: "64%" }} /></div>
+      <div className="glp-nodes">
+        {nodes.map((n, i) => {
+          const N = n.Icon;
+          return <span key={i} className={`glp-node${n.on ? " on" : ""}`}>{n.on ? <Check size={15} /> : <N size={14} />}</span>;
+        })}
+      </div>
+      <div className="glp-tags"><span>Bekhend ✓</span><span>Podání ✓</span><span>Voleje</span><span>Smeč</span></div>
+    </div>
   );
 }
 
+// mock „screenshotu" Sparing Cupu — mini žebříček s body
 function CupMock() {
+  const rows = [
+    { r: 1, n: "Klárka N.", p: 240, Icon: Crown, c: "#bf9a47" },
+    { r: 2, n: "Tomík V.", p: 212, Icon: Medal, c: "#9aa3ad" },
+    { r: 3, n: "Ela K.", p: 188, Icon: Medal, c: "#b5763f" },
+    { r: 4, n: "Matýsek", p: 154 },
+  ];
   return (
-    <svg className="glp-art" viewBox="0 0 100 96" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      {[[18, 60, 22], [50, 40, 42], [82, 68, 14]].map(([x, y, h], i) => (
-        <rect key={i} x={(x as number) - 11} y={y as number} width="22" height={h as number} rx="3" fill={i === 1 ? "#bf9a47" : "#d9ccae"} />
-      ))}
-      <path d="M42 22h16v5a8 8 0 0 1-16 0z" fill="#bf9a47" /><rect x="47" y="30" width="6" height="7" fill="#bf9a47" /><rect x="42" y="36" width="16" height="4" rx="2" fill="#bf9a47" />
-    </svg>
+    <div className="glp-shot" aria-hidden="true">
+      <div className="glp-shot-head"><span className="glp-shot-title"><Trophy size={13} /> Sparing Cup</span><span className="glp-shot-lvl">jarní kolo</span></div>
+      <div className="glp-lb">
+        {rows.map((row) => (
+          <div className="glp-lb-row" key={row.r}>
+            <span className="glp-lb-rank">{row.Icon ? <row.Icon size={15} style={{ color: row.c }} /> : row.r}</span>
+            <span className="glp-lb-name">{row.n}</span>
+            <span className="glp-lb-pts">{row.p} b</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
