@@ -40,13 +40,13 @@ export function SiteHeader() {
       const { data: prof } = await sb.from("profiles").select("is_admin,is_coach,roles").eq("id", user.id).maybeSingle();
       const admin = prof?.is_admin === true;
       let roles: string[] = Array.isArray(prof?.roles) && (prof!.roles as string[]).length ? (prof!.roles as string[]) : (prof?.is_coach ? ["trener"] : ["rodic"]);
+      let previewRole = false;
       if (admin) {
         const v = getViewAs();
         if (v === "navstevnik") { setLogged(false); setReady(true); return; }
-        if (v === "rodic") roles = ["rodic"];
-        else if (v === "trener") roles = ["trener"];
+        if (v !== "admin") { roles = [v]; previewRole = true; } // náhled jako konkrétní role
       }
-      roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
+      if (!previewRole) roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
       setTabs(tabsForRoles(roles.length ? roles : ["rodic"]));
       setIsAdmin(admin);
       const un = await sb.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);

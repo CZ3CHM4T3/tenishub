@@ -26,6 +26,21 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
     { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],
+  sparring: [
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
+    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
+  ],
+  fyzio: [
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
+    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
+  ],
+  fitness: [
+    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
+    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
+    { label: "Služby", href: "/domu", Icon: LayoutGrid },
+  ],
 };
 
 // Aktivní role → sloučené záložky (bez duplicit dle labelu, pořadí zachováno).

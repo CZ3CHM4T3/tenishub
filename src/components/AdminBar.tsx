@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getViewAs, setViewAs, type ViewAs } from "@/lib/viewAs";
-import { ShieldCheck, Baby, GraduationCap, Eye } from "lucide-react";
+import { ShieldCheck, Baby, GraduationCap, Eye, Handshake, Grip, HeartPulse, Dumbbell } from "lucide-react";
 
 const OPTS: { k: ViewAs; label: string; Icon: typeof Eye; href: string }[] = [
   { k: "admin", label: "Admin", Icon: ShieldCheck, href: "/admin" },
-  { k: "rodic", label: "Rodič", Icon: Baby, href: "/rodic" },
+  { k: "rodic", label: "Rodič", Icon: Baby, href: "/domu" },
   { k: "trener", label: "Trenér", Icon: GraduationCap, href: "/klub" },
+  { k: "sparring", label: "Sparring", Icon: Handshake, href: "/sparring" },
+  { k: "vyplet", label: "Vyplétač", Icon: Grip, href: "/domu" },
+  { k: "fyzio", label: "Fyzio", Icon: HeartPulse, href: "/domu" },
+  { k: "fitness", label: "Fitness", Icon: Dumbbell, href: "/domu" },
   { k: "navstevnik", label: "Návštěvník", Icon: Eye, href: "/" },
 ];
 

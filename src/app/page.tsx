@@ -304,7 +304,7 @@ export default function Home() {
                   <svg viewBox="-95 82 760 430" preserveAspectRatio="xMidYMid meet">
                     <defs>
                       <pattern id="wtdots" width="7.5" height="7.5" patternUnits="userSpaceOnUse">
-                        <circle cx="3.75" cy="3.75" r="1.35" fill="#c46a3a" />
+                        <circle cx="3.75" cy="3.75" r="1.35" fill="#dfe3de" />
                       </pattern>
                     </defs>
                     <polygon className="wt-map-dots" points={CZ_MAP} />
