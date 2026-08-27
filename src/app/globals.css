@@ -3438,6 +3438,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .acct-tab{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem .95rem;border:none;background:none;cursor:pointer;font-weight:600;color:var(--muted);font-size:.92rem;border-bottom:2px solid transparent;margin-bottom:-1px}
 .acct-tab:hover{color:var(--ink)}
 .acct-tab.on{color:var(--green);border-bottom-color:var(--gold)}
+.acct-tab.dis{color:var(--muted);opacity:.55}
+.lnk-btn{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--gold);cursor:pointer;text-decoration:underline}
 @media(max-width:560px){.acct-tabs{gap:0;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}.acct-tab{flex:none;padding:.6rem .7rem}}
 
 /* ===== ADMIN — hlavní barevné záložky + vertikální podzáložky ===== */

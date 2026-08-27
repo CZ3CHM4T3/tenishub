@@ -6,18 +6,26 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Baby, Plus, X, ArrowRight, Pencil, BadgeCheck, GraduationCap } from "lucide-react";
+import { Baby, Plus, X, ArrowRight, Pencil, BadgeCheck, GraduationCap, ClipboardList, Gamepad2, Lock } from "lucide-react";
 import { JoinCoach } from "@/components/JoinCoach";
 import { AVATARS, avatarByKey } from "@/lib/avatars";
 import ClubBoard from "@/components/ClubBoard";
 import GameLockPreview from "@/app/klub/GameLockPreview";
 
 type Dite = { id: string; jmeno: string; prezdivka: string; level: number; program: string; coach_id: string | null; avatar: string | null };
+type KlubTab = "deti" | "trener" | "nastenka" | "hra";
+const KLUB_TABS: { k: KlubTab; label: string; Icon: typeof Baby; lock: boolean }[] = [
+  { k: "deti", label: "Děti", Icon: Baby, lock: false },
+  { k: "trener", label: "Trenér", Icon: GraduationCap, lock: false },
+  { k: "nastenka", label: "Nástěnka", Icon: ClipboardList, lock: true },
+  { k: "hra", label: "Pokrok & hra", Icon: Gamepad2, lock: true },
+];
 
 export default function DetiClient() {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState<KlubTab>("deti");
   const [me, setMe] = useState<string>("");
   const [coachId, setCoachId] = useState<string | null>(null);
   const [coachName, setCoachName] = useState<string>("");
@@ -84,50 +92,74 @@ export default function DetiClient() {
           <h1 className="acct-h1"><Baby size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
           <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
             {isCoach && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
-            <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
+            {tab === "deti" && <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>}
           </div>
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>
           {coachId
-            ? <>Vaše děti jsou u trenéra <b>{coachName}</b> — sbírají odznaky, level a postup ve stromu dovedností i Sparing Cupu. Klikněte na dítě pro jeho kariéru.</>
-            : <>Přidejte dítě a hlavně ho <b>napojte na trenéra</b> — u trenéra sbírá odznaky a postup ve hře a vy vidíte, jak roste. Bez trenéra jsou karty šedé.</>}
+            ? <>Vaše děti jsou u trenéra <b>{coachName}</b> — sbírají odznaky, level a postup ve stromu dovedností i Sparing Cupu.</>
+            : <>Nejdřív <button type="button" className="lnk-btn" onClick={() => setTab("trener")}>zadejte kód trenéra</button> — pak se odemkne Nástěnka i Pokrok a děti u trenéra začnou sbírat odznaky a level.</>}
         </p>
 
-        <JoinCoach />
+        {/* PODZÁLOŽKY */}
+        <div className="acct-tabs">
+          {KLUB_TABS.map((t) => {
+            const locked = t.lock && !coachId;
+            return (
+              <button key={t.k} type="button" className={`acct-tab${tab === t.k ? " on" : ""}${locked ? " dis" : ""}`}
+                onClick={() => (locked ? setTab("trener") : setTab(t.k))}>
+                <t.Icon size={17} /> {t.label} {locked && <Lock size={12} style={{ opacity: 0.6 }} />}
+              </button>
+            );
+          })}
+        </div>
 
-        {deti.length === 0 ? (
-          <div className="acct-card mc-gate"><Baby size={30} /><h2>Zatím žádné dítě</h2><p>Přidejte první — uvidíte jeho kariéru a pokrok.</p></div>
-        ) : (
-          <div className="klub-list">
-            {deti.map((d) => {
-              const av = avatarByKey(d.avatar);
-              const AvIcon = av.Icon;
-              return (
-              <div className={`deti-row${coachId ? "" : " deti-row-off"}`} key={d.id}>
-                <button type="button" className="deti-av" style={{ background: av.color }} onClick={() => setAvatarFor(d.id)} aria-label="Změnit avatara">
-                  <AvIcon size={22} /><span className="deti-av-edit"><Pencil size={11} /></span>
-                </button>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <b>{d.jmeno}</b>
-                  <span>
-                    {coachId
-                      ? <span className="deti-chip on"><BadgeCheck size={12} /> U trenéra {coachName}</span>
-                      : <span className="deti-chip">Zatím bez trenéra</span>}
-                    {" "}· {d.program === "pro" ? "závodní" : "hobby"}{coachId ? ` · level ${d.level}` : ""}
-                  </span>
+        {/* DĚTI */}
+        {tab === "deti" && (
+          deti.length === 0 ? (
+            <div className="acct-card mc-gate"><Baby size={30} /><h2>Zatím žádné dítě</h2><p>Přidejte první — pak ho napojíte na trenéra a uvidíte jeho pokrok.</p>
+              <button className="btn btn-green" onClick={() => setForm((f) => ({ ...f, open: true }))}><Plus size={16} /> Přidat dítě</button>
+            </div>
+          ) : (
+            <div className="klub-list">
+              {deti.map((d) => {
+                const av = avatarByKey(d.avatar);
+                const AvIcon = av.Icon;
+                return (
+                <div className={`deti-row${coachId ? "" : " deti-row-off"}`} key={d.id}>
+                  <button type="button" className="deti-av" style={{ background: av.color }} onClick={() => setAvatarFor(d.id)} aria-label="Změnit avatara">
+                    <AvIcon size={22} /><span className="deti-av-edit"><Pencil size={11} /></span>
+                  </button>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <b>{d.jmeno}</b>
+                    <span>
+                      {coachId
+                        ? <span className="deti-chip on"><BadgeCheck size={12} /> U trenéra {coachName}</span>
+                        : <span className="deti-chip">Zatím bez trenéra</span>}
+                      {" "}· {d.program === "pro" ? "závodní" : "hobby"}{coachId ? ` · level ${d.level}` : ""}
+                    </span>
+                  </div>
+                  <Link href={`/deti/${d.id}`} className="dite-cta" style={{ textDecoration: "none" }}>
+                    {coachId ? "Kariéra" : "Otevřít"} <ArrowRight size={15} />
+                  </Link>
                 </div>
-                <Link href={`/deti/${d.id}`} className="dite-cta" style={{ textDecoration: "none" }}>
-                  {coachId ? "Kariéra" : "Otevřít"} <ArrowRight size={15} />
-                </Link>
-              </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )
         )}
 
-        {/* Připojený klub: nástěnka + oboustranný kalendář + herní vrstva (náhled) */}
-        {coachId && (<>
-          <ClubBoard coachId={coachId} authorName={myName} />
+        {/* TRENÉR — napojení kódem (první krok) */}
+        {tab === "trener" && (<>
+          <JoinCoach />
+          {coachId && <p className="member-note">Jste napojení na <b>{coachName}</b>. Nástěnka i Pokrok jsou odemčené.</p>}
+        </>)}
+
+        {/* NÁSTĚNKA */}
+        {tab === "nastenka" && coachId && <ClubBoard coachId={coachId} authorName={myName} />}
+
+        {/* POKROK & HRA */}
+        {tab === "hra" && coachId && (<>
           <GameLockPreview variant="strom" audience="rodic" />
           <GameLockPreview variant="cup" audience="rodic" />
         </>)}
