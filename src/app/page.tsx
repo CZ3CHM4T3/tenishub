@@ -125,17 +125,6 @@ const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   academy: { label: "Akademie", Icon: GraduationCap },
 };
 
-// Poctivé hodnotové hlášky (ne smyšlené recenze — ty přidáme, až budou reálné).
-const STRIP = [
-  "Najdi ověřeného trenéra i klub na mapě",
-  "Veď dítě celou sezónou — bez vyhoření",
-  "Zeptej se odborníka na cokoli kolem tenisu",
-  "Najdi dítěti sparring parťáka na jeho úroveň",
-  "Trenér má vlastní klubové rozhraní zdarma",
-  "Komunita rodičů, co jsou o krok dál",
-  "Turnaje, bazar i spolujízda na jednom místě",
-];
-
 function Counter({ to, suffix }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -168,6 +157,7 @@ export default function Home() {
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
   const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null }[]>([]);
+  const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; rvText: string; rvAuthor: string | null }[]>([]);
   const [specCount, setSpecCount] = useState(0);
   const [venueCount, setVenueCount] = useState(0);
   const [waitCount, setWaitCount] = useState(0);
@@ -199,6 +189,15 @@ export default function Home() {
     (async () => {
       const { data } = await supabase.from("specialists").select("id,name,kind,city,rating,photo_url").eq("verified", true).order("rating", { ascending: false, nullsFirst: false }).limit(14);
       if (data) setFeatured(data as typeof featured);
+      // pás: ověřené profily, které mají recenzi (klik → profil)
+      const ids = (data ?? []).map((d: { id: string }) => d.id);
+      if (ids.length) {
+        const { data: rv } = await supabase.from("reviews").select("specialist_id,author_name,rating,body").in("specialist_id", ids).not("body", "is", null).order("created_at", { ascending: false });
+        const byId: Record<string, { author_name: string | null; body: string }> = {};
+        ((rv as { specialist_id: string; author_name: string | null; body: string }[]) ?? []).forEach((r) => { if (r.body && !byId[r.specialist_id]) byId[r.specialist_id] = { author_name: r.author_name, body: r.body }; });
+        const sd = (data as typeof featured).filter((d) => byId[d.id]).map((d) => ({ ...d, rvText: byId[d.id].body, rvAuthor: byId[d.id].author_name }));
+        setStripData(sd);
+      }
       const [{ count: sc }, { count: vc }, { count: wc }] = await Promise.all([
         supabase.from("specialists").select("*", { count: "exact", head: true }),
         supabase.from("venues").select("*", { count: "exact", head: true }),
@@ -216,9 +215,9 @@ export default function Home() {
   const pc = PERSONA_COLOR[p.key];
   const marquee = featured.length ? [...featured, ...featured] : [];
   // pás ověřených lidí s hodnocením (reální; když jich je málo, padne to na hodnotové hlášky)
-  const stripPeople = featured.filter((f) => f.rating != null);
-  const useRealStrip = stripPeople.length >= 3;
-  const stripLoop = [...stripPeople, ...stripPeople];
+  const useRealStrip = stripData.length >= 1;
+  const reps = stripData.length ? Math.max(2, Math.ceil(8 / stripData.length)) : 0;
+  const stripLoop = Array.from({ length: reps }, () => stripData).flat();
 
   return (
     <>
@@ -271,28 +270,25 @@ export default function Home() {
             <span className="hero-tagline rv">Jednička pro rodiče malých tenistů a jejich trenéry</span>
             <HeroCarousel />
 
-            {/* PÁS OVĚŘENÝCH LIDÍ — reální ověření specialisté s hodnocením (přes celou šířku) */}
-            <div className={`testi-strip rv${useRealStrip ? " testi-strip-people" : ""}`} aria-label="Ověření specialisté na TenisHubu">
+            {/* PÁS OVĚŘENÝCH PROFILŮ S RECENZEMI — klik = profil (psát/rezervovat) */}
+            {useRealStrip && (
+            <div className="testi-strip testi-strip-people rv" aria-label="Ověřené profily s recenzemi">
               <div className="testi-track">
-                {useRealStrip
-                  ? stripLoop.map((f, i) => (
-                    <Link href={`/trener/${f.id}`} className="tstrip-person" key={i}>
-                      <span className="tsp-ava" style={f.photo_url ? { backgroundImage: `url(${f.photo_url})` } : undefined}>
-                        {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
-                      </span>
-                      <span className="tsp-txt">
-                        <b>{f.name}</b>
-                        <span>{(KIND_META[f.kind]?.label ?? "Trenér")}{f.city ? ` · ${f.city}` : ""}</span>
-                      </span>
-                      <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span>
-                      <span className="tsp-verif"><Check size={12} /> Ověřeno</span>
-                    </Link>
-                  ))
-                  : [...STRIP, ...STRIP].map((s, i) => (
-                    <span className="tstrip-item" key={i}><Star size={13} /> {s}</span>
-                  ))}
+                {stripLoop.map((f, i) => (
+                  <Link href={`/trener/${f.id}`} className="tstrip-person" key={i}>
+                    <span className="tsp-ava" style={f.photo_url ? { backgroundImage: `url(${f.photo_url})` } : undefined}>
+                      {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
+                    </span>
+                    <span className="tsp-txt">
+                      <b>{f.name} <span className="tsp-verif"><Check size={11} /> Ověřeno</span></b>
+                      <span className="tsp-rv">„{f.rvText}"{f.rvAuthor ? <em> — {f.rvAuthor}</em> : null}</span>
+                    </span>
+                    {f.rating != null && <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span>}
+                  </Link>
+                ))}
               </div>
             </div>
+            )}
 
             {/* 2 SVĚTY — hlavní volba experience */}
             <div className="worlds rv d3">
