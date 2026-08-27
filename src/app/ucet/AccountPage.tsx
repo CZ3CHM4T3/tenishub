@@ -256,22 +256,14 @@ export default function AccountPage() {
           <button className="btn btn-green" onClick={saveProfile} disabled={busy}>{saved ? "✓ Uloženo" : "Uložit změny"}</button>
         </div>
 
-        {/* MOJE ROLE — poskytovatel to řeší přímo; rodič/hráč má schované pod „chci i podnikat" */}
-        {isProvider ? (
-          <div className="acct-card">
-            <div className="acct-card-head"><UserRound size={20} /><h2>Moje role</h2></div>
-            <p className="member-note">Jeden účet, klidně víc rolí zároveň. <b>Trenér je zdarma</b>; ostatní role odemyká <b>HUB+</b>. Podle rolí se ti objeví prostory v menu vpravo nahoře.</p>
-            {rolePickerUI}
-          </div>
-        ) : (
-          <details className="acct-card role-expander">
-            <summary><GraduationCap size={16} /> Chci tu i podnikat — jsem trenér nebo jiný profík</summary>
-            <p className="member-note">Přidej si roli poskytovatele. <b>Trenér je zdarma</b>, ostatní odemyká členství. Objeví se ti pak vlastní prostory v menu.</p>
-            {rolePickerUI}
-          </details>
-        )}
+        {/* ROLE — čím tu jsi. Zaškrtnutím poskytovatelské role se níž objeví veřejná karta k doplnění. */}
+        <div className="acct-card">
+          <div className="acct-card-head"><UserRound size={20} /><h2>Role</h2></div>
+          <p className="member-note">Zaškrtni, čím tu jsi — tím se ti zpřístupní odpovídající prostory v menu a doplníš si profil. Jeden účet, klidně víc rolí. <b>Trenér je zdarma</b>; ostatní role odemyká členství.</p>
+          {rolePickerUI}
+        </div>
 
-        {/* VEŘEJNÁ KARTA — jen pro poskytovatele (rodič/hráč ji nemá) */}
+        {/* VEŘEJNÁ KARTA — část profilu poskytovatele; objeví se po zaškrtnutí poskytovatelské role */}
         {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />}
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>

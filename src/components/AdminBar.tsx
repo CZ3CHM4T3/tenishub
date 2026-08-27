@@ -12,7 +12,7 @@ const OPTS: { k: ViewAs; label: string; Icon: typeof Eye; href: string }[] = [
   { k: "admin", label: "Admin", Icon: ShieldCheck, href: "/admin" },
   { k: "rodic", label: "Rodič", Icon: Baby, href: "/domu" },
   { k: "trener", label: "Trenér", Icon: GraduationCap, href: "/klub" },
-  { k: "sparring", label: "Sparring", Icon: Handshake, href: "/sparring" },
+  { k: "hrac", label: "Hráč", Icon: Handshake, href: "/domu" },
   { k: "vyplet", label: "Vyplétač", Icon: Grip, href: "/domu" },
   { k: "fyzio", label: "Fyzio", Icon: HeartPulse, href: "/domu" },
   { k: "fitness", label: "Fitness", Icon: Dumbbell, href: "/domu" },
@@ -47,6 +47,7 @@ export function AdminBar() {
           <o.Icon size={14} /> {o.label}
         </button>
       ))}
+      {view !== "admin" && <span className="adminbar-note">přibližný náhled — nezahrnuje členství/platby ani stránku účtu</span>}
     </div>
   );
 }
