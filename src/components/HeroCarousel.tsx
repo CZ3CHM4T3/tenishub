@@ -9,9 +9,9 @@ type Slide = { who: string; title: ReactNode; sub: string; Icon: LucideIcon };
 const SLIDES: Slide[] = [
   {
     Icon: Sparkles,
-    who: "První online tenisový klub",
-    title: <>Konec bloudění — <span className="g">celý tenis dítěte</span> na jednom místě</>,
-    sub: "Ověření trenéři, kluby a odborníci, nástroje pro rodiče i profíky a komunita, co to myslí vážně. Vyzkoušejte týden zdarma — a zakládající cena vám pak zůstane.",
+    who: "Rodiče i tenisoví profíci — na jednom místě",
+    title: <>První online <span className="g">tenisový klub</span></>,
+    sub: "Ověření trenéři, kluby a odborníci, chytré nástroje a komunita — se vším všudy. Vyzkoušejte týden zdarma; zakládající cenu si udrží jen členové, kteří se přidají letos.",
   },
   {
     Icon: Users,
