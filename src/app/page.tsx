@@ -115,8 +115,8 @@ const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boole
   { x: 45, y: 255, c: "#2f6fb0", icon: IC_FITNESS },              // JZ-západ
   { x: 120, y: 385, c: "#5a6470", icon: IC_STRINGER },            // JZ-jih
 ];
-// tvar kapky mapového pinu (špička v počátku, hlava se středem ~ (0,-26))
-const PIN_D = "M0,0 C-7,-12 -13,-18 -13,-26 A13,13 0 1,1 13,-26 C13,-18 7,-12 0,0 Z";
+// tvar mapového pinu jako na /mapa (kulatá hlava + rovný krk ke špičce), střed hlavy ~ (0,-21.6)
+const PIN_D = "M0,0 L-8,-12 A12.5,12.5 0 1 1 8,-12 Z";
 
 const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   coach: { label: "Trenér", Icon: Award },
@@ -310,15 +310,17 @@ export default function Home() {
                     <polygon className="wt-map-glass" points={CZ_MAP} />
                     {WT_PINS.map((p, i) => (
                       <g key={i} transform={`translate(${p.x},${p.y})`}>
-                        {p.verified && <circle className="wt-pin-ring" cx="0" cy="-26" r="16.5" />}
-                        <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
-                        <g className="wt-pin-ic" transform="translate(-7.5,-33.5) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
-                        {p.verified && (
-                          <g transform="translate(0,-43)">
-                            <circle className="wt-pin-badge" r="7.5" />
-                            <path className="wt-pin-tick" d="M-3.2,0.2 L-1,2.6 L3.4,-2.8" />
-                          </g>
-                        )}
+                        <g className="wt-pin">
+                          {p.verified && <circle className="wt-pin-ring" cx="0" cy="-21.6" r="15.5" />}
+                          <path className="wt-pin-drop" d={PIN_D} style={{ fill: p.c }} />
+                          <g className="wt-pin-ic" transform="translate(-7.5,-29.1) scale(0.625)" dangerouslySetInnerHTML={{ __html: p.icon }} />
+                          {p.verified && (
+                            <g transform="translate(0,-37.5)">
+                              <circle className="wt-pin-badge" r="7" />
+                              <path className="wt-pin-tick" d="M-3,0.2 L-1,2.4 L3.2,-2.6" />
+                            </g>
+                          )}
+                        </g>
                       </g>
                     ))}
                   </svg>
