@@ -3082,30 +3082,30 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-pin-tick{fill:none;stroke:#1c2a16;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 /* Jirka — mírně doleva, před mapou */
 /* Vějíř karet profíků (Jirka uprostřed) — ilustrace před mapou */
-.wt-fan{position:absolute;right:0;bottom:3%;width:344px;height:264px;z-index:3;pointer-events:none;transition:transform .3s ease}
-.wt-fan-card{position:absolute;background:#fff;border-radius:15px;overflow:hidden;border:1px solid #e6ddca}
+.wt-fan{position:absolute;left:44%;bottom:3%;width:344px;height:264px;z-index:3;pointer-events:none;transition:transform .3s ease}
+.wt-fan-card{position:absolute;display:block;background:#fff;border-radius:15px;overflow:hidden;border:1px solid #e6ddca}
 .wt-fan-l,.wt-fan-r{width:150px;height:196px;top:40px;box-shadow:0 14px 26px -16px rgba(0,0,0,.5);opacity:.7;filter:blur(.5px);transition:transform .3s ease;display:grid;grid-template-rows:1fr auto}
 .wt-fan-l{left:0;transform:rotate(-13deg)}
 .wt-fan-r{right:0;transform:rotate(13deg)}
 .world-trainer:hover .wt-fan-l{transform:rotate(-17deg) translate(-7px,-3px)}
 .world-trainer:hover .wt-fan-r{transform:rotate(17deg) translate(7px,-3px)}
 .wt-fan-sym{display:grid;place-items:center;background:#eef1ee;color:#a7b3ab}
-.wt-fan-lines{padding:12px}
+.wt-fan-lines{display:block;padding:14px 12px}
 .wt-fan-lines i{display:block;height:9px;width:64%;border-radius:5px;background:#dde2dd;margin:0 auto}
 .wt-fan-c{left:92px;top:4px;width:168px;height:236px;z-index:2;box-shadow:0 24px 44px -18px rgba(0,0,0,.62);border-color:#fff;text-align:center}
 .wt-fan-badge{position:absolute;top:8px;right:8px;z-index:2;display:inline-flex;align-items:center;gap:3px;background:#bf9a47;color:#1c2a16;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:100px}
-.wt-fan-photo{position:relative;height:150px;background:#dfd3c6}
+.wt-fan-photo{display:block;position:relative;height:148px;background:#dfd3c6}
 .wt-fan-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-.wt-fan-cap{position:absolute;left:0;right:0;bottom:0;padding:22px 9px 7px;background:linear-gradient(to top,rgba(14,22,16,.92) 25%,rgba(14,22,16,.4) 70%,transparent);color:#fff;line-height:1.2}
+.wt-fan-cap{display:block;position:absolute;left:0;right:0;bottom:0;padding:22px 9px 7px;background:linear-gradient(to top,rgba(14,22,16,.94) 30%,rgba(14,22,16,.45) 72%,transparent);color:#fff;line-height:1.2;text-align:left}
 .wt-fan-cap b{display:block;font-size:13px;font-weight:800}
-.wt-fan-cap span{font-size:10px;opacity:.95}
-.wt-fan-body{padding:9px 10px 11px}
+.wt-fan-cap span{display:block;font-size:10px;opacity:.95}
+.wt-fan-body{display:block;padding:9px 10px 11px}
 .wt-fan-rate{display:flex;align-items:center;justify-content:center;gap:1px;margin-bottom:8px}
 .wt-fan-rate b{font-size:11.5px;color:#1c3025;margin-left:3px}
 .wt-fan-rate i{font-size:10px;color:#8a9790;font-style:normal;margin-left:3px}
 .wt-fan-btn{display:block;text-align:center;background:#2c4a3b;color:#fff;border-radius:8px;padding:7px;font-size:11.5px;font-weight:700}
-/* obecný text — dole na tmavém scrimu, bílý se silným halo-stínem */
-.wt-in{position:absolute;z-index:4;left:46%;bottom:5%;max-width:180px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:.5rem}
+/* obecný text — vpravo dole (tmavá plocha, zrcadlově k „Rodič"), bílý se silným halo-stínem */
+.wt-in{position:absolute;z-index:4;right:3%;bottom:6%;max-width:180px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:.5rem}
 .world-trainer .world-tag{font-size:clamp(1.15rem,2vw,1.7rem);line-height:1.05;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-head{font-weight:800;font-size:clamp(1rem,1.55vw,1.35rem);color:#fff;line-height:1.15;text-wrap:balance;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-sub{color:#e2ece5;font-size:.82rem;line-height:1.4;margin-top:-.1rem;text-shadow:0 1px 6px rgba(0,0,0,.55);max-width:26ch}
