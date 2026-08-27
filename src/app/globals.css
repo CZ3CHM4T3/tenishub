@@ -3081,10 +3081,32 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-pin-badge{fill:#e9c877;stroke:#fff;stroke-width:1.6}
 .wt-pin-tick{fill:none;stroke:#1c2a16;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 /* Jirka — mírně doleva, před mapou */
-.wt-figure{position:absolute;right:23%;bottom:0;height:64%;width:auto;z-index:3;pointer-events:none;
-  filter:drop-shadow(9px 14px 22px rgba(0,0,0,.42));object-fit:contain;object-position:bottom center}
-/* text dole vpravo — zrcadlo k „Rodič & dítě" (dole vlevo) */
-.wt-in{position:relative;z-index:4;margin-left:auto;align-items:flex-end;text-align:right;max-width:19rem;gap:.5rem}
+/* Vějíř karet profíků (Jirka uprostřed) — ilustrace před mapou */
+.wt-fan{position:absolute;right:1%;bottom:6%;width:300px;height:238px;z-index:3;pointer-events:none;transition:transform .3s ease}
+.wt-fan-card{position:absolute;background:#fff;border-radius:14px;overflow:hidden}
+.wt-fan-l,.wt-fan-r{width:126px;height:166px;top:34px;box-shadow:0 14px 26px -16px rgba(0,0,0,.5);opacity:.72;filter:blur(.4px);transition:transform .3s ease}
+.wt-fan-l{left:2px;transform:rotate(-13deg)}
+.wt-fan-r{right:2px;transform:rotate(13deg)}
+.world-trainer:hover .wt-fan-l{transform:rotate(-17deg) translate(-6px,-2px)}
+.world-trainer:hover .wt-fan-r{transform:rotate(17deg) translate(6px,-2px)}
+.wt-fan-gph{display:block;height:96px}
+.wt-fan-gph.a{background:#dfe3de}.wt-fan-gph.b{background:#e7dcd0}
+.wt-fan-lines{display:flex;flex-direction:column;gap:6px;padding:11px}
+.wt-fan-lines i{display:block;height:8px;border-radius:5px;background:#dbe0db}
+.wt-fan-lines i:last-child{width:55%;background:#e6eae6}
+.wt-fan-c{left:75px;top:4px;width:150px;height:212px;z-index:2;box-shadow:0 22px 40px -18px rgba(0,0,0,.6)}
+.wt-fan-badge{position:absolute;top:7px;right:7px;z-index:2;display:inline-flex;align-items:center;gap:3px;background:#bf9a47;color:#1c2a16;font-size:9px;font-weight:800;padding:2px 6px;border-radius:100px}
+.wt-fan-photo{position:relative;height:132px;background:#e7d9cc}
+.wt-fan-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.wt-fan-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 9px 6px;background:linear-gradient(to top,rgba(20,30,22,.8),transparent);color:#fff;line-height:1.15}
+.wt-fan-cap b{display:block;font-size:12.5px;font-weight:700}
+.wt-fan-cap span{font-size:10px;opacity:.92}
+.wt-fan-body{padding:7px 9px 9px}
+.wt-fan-rate{display:flex;align-items:center;gap:1px;margin-bottom:7px}
+.wt-fan-rate b{font-size:11px;color:#1c3025;margin-left:3px}
+.wt-fan-rate i{font-size:10px;color:#8a9790;font-style:normal;margin-left:3px}
+.wt-fan-btn{display:block;text-align:center;background:#2c4a3b;color:#fff;border-radius:8px;padding:6px;font-size:11px;font-weight:700}
+.wt-in{position:absolute;z-index:4;left:47%;bottom:8%;max-width:135px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:.5rem}
 .world-trainer .world-tag{font-size:clamp(1.15rem,2vw,1.7rem);line-height:1.05}
 .wt-head{font-weight:800;font-size:clamp(1rem,1.55vw,1.35rem);color:#fff;line-height:1.15;text-wrap:balance;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .wt-sub{color:#e2ece5;font-size:.82rem;line-height:1.4;margin-top:-.1rem;text-shadow:0 1px 6px rgba(0,0,0,.55);max-width:26ch}
@@ -3097,9 +3119,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-cred-logo img{height:22px;width:auto;display:block;object-fit:contain}
 @media(max-width:640px){.wt-head{font-size:1rem}.wt-sub{display:none}}
 @media(max-width:700px){
-  .wt-in{max-width:66%}
-  .wt-cred-txt>span{font-size:.68rem}
-  .wt-figure{right:2%;height:90%}
+  .wt-in{left:5%;bottom:auto;top:1rem;max-width:44%}
+  .wt-fan{right:-6%;bottom:2%;transform:scale(.82);transform-origin:bottom right}
   .wt-map svg{width:100%;transform:translate(0,-2%)}
 }
 

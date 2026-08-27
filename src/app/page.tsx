@@ -325,23 +325,27 @@ export default function Home() {
                     ))}
                   </svg>
                 </span>
-                {/* Jirka — stojící postava před mapou (mírně doleva) */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="wt-figure" src="/jirka.png" alt="Jiří Machek — spoluzakladatel akademie MS GEM" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
-                {/* text dole vpravo — zrcadlově k „Rodič & dítě" vlevo */}
-                {/* kredit o Jirkovi — NALEVO od něj */}
-                <span className="wt-cred">
-                  <span className="wt-cred-logo" aria-hidden="true">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                {/* Vějíř karet profíků — Jirka uprostřed (čitelný), 2 po stranách ztlumené; před mapou */}
+                <span className="wt-fan" aria-hidden="true">
+                  <span className="wt-fan-card wt-fan-l"><span className="wt-fan-gph a" /><span className="wt-fan-lines"><i /><i /></span></span>
+                  <span className="wt-fan-card wt-fan-r"><span className="wt-fan-gph b" /><span className="wt-fan-lines"><i /><i /></span></span>
+                  <span className="wt-fan-card wt-fan-c">
+                    <span className="wt-fan-badge"><Check size={11} /> Ověřeno</span>
+                    <span className="wt-fan-photo">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/jirka.png" alt="Jiří Machek" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
+                      <span className="wt-fan-cap"><b>Jiří Machek</b><span>Trenér II. třídy · MS GEM</span></span>
+                    </span>
+                    <span className="wt-fan-body">
+                      <span className="wt-fan-rate">{[0, 1, 2, 3, 4].map((s) => <Star key={s} size={11} fill="#bf9a47" color="#bf9a47" />)}<b>5,0</b><i>· 100+ dětí</i></span>
+                      <span className="wt-fan-btn">Zobrazit profil</span>
+                    </span>
                   </span>
-                  <span className="wt-cred-txt"><b>Jiří Machek</b><span>spoluzakladatel akademie MS GEM</span></span>
                 </span>
-                {/* obecné info — NAPRAVO dole (zrcadlově k „Rodič a dítě") */}
+                {/* obecné info — vlevo dole */}
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
-                  <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
-                  <span className="wt-sub">Profil a rozhraní <b>zdarma</b>. Vlastní klub a strom dovedností po svém.</span>
+                  <span className="wt-head">Vyber si ověřeného profíka</span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
