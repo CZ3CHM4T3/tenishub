@@ -28,9 +28,9 @@ type Persona = {
   free: string[]; plus: string[];
 };
 const PERSONAS: Persona[] = [
-  { key: "trener", Icon: WhistleIcon, label: "Trenér", promise: "Víc klientů, míň papírování.",
-    free: ["Vizitka v katalogu", "Být k nalezení na mapě", "Veřejné recenze"],
-    plus: ["Kalendář a online rezervace", "Platby předem (GoPay)", "Správa klientů a omluvenky", "Ověřený odznak a top pozice", "Články a FAQ návody"] },
+  { key: "trener", Icon: WhistleIcon, label: "Trenér", promise: "Víc klientů, míň papírování, plný kalendář.",
+    free: ["Profil a klubové rozhraní zdarma — bez poplatku", "Být k nalezení na mapě a v katalogu", "Veřejné recenze a ověřený odznak"],
+    plus: ["Online rezervace 24/7 — plný kalendář, konec telefonování a SMS", "Platby předem (GoPay) — žádní neplatiči ani no-show", "Správa svěřenců + docházka a omluvenky online (konec papírků)", "Rodiče vidí pokrok dětí přes Moji cestu — děti u vás zůstanou", "Leady z mapy a katalogu — noví klienti vám sami napíšou"] },
   { key: "rodic-hobby", Icon: Users, label: "Rodič hobby hráče", promise: "Najdi, rezervuj, zaplať — a měj klid.",
     free: ["Hledání trenérů a klubů", "Profily a recenze", "Prohlížení sparring nabídek"],
     plus: ["Moje cesta — deník tréninků a volna dítěte", "Rezervace a platby na pár kliků", "Zprávy trenérům", "Přehled dítěte (rozvrh, platby)", "Články a FAQ návody"] },
@@ -125,6 +125,11 @@ const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   academy: { label: "Akademie", Icon: GraduationCap },
 };
 
+// Dočasná ukázka do pásu (než budou reálné ověřené profily). Přepíše se daty z DB.
+const DEMO_STRIP = [
+  { id: "jirka-demo", name: "Jiří Machek", kind: "coach", city: "Dobřichovice", rating: 5, photo_url: "/jirka.png", rvText: "Skvělý přístup k dětem — syn se na tréninky pokaždé těší a je vidět velký posun.", rvAuthor: "Rodič" },
+];
+
 function Counter({ to, suffix }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -215,9 +220,10 @@ export default function Home() {
   const pc = PERSONA_COLOR[p.key];
   const marquee = featured.length ? [...featured, ...featured] : [];
   // pás ověřených lidí s hodnocením (reální; když jich je málo, padne to na hodnotové hlášky)
-  const useRealStrip = stripData.length >= 1;
-  const reps = stripData.length ? Math.max(2, Math.ceil(8 / stripData.length)) : 0;
-  const stripLoop = Array.from({ length: reps }, () => stripData).flat();
+  const stripSource = [DEMO_STRIP[0], ...stripData]; // Jirka navrch (dočasně), pak reálné profily
+  const useRealStrip = stripSource.length >= 1;
+  const reps = Math.max(2, Math.ceil(8 / stripSource.length));
+  const stripLoop = Array.from({ length: reps }, () => stripSource).flat();
 
   return (
     <>
@@ -275,7 +281,7 @@ export default function Home() {
             <div className="testi-strip testi-strip-people rv" aria-label="Ověřené profily s recenzemi">
               <div className="testi-track">
                 {stripLoop.map((f, i) => (
-                  <Link href={`/trener/${f.id}`} className="tstrip-person" key={i}>
+                  <Link href={f.id === "jirka-demo" ? "/trener" : `/trener/${f.id}`} className="tstrip-person" key={i}>
                     <span className="tsp-ava" style={f.photo_url ? { backgroundImage: `url(${f.photo_url})` } : undefined}>
                       {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
                     </span>

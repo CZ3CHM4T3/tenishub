@@ -1441,7 +1441,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .testi-strip-people .testi-track { gap: 1.3rem; animation-duration: 110s; }
 .tstrip-person { display: inline-flex; align-items: center; gap: 0.7rem; white-space: nowrap; text-decoration: none; background: #fff; border: 1px solid #e7ddc9; border-radius: 14px; padding: 0.45rem 0.95rem 0.45rem 0.45rem; box-shadow: 0 3px 12px -7px rgba(20,40,28,.4); transition: transform .15s ease, box-shadow .15s ease; }
 .tstrip-person:hover { transform: translateY(-2px); box-shadow: 0 9px 18px -8px rgba(20,40,28,.45); border-color: var(--gold-l, #d9c48a); }
-.tsp-ava { width: 42px; height: 42px; border-radius: 11px; flex: none; background: var(--green); background-size: cover; background-position: center; color: #fff; font-weight: 800; font-size: 1.05rem; display: grid; place-items: center; }
+.tsp-ava { width: 42px; height: 42px; border-radius: 11px; flex: none; background: var(--green); background-size: cover; background-position: center top; color: #fff; font-weight: 800; font-size: 1.05rem; display: grid; place-items: center; }
 .tsp-txt { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .tsp-txt b { font-size: 0.92rem; color: var(--ink); font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; }
 .tsp-rv { font-size: 0.8rem; color: var(--muted); font-style: italic; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
