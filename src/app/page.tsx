@@ -327,17 +327,19 @@ export default function Home() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img className="wt-figure" src="/jirka.png" alt="Jiří Machek — spoluzakladatel akademie MS GEM" onError={(e) => { e.currentTarget.style.visibility = "hidden"; }} />
                 {/* text dole vpravo — zrcadlově k „Rodič & dítě" vlevo */}
+                {/* kredit o Jirkovi — NALEVO od něj */}
+                <span className="wt-cred">
+                  <span className="wt-cred-logo" aria-hidden="true">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                  </span>
+                  <span className="wt-cred-txt"><b>Jiří Machek</b><span>spoluzakladatel akademie MS GEM</span></span>
+                </span>
+                {/* obecné info — NAPRAVO dole (zrcadlově k „Rodič a dítě") */}
                 <span className="world-in wt-in">
                   <span className="world-tag">Trenéři a kluby</span>
                   <span className="wt-head">Získejte nefér výhodu proti konkurenci</span>
                   <span className="wt-sub">Profil a rozhraní <b>zdarma</b>. Vlastní klub a strom dovedností po svém.</span>
-                  <span className="wt-cred">
-                    <span className="wt-cred-logo" aria-hidden="true">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/msgem-logo.png" alt="MS GEM" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                    </span>
-                    <span className="wt-cred-txt"><b>Jiří Machek</b><span>spoluzakladatel tenisové a fitness akademie MS GEM</span></span>
-                  </span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>

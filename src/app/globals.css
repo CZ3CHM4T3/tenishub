@@ -3079,20 +3079,20 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-pin-badge{fill:#e9c877;stroke:#fff;stroke-width:1.6}
 .wt-pin-tick{fill:none;stroke:#1c2a16;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 /* Jirka — mírně doleva, před mapou */
-.wt-figure{position:absolute;right:21%;bottom:0;height:80%;width:auto;z-index:3;pointer-events:none;
+.wt-figure{position:absolute;right:23%;bottom:0;height:64%;width:auto;z-index:3;pointer-events:none;
   filter:drop-shadow(9px 14px 22px rgba(0,0,0,.42));object-fit:contain;object-position:bottom center}
 /* text dole vpravo — zrcadlo k „Rodič & dítě" (dole vlevo) */
 .wt-in{position:relative;z-index:4;margin-left:auto;align-items:flex-end;text-align:right;max-width:19rem;gap:.5rem}
 .world-trainer .world-tag{font-size:clamp(1.15rem,2vw,1.7rem);line-height:1.05}
 .wt-head{font-weight:800;font-size:clamp(1rem,1.55vw,1.35rem);color:#fff;line-height:1.15;text-wrap:balance;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .wt-sub{color:#e2ece5;font-size:.82rem;line-height:1.4;margin-top:-.1rem;text-shadow:0 1px 6px rgba(0,0,0,.55);max-width:26ch}
-/* kredit Jirky + logo MS GEM */
-.wt-cred{display:flex;align-items:center;justify-content:flex-end;gap:.55rem;margin-top:.35rem}
-.wt-cred-txt{display:flex;flex-direction:column;text-align:right;line-height:1.2;min-width:0}
-.wt-cred-txt b{color:#fff;font-size:.9rem;text-shadow:0 1px 6px rgba(0,0,0,.5)}
-.wt-cred-txt>span{color:#dfe9e2;font-size:.74rem;max-width:22ch;text-wrap:balance;text-shadow:0 1px 6px rgba(0,0,0,.5)}
-.wt-cred-logo{background:#fff;border-radius:8px;padding:.28rem .45rem;display:inline-flex;align-items:center;justify-content:center;flex:none}
-.wt-cred-logo img{height:26px;width:auto;display:block;object-fit:contain}
+/* kredit Jirky + logo MS GEM — NALEVO od postavy */
+.wt-cred{position:absolute;z-index:4;bottom:5%;left:47.5%;width:122px;display:flex;flex-direction:column;align-items:flex-start;gap:.3rem}
+.wt-cred-txt{display:flex;flex-direction:column;text-align:left;line-height:1.18;min-width:0}
+.wt-cred-txt b{color:#fff;font-size:.82rem;text-shadow:0 1px 6px rgba(0,0,0,.55)}
+.wt-cred-txt>span{color:#dfe9e2;font-size:.66rem;line-height:1.25;text-shadow:0 1px 6px rgba(0,0,0,.55)}
+.wt-cred-logo{background:#fff;border-radius:7px;padding:.22rem .38rem;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.wt-cred-logo img{height:22px;width:auto;display:block;object-fit:contain}
 @media(max-width:640px){.wt-head{font-size:1rem}.wt-sub{display:none}}
 @media(max-width:700px){
   .wt-in{max-width:66%}
