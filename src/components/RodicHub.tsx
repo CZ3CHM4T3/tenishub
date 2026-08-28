@@ -6,6 +6,7 @@
 // ale zamčené → klik vede na registraci. Člen (canPost) má vše odemčené a proklik funguje.
 import Link from "next/link";
 import { useMe } from "@/lib/useMe";
+import { HubBadge } from "@/components/HubBadge";
 import {
   MapPin, MessageSquare, Route, MessageSquareHeart, Handshake, MessagesSquare,
   BookOpen, CalendarDays, Repeat, Car, Lock, ArrowRight, Sparkles,
@@ -43,7 +44,7 @@ export function RodicHub() {
             const Inner = (
               <>
                 <span className="rhub-ic" style={{ background: tl.c }}><tl.Icon size={20} /></span>
-                <div className="rhub-txt"><b>{tl.t}</b><span className="rhub-desc">{tl.d}</span></div>
+                <div className="rhub-txt"><b>{tl.t} <HubBadge /></b><span className="rhub-desc">{tl.d}</span></div>
                 <span className={member ? "rhub-go" : "rhub-lock"}>{member ? <ArrowRight size={17} /> : <Lock size={15} />}</span>
               </>
             );

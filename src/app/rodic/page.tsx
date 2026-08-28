@@ -30,11 +30,10 @@ export default function RodicPage() {
         <p className="lead rv d1">Chceme vás <b>informovat</b>, vaše dítě <b>chránit</b>, zkvalitnit mu <b>přípravu</b> — a hlavně vám <b>ušetřit stres</b>. Najděte ověřeného trenéra i kurt, veďte dítě celou sezónou bez vyhoření a mějte odborníky i komunitu po ruce. To je členství <b>HUB+</b>.</p>
 
         <div className="rv d1"><CoachFeed /></div>
-        <div className="rv d1"><RodicHub /></div>
 
-        {/* PROČ TO DĚLÁME — rodičovská infografika */}
+        {/* PROČ HUB+ — infografika nahoře */}
         <div className="rodic-why rv d1">
-          <span className="cena-eyebrow">Proč platíme za HUB+ (a proč to dává smysl)</span>
+          <span className="cena-eyebrow">Proč se HUB+ vyplatí</span>
           <h2>Co pro vás a vaše dítě děláme</h2>
           <div className="rodic-why-grid four">
             <div className="rodic-why-card"><span className="rww-ic"><BookOpen size={20} /></span><b>Informujeme</b><span>Rady odborníků, návody, poradna a kalendář — víte, co a proč, místo bloudění po internetu.</span></div>
@@ -42,11 +41,22 @@ export default function RodicPage() {
             <div className="rodic-why-card"><span className="rww-ic"><Gauge size={20} /></span><b>Zkvalitňujeme přípravu</b><span>Moje cesta hlídá poměr tréninku a volna, výsledky i formu — dítě roste bez přetížení.</span></div>
             <div className="rodic-why-card"><span className="rww-ic"><Heart size={20} /></span><b>Šetříme vám stres</b><span>Najít, rezervovat, poradit se, sledovat pokrok — na pár kliků. Míň starostí, víc klidu.</span></div>
           </div>
-          <div className="rodic-why-cta">
-            <div><b>To všechno za 99 Kč / měsíc</b><span> — zlomek ceny jediné lekce. Zakládající cena napořád (od Nového roku 199).</span></div>
-            <Link href="/pristup" className="btn btn-green">Chci HUB+ <ArrowRight size={16} /></Link>
+        </div>
+
+        {/* ZAKLÁDAJÍCÍ CENA — jasně, nahoře */}
+        <div className="rodic-price rv d1">
+          <div className="rodic-price-in">
+            <span className="rodic-price-tag">Zakládající cena</span>
+            <div className="rodic-price-txt">
+              <b>Přidejte se letos = 99 Kč / měsíc napořád.</b>
+              <span>Kdo se přidá od Nového roku, platí 199 Kč / měsíc. Vyzkoušejte týden zdarma (bez karty).</span>
+            </div>
+            <Link href="/pristup" className="btn btn-gold">Chci HUB+ <ArrowRight size={16} /></Link>
           </div>
         </div>
+
+        {/* SLUŽBY — co vše je v HUB+ */}
+        <div className="rv d1"><RodicHub /></div>
 
         {/* FAQ */}
         <h2 className="rodic-plan-h rv" style={{ marginTop: "2.2rem" }}>Časté otázky rodičů</h2>

@@ -3335,6 +3335,14 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rodic-why-cta{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1rem;padding:1rem 1.2rem;border-radius:14px;background:var(--soft,#f4efe2);border:1px solid var(--line)}
 .rodic-why-cta b{color:var(--green-d,#1c3025);font-size:1.05rem}
 .rodic-why-cta span{color:var(--muted);font-size:.88rem}
+/* Zakládající cena — výrazný banner */
+.rodic-price{margin:1.4rem 0}
+.rodic-price-in{display:flex;align-items:center;gap:1rem 1.2rem;flex-wrap:wrap;padding:1.1rem 1.3rem;border-radius:16px;background:linear-gradient(120deg,#2c4a3b,#22382c);color:#fff;box-shadow:0 10px 26px -14px rgba(20,40,28,.5)}
+.rodic-price-tag{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#22382c;background:var(--gold,#bf9a47);padding:.28rem .55rem;border-radius:7px;white-space:nowrap}
+.rodic-price-txt{flex:1;min-width:220px;display:flex;flex-direction:column;gap:.15rem}
+.rodic-price-txt b{font-size:1.08rem;color:#fff}
+.rodic-price-txt span{font-size:.86rem;color:rgba(255,255,255,.8)}
+.rodic-price .btn{margin-left:auto}
 @media(max-width:900px){.rodic-why-grid.four{grid-template-columns:repeat(2,1fr)}}
 .rodic-why-card{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem}
 .rodic-why-card .rww-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:#e2efe9;color:#2f5d57;margin-bottom:.2rem}
@@ -3535,6 +3543,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rp-txt>span{color:var(--muted);font-size:.84rem;line-height:1.35}
 .rp-free{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#2f5d57;background:#e2efe9;padding:.1rem .35rem;border-radius:5px}
 .rp-hub{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:5px}
+/* Jednotný štítek HUB+ (celý web) */
+.hub-badge{display:inline-flex;align-items:center;gap:.22rem;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--gold);background:#f6efdd;border:1px solid #e7d7ad;padding:.12rem .42rem;border-radius:6px;line-height:1;white-space:nowrap;vertical-align:middle}
 .rp-exp{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#864a59;background:#f2e5e9;padding:.1rem .35rem;border-radius:5px}
 
 /* ===== Nástěnka + Akce (trenér) ===== */
