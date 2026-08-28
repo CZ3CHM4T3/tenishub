@@ -3526,6 +3526,15 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .shtab-sluzby.on{background:#6a52c8;border-color:#5a45ac;box-shadow:0 6px 16px -8px rgba(106,82,200,.7)}
 .shtab-najdi.on{background:#3670a8;border-color:#2c5c8c;box-shadow:0 6px 16px -8px rgba(54,112,168,.7)}
 .shtab.open{filter:brightness(.96)}
+/* ČLENSKÉ patro — druhá řada pod outer menu, jen po přihlášení */
+.shmember{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;padding:.5rem 0 .1rem;margin-top:.35rem;border-top:1px solid #e6ddc9}
+/* locked/neaktivní záložka — jednotný „zamčený" look (zámek), napříč webem stejný */
+.shtab-locked{opacity:.6;cursor:default;filter:grayscale(.25)}
+.shtab-locked:hover{transform:none}
+.shtab-locked svg:last-child{margin-left:1px;opacity:.8}
+@media(max-width:760px){.shmember{display:none}}
+.mnav-sep{display:block;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:.4rem 0 .1rem}
+.mnav-locked{display:block;color:var(--muted);opacity:.7;padding:.3rem 0}
 /* pravý roh: obálka + kolečko */
 .authr{display:flex;align-items:center;gap:.5rem;position:relative}
 .authr-mail{position:relative;display:inline-flex;color:var(--ink);text-decoration:none;padding:.3rem}

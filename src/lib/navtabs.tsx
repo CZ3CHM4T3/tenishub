@@ -1,37 +1,31 @@
-import { UserRound, School, MapPin, LayoutGrid, type LucideIcon } from "lucide-react";
+import { UserRound, School, LayoutGrid, type LucideIcon } from "lucide-react";
 
-export type TabAccent = "profil" | "klub" | "sluzby" | "najdi";
-export type SubItem = { label: string; href: string };
-export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent: TabAccent; group?: SubItem[] };
+export type TabAccent = "profil" | "klub" | "sluzby";
+export type NavTab = { label: string; href: string; Icon: LucideIcon; accent: TabAccent; locked?: boolean };
 
-// Hlavní záložky nahoře. 4 pevné identity (každá má svou barvu):
-//  Profil (zelená) · Můj klub (zlatá) · Služby (fialová) · Najdi = mapa+hledání (modrá).
-// „Moje děti" NENÍ v liště — patří dovnitř Profilu (odtud se načítají do všeho).
+// ČLENSKÉ patro (vyjede pod outer menu po přihlášení): Profil · Můj klub · Služby.
+// „Mapa služeb" NENÍ tady — je v outer menu. „Můj klub" je zatím LOCKED (staví se).
 const PROFIL: NavTab = { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound, accent: "profil" };
-const SLUZBY: NavTab = { label: "Služby", href: "/domu", Icon: LayoutGrid, accent: "sluzby" };
-const NAJDI: NavTab = { label: "Najdi", href: "/mapa", Icon: MapPin, accent: "najdi" };
-const KLUB_TRENER: NavTab = { label: "Můj klub", href: "/klub", Icon: School, accent: "klub" };
-const KLUB_RODIC: NavTab = { label: "Můj klub", href: "/deti", Icon: School, accent: "klub" };
+const SLUZBY: NavTab = { label: "Služby", href: "/sluzby", Icon: LayoutGrid, accent: "sluzby" };
+const KLUB_TRENER: NavTab = { label: "Můj klub", href: "/klub", Icon: School, accent: "klub", locked: true };
+const KLUB_RODIC: NavTab = { label: "Můj klub", href: "/deti", Icon: School, accent: "klub", locked: true };
 
+// Zatím děláme jen rodiče a trenéra. Ostatní role = základ (Profil + Služby).
 export const ROLE_TABS: Record<string, NavTab[]> = {
-  // Rodičův „Můj klub" = /deti (klub trenéra dítěte: nástěnka, napojení kódem, pokrok).
-  rodic: [PROFIL, KLUB_RODIC, SLUZBY, NAJDI],
-  trener: [PROFIL, KLUB_TRENER, SLUZBY, NAJDI],
-  vyplet: [PROFIL, SLUZBY, NAJDI],
-  // Hráč (dospělý/amatér) — sparring je jedna z jeho funkcí, ne samostatná role.
-  hrac: [PROFIL, SLUZBY, NAJDI],
-  // alias pro starší účty, které mají v rolích „sparring" (mapuje na totéž co hráč)
-  sparring: [PROFIL, SLUZBY, NAJDI],
-  fyzio: [PROFIL, SLUZBY, NAJDI],
-  fitness: [PROFIL, SLUZBY, NAJDI],
+  rodic: [PROFIL, KLUB_RODIC, SLUZBY],
+  trener: [PROFIL, KLUB_TRENER, SLUZBY],
+  vyplet: [PROFIL, SLUZBY],
+  hrac: [PROFIL, SLUZBY],
+  sparring: [PROFIL, SLUZBY],
+  fyzio: [PROFIL, SLUZBY],
+  fitness: [PROFIL, SLUZBY],
 };
 
-// Je záložka aktivní podle aktuální cesty? (jedna identita může pokrývat víc cest)
+// Je členská záložka aktivní podle aktuální cesty?
 export function tabActive(accent: TabAccent, pathname: string): boolean {
   if (accent === "profil") return pathname.startsWith("/ucet") || pathname.startsWith("/moje-cesta");
   if (accent === "klub") return pathname.startsWith("/klub") || pathname.startsWith("/deti");
-  if (accent === "sluzby") return pathname.startsWith("/domu") || pathname.startsWith("/sluzby") || pathname.startsWith("/pro-koho");
-  if (accent === "najdi") return pathname.startsWith("/mapa") || pathname.startsWith("/tenis");
+  if (accent === "sluzby") return pathname.startsWith("/sluzby") || pathname.startsWith("/domu");
   return false;
 }
 

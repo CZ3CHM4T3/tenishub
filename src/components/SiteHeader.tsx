@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { isHiddenRole } from "@/lib/simplify";
-import { ChevronDown, Mail, ShieldCheck, LogOut, Search } from "lucide-react";
+import { ChevronDown, Mail, ShieldCheck, LogOut, Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getViewAs } from "@/lib/viewAs";
 import { tabsForRoles, tabActive, type NavTab } from "@/lib/navtabs";
@@ -94,39 +94,20 @@ export function SiteHeader() {
             <img src="/logo-tenishub.png" alt="TenisHub" className="brand-img" />
           </Link>
 
-          {/* NAV — marketing (odhlášený) nebo role-záložky (přihlášený) */}
-          {ready && logged ? (
-            <nav className="menu shmenu">
-              {tabs.map((t) => (
-                t.group ? (
-                  <div className="nav-item" key={t.label}>
-                    <button className={`shtab${openMenu === t.label ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === t.label ? null : t.label))}><t.Icon size={16} /> {t.label} <ChevronDown size={13} /></button>
-                    <div className={`drop${openMenu === t.label ? " open" : ""}`}><div className="drop-inner">
-                      {t.group.map((s) => <Link key={s.href} className="drop-card" href={s.href}><b>{s.label}</b></Link>)}
-                    </div></div>
-                  </div>
-                ) : (
-                  <Link key={t.label} className={`shtab shtab-${t.accent}${tabActive(t.accent, pathname) ? " on" : ""}`} href={t.href!}>
-                    {t.accent === "najdi" ? <span className="shtab-najdi-ic"><Search size={15} /><t.Icon size={16} /></span> : <t.Icon size={16} />} {t.label}
-                  </Link>
-                )
-              ))}
-            </nav>
-          ) : (
-            <nav className="menu">
-              <div className="nav-item">
-                <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
-                <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
-                  {MARKETING_ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
-                    <Link key={k} className="drop-card" href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
-                  ))}
-                </div></div>
-              </div>
-              <Link className="nav-link" href="/mapa">Mapa služeb</Link>
-              <Link className="nav-link" href="/clenstvi">Členství</Link>
-              <Link className="nav-link" href="/o-nas">O nás</Link>
-            </nav>
-          )}
+          {/* OUTER MENU — veřejné, vždy (i nepřihlášený) */}
+          <nav className="menu">
+            <div className="nav-item">
+              <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
+              <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
+                {MARKETING_ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
+                  <Link key={k} className="drop-card" href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
+                ))}
+              </div></div>
+            </div>
+            <Link className="nav-link" href="/mapa">Mapa služeb</Link>
+            <Link className="nav-link" href="/clenstvi">Členství</Link>
+            <Link className="nav-link" href="/o-nas">O nás</Link>
+          </nav>
 
           <div className="nav-r">
             {ready && logged ? (
@@ -142,22 +123,40 @@ export function SiteHeader() {
           </div>
         </div>
 
+        {/* ČLENSKÉ patro — vyjede pod outer menu jen po přihlášení */}
+        {ready && logged && tabs.length > 0 && (
+          <div className="shmember">
+            {tabs.map((t) => t.locked ? (
+              <span key={t.label} className={`shtab shtab-${t.accent} shtab-locked`} title="Připravujeme">
+                <t.Icon size={16} /> {t.label} <Lock size={12} />
+              </span>
+            ) : (
+              <Link key={t.label} className={`shtab shtab-${t.accent}${tabActive(t.accent, pathname) ? " on" : ""}`} href={t.href}>
+                <t.Icon size={16} /> {t.label}
+              </Link>
+            ))}
+          </div>
+        )}
+
         {mobileOpen && (
           <nav className="mnav" onClick={() => setMobileOpen(false)}>
+            {/* outer — vždy */}
+            <Link href="/rodic">Rodič &amp; dítě</Link>
+            <Link href="/pro-trenery">Trenér</Link>
+            <Link href="/mapa">Mapa služeb</Link>
+            <Link href="/clenstvi">Členství</Link>
+            <Link href="/o-nas">O nás</Link>
             {ready && logged ? (<>
-              {tabs.flatMap((t) => t.group
-                ? t.group.map((s) => <Link key={s.href} href={s.href}>{s.label}</Link>)
-                : [<Link key={t.label} href={t.href!}>{t.label}</Link>])}
+              <span className="mnav-sep">Moje</span>
+              {tabs.map((t) => t.locked
+                ? <span key={t.label} className="mnav-locked">{t.label} · brzy</span>
+                : <Link key={t.label} href={t.href}>{t.label}</Link>)}
               <Link href="/zpravy">Zprávy{unread > 0 ? ` (${unread})` : ""}</Link>
               {isAdmin && <Link href="/admin">Administrace</Link>}
               <button type="button" className="mnav-logout" onClick={logout}>Odhlásit se</button>
-            </>) : (<>
-              <Link href="/rodic">Rodič &amp; dítě</Link>
-              <Link href="/pro-trenery">Trenér</Link>
-              <Link href="/mapa">Mapa služeb</Link>
-              <Link href="/clenstvi">Členství</Link>
-              <Link href="/o-nas">O nás</Link>
-            </>)}
+            </>) : (
+              <Link href="/prihlaseni">Přihlásit se</Link>
+            )}
           </nav>
         )}
       </div>
