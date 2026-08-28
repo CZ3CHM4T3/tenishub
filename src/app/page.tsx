@@ -22,57 +22,6 @@ import {
   CalendarDays, Target, BarChart3, History,
 } from "lucide-react";
 
-/* ── Persony: srovnání Zdarma vs HUB+ (placené = vše zdarma + navíc) ── */
-type IconType = ComponentType<{ size?: number; style?: Record<string, string> }>;
-type Persona = {
-  key: string; Icon: IconType; label: string; promise: string;
-  free: string[]; plus: string[];
-};
-const PERSONAS: Persona[] = [
-  { key: "trener", Icon: WhistleIcon, label: "Trenér", promise: "Víc klientů, míň papírování, plný kalendář.",
-    free: ["Profil na mapě zdarma (pin + jméno + web)", "Být k nalezení na mapě a v katalogu", "Veřejné recenze"],
-    plus: ["Online rezervace 24/7 — plný kalendář, konec telefonování a SMS", "Platby předem (Barion) — žádní neplatiči ani no-show", "Správa svěřenců + docházka a omluvenky online (konec papírků)", "Rodiče vidí pokrok dětí přes Moji cestu — děti u vás zůstanou", "Leady z mapy a katalogu — noví klienti vám sami napíšou"] },
-  { key: "rodic-hobby", Icon: Users, label: "Rodič hobby hráče", promise: "Najdi, rezervuj, zaplať — a měj klid.",
-    free: ["Hledání trenérů a klubů", "Profily a recenze", "Prohlížení sparring nabídek"],
-    plus: ["Moje cesta — deník tréninků a volna dítěte", "Rezervace a platby na pár kliků", "Zprávy trenérům", "Přehled dítěte (rozvrh, platby)", "Články a FAQ návody"] },
-  { key: "rodic-zavodni", Icon: Trophy, label: "Rodič závodního hráče", promise: "Celá cesta dítěte pod kontrolou.",
-    free: ["Hledání špičkových specialistů", "Profily a recenze", "Veřejné žebříčky"],
-    plus: ["Moje cesta — kalendář kariéry dítěte", "Profil hráče — výsledky a vývoj", "Plánovač turnajů", "Tréninkový checklist", "Sparring podle výkonnosti"] },
-  { key: "hrac-amater", Icon: IconRun, label: "Hráč amatér", promise: "Vždycky s kým a kde hrát.",
-    free: ["Mapa kurtů a trenérů", "Prohlížení sparringu", "Veřejné žebříčky"],
-    plus: ["Rezervace kurtů a lekcí", "Sparring matchmaking", "Statistiky zápasů", "Ligy a výzvy", "Články a FAQ návody"] },
-  { key: "hrac-zavodni", Icon: IconRun, label: "Hráč závodní", promise: "Celý tvůj tenisový tým na jednom místě.",
-    free: ["Mapa specialistů", "Veřejné žebříčky", "Prohlížení sparringu"],
-    plus: ["Rezervace u trenéra i klubu", "Profil hráče a statistiky", "Plánovač turnajů", "Video-analýza", "Články a FAQ návody"] },
-  { key: "sparring", Icon: Handshake, label: "Sparring partner", promise: "Nabídni se a hraj víc.",
-    free: ["Prohlížení nabídek na mapě"],
-    plus: ["Vlastní sparring inzerát", "Kontaktovat parťáka", "Matchmaking podle úrovně", "Hodnocení po zápase", "Články a FAQ návody"] },
-  { key: "areal", Icon: Building2, label: "Klub / areál", promise: "Plné kurty, míň práce.",
-    free: ["Profil areálu na mapě", "Kontakty a otevírací doba"],
-    plus: ["Rezervační systém + platby", "Obsaď volný kurt teď", "Statistiky vytíženosti", "Napojení trenérů", "Články a FAQ návody"] },
-  { key: "fyzio", Icon: HeartPulse, label: "Fyzioterapeut", promise: "Noví klienti z tenisu, co řeší tělo.",
-    free: ["Profil fyzia na mapě", "Veřejné recenze"],
-    plus: ["Online objednávky termínů", "Poptávky od hráčů (leady)", "Rehabilitační plány online", "Plná karta (foto, ceník, bio)", "Články a FAQ návody"] },
-  { key: "fitness", Icon: Dumbbell, label: "Fitness trenér", promise: "Kondiční klienti přímo z tenisu.",
-    free: ["Profil na mapě", "Veřejné recenze"],
-    plus: ["Online objednávky tréninků", "Poptávky od hráčů a rodičů", "Prodej kondičních programů", "Plná karta (foto, ceník, bio)", "Články a FAQ návody"] },
-];
-
-// barva role (sladěná s plástí) — pro barevné odlišení v sekci „Pro koho"
-const PERSONA_COLOR: Record<string, { c: string; t: string }> = {
-  trener: { c: "#7C4DD6", t: "#EEEDFE" },
-  "rodic-hobby": { c: "#7c6018", t: "#F2EAD6" },
-  "rodic-zavodni": { c: "#7c6018", t: "#F2EAD6" },
-  "hrac-amater": { c: "#3b5666", t: "#E5ECF1" },
-  "hrac-zavodni": { c: "#3b5666", t: "#E5ECF1" },
-  sparring: { c: "#8a5640", t: "#F2E6DF" },
-  areal: { c: "#2f5d57", t: "#E0EBE9" },
-  fyzio: { c: "#864a59", t: "#F2E5E9" },
-  fitness: { c: "#4a5b86", t: "#E8ECF4" },
-};
-
-// Zjednodušený web: skryté persony (fitness/fyzio/hráč) — viz lib/simplify.
-const VISIBLE_PERSONAS = PERSONAS.filter((p) => !isHiddenRole(p.key.split("-")[0]));
 
 // Obrys ČR pro dekorativní 3D mapu na trenérské dlaždici (z reálných souřadnic).
 const CZ_MAP =
@@ -126,11 +75,6 @@ const KIND_META: Record<string, { label: string; Icon: LucideIcon }> = {
   academy: { label: "Akademie", Icon: GraduationCap },
 };
 
-// Dočasná ukázka do pásu (než budou reálné ověřené profily). Přepíše se daty z DB.
-const DEMO_STRIP = [
-  { id: "jirka-demo", name: "Jiří Machek", kind: "coach", city: "Dobřichovice", rating: 5, photo_url: "/jirka.png", rvText: "Skvělý přístup k dětem — syn se na tréninky pokaždé těší a je vidět velký posun.", rvAuthor: "Rodič" },
-];
-
 function Counter({ to, suffix }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -157,7 +101,6 @@ function Counter({ to, suffix }: { to: number; suffix?: string }) {
 }
 
 export default function Home() {
-  const [persona, setPersona] = useState(0);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -217,13 +160,10 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const p = VISIBLE_PERSONAS[persona];
-  const PIcon = p.Icon;
-  const pc = PERSONA_COLOR[p.key];
-  // pás ověřených lidí s hodnocením (reální; když jich je málo, padne to na hodnotové hlášky)
-  const stripSource = [DEMO_STRIP[0], ...stripData]; // Jirka navrch (dočasně), pak reálné profily
+  // pás ověřených profilů s recenzemi (jen reální; když nejsou, pás se skryje)
+  const stripSource = stripData;
   const useRealStrip = stripSource.length >= 1;
-  const reps = Math.max(2, Math.ceil(8 / stripSource.length));
+  const reps = Math.max(2, Math.ceil(8 / Math.max(1, stripSource.length)));
   const stripLoop = Array.from({ length: reps }, () => stripSource).flat();
 
   return (
@@ -281,7 +221,7 @@ export default function Home() {
             <div className="testi-strip testi-strip-people rv" aria-label="Ověřené profily s recenzemi">
               <div className="testi-track">
                 {stripLoop.map((f, i) => (
-                  <Link href={f.id === "jirka-demo" ? "/trener" : `/trener/${f.id}`} className="tstrip-person" key={i}>
+                  <Link href={`/trener/${f.id}`} className="tstrip-person" key={i}>
                     <span className="tsp-ava" style={f.photo_url ? { backgroundImage: `url(${f.photo_url})` } : undefined}>
                       {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
                     </span>
@@ -427,87 +367,7 @@ export default function Home() {
 
 
 
-      {/* PRO KOHO — přesunuto na /clenstvi (na homepage skryto) */}
-      {false && (
-      <section className="sec who-sec" id="proKoho">
-        <div className="wrap">
-          <span className="eyebrow rv l">Pro koho</span>
-          <h2 className="rv l">Co tím získáš ty?</h2>
-          <p className="lead rv l">Vyber, kdo jsi — uvidíš, co ti TenisHub usnadní.</p>
-
-          <div className="persona-tabs rv l d1">
-            {VISIBLE_PERSONAS.map((pp, i) => {
-              const TIcon = pp.Icon;
-              const col = PERSONA_COLOR[pp.key];
-              const on = i === persona;
-              return (
-                <button
-                  key={pp.key}
-                  className={`ptab${on ? " on" : ""}`}
-                  onClick={() => setPersona(i)}
-                  type="button"
-                  style={on ? { background: col.t, color: col.c, borderColor: col.c } : undefined}
-                >
-                  <TIcon size={16} style={{ color: col.c }} /> {pp.label}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="persona-panel" key={p.key} style={{ borderTop: `3px solid ${pc.c}` }}>
-            <div className="persona-promise"><span className="pp-ic" style={{ background: pc.t, color: pc.c }}><PIcon size={22} /></span> <span style={{ color: pc.c }}>{p.promise}</span></div>
-
-            <table className="plan-table">
-              <thead>
-                <tr>
-                  <th />
-                  <th>Zdarma</th>
-                  <th><span className="th-plus">HUB+</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                {p.free.map((f) => (
-                  <tr key={f}>
-                    <td>{f}</td>
-                    <td className="pt-ok"><Check size={16} strokeWidth={3} /></td>
-                    <td className="pt-ok pt-gold"><Check size={16} strokeWidth={3} /></td>
-                  </tr>
-                ))}
-                {p.plus.map((f) => (
-                  <tr key={f}>
-                    <td>{f}</td>
-                    <td className="pt-no">—</td>
-                    <td className="pt-ok pt-gold"><Check size={16} strokeWidth={3} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className="persona-cta">
-              <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
-              <Link href="/pristup" className="btn btn-gold">Chci předběžný přístup <ArrowRight className="ic" size={18} /></Link>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* JAK TO FUNGUJE — USPÁNO (najdi–rezervuj–zaplať, oživit později) */}
-      {false && (
-      <section className="sec" id="how">
-        <div className="wrap">
-          <span className="eyebrow rv">Jak to funguje</span>
-          <h2 className="rv">Trenér vede klub, vy sledujete pokrok</h2>
-          <div className="steps">
-            <div className="step rv l d1"><div className="ic-b"><Search /></div><div className="num">01</div><h3>Najdi trenéra</h3><p>Vyber trenéra a jeho klub na mapě — nebo tě trenér pozve svým odkazem.</p></div>
-            <div className="step rv z d2"><div className="ic-b"><Users /></div><div className="num">02</div><h3>Přidej dítě</h3><p>Připoj se k jeho klubu a přidej svoje dítě. Za pár kliků.</p></div>
-            <div className="step rv r d3"><div className="ic-b"><Trophy /></div><div className="num">03</div><h3>Sleduj kariéru</h3><p>Strom dovedností, level a Sparing Cup. Vidíš, jak dítě roste.</p></div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* CENA / ČLENSTVÍ — HUB+ vs PRO + BOOST */}
+      {/* CENA / ČLENSTVÍ — HUB+ / PROFI+ + BOOST */}
       <CenaClenstvi member={isMemberHome} />
 
       {/* CTA */}
