@@ -230,9 +230,12 @@ export default function AccountPage() {
                   ? <>Členství se {fmt(membership.expires_at)} automaticky prodlouží o měsíc ({membership.price_czk} Kč). Prodlužování můžeš kdykoli vypnout — žádná překvapení.</>
                   : <>Prodlužování je vypnuté. Členství doběhne {fmt(membership.expires_at)} a pak ztratíš přístup k funkcím — tady ho obnovíš.</>}
               </p>
-              <button className="btn btn-out" onClick={toggleRenew} disabled={busy}>
-                {membership.auto_renew ? "Vypnout automatické prodloužení" : "Zapnout automatické prodloužení"}
-              </button>
+              <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginTop: ".2rem" }}>
+                <button className="btn btn-out" onClick={toggleRenew} disabled={busy}>
+                  {membership.auto_renew ? "Vypnout automatické prodloužení" : "Zapnout automatické prodloužení"}
+                </button>
+                <BuyMembership plan="hub_plus" label="Zaplatit / prodloužit · 99 Kč" />
+              </div>
             </>
           ) : isMember ? (
             <p className="member-note"><b>Členství HUB+ je aktivní.</b> Máš přístup ke všem funkcím webu — Moje cesta, poradna, sparring, komunita a nástroje.{previewing ? " (náhled role)" : ""}</p>
