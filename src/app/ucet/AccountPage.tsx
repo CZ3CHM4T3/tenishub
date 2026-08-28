@@ -20,10 +20,10 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
 
 // Role = „klobouky". Trenér zdarma (návnada); spotřebitel = HUB+, poskytovatel = Trenér+/Expert+.
 const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; badge?: string; cls?: string; soon?: boolean }[] = [
-  { k: "trener", label: "Trenér", desc: "Profil zdarma (pin, svěřenci, zvací odkaz). Rezervace, kalendář a ověření s Trenér+.", free: true, badge: "zdarma", cls: "rp-free" },
+  { k: "trener", label: "Trenér", desc: "Profil zdarma (pin, svěřenci, zvací odkaz). Rezervace, kalendář a ověření s PROFI+ nebo renomé.", free: true, badge: "zdarma", cls: "rp-free" },
   { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false, badge: "HUB+", cls: "rp-hub" },
   { k: "hrac", label: "Hráč", desc: "Rezervace kurtů, statistiky zápasů — a sparring: najdi si parťáka.", free: false, badge: "HUB+", cls: "rp-hub" },
-  { k: "vyplet", label: "Vyplétač", desc: "Neověřený profil zdarma (pin + web). Objednávky a ověření s Expert+.", free: true, badge: "Expert+", cls: "rp-exp" },
+  { k: "vyplet", label: "Vyplétač", desc: "Neověřený profil zdarma (pin + web). Objednávky a ověření s PROFI+ nebo renomé.", free: true, badge: "PROFI+", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
   { k: "fitness", label: "Fitness trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
@@ -125,8 +125,8 @@ export default function AccountPage() {
   // Placený poskytovatel (Expert+/Trenér+) = plná karta (bio, ceník, foto, dostupnost).
   // Odemkne reálné zaplacené členství (plan) NEBO admin mimo náhled. Free poskytovatel = jen pin + jméno + web.
   const paidPlan = membership?.plan ?? null;
-  const canPro = (realAdmin && !previewing) || paidPlan === "trener_plus" || paidPlan === "expert_plus";
-  const planLabel = ({ hub_plus: "HUB+", trener_plus: "TRENÉR+", expert_plus: "EXPERT+" } as Record<string, string>)[paidPlan ?? ""] ?? "HUB+";
+  const canPro = (realAdmin && !previewing) || paidPlan === "profi_plus" || paidPlan === "trener_plus" || paidPlan === "expert_plus";
+  const planLabel = ({ hub_plus: "HUB+", profi_plus: "PROFI+", trener_plus: "PROFI+", expert_plus: "PROFI+" } as Record<string, string>)[paidPlan ?? ""] ?? "HUB+";
 
   const toggleRole = (k: string, free: boolean, soon?: boolean) => {
     if (soon || previewing) return; // „brzy" role zatím nejdou zapnout; v náhledu se needituje

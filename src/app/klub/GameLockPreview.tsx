@@ -58,7 +58,7 @@ export default function GameLockPreview({ variant, audience = "trener" }: { vari
       <div className="acct-card-head">
         {isTree ? <GitBranch size={20} /> : <Trophy size={20} />}
         <h2>{isTree ? "Strom dovedností" : "Sparing Cup"}</h2>
-        <span className="glp-badge"><Lock size={12} /> {isParent ? "HUB+ · trenér BOOST" : "TRENÉR+"}</span>
+        <span className="glp-badge"><Lock size={12} /> {isParent ? "trenér BOOST" : "BOOST"}</span>
       </div>
       <div className="glp-stage">
         {isTree ? <TreeMock /> : <CupMock />}
@@ -79,7 +79,7 @@ export default function GameLockPreview({ variant, audience = "trener" }: { vari
         {isParent ? (
           <span className="glp-note" style={{ maxWidth: "34ch" }}>Rozsvítí se, až <b>tvůj trenér pořídí BOOST</b> a ty budeš mít HUB+. Dej mu vědět, že bys to chtěl — děti to milují.</span>
         ) : (<>
-          <Link href="/#zeptejte-se" className="btn btn-gold"><Lock size={15} /> Odemknout v TRENÉR+</Link>
+          <Link href="/#zeptejte-se" className="btn btn-gold"><Lock size={15} /> Získat BOOST</Link>
           <span className="glp-note">Součást balíčku Boost — jednorázově.</span>
         </>)}
       </div>

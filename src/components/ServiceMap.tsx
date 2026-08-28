@@ -274,8 +274,8 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
   const variants = sel ? VARIANTS[sel] : undefined;
   const funcKey = variants ? `${sel}:${selVar || variants[0].key}` : sel ?? "";
   const funcs = funcKey ? FUNCS[funcKey] : null;
-  // Placené funkce: poskytovatel = TRENÉR+/EXPERT+, spotřebitel = HUB+.
-  const memberBadge = sel === "trener" ? "TRENÉR+" : ["areal", "fyzio", "fitness", "vyplet"].includes(sel ?? "") ? "EXPERT+" : "HUB+";
+  // Placené funkce: poskytovatel = PROFI+, spotřebitel = HUB+.
+  const memberBadge = ["trener", "areal", "fyzio", "fitness", "vyplet"].includes(sel ?? "") ? "PROFI+" : "HUB+";
 
   const openCard = (key: string) => {
     setSel((v) => (v === key ? null : key));

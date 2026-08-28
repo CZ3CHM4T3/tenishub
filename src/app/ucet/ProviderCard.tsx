@@ -37,7 +37,7 @@ const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); retur
 type Identity = { fullName: string; city: string; phone: string; email: string | null; photoUrl: string | null };
 
 export default function ProviderCard({ userId, identity, roles, canPro }: { userId: string; identity: Identity; roles: string[]; canPro: boolean }) {
-  const proLabel = (key: string) => (key === "trener" ? "Trenér+" : "Expert+");
+  const proLabel = (_key: string) => "PROFI+";
   const tabs = PROV_ORDER.filter((r) => roles.includes(r)); // záložky = zapnuté poskytovatelské role
   const [loading, setLoading] = useState(true);
   const [specsByKind, setSpecsByKind] = useState<Record<string, Spec>>({});
@@ -203,8 +203,8 @@ export default function ProviderCard({ userId, identity, roles, canPro }: { user
           </>) : (
             <div className="pc-lock">
               <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil areálu</b></div>
-              <p>Zdarma máš <b>pin na mapě + název a odkaz na web</b>. Fotku, popis, vybavení, rezervační systém i <b>ověření</b> odemkne <b>Expert+</b>.</p>
-              <BuyMembership plan="expert_plus" label="Chci Expert+ · 299 Kč" />
+              <p>Zdarma máš <b>pin na mapě + název a odkaz na web</b>. Fotku, popis, vybavení, rezervační systém i <b>ověření</b> odemkne <b>PROFI+</b>.</p>
+              <BuyMembership plan="profi_plus" label="Chci PROFI+ · 299 Kč" />
             </div>
           )}
           <div className="card-actions">
@@ -273,7 +273,7 @@ export default function ProviderCard({ userId, identity, roles, canPro }: { user
             <div className="pc-lock">
               <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil</b></div>
               <p>Zdarma máš <b>pin na mapě + jméno a odkaz na web</b>. Fotku, bio, ceník, dostupnost, rezervace i <b>ověření</b> odemkne <b>{proLabel(activeKey)}</b> — vyladěný profil přiláká víc lidí a vypadá líp.</p>
-              <BuyMembership plan={activeKey === "trener" ? "trener_plus" : "expert_plus"} label={`Chci ${proLabel(activeKey)} · 299 Kč`} />
+              <BuyMembership plan="profi_plus" label={`Chci ${proLabel(activeKey)} · 299 Kč`} />
             </div>
           )}
 

@@ -8,8 +8,9 @@ export const runtime = "nodejs";
 // Plány k prodeji (částka + popis + počet měsíců).
 const PLANS: Record<string, { price: number; item: string; months: number }> = {
   hub_plus: { price: 99, item: "Členství HUB+ (1 měsíc)", months: 1 },
-  trener_plus: { price: 299, item: "Členství TRENÉR+ (1 měsíc)", months: 1 },
-  expert_plus: { price: 299, item: "Členství EXPERT+ (1 měsíc)", months: 1 },
+  profi_plus: { price: 299, item: "Členství PROFI+ (1 měsíc)", months: 1 },
+  trener_plus: { price: 299, item: "Členství PROFI+ (1 měsíc)", months: 1 },
+  expert_plus: { price: 299, item: "Členství PROFI+ (1 měsíc)", months: 1 },
 };
 
 export async function POST(req: Request) {

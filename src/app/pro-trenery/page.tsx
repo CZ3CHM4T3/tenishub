@@ -69,7 +69,7 @@ export default function ProTreneryPage() {
         {/* JAK TO FUNGUJE */}
         <section id="jak" className="ptr-sec">
           <h2 className="ptr-h2 rv">Jak to funguje</h2>
-          <p className="ptr-sub rv">Pět kroků od registrace k plně odemčenému prostředí. Členy si pozvete ze své vlastní základny — nikoho nemusíte shánět. <b>Nechcete čekat na 10 členů? TRENÉR+ i nástroje si můžete rovnou předplatit.</b></p>
+          <p className="ptr-sub rv">Pět kroků od registrace k plně odemčenému prostředí. Členy si pozvete ze své vlastní základny — nikoho nemusíte shánět. <b>Nechcete čekat na 10 členů? PROFI+ i nástroje si můžete rovnou předplatit.</b></p>
           <div className="ptr-steps rv d1">
             {STEPS.map((s, i) => (
               <div className="ptr-step" key={i}>

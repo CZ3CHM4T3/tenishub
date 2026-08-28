@@ -6,8 +6,9 @@ export const runtime = "nodejs";
 
 const PLAN_ITEM: Record<string, string> = {
   hub_plus: "Členství HUB+ (1 měsíc)",
-  trener_plus: "Členství TRENÉR+ (1 měsíc)",
-  expert_plus: "Členství EXPERT+ (1 měsíc)",
+  profi_plus: "Členství PROFI+ (1 měsíc)",
+  trener_plus: "Členství PROFI+ (1 měsíc)",
+  expert_plus: "Členství PROFI+ (1 měsíc)",
 };
 
 // Barion po zaplacení zavolá tuhle URL s ?paymentId=... Ověříme stav a aktivujeme členství + fakturu.
