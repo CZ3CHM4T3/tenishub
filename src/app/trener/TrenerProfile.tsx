@@ -8,6 +8,7 @@ const WD_SHORT = ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"];
 const hhmm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 const dayLabel = (d: Date) => `${WD_SHORT[d.getDay()]} ${d.getDate()}. ${d.getMonth() + 1}.`;
 import { SiteHeader } from "@/components/SiteHeader";
+import { RenomeBadge } from "@/components/RenomeBadge";
 import { createClient } from "@/lib/supabase/client";
 
 const DAYS: [string, number][] = [
@@ -36,6 +37,7 @@ export type Spec = {
   phone: string | null; email: string | null; website: string | null;
   price_from: number | null; verified: boolean; rating: number | null; reviews_count: number | null;
   status?: string | null; source?: string | null; photo_url?: string | null; owner_id?: string | null;
+  renome_level?: number | null;
 };
 
 type Modal = null | "msg" | "sent" | "book" | "pay" | "done" | "auth" | "member" | "claim" | "claimSent" | "remove" | "removeSent" | "noowner";
@@ -267,9 +269,11 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           <div className="row">
             <div className="avatar" style={spec?.photo_url ? { backgroundImage: `url(${spec.photo_url})`, backgroundSize: "cover", backgroundPosition: "center", color: "transparent" } : undefined}>{initials}</div>
             <div className="who">
-              {verified
-                ? <span className="verif">✓ Ověřeno TenisHubem</span>
-                : <span className="verif unverif">Čeká na ověření</span>}
+              {(spec?.renome_level ?? 0) > 0
+                ? <RenomeBadge level={spec!.renome_level as number} />
+                : verified
+                  ? <span className="verif">✓ Ověřeno TenisHubem</span>
+                  : <span className="verif unverif">Čeká na ověření</span>}
               <h1>{name}</h1>
               <div className="typ">{typLine}</div>
               {showRate && (

@@ -71,17 +71,19 @@ export default function KlubClient() {
     // Renomé (bonus — ať to nespadne, kdyby RPC/sloupce ještě nebyly)
     try {
       const [{ data: sp }, { data: pm }] = await Promise.all([
-        supabase.from("specialists").select("verified,rating,review_count").eq("owner_id", user.id).limit(1).maybeSingle(),
+        supabase.from("specialists").select("verified,rating,reviews_count").eq("owner_id", user.id).limit(1).maybeSingle(),
         supabase.rpc("coach_paying_members", { p_coach: user.id }),
       ]);
       const metrics = {
         verified: !!(sp as { verified?: boolean } | null)?.verified,
         members: typeof pm === "number" ? pm : 0,
         rating: Number((sp as { rating?: number } | null)?.rating ?? 0),
-        reviews: Number((sp as { review_count?: number } | null)?.review_count ?? 0),
+        reviews: Number((sp as { reviews_count?: number } | null)?.reviews_count ?? 0),
       };
       setRenome(renomeLevel(metrics));
       setRenomeHint(nextRenomeHint(metrics));
+      // ulož úroveň na profil (server ji přepočte z reálných dat) → veřejný profil ji jen čte
+      void supabase.rpc("refresh_renome", { p_coach: user.id });
     } catch { /* renomé je bonus */ }
     if (adminPreview) {
       setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
