@@ -63,7 +63,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
             </ul>
             <p className="cena-value">Jedno místo pro celý klub — a <b>rodiče vás nepustí</b>.</p>
             <Link href="/pro-trenery" className="btn btn-gold cena-cta">Chci TRENÉR+ <ArrowRight size={16} /></Link>
-            <p className="cena-note">Zakládající cena pro první trenéry.</p>
+            <p className="cena-note"><b>Předplať si ho — nebo si ho vysluž růstem klubu:</b> přiveď platící rodiče a od 10 členů máš TRENÉR+ zdarma.</p>
           </div>
         </div>
 
