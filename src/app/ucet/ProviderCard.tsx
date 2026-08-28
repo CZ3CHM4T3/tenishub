@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES } from "@/lib/cities";
-import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck } from "lucide-react";
+import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck, Lock } from "lucide-react";
 
 type Spec = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
@@ -35,7 +35,8 @@ const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); retur
 
 type Identity = { fullName: string; city: string; phone: string; email: string | null; photoUrl: string | null };
 
-export default function ProviderCard({ userId, identity, roles }: { userId: string; identity: Identity; roles: string[] }) {
+export default function ProviderCard({ userId, identity, roles, canPro }: { userId: string; identity: Identity; roles: string[]; canPro: boolean }) {
+  const proLabel = (key: string) => (key === "trener" ? "Trenér+" : "Expert+");
   const tabs = PROV_ORDER.filter((r) => roles.includes(r)); // záložky = zapnuté poskytovatelské role
   const [loading, setLoading] = useState(true);
   const [specsByKind, setSpecsByKind] = useState<Record<string, Spec>>({});
@@ -175,6 +176,7 @@ export default function ProviderCard({ userId, identity, roles }: { userId: stri
       {activeKey === "areal" ? (
         venue ? (<>
           <div className="acct-card-head" style={{ marginTop: 0 }}><Building2 size={18} /><h2 style={{ fontSize: "1.05rem" }}>Areál / klub</h2><VerifyBadge verified={venue.verified} /></div>
+          {canPro && (
           <div className="card-photo">
             <div className="card-photo-prev" style={venue.photo_url ? { backgroundImage: `url(${venue.photo_url})` } : undefined}>
               {!venue.photo_url && <ImagePlus size={26} />}
@@ -184,17 +186,26 @@ export default function ProviderCard({ userId, identity, roles }: { userId: stri
               <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadVenuePhoto(e.target.files[0])} />
             </div>
           </div>
+          )}
           <div className="acct-grid">
             <div className="fld"><label>Název areálu</label><input value={venue.name} onChange={(e) => setVenue({ ...venue, name: e.target.value })} /></div>
             <div className="fld"><label>Město</label>
               <input list="cities-dl2" value={venue.city ?? ""} onChange={(e) => setVenue({ ...venue, city: e.target.value })} placeholder="Praha" />
               <datalist id="cities-dl2">{CITIES.map((c) => <option key={c[0]} value={c[0]} />)}</datalist>
             </div>
-            <div className="fld"><label>Web</label><input value={venue.website ?? ""} onChange={(e) => setVenue({ ...venue, website: e.target.value })} placeholder="www.areal.cz" /></div>
-            <div className="fld"><label>Odkaz na rezervační systém</label><input value={venue.reservation_url ?? ""} onChange={(e) => setVenue({ ...venue, reservation_url: e.target.value })} placeholder="https://rezervace…" /></div>
+            <div className="fld"><label>Odkaz na web (reklama)</label><input value={venue.website ?? ""} onChange={(e) => setVenue({ ...venue, website: e.target.value })} placeholder="www.areal.cz" /></div>
           </div>
+          {canPro ? (<>
+          <div className="fld"><label>Odkaz na rezervační systém</label><input value={venue.reservation_url ?? ""} onChange={(e) => setVenue({ ...venue, reservation_url: e.target.value })} placeholder="https://rezervace…" /></div>
           <div className="fld"><label>Popis</label><textarea rows={4} value={venue.description ?? ""} onChange={(e) => setVenue({ ...venue, description: e.target.value })} placeholder="Počet kurtů, povrch, hala, zázemí…" /></div>
           <div className="fld"><label>Vybavení (oddělené čárkou)</label><input value={(venue.amenities ?? []).join(", ")} onChange={(e) => setVenue({ ...venue, amenities: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="antuka, hala, šatny, bistro" /></div>
+          </>) : (
+            <div className="pc-lock">
+              <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil areálu</b></div>
+              <p>Zdarma máš <b>pin na mapě + název a odkaz na web</b>. Fotku, popis, vybavení, rezervační systém i <b>ověření</b> odemkne <b>Expert+</b>.</p>
+              <Link href="/pristup" className="btn btn-gold">Chci Expert+</Link>
+            </div>
+          )}
           <div className="card-actions">
             <button className="btn btn-green" onClick={saveVenue} disabled={busy}>{saved || "Uložit areál"}</button>
             <Link href={`/areal/${venue.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
@@ -219,9 +230,11 @@ export default function ProviderCard({ userId, identity, roles }: { userId: stri
               <p className="hint">Jméno, město, telefon i fotka jsou z <b>Osobních údajů</b> — uprav je jednou tam.</p>
             </div>
           </div>
+          <div className="fld"><label>Odkaz na web (reklama)</label><input value={spec.website ?? ""} onChange={(e) => setSpec({ ...spec, website: e.target.value })} placeholder="www.tvujweb.cz" /></div>
+
+          {canPro ? (<>
           <div className="acct-grid">
             <div className="fld"><label>Cena od (Kč / lekce)</label><input type="number" value={spec.price_from ?? ""} onChange={(e) => setSpec({ ...spec, price_from: e.target.value ? Number(e.target.value) : null })} placeholder="500" /></div>
-            <div className="fld"><label>Web</label><input value={spec.website ?? ""} onChange={(e) => setSpec({ ...spec, website: e.target.value })} placeholder="www.tvujweb.cz" /></div>
           </div>
           <div className="fld"><label>O mně (bio)</label><textarea rows={4} value={spec.bio ?? ""} onChange={(e) => setSpec({ ...spec, bio: e.target.value })} placeholder="Čemu se věnuješ, pro koho, zkušenosti…" /></div>
 
@@ -255,6 +268,13 @@ export default function ProviderCard({ userId, identity, roles }: { userId: stri
             ))}
             <button className="btn btn-out cenik-add" onClick={() => setAvail([...avail, { weekday: 1, from: "16:00", to: "20:00", slot: 60 }])}><Plus size={14} /> Přidat čas</button>
           </div>
+          </>) : (
+            <div className="pc-lock">
+              <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil</b></div>
+              <p>Zdarma máš <b>pin na mapě + jméno a odkaz na web</b>. Fotku, bio, ceník, dostupnost, rezervace i <b>ověření</b> odemkne <b>{proLabel(activeKey)}</b> — vyladěný profil přiláká víc lidí a vypadá líp.</p>
+              <Link href="/pristup" className="btn btn-gold">Chci {proLabel(activeKey)}</Link>
+            </div>
+          )}
 
           <div className="card-actions">
             <button className="btn btn-green" onClick={saveSpec} disabled={busy}>{saved || "Uložit kartu"}</button>

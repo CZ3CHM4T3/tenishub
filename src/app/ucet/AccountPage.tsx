@@ -18,10 +18,10 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
 
 // Role = „klobouky". Trenér zdarma (návnada); spotřebitel = HUB+, poskytovatel = Trenér+/Expert+.
 const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; badge?: string; cls?: string; soon?: boolean }[] = [
-  { k: "trener", label: "Trenér", desc: "Vlastní klub, svěřenci, kalendář, strom dovedností. Prémium Trenér+ = víc viditelnosti.", free: true, badge: "zdarma", cls: "rp-free" },
+  { k: "trener", label: "Trenér", desc: "Profil zdarma (pin, svěřenci, zvací odkaz). Rezervace, kalendář a ověření s Trenér+.", free: true, badge: "zdarma", cls: "rp-free" },
   { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false, badge: "HUB+", cls: "rp-hub" },
   { k: "hrac", label: "Hráč", desc: "Rezervace kurtů, statistiky zápasů — a sparring: najdi si parťáka.", free: false, badge: "HUB+", cls: "rp-hub" },
-  { k: "vyplet", label: "Vyplétač", desc: "Servis raket, objednávky, být k nalezení.", free: false, badge: "Expert+", cls: "rp-exp" },
+  { k: "vyplet", label: "Vyplétač", desc: "Neověřený profil zdarma (pin + web). Objednávky a ověření s Expert+.", free: true, badge: "Expert+", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
   { k: "fitness", label: "Fitness trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
@@ -115,6 +115,9 @@ export default function AccountPage() {
   const effRoles = previewing ? (view === "navstevnik" ? [] : [view]) : roles;
   const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
   const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
+  // Placený poskytovatel (Expert+/Trenér+) = plná karta (bio, ceník, foto, dostupnost). Zatím jen admin mimo náhled;
+  // po napojení plateb = reálné členství. Free poskytovatel má jen pin + jméno + web.
+  const canPro = realAdmin && !previewing;
 
   const toggleRole = (k: string, free: boolean, soon?: boolean) => {
     if (soon || previewing) return; // „brzy" role zatím nejdou zapnout; v náhledu se needituje
@@ -148,7 +151,7 @@ export default function AccountPage() {
 
   const rolePickerUI = (
     <>
-      {editable && <p className="member-note">Trenér je zdarma. <b>Rodič a hráč</b> jsou součástí HUB+, ostatní obory Expert+.</p>}
+      {editable && <p className="member-note">Poskytovatelé (trenér, vyplétač) si <b>zdarma</b> udělají neověřený profil — pin na mapě + jméno a web. <b>Rodič a hráč</b> jsou v HUB+. Ověření a plné funkce (bio, ceník, rezervace…) = členství.</p>}
       <div className="rolepicker">
         {ACCOUNT_ROLES.map((r) => {
           const on = effRoles.includes(r.k);
@@ -275,7 +278,7 @@ export default function AccountPage() {
         </div>
 
         {/* VEŘEJNÁ KARTA — část profilu poskytovatele; víc rolí = záložky uvnitř karty */}
-        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} roles={effRoles} />}
+        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} roles={effRoles} canPro={canPro} />}
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
