@@ -3545,12 +3545,9 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .rp-hub{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--gold);background:#f6efdd;padding:.1rem .35rem;border-radius:5px}
 /* Jednotný štítek HUB+ (celý web) */
 .hub-badge{display:inline-flex;align-items:center;gap:.22rem;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--gold);background:#f6efdd;border:1px solid #e7d7ad;padding:.12rem .42rem;border-radius:6px;line-height:1;white-space:nowrap;vertical-align:middle}
-/* Odznak renomé trenéra */
-.renome-badge{display:inline-flex;align-items:center;gap:.28rem;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:.16rem .5rem;border-radius:7px;line-height:1;white-space:nowrap;vertical-align:middle}
-.renome-badge.sm{font-size:.6rem;padding:.1rem .4rem}
-.rb-ov{background:#e2efe9;color:#2f5d57;border:1px solid #bcdccb}
-.rb-dop{background:#f6efdd;color:#8a6a1a;border:1px solid #e7d7ad}
-.rb-top{background:#2c4a3b;color:#fff}
+/* Odznak renomé — hodnost (lesklé skládané chevrony) */
+.renome-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:9px;background:#22382c;border:1px solid #3a5344;color:#f3e6c4;font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;line-height:1;white-space:nowrap;vertical-align:middle}
+.renome-mini{display:inline-flex;align-items:center;vertical-align:middle}
 .renome-hint{background:#faf6ec;border-color:#e7d7ad;font-size:.9rem;color:var(--muted);padding:.8rem 1rem}
 .renome-hint b{color:var(--green)}
 /* Zámek pokročilého profilu (free poskytovatel → upsell) */

@@ -270,7 +270,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             <div className="avatar" style={spec?.photo_url ? { backgroundImage: `url(${spec.photo_url})`, backgroundSize: "cover", backgroundPosition: "center", color: "transparent" } : undefined}>{initials}</div>
             <div className="who">
               {(spec?.renome_level ?? 0) > 0
-                ? <RenomeBadge level={spec!.renome_level as number} />
+                ? <RenomeBadge level={spec!.renome_level as number} chip />
                 : verified
                   ? <span className="verif">✓ Ověřeno TenisHubem</span>
                   : <span className="verif unverif">Čeká na ověření</span>}

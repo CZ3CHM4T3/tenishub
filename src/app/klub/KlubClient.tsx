@@ -172,7 +172,7 @@ export default function KlubClient() {
         )}
         <div className="mc-head">
           <h1 className="acct-h1"><Users size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
-          {renome && renome.level > 0 ? <RenomeBadge level={renome.level} /> : <span className="klub-free">Profil zdarma</span>}
+          {renome && renome.level > 0 ? <RenomeBadge level={renome.level} chip /> : <span className="klub-free">Profil zdarma</span>}
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>Čím vyšší <b>renomé</b>, tím víc funkcí máš zdarma. Roste přivedením rodičů (přes tvůj zvací odkaz) + kvalitou (ověření, recenze). Nechceš čekat? Nástroje si můžeš i předplatit.</p>
         {renomeHint && (
