@@ -35,7 +35,7 @@ export function TrialButton() {
     try {
       const r = await fetch("/api/trial", { method: "POST" });
       const d = await r.json();
-      if (d.ok) { window.location.reload(); return; }
+      if (d.ok) { window.location.href = "/ucet?tab=clenstvi"; return; }
       setErr(d.error || "Nepodařilo se aktivovat."); setBusy(false);
     } catch { setErr("Chyba spojení, zkus to prosím znovu."); setBusy(false); }
   };

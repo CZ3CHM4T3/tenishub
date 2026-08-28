@@ -216,7 +216,7 @@ export default function AccountPage() {
               </div>
               {(() => {
                 const perMonth = 199 - membership.price_czk;
-                if (perMonth <= 0) return null;
+                if (perMonth <= 0 || membership.price_czk <= 0) return null; // 0 Kč = zkušební → bez „ušetřil"
                 const months = Math.max(1, Math.floor((Date.now() - new Date(membership.started_at).getTime()) / (1000 * 60 * 60 * 24 * 30)) + 1);
                 return (
                   <div className="savings-card">
