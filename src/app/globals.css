@@ -935,7 +935,11 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .world-sluzby .world-in { margin-left: auto; align-items: flex-end; text-align: right; }
 .world-tag { font-family: var(--font-jakarta), sans-serif; font-weight: 800; font-size: clamp(1.3rem, 2.8vw, 2.1rem); line-height: 1.05; letter-spacing: -0.02em; }
 .world-sub { font-size: 0.9rem; opacity: 0.92; max-width: 22ch; }
-.world-go { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; background: var(--gold); color: #1c2a16; font-weight: 700; font-size: 0.9rem; padding: 0.45rem 0.95rem; border-radius: 100px; }
+.world-go { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; background: var(--gold); color: #1c2a16; font-weight: 700; font-size: 0.9rem; padding: 0.45rem 0.95rem; border-radius: 100px; text-shadow: none; box-shadow: 0 4px 10px -4px rgba(0,0,0,0.45); transition: transform 0.16s ease, box-shadow 0.16s ease; }
+.world:hover .world-go { transform: translateY(-3px); box-shadow: 0 13px 26px -8px rgba(0,0,0,0.55); }
+/* pravá dlaždice: čudlík zrcadlově symetricky k levému (stejná spodní hrana) */
+.wt-in { gap: 0.3rem; }
+.wt-in .world-go { text-shadow: none; }
 @media (max-width: 700px) {
   .worlds { height: auto; display: flex; flex-direction: column; }
   .world { position: relative; inset: auto; clip-path: none !important; height: 190px; }
@@ -3443,10 +3447,10 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 
 /* záložkové menu účtu */
 .acct-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin:0 0 1.3rem;border-bottom:1px solid var(--line)}
-.acct-tab{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem .95rem;border:none;background:none;cursor:pointer;font-weight:600;color:var(--muted);font-size:.92rem;border-bottom:2px solid transparent;margin-bottom:-1px}
-.acct-tab:hover{color:var(--ink)}
-.acct-tab.on{color:var(--green);border-bottom-color:var(--gold)}
-.acct-tab.dis{color:var(--muted);opacity:.55}
+.acct-tab{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem .95rem;border:none;background:none;cursor:pointer;font-weight:600;color:var(--muted);font-size:.92rem;border-bottom:3px solid transparent;border-radius:9px 9px 0 0;margin-bottom:-1px;transition:color .14s,background .14s,border-color .14s}
+.acct-tab:hover{color:var(--ink);background:rgba(44,74,59,.05)}
+.acct-tab.on{color:var(--green);font-weight:800;border-bottom-color:var(--gold);background:#f6efdd}
+.acct-tab.dis{color:var(--muted);opacity:.5}
 .lnk-btn{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--gold);cursor:pointer;text-decoration:underline}
 @media(max-width:560px){.acct-tabs{gap:0;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}.acct-tab{flex:none;padding:.6rem .7rem}}
 

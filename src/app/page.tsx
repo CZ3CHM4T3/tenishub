@@ -107,9 +107,9 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null }[]>([]);
   const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; rvText: string | null; rvAuthor: string | null }[]>([]);
-  const [specCount, setSpecCount] = useState(0);
-  const [venueCount, setVenueCount] = useState(0);
-  const [waitCount, setWaitCount] = useState(0);
+  const [rodice, setRodice] = useState(0);
+  const [deti, setDeti] = useState(0);
+  const [profici, setProfici] = useState(0);
   const { canPost: isMemberHome } = useMe(); // člen HUB+/admin → neukazovat „Chci HUB+"
 
   useEffect(() => {
@@ -148,14 +148,16 @@ export default function Home() {
         const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
-      const [{ count: sc }, { count: vc }, { count: wc }] = await Promise.all([
-        supabase.from("specialists").select("*", { count: "exact", head: true }),
-        supabase.from("venues").select("*", { count: "exact", head: true }),
-        supabase.from("waitlist").select("*", { count: "exact", head: true }),
-      ]);
-      if (sc != null) setSpecCount(sc);
-      if (vc != null) setVenueCount(vc);
-      if (wc != null) setWaitCount(wc);
+      // reálná čísla (RPC public_stats obejde RLS); fallback: aspoň počet profíků
+      const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
+      if (!statsErr && stats) {
+        setRodice((stats as { rodice?: number }).rodice ?? 0);
+        setDeti((stats as { deti?: number }).deti ?? 0);
+        setProfici((stats as { profici?: number }).profici ?? 0);
+      } else {
+        const { count } = await supabase.from("specialists").select("*", { count: "exact", head: true });
+        setProfici(count ?? 0);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -300,9 +302,19 @@ export default function Home() {
               <h2 className="help-title">Jak vám můžeme pomoci?</h2>
               <div className="help-opts">
                 <Link href="/mapa" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/mapa" className="help-opt"><span className="help-ic"><MapPin size={20} /></span><span>Najít kurt nebo klub poblíž</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/videorozbor" className="help-opt"><span className="help-ic"><Video size={20} /></span><span>Dítě ztrácí radost / něco mu nejde</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/pristup" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok a plánovat (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/moje-cesta" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
                 <Link href="/sparring" className="help-opt"><span className="help-ic"><Handshake size={20} /></span><span>Najít sparring partnera</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/poradna" className="help-opt"><span className="help-ic"><MessageCircle size={20} /></span><span>Poradit se s odborníkem</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/turnaje" className="help-opt"><span className="help-ic"><Trophy size={20} /></span><span>Turnaje v okolí</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/forum" className="help-opt"><span className="help-ic"><Users size={20} /></span><span>Komunita rodičů</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/clanky" className="help-opt"><span className="help-ic"><Star size={20} /></span><span>Rady a návody (knihovna)</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/bazar" className="help-opt"><span className="help-ic"><Award size={20} /></span><span>Bazar vybavení z druhé ruky</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><GraduationCap size={20} /></span><span>Jsem trenér — chci klienty</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><HeartPulse size={20} /></span><span>Jsem fyzioterapeut</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><Dumbbell size={20} /></span><span>Jsem kondiční trenér</span><ArrowRight size={16} className="help-arr" /></Link>
+                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><Building2 size={20} /></span><span>Jsem vyplétač / mám areál</span><ArrowRight size={16} className="help-arr" /></Link>
                 <a href="mailto:info@tenishub.cz?subject=Dotaz" className="help-opt"><span className="help-ic"><MessageCircle size={20} /></span><span>Mám dotaz — poradíte mi?</span><ArrowRight size={16} className="help-arr" /></a>
               </div>
             </div>
@@ -315,10 +327,10 @@ export default function Home() {
       {/* reálné statistiky — samostatný tenký pruh pod herem, netlačí do layoutu */}
       <section className="statbar">
         <div className="wrap hero-stats">
-          <span className="hstat"><b><Counter to={specCount} /></b><i>specialistů</i></span>
-          <span className="hstat"><b><Counter to={venueCount} /></b><i>klubů a areálů</i></span>
+          <span className="hstat"><b><Counter to={rodice} /></b><i>rodičů</i></span>
+          <span className="hstat"><b><Counter to={deti} /></b><i>dětí</i></span>
+          <span className="hstat" title="Trenéři, fitness, fyzio, vyplétači, hráči"><b><Counter to={profici} /></b><i>profíků</i></span>
           <span className="hstat"><b>{CITIES.length}</b><i>měst</i></span>
-          <span className="hstat"><b><Counter to={waitCount} /></b><i>zájemců o klub</i></span>
         </div>
       </section>
 
