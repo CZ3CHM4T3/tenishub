@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus, Baby } from "lucide-react";
-import ProviderCard from "./ProviderCard";
+import RoleSection from "./RoleSection";
 import Kalendar from "./Kalendar";
 import MojeDeti from "./MojeDeti";
 import { BuyMembership, TrialButton } from "@/components/BuyMembership";
@@ -123,7 +123,8 @@ export default function AccountPage() {
   // Poskytovatel = má veřejnou kartu (trenér/vyplétač/…); rodič a hráč jsou spotřebitelé.
   const PROVIDER_ROLES = ["trener", "vyplet", "fyzio", "fitness", "areal"];
   const effRoles = previewing ? (view === "navstevnik" ? [] : [view]) : roles;
-  const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
+  const providerRoles = PROVIDER_ROLES.filter((r) => effRoles.includes(r)); // pořadí oddílů
+  const isProvider = providerRoles.length > 0;
   const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
   // Placený poskytovatel (Expert+/Trenér+) = plná karta (bio, ceník, foto, dostupnost).
   // Odemkne reálné zaplacené členství (plan) NEBO admin mimo náhled. Free poskytovatel = jen pin + jméno + web.
@@ -309,8 +310,14 @@ export default function AccountPage() {
           {rolePickerUI}
         </div>
 
-        {/* VEŘEJNÁ KARTA — část profilu poskytovatele; víc rolí = záložky uvnitř karty */}
-        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} roles={effRoles} canPro={canPro} />}
+        {/* ODDÍLY PODLE ROLÍ — každá poskytovatelská role = jeden oddíl pod sebou (žádné vnitřní záložky).
+            Tyhle oddíly JSOU tvůj veřejný profil (ne extra „karta"). */}
+        {isProvider && (
+          <p className="member-note" style={{ margin: ".2rem 0 -.4rem" }}>Podle zaškrtnutých rolí níž vyplníš svůj profil — přesně tohle uvidí lidé na tvém veřejném profilu a na mapě.</p>
+        )}
+        {providerRoles.map((r) => (
+          <RoleSection key={r} userId={profile.id} role={r} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} canPro={canPro} />
+        ))}
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
