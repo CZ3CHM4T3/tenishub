@@ -15,6 +15,7 @@ import { Nastenka } from "./Nastenka";
 import { Akce } from "./Akce";
 import { Skupiny } from "./Skupiny";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
+import { BuyMembership } from "@/components/BuyMembership";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
 
@@ -38,6 +39,7 @@ export default function KlubClient() {
   const [loading, setLoading] = useState(true);
   const [isCoach, setIsCoach] = useState(false);
   const [preview, setPreview] = useState(false);
+  const [hasPlus, setHasPlus] = useState(false); // aktivní TRENÉR+ členství
   const [uid, setUid] = useState<string | null>(null);
   const [code, setCode] = useState<string | null>(null);
   const [roster, setRoster] = useState<Member[]>([]);
@@ -60,6 +62,8 @@ export default function KlubClient() {
     if (!coach && !adminPreview) { setIsCoach(false); setLoading(false); return; }
     setIsCoach(true);
     setPreview(adminPreview);
+    const { data: mem } = await supabase.from("memberships").select("plan").eq("profile_id", user.id).eq("status", "active").gt("expires_at", new Date().toISOString()).order("expires_at", { ascending: false }).limit(1).maybeSingle();
+    setHasPlus((mem as { plan?: string } | null)?.plan === "trener_plus");
     if (adminPreview) {
       setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
     }
@@ -114,7 +118,7 @@ export default function KlubClient() {
   // Herní vrstva (strom + Sparing Cup) = jednorázový Boost. TRENÉR+ = provozní moduly (Nástěnka, Akce…).
   // Zatím obojí odemčené jen v admin náhledu; po napojení plateb = reálné členství/Boost.
   const canGame = preview;
-  const canPlus = preview;
+  const canPlus = preview || hasPlus;
   const PLUS_MODS = new Set(["nastenka", "kalendar"]); // moduly pod TRENÉR+
 
   // Zamykací karta pro TRENÉR+ modul (prodejní náhled pro trenéra bez TRENÉR+).
@@ -122,8 +126,8 @@ export default function KlubClient() {
     <div className="acct-card">
       <div className="acct-card-head"><Lock size={20} /><h2>{title}</h2><span className="member-badge">TRENÉR+</span></div>
       <p className="member-note">{desc}</p>
-      <p className="member-note">Součást <b>TRENÉR+</b> (299 Kč/měs) — provoz klubu na jednom místě: rezervace 24/7, platby předem, docházka, oznámení i akce. Zdarma zůstává být vidět na mapě a sbírat svěřence.</p>
-      <Link href="/pristup" className="btn btn-gold">Chci TRENÉR+</Link>
+      <p className="member-note">Součást <b>TRENÉR+</b> (299 Kč/měs) — provoz klubu na jednom místě: rezervace 24/7, platby předem, docházka, oznámení i akce. Zdarma zůstává být vidět na mapě a sbírat svěřence. <b>Nebo si to vysluž růstem klubu</b> — od 10 platících členů zdarma.</p>
+      <BuyMembership plan="trener_plus" label="Chci TRENÉR+ · 299 Kč" />
     </div>
   );
 

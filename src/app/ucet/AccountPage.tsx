@@ -122,9 +122,11 @@ export default function AccountPage() {
   const effRoles = previewing ? (view === "navstevnik" ? [] : [view]) : roles;
   const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
   const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
-  // Placený poskytovatel (Expert+/Trenér+) = plná karta (bio, ceník, foto, dostupnost). Zatím jen admin mimo náhled;
-  // po napojení plateb = reálné členství. Free poskytovatel má jen pin + jméno + web.
-  const canPro = realAdmin && !previewing;
+  // Placený poskytovatel (Expert+/Trenér+) = plná karta (bio, ceník, foto, dostupnost).
+  // Odemkne reálné zaplacené členství (plan) NEBO admin mimo náhled. Free poskytovatel = jen pin + jméno + web.
+  const paidPlan = membership?.plan ?? null;
+  const canPro = (realAdmin && !previewing) || paidPlan === "trener_plus" || paidPlan === "expert_plus";
+  const planLabel = ({ hub_plus: "HUB+", trener_plus: "TRENÉR+", expert_plus: "EXPERT+" } as Record<string, string>)[paidPlan ?? ""] ?? "HUB+";
 
   const toggleRole = (k: string, free: boolean, soon?: boolean) => {
     if (soon || previewing) return; // „brzy" role zatím nejdou zapnout; v náhledu se needituje
@@ -206,7 +208,7 @@ export default function AccountPage() {
         <div className={`acct-card member-card${isMember ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
-            <h2>HUB+</h2>
+            <h2>{planLabel}</h2>
             {realAdmin && !previewing ? <span className="member-badge">ADMIN</span> : isMember ? <span className="member-badge">AKTIVNÍ</span> : null}
           </div>
           {realAdmin && !previewing ? (

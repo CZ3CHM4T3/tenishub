@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES } from "@/lib/cities";
+import { BuyMembership } from "@/components/BuyMembership";
 import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck, Lock } from "lucide-react";
 
 type Spec = {
@@ -203,7 +204,7 @@ export default function ProviderCard({ userId, identity, roles, canPro }: { user
             <div className="pc-lock">
               <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil areálu</b></div>
               <p>Zdarma máš <b>pin na mapě + název a odkaz na web</b>. Fotku, popis, vybavení, rezervační systém i <b>ověření</b> odemkne <b>Expert+</b>.</p>
-              <Link href="/pristup" className="btn btn-gold">Chci Expert+</Link>
+              <BuyMembership plan="expert_plus" label="Chci Expert+ · 299 Kč" />
             </div>
           )}
           <div className="card-actions">
@@ -272,7 +273,7 @@ export default function ProviderCard({ userId, identity, roles, canPro }: { user
             <div className="pc-lock">
               <div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil</b></div>
               <p>Zdarma máš <b>pin na mapě + jméno a odkaz na web</b>. Fotku, bio, ceník, dostupnost, rezervace i <b>ověření</b> odemkne <b>{proLabel(activeKey)}</b> — vyladěný profil přiláká víc lidí a vypadá líp.</p>
-              <Link href="/pristup" className="btn btn-gold">Chci {proLabel(activeKey)}</Link>
+              <BuyMembership plan={activeKey === "trener" ? "trener_plus" : "expert_plus"} label={`Chci ${proLabel(activeKey)} · 299 Kč`} />
             </div>
           )}
 
