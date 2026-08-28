@@ -11,22 +11,23 @@ import {
   BookOpen, CalendarDays, Repeat, Car, Lock, ArrowRight, Check, Sparkles,
 } from "lucide-react";
 
-// ZDARMA — objevování (magnet, funguje i bez členství)
+// ZDARMA — objevování i procházení obsahu (magnet, funguje i bez členství).
+// Princip: ČÍST/PROCHÁZET je zdarma; platí se až za NÁSTROJE a AKCE (psát, přidat, kontaktovat).
 const FREE = [
   { Icon: MapPin, c: "#2f5d57", t: "Najít trenéra a klub", d: "Prohlédni si trenéry, akademie i kurty na mapě — ceníky, recenze i kontakt. Zdarma a bez registrace.", href: "/mapa" },
   { Icon: MessageSquare, c: "#3b5666", t: "Napsat trenérovi", d: "Zeptej se přímo na volné termíny, ceny nebo přístup k dětem. Zprávy jsou zdarma.", href: "/mapa" },
+  { Icon: BookOpen, c: "#7c6018", t: "Knihovna", d: "Ověřené návody a články celé, bez zámku: jak vybrat raketu i trenéra, výživa malého sportovce, prevence zranění.", href: "/clanky" },
+  { Icon: MessagesSquare, c: "#2f5d57", t: "Fórum rodičů", d: "Čti zkušenosti, tipy a doporučení od rodičů, kteří jsou o krok dál. Zapojit se do diskuze můžeš s HUB+.", href: "/forum" },
+  { Icon: MessageSquareHeart, c: "#864a59", t: "Poradna", d: "Čti odpovědi odborníků na výběr trenéra, trénink i zdraví dítěte. Vlastní dotaz položíš s HUB+.", href: "/poradna" },
+  { Icon: CalendarDays, c: "#3b5666", t: "Kalendář turnajů", d: "Turnaje ve tvém okolí i s přihláškami na jednom místě. Procházej zdarma — už nezmeškáš termín.", href: "/turnaje" },
+  { Icon: Handshake, c: "#8a5640", t: "Sparring", d: "Procházej nabídky parťáků na mapě zdarma. Vlastní inzerát a kontakt na parťáka odemyká HUB+.", href: "/sparring" },
+  { Icon: Repeat, c: "#8a5640", t: "Bazar vybavení", d: "Rakety, boty a oblečení z druhé ruky mezi rodiči. Procházej zdarma, přidat inzerát s HUB+.", href: "/bazar" },
+  { Icon: Car, c: "#3b8a5a", t: "Spolujízda", d: "Domluv odvoz na trénink i turnaj s rodiči z klubu. Procházej zdarma, přidat s HUB+.", href: "/spolujizda" },
 ];
 
-// V ČLENSTVÍ — nástroje (zamčené pro nečlena, prodejní popis)
+// V ČLENSTVÍ — hlavní nástroj (zbytek HUB+ = akce uvnitř výše uvedených, viz popis níž).
 const TOOLS = [
   { Icon: Route, c: "#7C4DD6", t: "Moje cesta", d: "Celá sezóna dítěte přehledně — kalendář tréninků, turnajů i volna, cíle a statistiky. Konečně vidíš, kam to směřuje, a pohlídáš, ať dítě nevyhoří.", href: "/moje-cesta" },
-  { Icon: MessageSquareHeart, c: "#864a59", t: "Poradna", d: "Výběr trenéra, trénink nebo zdraví dítěte? Zeptáte se a odborník odpoví do 48 hodin. Klid místo nekonečného googlení.", href: "/poradna" },
-  { Icon: Handshake, c: "#8a5640", t: "Sparring", d: "Najdi dítěti parťáka na úrovni — podle věku, lokality i stylu hry. Víc odehraných zápasů = rychlejší růst a víc radosti ze hry.", href: "/sparring" },
-  { Icon: MessagesSquare, c: "#2f5d57", t: "Fórum rodičů", d: "Nejste na to sami — zkušenosti, tipy a doporučení trenérů od rodičů, kteří jsou o krok dál.", href: "/forum" },
-  { Icon: BookOpen, c: "#7c6018", t: "Vědět víc — knihovna", d: "Ověřené návody a články celé, bez zámku: jak vybrat raketu i trenéra, výživa malého sportovce, prevence zranění.", href: "/clanky" },
-  { Icon: CalendarDays, c: "#3b5666", t: "Kalendář turnajů", d: "Turnaje ve tvém okolí i s přihláškami na jednom místě. Už nezmeškáš termín ani uzávěrku.", href: "/turnaje" },
-  { Icon: Repeat, c: "#8a5640", t: "Bazar vybavení", d: "Rakety, boty a oblečení z druhé ruky mezi rodiči. Děti rostou rychle — ušetři.", href: "/bazar" },
-  { Icon: Car, c: "#3b8a5a", t: "Spolujízda", d: "Domluv odvoz na trénink i turnaj s rodiči z klubu. Ušetříš čas, nervy i palivo.", href: "/spolujizda" },
 ];
 
 export function RodicHub() {
@@ -52,11 +53,9 @@ export function RodicHub() {
       {/* V ČLENSTVÍ */}
       <div className="rhub-sec">
         <span className={`rhub-lab ${member ? "rhub-lab-open" : "rhub-lab-hub"}`}>
-          {member ? <><Sparkles size={14} /> Máš HUB+ — vše odemčené</> : <><Lock size={13} /> V členství HUB+ · 99 Kč/měsíc</>}
+          {member ? <><Sparkles size={14} /> Tvůj nástroj v HUB+</> : <><Sparkles size={13} /> Nástroj navíc v HUB+ · 99 Kč/měsíc</>}
         </span>
-        {!member && ready && (
-          <p className="rhub-sell">Tohle rodič jinde neposbírá. Zkus to na měsíc — uvidíš, že litovat nebudeš.</p>
-        )}
+        <p className="rhub-sell">Procházet a číst je zdarma. <b>HUB+ přidává Moji cestu</b> a možnost <b>zapojit se</b> — psát do fóra, ptát se v poradně, přidat inzerát nebo kontaktovat sparring parťáka.</p>
         <div className="rhub-grid">
           {TOOLS.map((tl, i) => {
             const Inner = (
