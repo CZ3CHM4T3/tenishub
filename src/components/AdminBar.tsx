@@ -47,7 +47,7 @@ export function AdminBar() {
           <o.Icon size={14} /> {o.label}
         </button>
       ))}
-      {view !== "admin" && <span className="adminbar-note">přibližný náhled — nezahrnuje členství/platby ani stránku účtu</span>}
+      {view !== "admin" && <span className="adminbar-note">vidíš přesně rozhraní této role — operuje na tvém účtu (tvá data)</span>}
     </div>
   );
 }

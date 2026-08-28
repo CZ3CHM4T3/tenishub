@@ -48,7 +48,7 @@ export function SiteHeader() {
       }
       if (!previewRole) roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
       setTabs(tabsForRoles(roles.length ? roles : ["rodic"]));
-      setIsAdmin(admin);
+      setIsAdmin(admin && !previewRole); // v náhledu role admin nesmí vidět admin prvky (identické s rolí)
       const un = await sb.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
       setUnread(un.count ?? 0);
       setLogged(true);

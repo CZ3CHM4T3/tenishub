@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 import { WeatherWeek } from "@/components/WeatherWeek";
+import { getViewAs, type ViewAs } from "@/lib/viewAs";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
@@ -47,6 +48,9 @@ export default function AccountPage() {
   const [atab, setAtab] = useState("clenstvi");
   const [roles, setRoles] = useState<string[]>([]);
   const [rolesSaved, setRolesSaved] = useState(false);
+  const [view, setView] = useState<ViewAs>("admin"); // admin náhled perspektivy (identický s rolí)
+
+  useEffect(() => { setView(getViewAs()); }, []);
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("tab");
@@ -102,13 +106,18 @@ export default function AccountPage() {
     setBusy(false);
   };
 
-  const isMember = !!membership || (profile?.is_admin ?? false);
+  // NÁHLED = 1:1. Když admin kouká očima role, počítáme role/členství podle role, ne podle admina.
+  const realAdmin = profile?.is_admin ?? false;
+  const previewing = realAdmin && view !== "admin";
+  const editable = !previewing; // v náhledu se needituje (needitujeme admin data)
   // Poskytovatel = má veřejnou kartu (trenér/vyplétač/…); rodič a hráč jsou spotřebitelé.
   const PROVIDER_ROLES = ["trener", "vyplet", "fyzio", "fitness", "areal"];
-  const isProvider = roles.some((r) => PROVIDER_ROLES.includes(r));
+  const effRoles = previewing ? (view === "navstevnik" ? [] : [view]) : roles;
+  const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
+  const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
 
   const toggleRole = (k: string, free: boolean, soon?: boolean) => {
-    if (soon) return;
+    if (soon || previewing) return;
     if (!free && !isMember) return; // placené role jen s HUB+
     setRoles((r) => r.includes(k) ? r.filter((x) => x !== k) : [...r, k]);
   };
@@ -139,12 +148,12 @@ export default function AccountPage() {
 
   const rolePickerUI = (
     <>
-      {!isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, hráč) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
+      {editable && !isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, hráč) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
       <div className="rolepicker">
         {ACCOUNT_ROLES.map((r) => {
-          const on = roles.includes(r.k);
+          const on = effRoles.includes(r.k);
           const locked = !r.free && !isMember;
-          const disabled = r.soon || locked;
+          const disabled = r.soon || locked || !editable;
           return (
             <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
               <span className="rp-check">{on ? <Check size={15} /> : null}</span>
@@ -154,8 +163,8 @@ export default function AccountPage() {
         })}
       </div>
       <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginTop: ".9rem" }}>
-        <button className="btn btn-green" onClick={saveRoles} disabled={busy}>{rolesSaved ? "✓ Uloženo" : "Uložit role"}</button>
-        {roles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
+        {editable && <button className="btn btn-green" onClick={saveRoles} disabled={busy}>{rolesSaved ? "✓ Uloženo" : "Uložit role"}</button>}
+        {effRoles.includes("trener") && <Link href="/klub" className="btn btn-out"><GraduationCap size={16} /> Trenérské rozhraní</Link>}
       </div>
     </>
   );
@@ -184,13 +193,13 @@ export default function AccountPage() {
 
         {/* ČLENSTVÍ */}
         {atab === "clenstvi" && (
-        <div className={`acct-card member-card${membership || profile.is_admin ? " on" : ""}`}>
+        <div className={`acct-card member-card${isMember ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
             <h2>HUB+</h2>
-            {profile.is_admin ? <span className="member-badge">ADMIN</span> : membership && <span className="member-badge">AKTIVNÍ</span>}
+            {realAdmin && !previewing ? <span className="member-badge">ADMIN</span> : isMember ? <span className="member-badge">AKTIVNÍ</span> : null}
           </div>
-          {profile.is_admin ? (
+          {realAdmin && !previewing ? (
             <p className="member-note">Jako <b>administrátor</b> máš přístup ke všem funkcím webu — členství HUB+ neřešíš.</p>
           ) : membership ? (
             <>
@@ -220,6 +229,8 @@ export default function AccountPage() {
                 {membership.auto_renew ? "Vypnout automatické prodloužení" : "Zapnout automatické prodloužení"}
               </button>
             </>
+          ) : isMember ? (
+            <p className="member-note"><b>Členství HUB+ je aktivní.</b> Máš přístup ke všem funkcím webu — Moje cesta, poradna, sparring, komunita a nástroje.{previewing ? " (náhled role)" : ""}</p>
           ) : (
             <>
               <p className="member-note">
