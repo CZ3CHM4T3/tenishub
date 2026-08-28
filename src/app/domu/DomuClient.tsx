@@ -16,6 +16,7 @@ const ROLE_HOME: Record<string, { href: string; label: string; Icon: LucideIcon 
     { href: "/deti", label: "Moje děti a klub", Icon: Baby },
     { href: "/moje-cesta", label: "Moje cesta", Icon: Route },
   ],
+  hrac: [{ href: "/sparring", label: "Moje sparring karta", Icon: Handshake }],
   sparring: [{ href: "/sparring", label: "Moje sparring karta", Icon: Handshake }],
   trener: [{ href: "/klub", label: "Můj klub (trenér)", Icon: School }],
   vyplet: [{ href: "/ucet?tab=profil", label: "Moje vyplétací karta", Icon: Grip }],
