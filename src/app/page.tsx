@@ -42,28 +42,20 @@ const IC_PHYSIO = '<path d="M3 12h4l2 5 4-12 2 7h6"/>';
 const IC_FITNESS = '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>';
 const IC_STRINGER = '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>';
 // Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. Jen 2 jsou „ověřené" (zlatý prsten + ✓).
+// ~11 pinů rozprostřených po HORNÍ části a BOCÍCH mapy — mimo vějíř karet (střed dole)
+// i texty v rozích, ať jsou všechny čitelné a nepřekrývají Jirku.
 const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boolean }[] = [
-  { x: 40, y: 205, c: "#c8a24c", icon: IC_COACH, verified: true },   // trenér ✓ (západ)
-  { x: 165, y: 160, c: "#2e7d4f", icon: IC_CLUB, verified: true },   // klub ✓ (SZ)
-  { x: 275, y: 245, c: "#7a5bc0", icon: IC_ACADEMY },                // akademie (střed)
-  { x: 415, y: 240, c: "#d9534f", icon: IC_PHYSIO },                 // fyzio (východ-střed)
-  { x: 355, y: 395, c: "#2f6fb0", icon: IC_FITNESS },               // fitness (jih)
-  { x: 545, y: 265, c: "#5a6470", icon: IC_STRINGER },              // vyplétač (východ)
-  { x: 110, y: 265, c: "#2e7d4f", icon: IC_CLUB },                  // + JZ
-  { x: 235, y: 345, c: "#c8a24c", icon: IC_COACH },                 // + jih-střed
-  { x: 315, y: 180, c: "#2f6fb0", icon: IC_FITNESS },              // + sever-střed
-  { x: 450, y: 220, c: "#7a5bc0", icon: IC_ACADEMY },               // + SV
-  { x: 490, y: 350, c: "#c8a24c", icon: IC_COACH },                 // + JV
-  { x: 565, y: 300, c: "#d9534f", icon: IC_PHYSIO, verified: true }, // + daleký východ ✓
-  { x: 200, y: 210, c: "#2f6fb0", icon: IC_FITNESS },              // + SZ-střed
-  { x: 330, y: 300, c: "#5a6470", icon: IC_STRINGER },             // + střed-jih
-  { x: 430, y: 300, c: "#2e7d4f", icon: IC_CLUB },                 // + JV-střed
-  { x: 505, y: 235, c: "#c8a24c", icon: IC_COACH },                // + SV
-  { x: 60, y: 300, c: "#2e7d4f", icon: IC_CLUB },                  // JZ
-  { x: 105, y: 345, c: "#c8a24c", icon: IC_COACH },               // JZ
-  { x: 155, y: 310, c: "#7a5bc0", icon: IC_ACADEMY },             // JZ
-  { x: 45, y: 255, c: "#2f6fb0", icon: IC_FITNESS },              // JZ-západ
-  { x: 120, y: 385, c: "#5a6470", icon: IC_STRINGER },            // JZ-jih
+  { x: 25, y: 200, c: "#c8a24c", icon: IC_COACH, verified: true },   // Z ✓ trenér
+  { x: 110, y: 150, c: "#2e7d4f", icon: IC_CLUB, verified: true },   // SZ ✓ klub
+  { x: 200, y: 126, c: "#2f6fb0", icon: IC_FITNESS },                // S fitness
+  { x: 292, y: 150, c: "#7a5bc0", icon: IC_ACADEMY },                // S-střed akademie
+  { x: 378, y: 132, c: "#c8a24c", icon: IC_COACH },                  // SV trenér
+  { x: 460, y: 162, c: "#d9534f", icon: IC_PHYSIO, verified: true }, // SV ✓ fyzio
+  { x: 548, y: 232, c: "#5a6470", icon: IC_STRINGER },               // daleký V vyplétač
+  { x: 118, y: 252, c: "#2e7d4f", icon: IC_CLUB },                   // Z-střed klub
+  { x: 40, y: 268, c: "#2f6fb0", icon: IC_FITNESS },                 // Z-jih fitness
+  { x: 520, y: 292, c: "#c8a24c", icon: IC_COACH },                  // V-jih trenér
+  { x: 592, y: 300, c: "#7a5bc0", icon: IC_ACADEMY },                // JV cíp akademie
 ];
 // tvar mapového pinu jako na /mapa (kulatá hlava + rovný krk ke špičce), střed hlavy ~ (0,-21.6)
 const PIN_D = "M0,0 L-8,-12 A12.5,12.5 0 1 1 8,-12 Z";
