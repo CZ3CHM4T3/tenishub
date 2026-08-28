@@ -16,6 +16,8 @@ import { Akce } from "./Akce";
 import { Skupiny } from "./Skupiny";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
 import { BuyMembership } from "@/components/BuyMembership";
+import { renomeLevel, nextRenomeHint, type Renome } from "@/lib/renome";
+import { RenomeBadge } from "@/components/RenomeBadge";
 
 type Member = { id: string; member_name: string | null; kind: string; status: string; created_at: string };
 
@@ -40,6 +42,8 @@ export default function KlubClient() {
   const [isCoach, setIsCoach] = useState(false);
   const [preview, setPreview] = useState(false);
   const [hasPlus, setHasPlus] = useState(false); // aktivní TRENÉR+ členství
+  const [renome, setRenome] = useState<Renome | null>(null);
+  const [renomeHint, setRenomeHint] = useState<string | null>(null);
   const [uid, setUid] = useState<string | null>(null);
   const [code, setCode] = useState<string | null>(null);
   const [roster, setRoster] = useState<Member[]>([]);
@@ -64,6 +68,21 @@ export default function KlubClient() {
     setPreview(adminPreview);
     const { data: mem } = await supabase.from("memberships").select("plan").eq("profile_id", user.id).eq("status", "active").gt("expires_at", new Date().toISOString()).order("expires_at", { ascending: false }).limit(1).maybeSingle();
     setHasPlus((mem as { plan?: string } | null)?.plan === "trener_plus");
+    // Renomé (bonus — ať to nespadne, kdyby RPC/sloupce ještě nebyly)
+    try {
+      const [{ data: sp }, { data: pm }] = await Promise.all([
+        supabase.from("specialists").select("verified,rating,review_count").eq("owner_id", user.id).limit(1).maybeSingle(),
+        supabase.rpc("coach_paying_members", { p_coach: user.id }),
+      ]);
+      const metrics = {
+        verified: !!(sp as { verified?: boolean } | null)?.verified,
+        members: typeof pm === "number" ? pm : 0,
+        rating: Number((sp as { rating?: number } | null)?.rating ?? 0),
+        reviews: Number((sp as { review_count?: number } | null)?.review_count ?? 0),
+      };
+      setRenome(renomeLevel(metrics));
+      setRenomeHint(nextRenomeHint(metrics));
+    } catch { /* renomé je bonus */ }
     if (adminPreview) {
       setCode(null); setRoster([]); setKids([]); setKurikula(DEFAULT_KURIKULA); setLoading(false); return;
     }
@@ -118,7 +137,8 @@ export default function KlubClient() {
   // Herní vrstva (strom + Sparing Cup) = jednorázový Boost. TRENÉR+ = provozní moduly (Nástěnka, Akce…).
   // Zatím obojí odemčené jen v admin náhledu; po napojení plateb = reálné členství/Boost.
   const canGame = preview;
-  const canPlus = preview || hasPlus;
+  // Provozní nástroje odemyká renomé (Ověřený+) NEBO předplatné TRENÉR+ NEBO admin náhled.
+  const canPlus = preview || hasPlus || (renome?.level ?? 0) >= 1;
   const PLUS_MODS = new Set(["nastenka", "kalendar"]); // moduly pod TRENÉR+
 
   // Zamykací karta pro TRENÉR+ modul (prodejní náhled pro trenéra bez TRENÉR+).
@@ -150,9 +170,14 @@ export default function KlubClient() {
         )}
         <div className="mc-head">
           <h1 className="acct-h1"><Users size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
-          <span className="klub-free">Profil zdarma</span>
+          {renome && renome.level > 0 ? <RenomeBadge level={renome.level} /> : <span className="klub-free">Profil zdarma</span>}
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Být vidět na TenisHubu a sbírat svěřence je <b>zdarma</b>. Provozní nástroje (rezervace, platby, docházka, oznámení, akce) jsou v <b>TRENÉR+</b>, herní vrstva (strom, Sparing Cup) v <b>Boostu</b>.</p>
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Čím vyšší <b>renomé</b>, tím víc funkcí máš zdarma. Roste přivedením rodičů (přes tvůj zvací odkaz) + kvalitou (ověření, recenze). Nechceš čekat? Nástroje si můžeš i předplatit.</p>
+        {renomeHint && (
+          <div className="acct-card renome-hint">
+            <b>Renomé: {renome?.label ?? "Neověřený"}</b> — {renomeHint}
+          </div>
+        )}
 
         {/* TRENÉRSKÝ BOOST (rozbalovací — jen nadpis, ať netlačí menu dolů) */}
         <details className="klub-fold">
