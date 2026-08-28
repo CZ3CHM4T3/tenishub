@@ -32,6 +32,7 @@ const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; ba
 type Profile = { id: string; full_name: string | null; email: string | null; role: string | null; city: string | null; phone: string | null; photo_url: string | null; is_admin: boolean; is_coach: boolean };
 type Membership = { id: string; plan: string; status: string; started_at: string; expires_at: string; auto_renew: boolean; price_czk: number };
 type Booking = { id: string; starts_at: string; price_czk: number | null; status: string };
+type Invoice = { id: string; number: string; item: string; amount_czk: number; issued_at: string };
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const fmtT = (iso: string) => new Date(iso).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -42,6 +43,7 @@ export default function AccountPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [membership, setMembership] = useState<Membership | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [name, setName] = useState(""); const [city, setCity] = useState(""); const [phone, setPhone] = useState("");
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -78,6 +80,9 @@ export default function AccountPage() {
     const rr = await supabase.from("profiles").select("roles").eq("id", user.id).maybeSingle();
     const arr = (rr.data as { roles?: string[] | null } | null)?.roles;
     setRoles(Array.isArray(arr) ? arr : (p.data?.is_coach ? ["trener"] : []));
+    // faktury (zvlášť, ať to nespadne, kdyby tabulka ještě nebyla)
+    const inv = await supabase.from("invoices").select("id,number,item,amount_czk,issued_at").eq("profile_id", user.id).order("issued_at", { ascending: false });
+    if (!inv.error) setInvoices((inv.data as Invoice[]) ?? []);
     setLoading(false);
   }, [router]);
 
@@ -197,7 +202,7 @@ export default function AccountPage() {
         </div>
 
         {/* ČLENSTVÍ */}
-        {atab === "clenstvi" && (
+        {atab === "clenstvi" && (<>
         <div className={`acct-card member-card${isMember ? " on" : ""}`}>
           <div className="acct-card-head">
             <BadgeCheck size={20} />
@@ -252,6 +257,20 @@ export default function AccountPage() {
             </>
           )}
         </div>
+        {invoices.length > 0 && (
+          <div className="acct-card">
+            <div className="acct-card-head"><BadgeCheck size={20} /><h2>Moje faktury</h2></div>
+            <div className="member-rows">
+              {invoices.map((f) => (
+                <div className="mrow" key={f.id}>
+                  <span>{f.number} · {fmt(f.issued_at)}</span>
+                  <Link href={`/faktura/${f.id}`} style={{ color: "var(--gold)", fontWeight: 700 }}>{f.amount_czk} Kč · zobrazit</Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        </>
         )}
 
         {/* PROFIL */}
