@@ -24,8 +24,8 @@ const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] 
   { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním (RSVP)." },
   { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
-  { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (TRENÉR+)." },
-  { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (TRENÉR+)." },
+  { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (Boost — jednorázově)." },
+  { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (Boost — jednorázově)." },
   { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky." },
 ];
 const DEFAULT_MODS = MODULES.map((m) => m.k);

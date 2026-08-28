@@ -35,24 +35,29 @@ export function SiteHeader() {
   useEffect(() => {
     (async () => {
       const sb = createClient();
-      const { data: { user } } = await sb.auth.getUser();
-      if (!user) { setLogged(false); setReady(true); return; }
-      const { data: prof } = await sb.from("profiles").select("is_admin,is_coach,roles").eq("id", user.id).maybeSingle();
-      const admin = prof?.is_admin === true;
-      let roles: string[] = Array.isArray(prof?.roles) && (prof!.roles as string[]).length ? (prof!.roles as string[]) : (prof?.is_coach ? ["trener"] : ["rodic"]);
-      let previewRole = false;
-      if (admin) {
-        const v = getViewAs();
-        if (v === "navstevnik") { setLogged(false); setReady(true); return; }
-        if (v !== "admin") { roles = [v]; previewRole = true; } // náhled jako konkrétní role
-      }
-      if (!previewRole) roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
-      setTabs(tabsForRoles(roles.length ? roles : ["rodic"]));
-      setIsAdmin(admin && !previewRole); // v náhledu role admin nesmí vidět admin prvky (identické s rolí)
-      const un = await sb.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
-      setUnread(un.count ?? 0);
-      setLogged(true);
-      setReady(true);
+      try {
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) { setLogged(false); return; }
+        setLogged(true); // víme, že je přihlášený — lišta (a odhlášení) se musí ukázat i kdyby další dotazy selhaly
+        setTabs(tabsForRoles(["rodic"])); // rozumný default, kdyby profil dotaz selhal
+        const { data: prof } = await sb.from("profiles").select("is_admin,is_coach,roles").eq("id", user.id).maybeSingle();
+        const admin = prof?.is_admin === true;
+        let roles: string[] = Array.isArray(prof?.roles) && (prof!.roles as string[]).length ? (prof!.roles as string[]) : (prof?.is_coach ? ["trener"] : ["rodic"]);
+        let previewRole = false;
+        if (admin) {
+          const v = getViewAs();
+          if (v === "navstevnik") { setLogged(false); return; }
+          if (v !== "admin") { roles = [v]; previewRole = true; } // náhled jako konkrétní role
+        }
+        if (!previewRole) roles = roles.filter((r) => !isHiddenRole(r) || r === "vyplet");
+        setTabs(tabsForRoles(roles.length ? roles : ["rodic"]));
+        setIsAdmin(admin && !previewRole); // v náhledu role admin nesmí vidět admin prvky (identické s rolí)
+        try {
+          const un = await sb.from("messages").select("id", { count: "exact", head: true }).eq("to_id", user.id).is("read_at", null);
+          setUnread(un.count ?? 0);
+        } catch { /* nepřečtené jsou kosmetika */ }
+      } catch { /* i při chybě necháme lištu funkční */ }
+      finally { setReady(true); }
     })();
   }, []);
 

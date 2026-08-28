@@ -14,12 +14,15 @@ export function AuthNav() {
 
   const loadMe = async () => {
     const sb = createClient();
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) { setLogged(false); setReady(true); return; }
-    setLogged(true);
-    const { data: prof } = await sb.from("profiles").select("full_name,email").eq("id", user.id).maybeSingle();
-    setName(prof?.full_name || prof?.email || "Účet");
-    setReady(true);
+    try {
+      const { data: { user } } = await sb.auth.getUser();
+      if (!user) { setLogged(false); setName("Účet"); return; }
+      setLogged(true);
+      // Jméno je jen kosmetika — kdyby dotaz na profil selhal, účet se stejně musí ukázat.
+      const { data: prof } = await sb.from("profiles").select("full_name,email").eq("id", user.id).maybeSingle();
+      setName(prof?.full_name || prof?.email || "Účet");
+    } catch { /* i při chybě ukážeme stav podle session, ať nezůstane prázdná lišta */ }
+    finally { setReady(true); }
   };
 
   useEffect(() => {
