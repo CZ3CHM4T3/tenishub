@@ -116,9 +116,9 @@ export default function AccountPage() {
   const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
   const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
 
-  const toggleRole = (k: string, _free: boolean, soon?: boolean) => {
+  const toggleRole = (k: string, free: boolean, soon?: boolean) => {
     if (soon || previewing) return; // „brzy" role zatím nejdou zapnout; v náhledu se needituje
-    // Zapnutí role je ZDARMA (jen se přihlásíš k oboru) — členství gate-uje až funkce a viditelnost.
+    if (!free && !isMember) return; // placené role vyžadují členství (rodič/hráč = HUB+, obory = Expert+)
     setRoles((r) => r.includes(k) ? r.filter((x) => x !== k) : [...r, k]);
   };
 
@@ -148,15 +148,16 @@ export default function AccountPage() {
 
   const rolePickerUI = (
     <>
-      {editable && <p className="member-note" style={{ color: "var(--gold)" }}>Zapnout roli je zdarma — přihlásíš se k oboru a doplníš si profil. Členství (HUB+/Expert+) odemyká až <b>funkce a viditelnost</b> dané role.</p>}
+      {editable && <p className="member-note">Trenér je zdarma. <b>Rodič a hráč</b> jsou součástí HUB+, ostatní obory Expert+.</p>}
       <div className="rolepicker">
         {ACCOUNT_ROLES.map((r) => {
           const on = effRoles.includes(r.k);
-          const disabled = r.soon || !editable;
+          const locked = !r.free && !isMember;
+          const disabled = r.soon || locked || !editable;
           return (
             <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
               <span className="rp-check">{on ? <Check size={15} /> : null}</span>
-              <span className="rp-txt"><b>{r.label}{r.soon ? <span className="rp-soon">brzy</span> : <span className={r.cls}>{r.badge}</span>}</b><span>{r.desc}</span></span>
+              <span className="rp-txt"><b>{r.label}{r.soon && <span className="rp-soon">brzy</span>}</b><span>{r.desc}</span></span>
             </button>
           );
         })}
@@ -246,7 +247,7 @@ export default function AccountPage() {
         {atab === "profil" && (<>
         <div className="acct-card">
           <div className="acct-card-head"><UserRound size={20} /><h2>Osobní údaje</h2></div>
-          <p className="member-note">Vyplň jednou — použije se v celém účtu{isProvider ? " i na tvé veřejné kartě" : ""}.</p>
+          <p className="member-note">Vyplň jednou — použije se v celém účtu{isProvider ? " i na tvé veřejné kartě" : ""}. <b>Město</b> určuje počasí i turnaje ve tvém okolí.</p>
           <div className="card-photo">
             <div className="card-photo-prev" style={photoUrl ? { backgroundImage: `url(${photoUrl})` } : undefined}>
               {!photoUrl && (isProvider ? <ImagePlus size={26} /> : <UserRound size={32} />)}
