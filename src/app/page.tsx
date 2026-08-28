@@ -43,20 +43,24 @@ const IC_PHYSIO = '<path d="M3 12h4l2 5 4-12 2 7h6"/>';
 const IC_FITNESS = '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>';
 const IC_STRINGER = '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>';
 // Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. Jen 2 jsou „ověřené" (zlatý prsten + ✓).
-// 10 pinů rozmístěných ve VIDITELNÉ ploše mapy (pravý svět je diagonálně oříznutý,
-// střed-dole kryje vějíř karet, vpravo-dole text) → horní-pravý kvadrant.
-// Souřadnice ověřené point-in-polygon + převodem přes getScreenCTM (nejsou mimo mapu ani pod kartami).
+// 14 pinů ROZPROSTŘENÝCH po celé mapě ČR (pravý svět se na hover rozbalí přes skoro celou dlaždici).
+// Ověřeno point-in-polygon vč. HLAVY kapky (nečouhají za hranici) + mimo vějíř karet (střed-dole) a text (vpravo-dole).
+// Min. rozestup ~75px → žádné hloučení. Střed-dole a pravý-dolní roh záměrně volné (karty + text).
 const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boolean }[] = [
-  { x: 370, y: 163, c: "#c8a24c", icon: IC_COACH, verified: true },
-  { x: 350, y: 191, c: "#2e7d4f", icon: IC_CLUB },
-  { x: 338, y: 223, c: "#5a6470", icon: IC_STRINGER },
-  { x: 434, y: 215, c: "#7a5bc0", icon: IC_ACADEMY },
-  { x: 374, y: 219, c: "#2f6fb0", icon: IC_FITNESS },
-  { x: 478, y: 223, c: "#d9534f", icon: IC_PHYSIO, verified: true },
-  { x: 522, y: 243, c: "#c8a24c", icon: IC_COACH },
-  { x: 566, y: 275, c: "#2f6fb0", icon: IC_FITNESS },
-  { x: 522, y: 287, c: "#2e7d4f", icon: IC_CLUB },
-  { x: 594, y: 307, c: "#7a5bc0", icon: IC_ACADEMY, verified: true },
+  { x: 166, y: 131, c: "#c8a24c", icon: IC_COACH, verified: true },
+  { x: 162, y: 211, c: "#2f6fb0", icon: IC_FITNESS },
+  { x: 242, y: 211, c: "#2e7d4f", icon: IC_CLUB },
+  { x: 350, y: 223, c: "#7a5bc0", icon: IC_ACADEMY },
+  { x: 86, y: 227, c: "#d9534f", icon: IC_PHYSIO },
+  { x: -38, y: 251, c: "#5a6470", icon: IC_STRINGER },
+  { x: 542, y: 291, c: "#c8a24c", icon: IC_COACH, verified: true },
+  { x: 34, y: 291, c: "#2e7d4f", icon: IC_CLUB },
+  { x: 110, y: 299, c: "#2f6fb0", icon: IC_FITNESS },
+  { x: 186, y: 303, c: "#7a5bc0", icon: IC_ACADEMY, verified: true },
+  { x: 30, y: 371, c: "#c8a24c", icon: IC_COACH },
+  { x: 122, y: 375, c: "#d9534f", icon: IC_PHYSIO },
+  { x: 186, y: 415, c: "#2e7d4f", icon: IC_CLUB },
+  { x: 130, y: 467, c: "#5a6470", icon: IC_STRINGER },
 ];
 // tvar mapového pinu jako na /mapa (kulatá hlava + rovný krk ke špičce), střed hlavy ~ (0,-21.6)
 const PIN_D = "M0,0 L-8,-12 A12.5,12.5 0 1 1 8,-12 Z";
