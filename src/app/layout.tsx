@@ -11,6 +11,7 @@ import { SiteFeedback } from "@/components/SiteFeedback";
 import { MetaPixel } from "@/components/MetaPixel";
 import { Chatbot } from "@/components/Chatbot";
 import { AdminBar } from "@/components/AdminBar";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -64,6 +65,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
         {children}
+        <Footer />
         <ScrollReveal />
         <SiteFeedback />
         <MetaPixel />
