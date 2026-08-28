@@ -25,3 +25,24 @@ export function BuyMembership({ plan = "hub_plus", label = "Zaplatit HUB+ · 99 
     </>
   );
 }
+
+// Tlačítko „Vyzkoušet týden zdarma" — aktivuje 7denní zkušební členství bez karty (jednou na účet).
+export function TrialButton() {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const go = async () => {
+    setBusy(true); setErr("");
+    try {
+      const r = await fetch("/api/trial", { method: "POST" });
+      const d = await r.json();
+      if (d.ok) { window.location.reload(); return; }
+      setErr(d.error || "Nepodařilo se aktivovat."); setBusy(false);
+    } catch { setErr("Chyba spojení, zkus to prosím znovu."); setBusy(false); }
+  };
+  return (
+    <>
+      <button className="btn btn-green" onClick={go} disabled={busy} type="button">{busy ? "Aktivuji…" : "Vyzkoušet týden zdarma"}</button>
+      {err && <p className="member-note" style={{ color: "#b5546e", marginTop: ".5rem" }}>{err}</p>}
+    </>
+  );
+}

@@ -8,7 +8,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 import Kalendar from "./Kalendar";
-import { BuyMembership } from "@/components/BuyMembership";
+import { BuyMembership, TrialButton } from "@/components/BuyMembership";
 import { WeatherWeek } from "@/components/WeatherWeek";
 import { getViewAs, type ViewAs } from "@/lib/viewAs";
 
@@ -240,9 +240,12 @@ export default function AccountPage() {
             <>
               <p className="member-note">
                 <b>Členství HUB+ není aktivní.</b> Bez něj nemáš přístup k funkcím webu (Moje cesta, poradna, sparring, komunita…).
-                Zaplať kartou a odemkne se ti hned — týden zdarma, kdykoli zrušíš.
+                Vyzkoušej <b>týden zdarma bez karty</b> — nebo rovnou zaplať a máš klid.
               </p>
-              <BuyMembership plan="hub_plus" />
+              <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "center" }}>
+                <TrialButton />
+                <BuyMembership plan="hub_plus" />
+              </div>
             </>
           )}
         </div>
