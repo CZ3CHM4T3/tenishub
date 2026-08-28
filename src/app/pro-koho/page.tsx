@@ -78,11 +78,12 @@ function RoleDetail({ r }: { r: Role }) {
           <Link href={r.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {r.find.label}</Link>
         </div>
         <div className="rp-col rp-col-hub rv r d2">
-          <div className="rp-col-head"><h3>HUB+</h3><span className="rp-tag rp-tag-hub">99 Kč/měs</span></div>
+          <div className="rp-col-head"><h3>{r.provider ? "PROFI+" : "HUB+"}</h3><span className="rp-tag rp-tag-hub">{r.provider ? "299" : "99"} Kč/měs</span></div>
           <ul className="rp-list rp-list-locked">
             {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
           </ul>
-          <Link href="/pristup" className="btn btn-gold" style={{ width: "100%" }}>Chci HUB+</Link>
+          {r.provider && <p className="member-note" style={{ fontSize: ".82rem" }}>Základ (pin + jméno + web) zdarma. PROFI+ odemkne vše — nebo se vysloužit renomé.</p>}
+          <Link href={r.provider ? "/pro-trenery" : "/pristup"} className="btn btn-gold" style={{ width: "100%" }}>Chci {r.provider ? "PROFI+" : "HUB+"}</Link>
         </div>
       </div>
 

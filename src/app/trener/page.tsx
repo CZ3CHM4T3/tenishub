@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
-import TrenerProfile from "./TrenerProfile";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Jiří Novák — tenisový trenér Praha 6",
-  description:
-    "Ověřený tenisový trenér Jiří Novák (Praha 6). Volné hodiny, ceník, recenze — rezervuj lekci online a zaplať kartou.",
-};
-
+// /trener (bez id) dřív ukazoval demo profil (smyšlený Jiří Novák) — off-model, veřejně indexovatelné.
+// Přesměrováváme na mapu, kde jsou reální trenéři. Konkrétní profil je /trener/[id].
 export default function TrenerPage() {
-  return <TrenerProfile />;
+  redirect("/mapa");
 }
