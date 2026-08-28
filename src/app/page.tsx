@@ -348,8 +348,8 @@ export default function Home() {
                 </span>
                 {/* obecné info — vlevo dole */}
                 <span className="world-in wt-in">
-                  <span className="world-tag">Trenéři a kluby</span>
-                  <span className="wt-head">Vyber si ověřeného profíka</span>
+                  <span className="world-tag">Trenéři a profíci</span>
+                  <span className="world-sub">Trenéři, vyplétači, fyzio, fitness i areály — vyber si ověřeného profíka.</span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>

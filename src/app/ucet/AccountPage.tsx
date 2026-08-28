@@ -14,7 +14,7 @@ import { getViewAs, type ViewAs } from "@/lib/viewAs";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
-  { k: "profil", label: "Profil", Icon: UserRound },
+  { k: "profil", label: "Osobní údaje", Icon: UserRound },
   { k: "rezervace", label: "Kalendář", Icon: CalendarCheck },
 ];
 

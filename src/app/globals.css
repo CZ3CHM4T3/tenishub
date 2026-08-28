@@ -3111,7 +3111,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-fan-rate i{font-size:10px;color:#8a9790;font-style:normal;margin-left:3px}
 .wt-fan-btn{display:block;text-align:center;background:#2c4a3b;color:#fff;border-radius:8px;padding:7px;font-size:11.5px;font-weight:700}
 /* obecný text — vpravo dole (tmavá plocha, zrcadlově k „Rodič"), bílý se silným halo-stínem */
-.wt-in{position:absolute;z-index:4;right:3%;bottom:6%;max-width:180px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:.5rem}
+.wt-in{position:absolute;z-index:4;right:1.8rem;bottom:1.6rem;max-width:250px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:.4rem;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(0,0,0,.6)}
 .world-trainer .world-tag{font-size:clamp(1.15rem,2vw,1.7rem);line-height:1.05;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-head{font-weight:800;font-size:clamp(1rem,1.55vw,1.35rem);color:#fff;line-height:1.15;text-wrap:balance;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-sub{color:#e2ece5;font-size:.82rem;line-height:1.4;margin-top:-.1rem;text-shadow:0 1px 6px rgba(0,0,0,.55);max-width:26ch}
