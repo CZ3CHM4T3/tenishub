@@ -107,7 +107,7 @@ export default function KidClient({ id }: { id: string }) {
         )}
 
         {/* SPARING CUP */}
-        <h2 className="acct-h1" style={{ fontSize: "1.2rem", margin: "1.8rem 0 0.6rem" }}>Sparing Cup</h2>
+        <h2 className="acct-h1" style={{ fontSize: "1.2rem", margin: "1.8rem 0 0.6rem" }}>Sparring Cup</h2>
         {role === "coach" && (
           <ZapasForm childId={dite.id} cup={dite.program === "pro" ? "pro" : "hobby"} kind="match" />
         )}

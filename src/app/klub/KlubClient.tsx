@@ -28,7 +28,7 @@ const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] 
   { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové (zdarma)." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
   { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (Boost — jednorázově)." },
-  { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (Boost — jednorázově)." },
+  { k: "cup", label: "Sparring Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (Boost — jednorázově)." },
   { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky (zdarma)." },
 ];
 const DEFAULT_MODS = MODULES.map((m) => m.k);
@@ -136,7 +136,7 @@ export default function KlubClient() {
   const parents = roster.filter((m) => m.kind === "parent" && m.status === "active");
   const colleagues = roster.filter((m) => m.kind === "colleague" && m.status === "active");
   const pending = roster.filter((m) => m.status === "pending");
-  // Herní vrstva (strom + Sparing Cup) = jednorázový Boost. TRENÉR+ = provozní moduly (Nástěnka, Akce…).
+  // Herní vrstva (strom + Sparring Cup) = jednorázový Boost. TRENÉR+ = provozní moduly (Nástěnka, Akce…).
   // Zatím obojí odemčené jen v admin náhledu; po napojení plateb = reálné členství/Boost.
   const canGame = preview;
   // Provozní nástroje odemyká renomé (Ověřený+) NEBO předplatné TRENÉR+ NEBO admin náhled.
@@ -192,7 +192,7 @@ export default function KlubClient() {
           <p className="member-note">Profil a rozhraní máte zdarma. <b>Boost</b> je jednorázový balíček, kterým dáte dětem něco, co u tenisu ještě neměly — a sobě náskok před konkurencí:</p>
           <ul className="boost-list">
             <li><b>Customizovatelný strom dovedností</b> — vaše vlastní metoda. Děti odemykají uzly a levelují svou postavu.</li>
-            <li><b>Interní soutěž (Sparing Cup)</b> — děti mezi sebou měří síly. Rodiče si ji z velké části organizují sami, vy jen dohlížíte, řešíte ceny a vyhlašování.</li>
+            <li><b>Interní soutěž (Sparring Cup)</b> — děti mezi sebou měří síly. Rodiče si ji z velké části organizují sami, vy jen dohlížíte, řešíte ceny a vyhlašování.</li>
             <li><b>Zábava, motivace a engagement</b>, jaké u tenisu ještě nezažily — a důvod, proč u vás zůstanou.</li>
           </ul>
           <div className="boost-why">
@@ -364,7 +364,7 @@ export default function KlubClient() {
             <div className="acct-card klub-soon" style={{ textAlign: "center" }}>
               <span className="klub-soon-tag">Brzy</span>
               <Trophy size={26} />
-              <h3>Sparing Cup</h3>
+              <h3>Sparring Cup</h3>
               <p>Vaši svěřenci mezi sebou měří síly v žebříčku/poháru. Motivace, rivalita a radost z hraní — a důvod, proč u vás zůstanou.</p>
             </div>
           ) : <GameLockPreview variant="cup" />

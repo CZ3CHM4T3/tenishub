@@ -62,7 +62,7 @@ export default function SparingCup({
         <div className="es-head">
           <div>
             <div className="es-season">Sezóna 2026 · {ladder.length} {ladder.length === 1 ? "hráč" : ladder.length < 5 ? "hráči" : "hráčů"}</div>
-            <div className="es-lab">{cup === "pro" ? "PRO" : "HOBBY"} · Sparing Cup</div>
+            <div className="es-lab">{cup === "pro" ? "PRO" : "HOBBY"} · Sparring Cup</div>
             <h2>Žebříček sezóny</h2>
           </div>
           <div className="cup-switch">

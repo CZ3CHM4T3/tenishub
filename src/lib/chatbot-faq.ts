@@ -5,9 +5,9 @@ export type Qa = { q: string; keys: string[]; a: string; link?: { label: string;
 
 export const FAQ: Qa[] = [
   { q: "Co je TenisHub?", keys: ["co je", "tenishub", "o co jde", "co to je", "co delate", "projekt"],
-    a: "TenisHub je online tenisový klub pro rodiče a jejich děti. Trenér vede svůj klub, rodič připojí dítě a sleduje jeho pokrok — strom dovedností, level a Sparing Cup. Vše přehledně na jednom místě." },
+    a: "TenisHub je online tenisový klub pro rodiče a jejich děti. Trenér vede svůj klub, rodič připojí dítě a sleduje jeho pokrok — strom dovedností, level a Sparring Cup. Vše přehledně na jednom místě." },
   { q: "Jak to funguje?", keys: ["jak to funguje", "jak funguje", "princip", "postup", "jak zacit"],
-    a: "Tři kroky: 1) Najdi trenéra a jeho klub (nebo tě trenér pozve odkazem). 2) Připoj se a přidej svoje dítě. 3) Sleduj kariéru dítěte — dovednosti, level a Sparing Cup.", link: { label: "Najít trenéra", href: "/mapa" } },
+    a: "Tři kroky: 1) Najdi trenéra a jeho klub (nebo tě trenér pozve odkazem). 2) Připoj se a přidej svoje dítě. 3) Sleduj kariéru dítěte — dovednosti, level a Sparring Cup.", link: { label: "Najít trenéra", href: "/mapa" } },
   { q: "Kolik stojí členství?", keys: ["kolik", "cena", "stoji", "cenik", "clenstvi cena", "penize", "platit", "kč", "kc"],
     a: "Zakládající cena je 99 Kč měsíčně a zamkne se ti na celý první rok. Po roce se překlápí na běžných 199 Kč. Platit můžeš měsíčně nebo ročně předem.", link: { label: "Členství", href: "/clenstvi" } },
   { q: "Je něco zdarma?", keys: ["zdarma", "free", "zadarmo", "neplatit", "bez placeni"],
@@ -16,8 +16,8 @@ export const FAQ: Qa[] = [
     a: "Klikni na Mapu služeb — najdeš trenéry a kluby po celé ČR, filtruješ podle města a dojezdu.", link: { label: "Mapa služeb", href: "/mapa" } },
   { q: "Co je strom dovedností / kariéra dítěte?", keys: ["strom", "dovednosti", "kariera", "level", "pokrok", "skill"],
     a: "Každý trenér má svůj strom dovedností. Dítě postupně odemyká uzly, sbírá zkušenosti a leveluje svého tenistu — vidíš přesně, co už zvládlo a co ho čeká." },
-  { q: "Co je Sparing Cup?", keys: ["sparing cup", "sparring cup", "cup", "pohar", "zebricek deti"],
-    a: "Sparing Cup je žebříček/pohár mezi dětmi v klubu. Motivace, zdravá rivalita a radost z hraní — a důvod, proč u trenéra zůstat." },
+  { q: "Co je Sparring Cup?", keys: ["sparing cup", "sparring cup", "cup", "pohar", "zebricek deti"],
+    a: "Sparring Cup je žebříček/pohár mezi dětmi v klubu. Motivace, zdravá rivalita a radost z hraní — a důvod, proč u trenéra zůstat." },
   { q: "Co je Moje cesta?", keys: ["moje cesta", "denik", "sezona", "planovac", "kalendar hrace"],
     a: "Moje cesta je sezonní průvodce hráče: kalendář tréninků a turnajů, cíle, statistiky ze zápasů a ohlédnutí. Skvělé hlavně pro závodní rodiče." },
   { q: "Jak přidám dítě?", keys: ["pridat dite", "moje deti", "registrovat dite", "zalozit dite"],
@@ -69,7 +69,7 @@ export const FAQ: Qa[] = [
   { q: "Co když dítě nechce hrát nebo ztrácí radost?", keys: ["nechce hrat", "ztraci radost", "nebavi", "nechce trenovat", "vyhoreni", "demotivace"],
     a: "Nejčastěji je za tím moc tlaku nebo nuda. Zkuste hravější formu, kamarády, případně jiného trenéra — a mluvte o tom. Když si nevíte rady, pomůže konzultace nebo videorozbor." },
   { q: "Jak dítě motivovat?", keys: ["motivace", "motivovat", "podporovat dite", "jak povzbudit"],
-    a: "Chvalte snahu, ne jen výsledek; dopřejte kamarády a malé cíle. Přesně proto máme strom dovedností a Sparing Cup — dítě vidí pokrok a má se na co těšit." },
+    a: "Chvalte snahu, ne jen výsledek; dopřejte kamarády a malé cíle. Přesně proto máme strom dovedností a Sparring Cup — dítě vidí pokrok a má se na co těšit." },
   { q: "Antuka nebo hala?", keys: ["antuka", "hala", "povrch", "v zime", "kryty kurt"],
     a: "V teple se hraje venku (nejčastěji antuka), v zimě v hale. Pro děti není povrch zásadní — hlavně ať se hraje pravidelně celý rok." },
   { q: "Co dítě potřebuje na první trénink?", keys: ["prvni trenink", "co s sebou", "co potrebuje", "vybaveni"],
@@ -116,5 +116,5 @@ export const QUICK: string[] = [
   "Kolik stojí členství?",
   "Je něco zdarma?",
   "Jak najdu trenéra?",
-  "Co je Sparing Cup?",
+  "Co je Sparring Cup?",
 ];

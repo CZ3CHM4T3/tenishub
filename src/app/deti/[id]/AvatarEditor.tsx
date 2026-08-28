@@ -141,8 +141,8 @@ export default function AvatarEditor({
             </div>
             <p style={{ color: "#6f88ad", fontSize: ".78rem", marginTop: ".4rem" }}>
               {anon
-                ? "V žebříčku Sparing Cupu se ukáže jen „Anonym“ — avatar a body zůstávají."
-                : "V žebříčku se ukáže jméno dítěte. Sparing Cup odměňuje toho, kdo nejvíc hraje a vytrvá — jméno je součást té motivace."}
+                ? "V žebříčku Sparring Cupu se ukáže jen „Anonym“ — avatar a body zůstávají."
+                : "V žebříčku se ukáže jméno dítěte. Sparring Cup odměňuje toho, kdo nejvíc hraje a vytrvá — jméno je součást té motivace."}
             </p>
 
             <button className="btn-save-av" onClick={save} disabled={saving} style={{ marginTop: "1rem" }}>

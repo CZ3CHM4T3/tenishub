@@ -97,7 +97,7 @@ export default function DetiClient() {
         </div>
         <p className="member-note" style={{ marginTop: "-0.4rem" }}>
           {coachId
-            ? <>Vaše děti jsou u trenéra <b>{coachName}</b> — sbírají odznaky, level a postup ve stromu dovedností i Sparing Cupu.</>
+            ? <>Vaše děti jsou u trenéra <b>{coachName}</b> — sbírají odznaky, level a postup ve stromu dovedností i Sparring Cupu.</>
             : <>Nejdřív <button type="button" className="lnk-btn" onClick={() => setTab("trener")}>zadejte kód trenéra</button> — pak se odemkne Nástěnka i Pokrok a děti u trenéra začnou sbírat odznaky a level.</>}
         </p>
 

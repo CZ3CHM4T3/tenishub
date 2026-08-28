@@ -2137,7 +2137,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .es-row .wl{color:#9fd1b4;font-size:.82rem}
 .es-row .pt{font-family:var(--font-sora,"Sora"),sans-serif;font-weight:800;color:#fff;display:flex;align-items:center;gap:2px}
 .cup-note{color:#9fd1b4;font-size:.85rem;margin-top:.8rem;padding:.5rem .8rem;background:rgba(255,255,255,.04);border-radius:8px}
-/* ==== Sparing Cup – původní dvousloupcový layout (bedna vlevo / žebříček vpravo) ==== */
+/* ==== Sparring Cup – původní dvousloupcový layout (bedna vlevo / žebříček vpravo) ==== */
 .esport{background:radial-gradient(120% 130% at 82% 0%,#125630,var(--navy) 55%,#042a12);border:1px solid #1d633a;border-radius:22px;padding:2rem;color:#e6f7ed;position:relative;overflow:hidden}
 .es-bg{position:absolute;inset:0;background-repeat:no-repeat;background-position:center 18%;background-size:cover;opacity:.5;pointer-events:none;z-index:0}
 .es-bgfade{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(6,18,42,.55),rgba(5,15,36,.82)),radial-gradient(120% 90% at 78% 8%,transparent,rgba(4,13,32,.55))}
@@ -2588,7 +2588,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .sc-actions{display:flex;align-items:center;gap:.6rem}
 
 
-/* ── Zápis zápasu (Sparing Cup) ──────────────────────────────── */
+/* ── Zápis zápasu (Sparring Cup) ──────────────────────────────── */
 .entry-form { background: var(--soft); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; margin-top: 0.8rem; }
 .entry-row { display: flex; flex-wrap: wrap; gap: 0.7rem; }
 .entry-form label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8rem; font-weight: 700; color: var(--green); flex: 1; }

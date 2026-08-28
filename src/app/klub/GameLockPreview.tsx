@@ -1,6 +1,6 @@
 "use client";
 
-// Lákavý ZAMČENÝ náhled placené herní vrstvy (TRENÉR+): strom dovedností + Sparing Cup.
+// Lákavý ZAMČENÝ náhled placené herní vrstvy (TRENÉR+): strom dovedností + Sparring Cup.
 // Ukáže ochutnávku (rozmazaná mock grafika) + zámek s odznakem TRENÉR+ a CTA.
 import Link from "next/link";
 import { Lock, Check, GitBranch, Trophy, Star, Zap, Award, Crown, Medal, Target } from "lucide-react";
@@ -26,7 +26,7 @@ function TreeMock() {
   );
 }
 
-// mock „screenshotu" Sparing Cupu — mini žebříček s body
+// mock „screenshotu" Sparring Cupu — mini žebříček s body
 function CupMock() {
   const rows = [
     { r: 1, n: "Klárka N.", p: 240, Icon: Crown, c: "#bf9a47" },
@@ -36,7 +36,7 @@ function CupMock() {
   ];
   return (
     <div className="glp-shot" aria-hidden="true">
-      <div className="glp-shot-head"><span className="glp-shot-title"><Trophy size={13} /> Sparing Cup</span><span className="glp-shot-lvl">jarní kolo</span></div>
+      <div className="glp-shot-head"><span className="glp-shot-title"><Trophy size={13} /> Sparring Cup</span><span className="glp-shot-lvl">jarní kolo</span></div>
       <div className="glp-lb">
         {rows.map((row) => (
           <div className="glp-lb-row" key={row.r}>
@@ -57,7 +57,7 @@ export default function GameLockPreview({ variant, audience = "trener" }: { vari
     <div className="acct-card glp">
       <div className="acct-card-head">
         {isTree ? <GitBranch size={20} /> : <Trophy size={20} />}
-        <h2>{isTree ? "Strom dovedností" : "Sparing Cup"}</h2>
+        <h2>{isTree ? "Strom dovedností" : "Sparring Cup"}</h2>
         <span className="glp-badge"><Lock size={12} /> {isParent ? "trenér BOOST" : "BOOST"}</span>
       </div>
       <div className="glp-stage">

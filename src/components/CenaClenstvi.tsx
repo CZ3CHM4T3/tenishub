@@ -54,7 +54,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
           <span className="cena-boost-ic"><Flame size={22} /></span>
           <div className="cena-boost-tx">
             <b>BOOST — volitelný doplněk pro trenéry (kupuje se zvlášť)</b>
-            <span>Herní vrstva pro děti: strom dovedností + Sparing Cup. Děti sbírají odznaky, levelují a soupeří, rodiče vidí pokrok — nefér výhoda, kterou konkurence nemá. Jednorázově.</span>
+            <span>Herní vrstva pro děti: strom dovedností + Sparring Cup. Děti sbírají odznaky, levelují a soupeří, rodiče vidí pokrok — nefér výhoda, kterou konkurence nemá. Jednorázově.</span>
           </div>
           <Link href="/pro-trenery" className="cena-boost-link">Jak to funguje <ArrowRight size={15} /></Link>
         </div>
