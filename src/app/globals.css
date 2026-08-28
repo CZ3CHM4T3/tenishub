@@ -3571,6 +3571,25 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .cal-sw.on{border-color:var(--ink)}
 .cal-colorpick{width:34px;height:30px;padding:0;border:1px solid var(--line);border-radius:7px;background:none;cursor:pointer}
 @media(max-width:560px){.cal-cell{min-height:58px}.cal-chip{font-size:.6rem}}
+/* Faktura (tisková stránka) */
+.fak-page{max-width:760px;margin:2rem auto;padding:0 1rem;text-align:center}
+.fak{background:#fff;border:1px solid var(--line);border-radius:14px;padding:2rem;text-align:left}
+.fak-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--green);padding-bottom:1rem;margin-bottom:1.4rem}
+.fak-eyebrow{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.fak-num{font-size:1.4rem;margin:.1rem 0 0}
+.fak-brand{font-weight:800;color:var(--green);font-size:1.2rem}
+.fak-parties{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:1.4rem}
+.fak-party{display:flex;flex-direction:column;gap:.15rem;font-size:.9rem}
+.fak-party b{font-size:1rem}
+.fak-lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:.2rem}
+.fak-meta{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;font-size:.86rem;color:var(--muted);margin-bottom:1rem}
+.fak-tab{width:100%;border-collapse:collapse;font-size:.92rem}
+.fak-tab th{text-align:left;border-bottom:1px solid var(--line);padding:.5rem 0;font-size:.72rem;text-transform:uppercase;color:var(--muted)}
+.fak-tab td{padding:.6rem 0;border-bottom:1px solid var(--line)}
+.fak-tab tfoot td{border-bottom:0;font-size:1.05rem;padding-top:.8rem}
+.fak-note{font-size:.82rem;color:var(--muted);margin-top:1rem}
+.fak-print{margin:1.2rem auto 0;display:inline-flex}
+@media print{.fak-page{margin:0;max-width:none;padding:0}.fak{border:0;border-radius:0;padding:0}.fak-print{display:none!important}}
 .rp-exp{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#864a59;background:#f2e5e9;padding:.1rem .35rem;border-radius:5px}
 
 /* ===== Nástěnka + Akce (trenér) ===== */
