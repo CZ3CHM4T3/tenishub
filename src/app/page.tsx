@@ -42,6 +42,7 @@ const IC_ACADEMY = '<path d="M12 5 3 9l9 4 9-4-9-4z"/><path d="M6.5 11v4c0 1.2 2
 const IC_PHYSIO = '<path d="M3 12h4l2 5 4-12 2 7h6"/>';
 const IC_FITNESS = '<path d="M7 8v8M4.5 10v4M17 8v8M19.5 10v4M7 12h10"/>';
 const IC_STRINGER = '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/>';
+const IC_PLAYER = '<circle cx="14" cy="5.5" r="2.2"/><path d="M13 9l-3 3 1 4-2 4M10 12l-4 1M13 10l3 3 3-1"/>';
 // Piny na souřadnicích MAPY (uvnitř siluety), rozeseté po celé ČR. Jen 2 jsou „ověřené" (zlatý prsten + ✓).
 // 14 pinů ROZPROSTŘENÝCH po celé mapě ČR (pravý svět se na hover rozbalí přes skoro celou dlaždici).
 // Ověřeno point-in-polygon vč. HLAVY kapky (nečouhají za hranici) + mimo vějíř karet (střed-dole) a text (vpravo-dole).
@@ -61,6 +62,17 @@ const WT_PINS: { x: number; y: number; c: string; icon: string; verified?: boole
   { x: 122, y: 375, c: "#d9534f", icon: IC_PHYSIO },
   { x: 186, y: 415, c: "#2e7d4f", icon: IC_CLUB },
   { x: 130, y: 467, c: "#5a6470", icon: IC_STRINGER },
+  // +10 do prázdných míst (vyplní mezery); ověřené: 1 fitness, 1 fyzio, 1 vyplétač, 1 hráč
+  { x: 238, y: 139, c: "#2f6fb0", icon: IC_FITNESS, verified: true },
+  { x: 114, y: 179, c: "#5a6470", icon: IC_STRINGER, verified: true },
+  { x: 302, y: 179, c: "#d9534f", icon: IC_PHYSIO, verified: true },
+  { x: 22, y: 215, c: "#3a86a8", icon: IC_PLAYER, verified: true },
+  { x: 150, y: 263, c: "#c8a24c", icon: IC_COACH },
+  { x: -14, y: 323, c: "#2e7d4f", icon: IC_CLUB },
+  { x: 78, y: 343, c: "#7a5bc0", icon: IC_ACADEMY },
+  { x: 178, y: 359, c: "#3a86a8", icon: IC_PLAYER },
+  { x: 82, y: 423, c: "#2f6fb0", icon: IC_FITNESS },
+  { x: 182, y: 467, c: "#2e7d4f", icon: IC_CLUB },
 ];
 // tvar mapového pinu jako na /mapa (kulatá hlava + rovný krk ke špičce), střed hlavy ~ (0,-21.6)
 const PIN_D = "M0,0 L-8,-12 A12.5,12.5 0 1 1 8,-12 Z";
