@@ -8,7 +8,7 @@ export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent?: 
 export const ROLE_TABS: Record<string, NavTab[]> = {
   rodic: [
     { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Můj klub", href: "/deti", Icon: School, accent: "office" },
+    { label: "Moje děti", href: "/deti", Icon: School, accent: "office" },
     { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
     { label: "Služby", href: "/domu", Icon: LayoutGrid },
   ],

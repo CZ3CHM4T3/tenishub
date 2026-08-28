@@ -11,6 +11,7 @@ import Kalendar from "./Kalendar";
 import { BuyMembership, TrialButton } from "@/components/BuyMembership";
 import { WeatherWeek } from "@/components/WeatherWeek";
 import { getViewAs, type ViewAs } from "@/lib/viewAs";
+import { isHiddenRole } from "@/lib/simplify";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
@@ -162,7 +163,7 @@ export default function AccountPage() {
     <>
       {editable && <p className="member-note">Poskytovatelé (trenér, vyplétač) si <b>zdarma</b> udělají neověřený profil — pin na mapě + jméno a web. <b>Rodič a hráč</b> jsou v HUB+. Ověření a plné funkce (bio, ceník, rezervace…) = členství.</p>}
       <div className="rolepicker">
-        {ACCOUNT_ROLES.map((r) => {
+        {ACCOUNT_ROLES.filter((r) => !isHiddenRole(r.k)).map((r) => {
           const on = effRoles.includes(r.k);
           const locked = !r.free && !isMember;
           const disabled = r.soon || locked || !editable;
