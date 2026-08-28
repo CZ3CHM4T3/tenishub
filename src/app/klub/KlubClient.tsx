@@ -20,13 +20,13 @@ type Member = { id: string; member_name: string | null; kind: string; status: st
 
 // Moduly trenérského rozhraní — trenér si vybere, co používá.
 const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] = [
-  { k: "nastenka", label: "Nástěnka", Icon: Megaphone, desc: "Oznámení a novinky celé komunitě rodičů." },
-  { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním (RSVP)." },
-  { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové." },
+  { k: "nastenka", label: "Nástěnka", Icon: Megaphone, desc: "Oznámení a novinky celé komunitě rodičů (TRENÉR+)." },
+  { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním / RSVP (TRENÉR+)." },
+  { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové (zdarma)." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
   { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (Boost — jednorázově)." },
   { k: "cup", label: "Sparing Cup", Icon: Trophy, desc: "Interní soutěž svěřenců (Boost — jednorázově)." },
-  { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky." },
+  { k: "informace", label: "Informace", Icon: Info, desc: "Info pro rodiče a novinky (zdarma)." },
 ];
 const DEFAULT_MODS = MODULES.map((m) => m.k);
 
@@ -111,8 +111,21 @@ export default function KlubClient() {
   const parents = roster.filter((m) => m.kind === "parent" && m.status === "active");
   const colleagues = roster.filter((m) => m.kind === "colleague" && m.status === "active");
   const pending = roster.filter((m) => m.status === "pending");
-  // Herní vrstva (strom + Sparing Cup) = placený TRENÉR+ (zatím náhled; admin má preview).
+  // Herní vrstva (strom + Sparing Cup) = jednorázový Boost. TRENÉR+ = provozní moduly (Nástěnka, Akce…).
+  // Zatím obojí odemčené jen v admin náhledu; po napojení plateb = reálné členství/Boost.
   const canGame = preview;
+  const canPlus = preview;
+  const PLUS_MODS = new Set(["nastenka", "kalendar"]); // moduly pod TRENÉR+
+
+  // Zamykací karta pro TRENÉR+ modul (prodejní náhled pro trenéra bez TRENÉR+).
+  const plusLock = (title: string, desc: string) => (
+    <div className="acct-card">
+      <div className="acct-card-head"><Lock size={20} /><h2>{title}</h2><span className="member-badge">TRENÉR+</span></div>
+      <p className="member-note">{desc}</p>
+      <p className="member-note">Součást <b>TRENÉR+</b> (299 Kč/měs) — provoz klubu na jednom místě: rezervace 24/7, platby předem, docházka, oznámení i akce. Zdarma zůstává být vidět na mapě a sbírat svěřence.</p>
+      <Link href="/pristup" className="btn btn-gold">Chci TRENÉR+</Link>
+    </div>
+  );
 
   const approve = async (id: string) => { await supabase.from("coach_roster").update({ status: "active" }).eq("id", id); load(); };
   const reject = async (id: string) => { await supabase.from("coach_roster").delete().eq("id", id); load(); };
@@ -133,9 +146,9 @@ export default function KlubClient() {
         )}
         <div className="mc-head">
           <h1 className="acct-h1"><Users size={26} style={{ verticalAlign: "-4px" }} /> Můj klub</h1>
-          <span className="klub-free">Zdarma · žádné členství</span>
+          <span className="klub-free">Profil zdarma</span>
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Vaše trenérské rozhraní a profil na TenisHubu jsou <b>zdarma</b> — členství neplatíte. Zvěte rodiče a spravujte svěřence.</p>
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Být vidět na TenisHubu a sbírat svěřence je <b>zdarma</b>. Provozní nástroje (rezervace, platby, docházka, oznámení, akce) jsou v <b>TRENÉR+</b>, herní vrstva (strom, Sparing Cup) v <b>Boostu</b>.</p>
 
         {/* TRENÉRSKÝ BOOST (rozbalovací — jen nadpis, ať netlačí menu dolů) */}
         <details className="klub-fold">
@@ -169,9 +182,14 @@ export default function KlubClient() {
 
         {/* MODULÁRNÍ MENU */}
         <div className="klub-menu">
-          {enabledMods.map((m) => (
-            <button key={m.k} type="button" className={`klub-mtab${active === m.k ? " on" : ""}`} onClick={() => setKtab(m.k)}><m.Icon size={18} /> {m.label}</button>
-          ))}
+          {enabledMods.map((m) => {
+            const plusLocked = PLUS_MODS.has(m.k) && !canPlus;
+            return (
+              <button key={m.k} type="button" className={`klub-mtab${active === m.k ? " on" : ""}`} onClick={() => setKtab(m.k)}>
+                <m.Icon size={18} /> {m.label}{plusLocked && <Lock size={12} style={{ opacity: 0.55, marginLeft: 2 }} />}
+              </button>
+            );
+          })}
           <button type="button" className={`klub-mtab klub-mtab-set${active === "_nastaveni" ? " on" : ""}`} onClick={() => setKtab("_nastaveni")}><SlidersHorizontal size={18} /> Nastavení</button>
         </div>
 
@@ -197,11 +215,15 @@ export default function KlubClient() {
           </div>
         )}
 
-        {/* NÁSTĚNKA */}
-        {active === "nastenka" && uid && <Nastenka coachId={uid} />}
+        {/* NÁSTĚNKA (TRENÉR+) */}
+        {active === "nastenka" && uid && (canPlus
+          ? <Nastenka coachId={uid} />
+          : plusLock("Nástěnka", "Pošlete oznámení a novinky všem rodičům svěřenců najednou — konec hromadných SMS a skupin na sítích."))}
 
-        {/* AKCE / KALENDÁŘ */}
-        {active === "kalendar" && uid && <Akce coachId={uid} />}
+        {/* AKCE / KALENDÁŘ (TRENÉR+) */}
+        {active === "kalendar" && uid && (canPlus
+          ? <Akce coachId={uid} />
+          : plusLock("Akce", "Vypište tréninky, soustředění i turnaje s přihlašováním (RSVP) — víte, kdo přijde, a rodiče mají termíny na jednom místě."))}
 
         {/* INFORMACE */}
         {active === "informace" && (
@@ -256,7 +278,7 @@ export default function KlubClient() {
           )}
         </div>
 
-        {uid && <Skupiny coachId={uid} />}
+        {uid && (canPlus ? <Skupiny coachId={uid} /> : plusLock("Skupiny", "Rozdělte svěřence do skupin (přípravka, závodní…) a řešte docházku i oznámení hromadně."))}
 
         {colleagues.length > 0 && (
           <div className="acct-card">
