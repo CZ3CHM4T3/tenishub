@@ -116,9 +116,9 @@ export default function AccountPage() {
   const isProvider = effRoles.some((r) => PROVIDER_ROLES.includes(r));
   const isMember = previewing ? view !== "navstevnik" : (!!membership || realAdmin);
 
-  const toggleRole = (k: string, free: boolean, soon?: boolean) => {
-    if (soon || previewing) return;
-    if (!free && !isMember) return; // placené role jen s HUB+
+  const toggleRole = (k: string, _free: boolean, soon?: boolean) => {
+    if (soon || previewing) return; // „brzy" role zatím nejdou zapnout; v náhledu se needituje
+    // Zapnutí role je ZDARMA (jen se přihlásíš k oboru) — členství gate-uje až funkce a viditelnost.
     setRoles((r) => r.includes(k) ? r.filter((x) => x !== k) : [...r, k]);
   };
 
@@ -148,12 +148,11 @@ export default function AccountPage() {
 
   const rolePickerUI = (
     <>
-      {editable && !isMember && <p className="member-note" style={{ color: "var(--gold)" }}>Trenér je zdarma. Spotřebitelské role (rodič, hráč) odemyká HUB+, poskytovatelské (vyplétač…) Expert+.</p>}
+      {editable && <p className="member-note" style={{ color: "var(--gold)" }}>Zapnout roli je zdarma — přihlásíš se k oboru a doplníš si profil. Členství (HUB+/Expert+) odemyká až <b>funkce a viditelnost</b> dané role.</p>}
       <div className="rolepicker">
         {ACCOUNT_ROLES.map((r) => {
           const on = effRoles.includes(r.k);
-          const locked = !r.free && !isMember;
-          const disabled = r.soon || locked || !editable;
+          const disabled = r.soon || !editable;
           return (
             <button key={r.k} type="button" className={`rolepick-row${on ? " on" : ""}${disabled ? " dis" : ""}`} onClick={() => toggleRole(r.k, r.free, r.soon)}>
               <span className="rp-check">{on ? <Check size={15} /> : null}</span>
@@ -274,8 +273,8 @@ export default function AccountPage() {
           {rolePickerUI}
         </div>
 
-        {/* VEŘEJNÁ KARTA — část profilu poskytovatele; objeví se po zaškrtnutí poskytovatelské role */}
-        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} />}
+        {/* VEŘEJNÁ KARTA — část profilu poskytovatele; víc rolí = záložky uvnitř karty */}
+        {isProvider && <ProviderCard userId={profile.id} identity={{ fullName: name, city, phone, email: profile.email, photoUrl }} roles={effRoles} />}
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
