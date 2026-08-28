@@ -1138,8 +1138,9 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 
 /* sparring karty */
 .spar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-.spar-card { background: #fff; border: 0.5px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-s); padding: 1.2rem; display: flex; flex-direction: column; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.spar-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-s); padding: 1.2rem; display: flex; flex-direction: column; transition: transform 0.18s ease, box-shadow 0.18s ease; }
 .spar-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.spar-ok { display: inline-grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(160deg, #2c4a3b, #22382c); color: #fff; margin-bottom: .6rem; box-shadow: 0 10px 22px -10px rgba(44,74,59,.6); }
 .spar-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
 .spar-level { font-family: var(--font-jakarta), sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: #8a5640; background: #F2E6DF; padding: 0.25rem 0.7rem; border-radius: 100px; }
 .spar-city { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.84rem; color: var(--muted); }

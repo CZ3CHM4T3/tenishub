@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
-import { Handshake, MapPin, Clock, Send, BadgeCheck } from "lucide-react";
+import { Handshake, MapPin, Clock, Send, BadgeCheck, X } from "lucide-react";
 
 type Offer = {
   id: string; profile_id: string; level: string | null; city: string | null;
@@ -26,7 +26,6 @@ const empty = { level: "hobby", cityIdx: 0, age: "", play_type: "amateur", gende
 export default function SparringClient() {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [member, setMember] = useState(false);
   const [authorName, setAuthorName] = useState("");
   const [myOffer, setMyOffer] = useState<Offer | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,13 +52,11 @@ export default function SparringClient() {
       const { data: { user } } = await sb.auth.getUser();
       if (user) {
         setUserId(user.id);
-        const [{ data: p }, { data: mine }, { data: m }] = await Promise.all([
-          sb.from("profiles").select("full_name,is_admin").eq("id", user.id).maybeSingle(),
+        const [{ data: p }, { data: mine }] = await Promise.all([
+          sb.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
           sb.from("sparring_offers").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }).limit(1).maybeSingle(),
-          sb.from("memberships").select("id").eq("profile_id", user.id).eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle(),
         ]);
         setAuthorName(p?.full_name ?? "");
-        setMember(!!m || !!(p as { is_admin?: boolean } | null)?.is_admin);
         if (mine) {
           const o = mine as Offer;
           setMyOffer(o);
@@ -143,7 +140,7 @@ export default function SparringClient() {
             {myOffer && <span className="member-badge">NA ZDI</span>}
           </div>
           {!userId ? (
-            <p className="member-note">Chceš parťáka? <Link href="/pristup" style={{ color: "var(--gold)", fontWeight: 700 }}>Staň se členem</Link> a publikuj svou kartu na zeď.</p>
+            <p className="member-note">Chceš parťáka? <Link href="/prihlaseni?next=/sparring" style={{ color: "var(--gold)", fontWeight: 700 }}>Přihlas se</Link> a publikuj svou kartu na zeď — zdarma.</p>
           ) : !showForm ? (
             <>
               <p className="member-note">{myOffer ? "Tvoje karta je na zdi i na mapě. Můžeš ji upravit nebo stáhnout." : "Vyplň kartu a objevíš se na zdi i jako pin na mapě — ostatní tě osloví."}</p>
@@ -213,7 +210,7 @@ export default function SparringClient() {
                 <div className="spar-foot">
                   <span className="spar-author">{o.author_name || "Hráč"}</span>
                   {o.profile_id !== userId && (
-                    <button className="btn btn-out spar-btn" onClick={() => { if (!userId) { window.location.href = "/prihlaseni"; return; } if (!member) { if (confirm("Napsat parťákovi je funkce členství HUB+ (99 Kč/měsíc). Chceš členství?")) window.location.href = "/pristup"; return; } setContact(o); setCText(`Ahoj, mám zájem o sparring${o.city ? ` v ${o.city}` : ""}. Kdy se ti to hodí?`); setDone(false); }}>Napsat</button>
+                    <button className="btn btn-out spar-btn" onClick={() => { if (!userId) { window.location.href = "/prihlaseni?next=/sparring"; return; } setContact(o); setCText(`Ahoj, mám zájem o sparring${o.city ? ` v ${o.city}` : ""}. Kdy se ti to hodí?`); setDone(false); }}>Napsat</button>
                   )}
                 </div>
               </div>
@@ -224,21 +221,21 @@ export default function SparringClient() {
 
       {/* KONTAKT */}
       {contact && (
-        <div className="ov on" onClick={(e) => e.target === e.currentTarget && setContact(null)}>
-          <div className="modal">
+        <div className="mc-modal" onClick={(e) => e.target === e.currentTarget && setContact(null)}>
+          <div className="mc-modal-in">
             {done ? (
-              <div className="success">
-                <div className="ok"><Handshake size={28} /></div>
+              <div style={{ textAlign: "center" }}>
+                <span className="spar-ok"><Handshake size={26} /></span>
                 <h3>Zpráva odeslána</h3>
-                <p className="msub" style={{ marginTop: ".4rem" }}>Konverzaci najdeš v sekci <Link href="/zpravy" style={{ color: "var(--gold)", fontWeight: 700 }}>Zprávy</Link>.</p>
+                <p className="member-note" style={{ marginTop: ".3rem" }}>Konverzaci najdeš v sekci <Link href="/zpravy" style={{ color: "var(--gold)", fontWeight: 700 }}>Zprávy</Link>.</p>
                 <Link href="/zpravy" className="btn btn-green" style={{ width: "100%" }}>Přejít do zpráv</Link>
                 <button className="btn btn-out" style={{ width: "100%", marginTop: ".6rem" }} onClick={() => setContact(null)}>Zavřít</button>
               </div>
             ) : (
               <>
-                <button className="x" onClick={() => setContact(null)}>×</button>
+                <button className="mc-x" onClick={() => setContact(null)}><X size={18} /></button>
                 <h3>Napsat — {contact.author_name || "parťák"}</h3>
-                <div className="msub">Zpráva dorazí do jeho schránky na TenisHubu.</div>
+                <p className="member-note" style={{ marginTop: ".2rem" }}>Zpráva dorazí do jeho schránky na TenisHubu — <b>zdarma</b>.</p>
                 <div className="fld"><label>Zpráva</label><textarea rows={3} value={cText} onChange={(e) => setCText(e.target.value)} /></div>
                 <button className="btn btn-gold" style={{ width: "100%" }} onClick={sendContact} disabled={busy}><Send size={15} /> {busy ? "Odesílám…" : "Odeslat"}</button>
               </>
