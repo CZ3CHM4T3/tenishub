@@ -3549,6 +3549,28 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .pc-lock{margin-top:.5rem;padding:1rem 1.1rem;border-radius:14px;border:1px dashed #d9c48a;background:#faf6ec}
 .pc-lock-head{display:flex;align-items:center;gap:.4rem;color:var(--green);font-size:1rem;margin-bottom:.35rem}
 .pc-lock p{color:var(--muted);font-size:.88rem;line-height:1.4;margin:0 0 .8rem}
+/* Kalendář v účtu */
+.cal-bar{display:flex;align-items:center;justify-content:center;gap:1rem;margin:.4rem 0 .8rem}
+.cal-nav{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.cal-nav:hover{background:var(--soft,#f4efe2)}
+.cal-title{font-size:1.05rem;min-width:9rem;text-align:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{margin-bottom:4px}
+.cal-dowc{text-align:center;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:2px 0}
+.cal-cell{min-height:76px;border:1px solid var(--line);border-radius:9px;padding:4px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:.12s;overflow:hidden}
+.cal-cell:hover{border-color:var(--gold-l,#d9c48a);background:#fffdf8}
+.cal-empty{background:transparent;border:0;cursor:default}
+.cal-empty:hover{background:transparent}
+.cal-today{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.cal-day{font-size:.78rem;font-weight:700;color:var(--muted)}
+.cal-today .cal-day{color:var(--green)}
+.cal-evs{display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.cal-chip{font-size:.66rem;font-weight:700;color:#fff;padding:1px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.cal-colors{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cal-sw{width:26px;height:26px;border-radius:7px;border:2px solid transparent;cursor:pointer}
+.cal-sw.on{border-color:var(--ink)}
+.cal-colorpick{width:34px;height:30px;padding:0;border:1px solid var(--line);border-radius:7px;background:none;cursor:pointer}
+@media(max-width:560px){.cal-cell{min-height:58px}.cal-chip{font-size:.6rem}}
 .rp-exp{font-size:.6rem;font-weight:800;text-transform:uppercase;color:#864a59;background:#f2e5e9;padding:.1rem .35rem;border-radius:5px}
 
 /* ===== Nástěnka + Akce (trenér) ===== */

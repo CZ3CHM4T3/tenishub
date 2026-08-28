@@ -7,13 +7,14 @@ import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
 import ProviderCard from "./ProviderCard";
+import Kalendar from "./Kalendar";
 import { WeatherWeek } from "@/components/WeatherWeek";
 import { getViewAs, type ViewAs } from "@/lib/viewAs";
 
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
   { k: "profil", label: "Profil", Icon: UserRound },
-  { k: "rezervace", label: "Rezervace", Icon: CalendarCheck },
+  { k: "rezervace", label: "Kalendář", Icon: CalendarCheck },
 ];
 
 // Role = „klobouky". Trenér zdarma (návnada); spotřebitel = HUB+, poskytovatel = Trenér+/Expert+.
@@ -283,24 +284,8 @@ export default function AccountPage() {
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
 
-        {/* REZERVACE */}
-        {atab === "rezervace" && (
-        <div className="acct-card">
-          <div className="acct-card-head"><CalendarCheck size={20} /><h2>Moje rezervace</h2></div>
-          {bookings.length === 0 ? (
-            <p className="member-note">Zatím žádné rezervace. <Link href="/mapa" style={{ color: "var(--gold)", fontWeight: 700 }}>Najdi si trenéra →</Link></p>
-          ) : (
-            <div className="member-rows">
-              {bookings.map((b) => (
-                <div className="mrow" key={b.id}>
-                  <span>{fmtT(b.starts_at)}</span>
-                  <b>{b.price_czk ? `${b.price_czk} Kč` : "—"} · {b.status === "paid" ? "zaplaceno" : b.status === "cancelled" ? "zrušeno" : "rezervováno"}</b>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        )}
+        {/* KALENDÁŘ (rezervace + vlastní barevné akce) */}
+        {atab === "rezervace" && <Kalendar userId={profile.id} />}
       </div>
     </div>
   );
