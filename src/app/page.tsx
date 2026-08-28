@@ -30,8 +30,8 @@ type Persona = {
 };
 const PERSONAS: Persona[] = [
   { key: "trener", Icon: WhistleIcon, label: "Trenér", promise: "Víc klientů, míň papírování, plný kalendář.",
-    free: ["Profil a klubové rozhraní zdarma — bez poplatku", "Být k nalezení na mapě a v katalogu", "Veřejné recenze a ověřený odznak"],
-    plus: ["Online rezervace 24/7 — plný kalendář, konec telefonování a SMS", "Platby předem (GoPay) — žádní neplatiči ani no-show", "Správa svěřenců + docházka a omluvenky online (konec papírků)", "Rodiče vidí pokrok dětí přes Moji cestu — děti u vás zůstanou", "Leady z mapy a katalogu — noví klienti vám sami napíšou"] },
+    free: ["Profil na mapě zdarma (pin + jméno + web)", "Být k nalezení na mapě a v katalogu", "Veřejné recenze"],
+    plus: ["Online rezervace 24/7 — plný kalendář, konec telefonování a SMS", "Platby předem (Barion) — žádní neplatiči ani no-show", "Správa svěřenců + docházka a omluvenky online (konec papírků)", "Rodiče vidí pokrok dětí přes Moji cestu — děti u vás zůstanou", "Leady z mapy a katalogu — noví klienti vám sami napíšou"] },
   { key: "rodic-hobby", Icon: Users, label: "Rodič hobby hráče", promise: "Najdi, rezervuj, zaplať — a měj klid.",
     free: ["Hledání trenérů a klubů", "Profily a recenze", "Prohlížení sparring nabídek"],
     plus: ["Moje cesta — deník tréninků a volna dítěte", "Rezervace a platby na pár kliků", "Zprávy trenérům", "Přehled dítěte (rozvrh, platby)", "Články a FAQ návody"] },
@@ -52,10 +52,10 @@ const PERSONAS: Persona[] = [
     plus: ["Rezervační systém + platby", "Obsaď volný kurt teď", "Statistiky vytíženosti", "Napojení trenérů", "Články a FAQ návody"] },
   { key: "fyzio", Icon: HeartPulse, label: "Fyzioterapeut", promise: "Noví klienti z tenisu, co řeší tělo.",
     free: ["Profil fyzia na mapě", "Veřejné recenze"],
-    plus: ["Online objednávky termínů", "Poptávky od hráčů (leady)", "Rehabilitační plány online", "Ověřený odznak", "Články a FAQ návody"] },
+    plus: ["Online objednávky termínů", "Poptávky od hráčů (leady)", "Rehabilitační plány online", "Plná karta (foto, ceník, bio)", "Články a FAQ návody"] },
   { key: "fitness", Icon: Dumbbell, label: "Fitness trenér", promise: "Kondiční klienti přímo z tenisu.",
     free: ["Profil na mapě", "Veřejné recenze"],
-    plus: ["Online objednávky tréninků", "Poptávky od hráčů a rodičů", "Prodej kondičních programů", "Ověřený odznak", "Články a FAQ návody"] },
+    plus: ["Online objednávky tréninků", "Poptávky od hráčů a rodičů", "Prodej kondičních programů", "Plná karta (foto, ceník, bio)", "Články a FAQ návody"] },
 ];
 
 // barva role (sladěná s plástí) — pro barevné odlišení v sekci „Pro koho"

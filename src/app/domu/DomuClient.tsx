@@ -79,7 +79,7 @@ export default function DomuClient() {
               </Link>
             ))}
           </div>
-          <p className="member-note" style={{ marginTop: ".5rem" }}>Kalendář, online rezervace a objednávky přibývají s <b>PRO</b>.</p>
+          <p className="member-note" style={{ marginTop: ".5rem" }}>Kalendář, online rezervace a objednávky přibývají s <b>EXPERT+</b> (nebo je vyslouží renomé).</p>
         </>)}
 
         {isConsumer && (<>

@@ -62,7 +62,7 @@ export const ROLES: Record<string, Role> = {
     ],
     plus: [
       { label: "Kalendář a online rezervace" },
-      { label: "Platby předem (GoPay)", soon: true },
+      { label: "Platby předem (Barion)", soon: true },
       { label: "Správa klientů a omluvenky", soon: true },
       { label: "Ověřený odznak a top pozice", soon: true },
     ],

@@ -35,7 +35,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
           {/* PRO */}
           <div className="cena-card">
             <div className="cena-top">
-              <span className="cena-badge prop"><Briefcase size={15} /> PRO</span>
+              <span className="cena-badge prop"><Briefcase size={15} /> EXPERT+</span>
               <div className="cena-price"><b>299 Kč</b><span>/ měs</span></div>
             </div>
             <p className="cena-for">Pro <b>fyzio, fitness, vyplétače a akademie</b> — kdo tenisem vydělává.</p>
@@ -45,7 +45,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
               <li><Check size={16} /> <span>Ceník, recenze a profil plně po svém.</span></li>
             </ul>
             <p className="cena-value"><b>Vyděláš to na jediné lekci</b> — zbytek je zisk.</p>
-            <Link href="/pro-trenery" className="btn btn-out cena-cta">Chci PRO <ArrowRight size={16} /></Link>
+            <Link href="/pro-trenery" className="btn btn-out cena-cta">Chci EXPERT+ <ArrowRight size={16} /></Link>
             <p className="cena-note">Základní profil (pin na mapě + jméno a web) máš <b>zdarma</b>. PRO přidává ověření, plnou kartu (foto, ceník, bio) a nástroje.</p>
           </div>
 

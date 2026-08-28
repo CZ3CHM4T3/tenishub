@@ -540,7 +540,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
             </div>
             <div className="fld"><label>Jméno na kartě</label><input placeholder="Jan Novák" /></div>
             <button className="btn btn-gold" style={{ width: "100%" }} onClick={() => confirmBooking(true)} disabled={saving}>{saving ? "Ukládám…" : `Zaplatit ${price} Kč`}</button>
-            <div className="stripe-badge">🔒 Zabezpečeno přes <b>GoPay</b></div>
+            <div className="stripe-badge">🔒 Zabezpečeno přes <b>Barion</b></div>
           </div>
         </div>
       )}
@@ -627,7 +627,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
               <div className="ok">✓</div>
               <h3>Rezervováno!</h3>
               <p className="msub" style={{ marginTop: ".4rem" }}>
-                Lekce {chosen?.txt} je rezervovaná a uložená ve tvém účtu — najdeš ji v sekci <Link href="/ucet" style={{ color: "var(--gold)", fontWeight: 700 }}>Moje rezervace</Link>. (Platba kartou bude ostrá až s GoPay.)
+                Lekce {chosen?.txt} je rezervovaná a uložená ve tvém účtu — najdeš ji v sekci <Link href="/ucet" style={{ color: "var(--gold)", fontWeight: 700 }}>Moje rezervace</Link>. (Platba kartou bude ostrá až s Barionem.)
               </p>
               <button className="btn btn-green" style={{ width: "100%" }} onClick={() => setModal(null)}>Hotovo</button>
             </div>

@@ -119,9 +119,9 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
     ],
     member: [
       { label: "Kalendář a online rezervace", href: "/trener" },
-      { label: "Platby předem (GoPay)", href: "/trener" },
+      { label: "Platby předem (Barion)", href: "/trener" },
       { label: "Správa klientů a omluvenky", soon: true },
-      { label: "Ověřený odznak a top pozice", soon: true },
+      { label: "Top pozice na mapě", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],
   },
@@ -215,7 +215,6 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
       { label: "Online objednávky termínů", href: "/trener" },
       { label: "Poptávky od hráčů (leady)", soon: true },
       { label: "Rehabilitační plány online", soon: true },
-      { label: "Ověřený odznak", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],
   },
@@ -228,22 +227,20 @@ const FUNCS: Record<string, { free: Func[]; member: Func[] }> = {
       { label: "Online objednávky tréninků", href: "/trener" },
       { label: "Poptávky od hráčů a rodičů", soon: true },
       { label: "Prodej kondičních programů", soon: true },
-      { label: "Ověřený odznak", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],
   },
   vyplet: {
     free: [
-      { label: "Vizitka v katalogu", href: "/mapa" },
+      { label: "Vizitka v katalogu + pin na mapě", href: "/mapa" },
       { label: "Kontakt a ceník výpletů" },
       { label: "Veřejné recenze", soon: true },
     ],
     member: [
-      { label: "Pin na mapě + top pozice", href: "/mapa" },
+      { label: "Top pozice na mapě", href: "/mapa" },
       { label: "Online objednávka vyplétání", soon: true },
       { label: "Poptávky od hráčů a klubů", soon: true },
       { label: "Ceník výpletů a skladem strun", soon: true },
-      { label: "Ověřený odznak", soon: true },
       { label: "Články a FAQ návody", soon: true },
     ],
   },
@@ -277,6 +274,8 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
   const variants = sel ? VARIANTS[sel] : undefined;
   const funcKey = variants ? `${sel}:${selVar || variants[0].key}` : sel ?? "";
   const funcs = funcKey ? FUNCS[funcKey] : null;
+  // Placené funkce: poskytovatel = TRENÉR+/EXPERT+, spotřebitel = HUB+.
+  const memberBadge = sel === "trener" ? "TRENÉR+" : ["areal", "fyzio", "fitness", "vyplet"].includes(sel ?? "") ? "EXPERT+" : "HUB+";
 
   const openCard = (key: string) => {
     setSel((v) => (v === key ? null : key));
@@ -377,9 +376,9 @@ export function ServiceMap({ showMap = true, showCards = true, hideKeys = [] }: 
           <div className="hive-menu-grid">
             {funcs.member.map((f) =>
               f.href ? (
-                <Link key={f.label} href={f.href} className="hm-item hm-member">{f.label} <span className="hm-badge">HUB+</span></Link>
+                <Link key={f.label} href={f.href} className="hm-item hm-member">{f.label} <span className="hm-badge">{memberBadge}</span></Link>
               ) : (
-                <span key={f.label} className="hm-item hm-member hm-disabled">{f.label} <span className="hm-badge">HUB+</span></span>
+                <span key={f.label} className="hm-item hm-member hm-disabled">{f.label} <span className="hm-badge">{memberBadge}</span></span>
               )
             )}
           </div>

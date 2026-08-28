@@ -481,7 +481,7 @@ export default function AdminPage() {
             </div>
           )}
           <p className="member-note" style={{ marginTop: "0.8rem" }}>
-            Pozn.: skutečné stržení peněz přijde s napojením GoPay — teď se evidují rezervace a jejich stav.
+            Pozn.: skutečné stržení peněz přijde s napojením Barionu — teď se evidují rezervace a jejich stav.
           </p>
         </div>
         )}
