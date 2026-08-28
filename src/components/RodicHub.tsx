@@ -36,7 +36,7 @@ export function RodicHub() {
           {member ? <><Sparkles size={14} /> Máš HUB+ — vše odemčené</> : <><Lock size={13} /> Vše ve členství HUB+ · 99 Kč/měsíc</>}
         </span>
         {!member && (
-          <p className="rhub-sell">Celý tenisový klub pro vaše dítě na jednom místě. Zkus to na měsíc — kdykoli zrušíš, bez závazku.</p>
+          <p className="rhub-sell">Celý tenisový klub pro vaše dítě na jednom místě. Vyzkoušej <b>týden zdarma</b> — bez karty, kdykoli zrušíš.</p>
         )}
         <div className="rhub-grid">
           {TOOLS.map((tl, i) => {
@@ -58,8 +58,8 @@ export function RodicHub() {
       {!member && (
         <div className="rhub-cta">
           <div className="rhub-cta-txt">
-            <b>Vyzkoušej celý klub na měsíc</b>
-            <span>Všechny funkce výš, jedno členství. <b>99 Kč/měsíc</b>, kdykoli zrušíš — bez závazku.</span>
+            <b>Vyzkoušej celý klub na týden zdarma</b>
+            <span>Všechny funkce výš, jedno členství. <b>Týden zdarma</b>, pak 99 Kč/měsíc — bez karty, kdykoli zrušíš.</span>
           </div>
           <Link href="/pristup" className="btn btn-gold rhub-cta-btn">Chci předběžný přístup <ArrowRight size={18} /></Link>
         </div>

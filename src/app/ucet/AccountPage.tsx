@@ -249,7 +249,7 @@ export default function AccountPage() {
           <p className="member-note">Vyplň jednou — použije se v celém účtu{isProvider ? " i na tvé veřejné kartě" : ""}.</p>
           <div className="card-photo">
             <div className="card-photo-prev" style={photoUrl ? { backgroundImage: `url(${photoUrl})` } : undefined}>
-              {!photoUrl && <ImagePlus size={26} />}
+              {!photoUrl && (isProvider ? <ImagePlus size={26} /> : <UserRound size={32} />)}
             </div>
             <div>
               <button className="btn btn-out" disabled={busy} onClick={() => fileRef.current?.click()}><ImagePlus size={15} /> {photoUrl ? "Změnit fotku" : "Nahrát fotku"}</button>

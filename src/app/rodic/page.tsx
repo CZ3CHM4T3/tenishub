@@ -16,7 +16,7 @@ const FAQ = [
   { q: "Od kolika let má smysl začít?", a: "Babytenis a minitenis zvládnou děti už od 4–5 let formou hry. Důležitější než věk je radost a pravidelnost — s tím pomáhá i Moje cesta (hlídá poměr tréninku a volna, aby dítě nevyhořelo)." },
   { q: "Kolikrát týdně trénovat?", a: "Hobby stačí 1–2× týdně, u závodního se objem zvyšuje postupně podle fáze sezóny. V Moji cestě vidíte křivku zátěže, ať to nepřeženete." },
   { q: "Co když dítě začíná ztrácet radost?", a: "Je to častější, než si rodiče myslí — většinou za tím není talent, ale frustrace. Pomůže nezávislý videorozbor a konzultace: objektivně řekneme, v čem je problém a jak dál." },
-  { q: "Můžu členství kdykoli zrušit?", a: "Ano. Žádný závazek, žádné skryté platby. Zkus to na měsíc a uvidíš — když ti to nesedne, zrušíš to." },
+  { q: "Můžu členství kdykoli zrušit?", a: "Ano. Žádný závazek, žádné skryté platby. Vyzkoušej týden zdarma (bez karty) a uvidíš — když ti to nesedne, nic neplatíš." },
 ];
 
 export default function RodicPage() {
