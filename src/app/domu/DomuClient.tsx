@@ -15,7 +15,7 @@ import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSqu
 const PROVIDER_SERVICES = [
   { href: "/ucet?tab=profil", label: "Moje karta", desc: "Profil, ceník a foto — co vidí klienti", Icon: IdCard, hero: true },
   { href: "/zpravy", label: "Zprávy a poptávky", desc: "Klienti, co vás oslovili", Icon: Mail },
-  { href: "/ucet?tab=profil", label: "Ověření a Boost", desc: "Odznak důvěry a nefér výhoda", Icon: BadgeCheck },
+  { href: "/ucet?tab=profil", label: "Renomé a ověření", desc: "Váš odznak důvěry, který vidí rodiče", Icon: BadgeCheck },
   { href: "/mapa", label: "Mapa služeb", desc: "Kde vás klienti najdou", Icon: MapPin },
   { href: "/pocasi", label: "Počasí", desc: "Na týden ve vašem okolí", Icon: CloudSun },
 ];

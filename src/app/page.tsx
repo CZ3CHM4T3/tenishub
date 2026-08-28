@@ -220,7 +220,6 @@ export default function Home() {
   const p = VISIBLE_PERSONAS[persona];
   const PIcon = p.Icon;
   const pc = PERSONA_COLOR[p.key];
-  const marquee = featured.length ? [...featured, ...featured] : [];
   // pás ověřených lidí s hodnocením (reální; když jich je málo, padne to na hodnotové hlášky)
   const stripSource = [DEMO_STRIP[0], ...stripData]; // Jirka navrch (dočasně), pak reálné profily
   const useRealStrip = stripSource.length >= 1;
@@ -427,27 +426,6 @@ export default function Home() {
       <AppetizerSlider />
 
 
-
-      {/* MARQUEE — specialisté z DB */}
-      {false && marquee.length > 0 && (
-        <section className="marquee-sec">
-          <div className="marquee">
-            <div className="marquee-track">
-              {marquee.map((s, i) => {
-                const m = KIND_META[s.kind] ?? KIND_META.coach;
-                const MIcon = m.Icon;
-                return (
-                  <Link href={`/trener/${s.id}`} className="spec-card" key={i}>
-                    <span className="spec-ic"><MIcon size={18} /></span>
-                    <div><b>{s.name}</b><span className="spec-meta">{m.label}{s.city ? ` · ${s.city}` : ""}</span></div>
-                    <span className="spec-rate"><Star size={13} /> {s.rating ?? "—"}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* PRO KOHO — přesunuto na /clenstvi (na homepage skryto) */}
       {false && (
