@@ -11,13 +11,12 @@ import { AppetizerSlider } from "@/components/AppetizerSlider";
 import { AskUs } from "@/components/AskUs";
 import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
-import { HomeRoleNav } from "@/components/HomeRoleNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { CenaClenstvi } from "@/components/CenaClenstvi";
 import { useMe } from "@/lib/useMe";
 import { VideoNudge } from "@/components/VideoNudge";
 import {
-  Search, CalendarCheck, ArrowRight, Check, MapPin, Star,
+  Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, type LucideIcon,
   CalendarDays, Target, BarChart3, History,
@@ -110,6 +109,7 @@ function Counter({ to, suffix }: { to: number; suffix?: string }) {
 }
 
 export default function Home() {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -128,6 +128,15 @@ export default function Home() {
     };
     addEventListener("scroll", onScroll);
     return () => removeEventListener("scroll", onScroll);
+  }, []);
+
+  // dropdown menu: zavřít kliknutím mimo
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest(".nav-item")) setOpenMenu(null);
+    };
+    document.addEventListener("click", onDoc);
+    return () => document.removeEventListener("click", onDoc);
   }, []);
 
   // scroll-reveal řeší globální <ScrollReveal /> v layoutu
@@ -188,7 +197,19 @@ export default function Home() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-tenishub.png" alt="TenisHub" className="brand-img" />
             </Link>
-            <HomeRoleNav />
+            <nav className="menu">
+              <div className="nav-item">
+                <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
+                <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
+                  <Link className="drop-card" href="/rodic"><b>Rodič &amp; dítě</b><span>najít, sledovat, poradit</span></Link>
+                  <Link className="drop-card" href="/pro-trenery"><b>Trenér</b><span>vlastní klub &amp; svěřenci</span></Link>
+                  <Link className="drop-card" href="/pro-koho?role=sparring"><b>Sparring partner</b><span>najdi s kým hrát</span></Link>
+                </div></div>
+              </div>
+              <Link className="nav-link" href="/mapa">Mapa služeb</Link>
+              <Link className="nav-link" href="/clenstvi">Členství</Link>
+              <Link className="nav-link" href="/o-nas">O nás</Link>
+            </nav>
             <div className="nav-r">
               <AuthNav />
               <button className="burger" aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}>{mobileOpen ? "✕" : "☰"}</button>
