@@ -149,7 +149,7 @@
   }
 
   /* HERO */
-  .hero { position: relative; min-height: 92svh; display: flex; align-items: center; color: var(--ink); overflow: hidden; padding: 6rem 0 2rem; }
+  .hero { position: relative; min-height: 92svh; display: flex; align-items: flex-start; color: var(--ink); overflow: hidden; padding: 4.7rem 0 2rem; }
   .hero-bg { position: absolute; inset: 0; z-index: -2; background:
     radial-gradient(110% 80% at 88% 2%, rgba(191, 154, 71, 0.10), transparent 55%),
     radial-gradient(90% 70% at -5% 95%, rgba(44, 74, 59, 0.07), transparent 60%),
@@ -922,7 +922,7 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 @media (max-width: 760px) { .spar-form-grid { grid-template-columns: repeat(2, 1fr); } }
 /* 2 SVĚTY — volba experience */
 .worlds-welcome { font-family: var(--font-jakarta), sans-serif; font-weight: 700; font-size: clamp(1.15rem, 2.2vw, 1.6rem); color: var(--green-d); margin: 1.8rem 0 0.9rem; }
-.worlds { position: relative; width: 100%; max-width: 1180px; margin: 2rem auto 0; height: clamp(440px, 66vh, 680px); border-radius: 24px; overflow: hidden; box-shadow: 0 16px 44px rgba(40,50,30,0.16); }
+.worlds { position: relative; width: 100%; max-width: 1180px; margin: 1.1rem auto 0; height: clamp(440px, 66vh, 680px); border-radius: 24px; overflow: hidden; box-shadow: 0 16px 44px rgba(40,50,30,0.16); }
 .world { position: absolute; inset: 0; background-size: cover; background-position: center; display: flex; align-items: flex-end; text-decoration: none; transition: clip-path 0.5s cubic-bezier(.4,0,.2,1), background-size 0.6s ease, filter 0.3s; }
 .world::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,28,22,0.78) 8%, rgba(15,28,22,0.18) 55%, rgba(15,28,22,0.35) 100%); }
 .world-rodic { clip-path: polygon(0 0, 60% 0, 44% 100%, 0 100%); }
