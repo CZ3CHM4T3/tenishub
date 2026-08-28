@@ -9,7 +9,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
       <div className="wrap">
         <span className="cena-eyebrow">Členství</span>
         <h2 className="cena-h">Za cenu jedné lekce měsíčně — <span className="g">celý tenisový klub</span></h2>
-        <p className="cena-sub">Žádné skryté funkce zdarma. Jedno členství, kompletní podpora. Vyber si podle toho, na které straně kurtu stojíš.</p>
+        <p className="cena-sub">Jedno členství, kompletní podpora. Vyber si podle toho, na které straně kurtu stojíš.</p>
 
         <div className="cena-grid three">
           {/* HUB+ */}
@@ -46,7 +46,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
             </ul>
             <p className="cena-value"><b>Vyděláš to na jediné lekci</b> — zbytek je zisk.</p>
             <Link href="/pro-trenery" className="btn btn-out cena-cta">Chci PRO <ArrowRight size={16} /></Link>
-            <p className="cena-note">Zakládající cena pro první experty.</p>
+            <p className="cena-note">Základní profil (pin na mapě + jméno a web) máš <b>zdarma</b>. PRO přidává ověření, plnou kartu (foto, ceník, bio) a nástroje.</p>
           </div>
 
           {/* TRENÉR+ */}

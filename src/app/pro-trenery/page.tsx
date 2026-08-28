@@ -9,12 +9,12 @@ import {
 
 export const metadata: Metadata = {
   title: "Pro trenéry a kluby — buďte vidět rodičům, zdarma",
-  description: "TenisHub je místo, kde rodiče hledají trenéry pro své děti. Profil i rozhraní máte zdarma, bez provizí. Pozvěte své rodiče, získejte ověření a odemkněte všechny nástroje.",
+  description: "TenisHub je místo, kde rodiče hledají trenéry pro své děti. Základní profil na mapě máte zdarma; ověření a nástroje si vyslužíte přivedením členů — nebo předplatíte. Bez provizí.",
 };
 
 const STEPS = [
   { Icon: UserPlus, t: "Založte profil zdarma", d: "Registrace je zdarma a nic po vás nechceme. Žádné provize z vaší práce." },
-  { Icon: ClipboardList, t: "Vyplňte svoji kartu", d: "Foto, ceník, bio a přístup k dětem. Rodiče uvidí, kdo jste a co nabízíte." },
+  { Icon: ClipboardList, t: "Buďte na mapě zdarma", d: "Jméno a odkaz na web máte na mapě hned zdarma. Foto, ceník a bio se odemknou po ověření (nebo předplatným)." },
   { Icon: Send, t: "Pozvěte své rodiče", d: "Máte unikátní odkaz — pošlete ho svým klientům a přihlásí se rovnou k vám do komunity." },
   { Icon: Users, t: "Získejte 10 členů", d: "Až vás 10 rodičů podpoří členstvím, jste pro nás prověřený trenér s reálnou komunitou." },
   { Icon: BadgeCheck, t: "Ověřeno a odemčeno", d: "Dostanete odznak Ověřeno TenisHubem, jste vidět na mapě a odemknou se všechny nástroje." },
@@ -24,7 +24,7 @@ const BENEFITS = [
   { Icon: Eye, t: "Buďte vidět", d: "Rodiče hledají trenéry na mapě i ve vyhledávání. Ukážeme vás těm správným lidem ve vašem okolí." },
   { Icon: Heart, t: "Rodiče blíž k vám", d: "Profil, recenze a přímé zprávy. Rodič má k vám blíž a snáz se rozhodne právě pro vás." },
   { Icon: Wrench, t: "Nástroje pro práci", d: "Komunita, kalendář, informace pro rodiče — a co nechcete, jednoduše vypnete." },
-  { Icon: Wallet, t: "Nulové náklady", d: "Profil i rozhraní zdarma, žádné provize z vašich lekcí. Berete jen to, co vám pomůže." },
+  { Icon: Wallet, t: "Bez provizí", d: "Základní profil na mapě zdarma, žádné provize z vašich lekcí. Plné nástroje si vyslužíte členy — nebo předplatíte." },
   { Icon: ShieldCheck, t: "Důvěra a bezpečí", d: "Ověřené prostředí, kterému rodiče věří. Váš odznak Ověřeno mluví za vás." },
   { Icon: Sparkles, t: "Prostor být sami sebou", d: "Rozhraní si přizpůsobíte — ukazujete to, co dělá vaši práci výjimečnou." },
 ];
@@ -57,7 +57,7 @@ export default function ProTreneryPage() {
         <div className="wrap">
           <span className="ptr-eyebrow rv">Pro trenéry a kluby</span>
           <h1 className="ptr-h1 rv d1">Pomůžeme rodičům najít <span className="g">právě vás</span></h1>
-          <p className="ptr-lead rv d1">TenisHub je místo, kde rodiče hledají trenéry pro své děti. Vy odvádíte skvělou práci — my se postaráme, aby vás našli. Profil i rozhraní máte <b>zdarma a bez provizí</b> z vaší práce.</p>
+          <p className="ptr-lead rv d1">TenisHub je místo, kde rodiče hledají trenéry pro své děti. Vy odvádíte skvělou práci — my se postaráme, aby vás našli. <b>Základní profil na mapě máte zdarma</b>, bez provizí; plné nástroje si vyslužíte členy nebo předplatíte.</p>
           <div className="ptr-hero-cta rv d2">
             <Link href="/prihlaseni?tab=reg&role=trener" className="btn btn-gold">Založit profil zdarma <ArrowRight size={18} /></Link>
             <a href="#jak" className="ptr-link">Jak to funguje ↓</a>
@@ -69,7 +69,7 @@ export default function ProTreneryPage() {
         {/* JAK TO FUNGUJE */}
         <section id="jak" className="ptr-sec">
           <h2 className="ptr-h2 rv">Jak to funguje</h2>
-          <p className="ptr-sub rv">Pět kroků od registrace k plně odemčenému prostředí. Členy si pozvete ze své vlastní základny — nikoho nemusíte shánět.</p>
+          <p className="ptr-sub rv">Pět kroků od registrace k plně odemčenému prostředí. Členy si pozvete ze své vlastní základny — nikoho nemusíte shánět. <b>Nechcete čekat na 10 členů? TRENÉR+ i nástroje si můžete rovnou předplatit.</b></p>
           <div className="ptr-steps rv d1">
             {STEPS.map((s, i) => (
               <div className="ptr-step" key={i}>

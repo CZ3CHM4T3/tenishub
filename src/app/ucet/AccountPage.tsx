@@ -209,7 +209,7 @@ export default function AccountPage() {
             <>
               <div className="member-rows">
                 <div className="mrow"><span>Začalo</span><b>{fmt(membership.started_at)}</b></div>
-                <div className="mrow"><span>Platí do</span><b>{fmt(membership.expires_at)}</b></div>
+                <div className="mrow"><span>Platí do</span><b>{fmt(membership.expires_at)} · zbývá {Math.max(0, Math.ceil((new Date(membership.expires_at).getTime() - Date.now()) / 86400000))} dní</b></div>
                 <div className="mrow"><span>Cena</span><b>{membership.price_czk} Kč / měsíc</b></div>
                 <div className="mrow"><span>Automatické prodloužení</span><b>{membership.auto_renew ? "zapnuto" : "vypnuto"}</b></div>
               </div>
