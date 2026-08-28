@@ -148,15 +148,24 @@ export default function Home() {
         const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
-      // reálná čísla (RPC public_stats obejde RLS); fallback: aspoň počet profíků
-      const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
-      if (!statsErr && stats) {
-        setRodice((stats as { rodice?: number }).rodice ?? 0);
-        setDeti((stats as { deti?: number }).deti ?? 0);
-        setProfici((stats as { profici?: number }).profici ?? 0);
-      } else {
-        const { count } = await supabase.from("specialists").select("*", { count: "exact", head: true });
-        setProfici(count ?? 0);
+      // reálná čísla (RPC public_stats obejde RLS a umí distinct rodiče); fallback: count dotazy přes anon
+      let gotStats = false;
+      try {
+        const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
+        if (!statsErr && stats) {
+          setRodice((stats as { rodice?: number }).rodice ?? 0);
+          setDeti((stats as { deti?: number }).deti ?? 0);
+          setProfici((stats as { profici?: number }).profici ?? 0);
+          gotStats = true;
+        }
+      } catch { /* RPC ještě není nasazená — jedeme fallback */ }
+      if (!gotStats) {
+        const [sr, dr] = await Promise.all([
+          supabase.from("specialists").select("*", { count: "exact", head: true }),
+          supabase.from("deti").select("*", { count: "exact", head: true }),
+        ]);
+        setProfici(sr.count ?? 0);
+        setDeti(dr.count ?? 0);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
