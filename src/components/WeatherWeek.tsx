@@ -68,7 +68,7 @@ export function WeatherWeek() {
   }, []);
 
   if (err === "nocity") return (
-    <div className="wx-card"><p className="member-note">Zadej si <b>město bydliště</b> v <Link href="/ucet?tab=profil" style={{ color: "var(--gold)", fontWeight: 700 }}>Profilu</Link> a uvidíš tu počasí na týden pro tvé okolí.</p></div>
+    <div className="wx-card wx-empty"><p className="member-note" style={{ margin: 0 }}>Zadej si <b>město bydliště</b> v <Link href="/ucet?tab=profil" style={{ color: "var(--gold)", fontWeight: 700 }}>Profilu</Link> a uvidíš tu počasí na týden pro tvé okolí.</p></div>
   );
   if (err === "geo") return <div className="wx-card"><p className="member-note">Město „{city}" se nepodařilo najít na mapě — zkus přesnější název v profilu.</p></div>;
   if (err === "net") return <div className="wx-card"><p className="member-note">Počasí se teď nepodařilo načíst. Zkus to prosím později.</p></div>;

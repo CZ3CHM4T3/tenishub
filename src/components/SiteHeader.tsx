@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { isHiddenRole } from "@/lib/simplify";
-import { ChevronDown, Mail, ShieldCheck, LogOut } from "lucide-react";
+import { ChevronDown, Mail, ShieldCheck, LogOut, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getViewAs } from "@/lib/viewAs";
-import { tabsForRoles, type NavTab } from "@/lib/navtabs";
+import { tabsForRoles, tabActive, type NavTab } from "@/lib/navtabs";
 
 const MARKETING_ROLES: [string, string, string][] = [
   ["rodic", "Rodič & dítě", "najít, sledovat, poradit"],
@@ -31,6 +31,7 @@ export function SiteHeader() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [unread, setUnread] = useState(0);
   const router = useRouter();
+  const pathname = usePathname() ?? "";
 
   useEffect(() => {
     (async () => {
@@ -105,7 +106,9 @@ export function SiteHeader() {
                     </div></div>
                   </div>
                 ) : (
-                  <Link key={t.label} className={`shtab${t.accent ? " shtab-" + t.accent : ""}`} href={t.href!}><t.Icon size={16} /> {t.label}</Link>
+                  <Link key={t.label} className={`shtab shtab-${t.accent}${tabActive(t.accent, pathname) ? " on" : ""}`} href={t.href!}>
+                    {t.accent === "najdi" ? <span className="shtab-najdi-ic"><Search size={15} /><t.Icon size={16} /></span> : <t.Icon size={16} />} {t.label}
+                  </Link>
                 )
               ))}
             </nav>

@@ -1,51 +1,38 @@
 import { UserRound, School, MapPin, LayoutGrid, type LucideIcon } from "lucide-react";
 
+export type TabAccent = "profil" | "klub" | "sluzby" | "najdi";
 export type SubItem = { label: string; href: string };
-export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent?: "map" | "office"; group?: SubItem[] };
+export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent: TabAccent; group?: SubItem[] };
 
-// Lišta = jen hlavní rozcestníky. Všechny služby jsou v dlaždicích na landing (/domu);
-// tlačítko „Služby" vede zpět na tuto landing.
+// Hlavní záložky nahoře. 4 pevné identity (každá má svou barvu):
+//  Profil (zelená) · Můj klub (zlatá) · Služby (fialová) · Najdi = mapa+hledání (modrá).
+// „Moje děti" NENÍ v liště — patří dovnitř Profilu (odtud se načítají do všeho).
+const PROFIL: NavTab = { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound, accent: "profil" };
+const SLUZBY: NavTab = { label: "Služby", href: "/domu", Icon: LayoutGrid, accent: "sluzby" };
+const NAJDI: NavTab = { label: "Najdi", href: "/mapa", Icon: MapPin, accent: "najdi" };
+const KLUB: NavTab = { label: "Můj klub", href: "/klub", Icon: School, accent: "klub" };
+
 export const ROLE_TABS: Record<string, NavTab[]> = {
-  rodic: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Moje děti", href: "/deti", Icon: School, accent: "office" },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
-  trener: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Můj klub", href: "/klub", Icon: School, accent: "office" },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
-  vyplet: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
+  // Pozn.: „Můj klub" pro rodiče (pohled na klub trenéra dítěte) = samostatná stránka, zatím se staví.
+  rodic: [PROFIL, SLUZBY, NAJDI],
+  trener: [PROFIL, KLUB, SLUZBY, NAJDI],
+  vyplet: [PROFIL, SLUZBY, NAJDI],
   // Hráč (dospělý/amatér) — sparring je jedna z jeho funkcí, ne samostatná role.
-  hrac: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
+  hrac: [PROFIL, SLUZBY, NAJDI],
   // alias pro starší účty, které mají v rolích „sparring" (mapuje na totéž co hráč)
-  sparring: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
-  fyzio: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
-  fitness: [
-    { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound },
-    { label: "Mapa služeb", href: "/mapa", Icon: MapPin, accent: "map" },
-    { label: "Služby", href: "/domu", Icon: LayoutGrid },
-  ],
+  sparring: [PROFIL, SLUZBY, NAJDI],
+  fyzio: [PROFIL, SLUZBY, NAJDI],
+  fitness: [PROFIL, SLUZBY, NAJDI],
 };
+
+// Je záložka aktivní podle aktuální cesty? (jedna identita může pokrývat víc cest)
+export function tabActive(accent: TabAccent, pathname: string): boolean {
+  if (accent === "profil") return pathname.startsWith("/ucet") || pathname.startsWith("/deti") || pathname.startsWith("/moje-cesta");
+  if (accent === "klub") return pathname.startsWith("/klub");
+  if (accent === "sluzby") return pathname.startsWith("/domu") || pathname.startsWith("/sluzby") || pathname.startsWith("/pro-koho");
+  if (accent === "najdi") return pathname.startsWith("/mapa") || pathname.startsWith("/tenis");
+  return false;
+}
 
 // Aktivní role → sloučené záložky (bez duplicit dle labelu, pořadí zachováno).
 export function tabsForRoles(roles: string[]): NavTab[] {

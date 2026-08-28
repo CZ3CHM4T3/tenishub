@@ -37,10 +37,12 @@
   --ink: #1d2a23;
   --muted: #6b7a72;
   --bg: #ffffff;
-  --soft: #faf9f5;
-  --line: #ece9e0;
-  --shadow: 0 26px 60px -24px rgba(20, 40, 30, 0.4);
-  --shadow-s: 0 10px 26px -12px rgba(20, 40, 30, 0.28);
+  --soft: #eae7dc;          /* hlubší teplé pozadí — bílé karty vystoupí (víc kontrastu) */
+  --soft-2: #f3f1e9;        /* jemnější varianta pro vnořené plochy */
+  --line: #d7d2c4;          /* viditelné okraje a předěly (dřív skoro neviditelné) */
+  --line-s: #e5e1d6;        /* jemný předěl uvnitř karet */
+  --shadow: 0 26px 60px -24px rgba(20, 40, 30, 0.45);
+  --shadow-s: 0 1px 2px rgba(20, 40, 30, 0.06), 0 14px 30px -16px rgba(20, 40, 30, 0.30);
   /* Jediný font na celý web — self-hostovaný Montserrat. */
   --font-jakarta: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sora: var(--font-jakarta);
@@ -1396,7 +1398,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 
 .acct-wrap { max-width: 1120px; padding: 2.2rem 1.2rem 4rem; }
 .acct-h1 { font-size: 1.8rem; color: var(--green-d); margin-bottom: 1.4rem; }
-.acct-card { background: #fff; border: 0.5px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-s); padding: 1.5rem; margin-bottom: 1.2rem; }
+.acct-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-s); padding: 1.5rem; margin-bottom: 1.2rem; }
 .acct-card-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; color: var(--green-2); }
 .acct-card-head h2 { font-size: 1.15rem; color: var(--green-d); margin: 0; }
 .member-card.on { border-top: 3px solid var(--gold); }
@@ -3489,16 +3491,28 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 @media(max-width:560px){.usermenu-name{display:none}}
 
 /* role-záložky v liště */
-.shmenu{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
-.shtab{display:inline-flex;align-items:center;gap:5px;padding:.4rem .7rem;border-radius:9px;font-size:.9rem;font-weight:600;color:var(--ink);text-decoration:none;background:none;border:none;cursor:pointer;white-space:nowrap}
-.shtab svg{color:var(--green)}
-.shtab:hover,.shtab.open{background:#eee6d3}
-.shtab-map{background:var(--gold,#bf9a47);color:#1c2a16;font-weight:800;box-shadow:0 3px 10px -5px rgba(191,154,71,.7)}
-.shtab-map svg{color:#1c2a16}
-.shtab-map:hover{background:#a9863c}
-.shtab-office{background:#f6efdd;color:#7c6018}
-.shtab-office svg{color:#7c6018}
-.shtab-office:hover{background:#efe4c6}
+.shmenu{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+/* Hlavní záložky = barevné pilulky s vlastní identitou, aby byly pořádně vidět. */
+.shtab{display:inline-flex;align-items:center;gap:6px;padding:.46rem .85rem;border-radius:11px;font-size:.9rem;font-weight:700;text-decoration:none;cursor:pointer;white-space:nowrap;border:1.5px solid transparent;transition:transform .12s,box-shadow .14s,background .14s,color .14s}
+.shtab .shtab-najdi-ic{display:inline-flex;align-items:center;gap:1px}
+.shtab-najdi-ic svg:first-child{margin-right:-2px;opacity:.85}
+/* barevné identity (klidový stav = jemná tónovaná pilulka + barevný text/ikona) */
+.shtab-profil{background:#e8f1ea;color:#1f3a2d}.shtab-profil svg{color:#2c6a45}
+.shtab-klub{background:#f7eed6;color:#7a5c14}.shtab-klub svg{color:#a8801f}
+.shtab-sluzby{background:#ece7fb;color:#453a86}.shtab-sluzby svg{color:#6a52c8}
+.shtab-najdi{background:#e3eef8;color:#274f79}.shtab-najdi svg{color:#3670a8}
+.shtab:hover{transform:translateY(-1px)}
+.shtab-profil:hover{background:#dcebe0}.shtab-klub:hover{background:#f1e4c1}
+.shtab-sluzby:hover{background:#e2daf8}.shtab-najdi:hover{background:#d5e6f5}
+/* AKTIVNÍ (rozkliknutá) = plná sytá barva + stín, jasně vidět kde jsem */
+.shtab.on{color:#fff;transform:none}
+.shtab.on svg{color:#fff}
+.shtab-profil.on{background:#2c4a3b;border-color:#22382c;box-shadow:0 6px 16px -8px rgba(44,74,59,.75)}
+.shtab-klub.on{background:#bf9a47;border-color:#a9863c;color:#241b06;box-shadow:0 6px 16px -8px rgba(191,154,71,.8)}
+.shtab-klub.on svg{color:#241b06}
+.shtab-sluzby.on{background:#6a52c8;border-color:#5a45ac;box-shadow:0 6px 16px -8px rgba(106,82,200,.7)}
+.shtab-najdi.on{background:#3670a8;border-color:#2c5c8c;box-shadow:0 6px 16px -8px rgba(54,112,168,.7)}
+.shtab.open{filter:brightness(.96)}
 /* pravý roh: obálka + kolečko */
 .authr{display:flex;align-items:center;gap:.5rem;position:relative}
 .authr-mail{position:relative;display:inline-flex;color:var(--ink);text-decoration:none;padding:.3rem}
@@ -3751,7 +3765,8 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .savings-big{font-size:1.6rem;font-weight:800;color:#7a5a12;line-height:1;flex:none}
 .savings-txt{font-size:.84rem;color:#6a5320;line-height:1.35}
 /* Počasí na týden */
-.wx-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;box-shadow:0 6px 18px -14px rgba(20,40,28,.35)}
+.wx-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;box-shadow:var(--shadow-s)}
+.wx-empty{background:linear-gradient(#fbf7ea,#f6f0dd);border:1px solid #e6d9b4;border-left:4px solid var(--gold);box-shadow:none}
 .wx-head{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.7rem}
 .wx-head b{font-size:1rem;color:var(--ink)}
 .wx-head span{font-size:.82rem;color:var(--muted)}
