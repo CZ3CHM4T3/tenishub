@@ -3,10 +3,11 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ServiceMap } from "@/components/ServiceMap";
 import { CoJeVCene } from "@/components/CoJeVCene";
+import { CenaClenstvi } from "@/components/CenaClenstvi";
 
 export const metadata: Metadata = {
-  title: "Členství HUB+ — kompletní tenisový klub",
-  description: "Přehled všech rolí a jejich výhod v členství HUB+ (99 Kč/měsíc): konkurenční výhoda pro závodní hráče a klid pro rodiče.",
+  title: "Členství — HUB+ a PROFI+",
+  description: "Dvě členství: HUB+ (99 Kč/měs) pro rodiče a hráče, PROFI+ (299 Kč/měs) pro profíky. Základní profil zdarma, funkce přes členství nebo vydělané renomé.",
 };
 
 export default function ClenstviPage() {
@@ -15,8 +16,11 @@ export default function ClenstviPage() {
       <SiteHeader />
 
       <div className="wrap sluzby-wrap">
-        <h1 className="rv">Členství HUB+</h1>
-        <p className="lead rv d1">Jedno členství, všechny nástroje pro tenisového rodiče. Co je v ceně, vidíš hned níž.</p>
+        <h1 className="rv">Členství</h1>
+        <p className="lead rv d1">Podle toho, na které straně kurtu stojíš: <b>HUB+</b> pro rodiče a hráče, <b>PROFI+</b> pro profíky. Přehled hned níž, detail HUB+ dál.</p>
+
+        {/* DVĚ ČLENSTVÍ + BOOST */}
+        <div className="rv d1"><CenaClenstvi /></div>
 
         {/* MALÉ CENOVÉ OKNO */}
         <div className="price-mini rv d1">
