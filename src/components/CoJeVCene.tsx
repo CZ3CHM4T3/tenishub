@@ -3,6 +3,7 @@
 // „Co je v ceně HUB+" — JEDNO místo, kde je naráz vidět všechno, co za 99 Kč/měsíc člen dostane.
 // Mřížka (ne slider) = všechno hned vidět. Cena je uvedená jednou nahoře.
 import Link from "next/link";
+import { useMe } from "@/lib/useMe";
 import {
   Route, CalendarCheck, Trophy, LineChart, Handshake, MessageSquareHeart,
   BookOpen, MessagesSquare, CalendarDays, Repeat, Car, Bell, Check, ArrowRight,
@@ -15,7 +16,7 @@ const INCLUDED = [
   { Icon: LineChart,          c: "#3b5666", t: "Ohlédnutí",            s: "Rozbor zápasů: úspěšnost, dotahování, otočky." },
   { Icon: Handshake,          c: "#8a5640", t: "Sparring",             s: "Parťák na úroveň dítěte podle věku i lokality." },
   { Icon: MessageSquareHeart, c: "#864a59", t: "Poradna",              s: "Nejste si jistí? Odborník odpoví do 48 hodin." },
-  { Icon: BookOpen,           c: "#7c6018", t: "Vědět víc",            s: "Knihovna návodů a článků — celé, bez zámku." },
+  { Icon: BookOpen,           c: "#7c6018", t: "Knihovna",            s: "Návody a články celé — jak vybrat raketu, výživa, prevence zranění." },
   { Icon: MessagesSquare,     c: "#2f5d57", t: "Fórum rodičů",         s: "Zkušenosti a doporučení trenérů od ostatních." },
   { Icon: CalendarDays,       c: "#3b8a5a", t: "Kalendář turnajů",     s: "Termíny i přihlášky v okolí na jednom místě." },
   { Icon: Repeat,             c: "#8a5640", t: "Bazar vybavení",       s: "Rakety, boty a oblečení z druhé ruky." },
@@ -24,6 +25,7 @@ const INCLUDED = [
 ];
 
 export function CoJeVCene() {
+  const { canPost: member } = useMe();
   return (
     <section className="cjc">
       <div className="cjc-head">
@@ -47,7 +49,9 @@ export function CoJeVCene() {
       </div>
 
       <div className="cjc-foot">
-        <Link href="/pristup" className="btn btn-gold cjc-cta">Chci předběžný přístup <ArrowRight size={18} /></Link>
+        {member
+          ? <Link href="/moje-cesta" className="btn btn-gold cjc-cta">Otevřít Moji cestu <ArrowRight size={18} /></Link>
+          : <Link href="/pristup" className="btn btn-gold cjc-cta">Chci předběžný přístup <ArrowRight size={18} /></Link>}
         <span className="cjc-fine">Členství kdykoli zrušíš. <b>Videorozbor a konzultace</b> je samostatná placená služba mimo členství.</span>
       </div>
     </section>

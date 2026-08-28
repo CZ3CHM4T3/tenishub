@@ -13,6 +13,7 @@ import { Wordmark } from "@/components/Wordmark";
 import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { CenaClenstvi } from "@/components/CenaClenstvi";
+import { useMe } from "@/lib/useMe";
 import { VideoNudge } from "@/components/VideoNudge";
 import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
@@ -166,6 +167,7 @@ export default function Home() {
   const [specCount, setSpecCount] = useState(0);
   const [venueCount, setVenueCount] = useState(0);
   const [waitCount, setWaitCount] = useState(0);
+  const { canPost: isMemberHome } = useMe(); // člen HUB+/admin → neukazovat „Chci HUB+"
 
   useEffect(() => {
     const onScroll = () => {
@@ -391,7 +393,7 @@ export default function Home() {
             <p>Provede hobby i závodního hráče <b>celou sezónou</b>: osa příprava → sezóna → mezisezóna, barevný kalendář (tréninky, turnaje i s výsledky, kondice), cíle a statistiky — a hlavně <b>volno a čas jen pro sebe</b>. Růst krok za krokem, bez vyhoření.</p>
             <div className="mcpromo-cta">
               <Link href="/moje-cesta" className="btn btn-green">Otevřít Moji cestu</Link>
-              <Link href="/pristup" className="btn btn-out">Staň se členem</Link>
+              {!isMemberHome && <Link href="/pristup" className="btn btn-out">Staň se členem</Link>}
             </div>
           </div>
           <div className="mcpromo-vis rv r" aria-hidden="true">
@@ -528,7 +530,7 @@ export default function Home() {
       )}
 
       {/* CENA / ČLENSTVÍ — HUB+ vs PRO + BOOST */}
-      <CenaClenstvi />
+      <CenaClenstvi member={isMemberHome} />
 
       {/* CTA */}
       <section className="sec cta" id="cta">
@@ -536,7 +538,9 @@ export default function Home() {
           <span className="eyebrow rv" style={{ justifyContent: "center", display: "flex" }}>Pojďme na to</span>
           <h2 className="rv">Pomozte dítěti začít, růst a vydržet u tenisu</h2>
           <p className="rv d1">Přehled, podpora a kontakty na jednom místě — celý tenisový klub pro vaše dítě za 99 Kč měsíčně.</p>
-          <Link href="/pristup" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>
+          {isMemberHome
+            ? <Link href="/moje-cesta" className="btn btn-gold rv d2">Otevřít Moji cestu <ArrowRight className="ic" size={18} /></Link>
+            : <Link href="/pristup" className="btn btn-gold rv d2">Staň se členem <ArrowRight className="ic" size={18} /></Link>}
         </div>
       </section>
 

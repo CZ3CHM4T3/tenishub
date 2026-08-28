@@ -3,7 +3,7 @@ import { Check, Flame, Users, Briefcase, GraduationCap, ArrowRight } from "lucid
 
 // Homepage infografika členství: 3 karty — HUB+ (spotřebitelé), PRO (experti), TRENÉR+ (trenéři).
 // Argument: řešíme reálné problémy, hodnota >> cena. BOOST = herní vrstva v TRENÉR+.
-export function CenaClenstvi() {
+export function CenaClenstvi({ member = false }: { member?: boolean }) {
   return (
     <section className="sec cena-sec" id="cena">
       <div className="wrap">
@@ -26,7 +26,9 @@ export function CenaClenstvi() {
               <li><Check size={16} /> <span><b>Sparring</b> + brzy appka, co vám zápas povede sudí a dá rozbor.</span></li>
             </ul>
             <p className="cena-value">Za <b>zlomek ceny jedné lekce</b> měsíčně.</p>
-            <Link href="/pristup" className="btn btn-green cena-cta">Chci HUB+ <ArrowRight size={16} /></Link>
+            {member
+              ? <Link href="/moje-cesta" className="btn btn-green cena-cta">Máš aktivní — otevřít Moji cestu <ArrowRight size={16} /></Link>
+              : <Link href="/pristup" className="btn btn-green cena-cta">Chci HUB+ <ArrowRight size={16} /></Link>}
             <p className="cena-note">Zakládající 99 Kč napořád (od Nového roku 199).</p>
           </div>
 
