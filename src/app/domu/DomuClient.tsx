@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WeatherWeek } from "@/components/WeatherWeek";
+import { serviceColor } from "@/lib/serviceColors";
 import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight, Baby, Dumbbell, HeartPulse, Grip, IdCard, Mail, BadgeCheck, type LucideIcon } from "lucide-react";
 
 // Podnikatelské dlaždice pro experty (trenér/vyplétač/fyzio/fitness).
@@ -73,7 +74,7 @@ export default function DomuClient() {
           <div className="dh-grid">
             {PROVIDER_SERVICES.map((s) => (
               <Link href={s.href} key={s.label} className={`dh-svc${s.hero ? " dh-hero" : ""}`}>
-                <span className="dh-svc-ic"><s.Icon size={22} /></span>
+                <span className="dh-svc-ic" style={{ background: serviceColor(s.href), color: "#fff" }}><s.Icon size={22} /></span>
                 <span className="dh-svc-tx"><b>{s.label}</b><span>{s.desc}</span></span>
               </Link>
             ))}
@@ -86,7 +87,7 @@ export default function DomuClient() {
           <div className="dh-grid">
             {SERVICES.map((s) => (
               <Link href={s.href} key={s.href} className={`dh-svc${s.hero ? " dh-hero" : ""}`}>
-                <span className="dh-svc-ic"><s.Icon size={22} /></span>
+                <span className="dh-svc-ic" style={{ background: serviceColor(s.href), color: "#fff" }}><s.Icon size={22} /></span>
                 <span className="dh-svc-tx"><b>{s.label}</b><span>{s.desc}</span></span>
               </Link>
             ))}
