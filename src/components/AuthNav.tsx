@@ -38,7 +38,7 @@ export function AuthNav() {
   const initial = (name || "?").trim().charAt(0).toUpperCase();
 
   return (
-    <Link href="/domu" className="usermenu-btn" aria-label="Přejít do mého menu" title="Moje menu">
+    <Link href="/ucet?tab=profil" className="usermenu-btn" aria-label="Můj profil" title="Můj profil">
       <span className="usermenu-av">{initial}</span>
       <span className="usermenu-name">{name.split(" ")[0]}</span>
       <ArrowRight size={15} />

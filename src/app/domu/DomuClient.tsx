@@ -10,20 +10,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { WeatherWeek } from "@/components/WeatherWeek";
 import { UserRound, School, MapPin, Route, Handshake, Trophy, Video, MessagesSquare, HelpCircle, BookOpen, ShoppingBag, Car, CloudSun, ArrowRight, Baby, Dumbbell, HeartPulse, Grip, IdCard, Mail, BadgeCheck, type LucideIcon } from "lucide-react";
 
-// Zkratky na funkce podle zapnutých rolí (Profil → role). Každá role má svůj domov.
-const ROLE_HOME: Record<string, { href: string; label: string; Icon: LucideIcon }[]> = {
-  rodic: [
-    { href: "/deti", label: "Moje děti a klub", Icon: Baby },
-    { href: "/moje-cesta", label: "Moje cesta", Icon: Route },
-  ],
-  hrac: [{ href: "/sparring", label: "Moje sparring karta", Icon: Handshake }],
-  sparring: [{ href: "/sparring", label: "Moje sparring karta", Icon: Handshake }],
-  trener: [{ href: "/klub", label: "Můj klub (trenér)", Icon: School }],
-  vyplet: [{ href: "/ucet?tab=profil", label: "Moje vyplétací karta", Icon: Grip }],
-  fyzio: [{ href: "/ucet?tab=profil", label: "Moje fyzio karta", Icon: HeartPulse }],
-  fitness: [{ href: "/ucet?tab=profil", label: "Moje fitness karta", Icon: Dumbbell }],
-};
-
 // Podnikatelské dlaždice pro experty (trenér/vyplétač/fyzio/fitness).
 const PROVIDER_SERVICES = [
   { href: "/ucet?tab=profil", label: "Moje karta", desc: "Profil, ceník a foto — co vidí klienti", Icon: IdCard, hero: true },
@@ -67,19 +53,9 @@ export default function DomuClient() {
     })();
   }, [router]);
 
-  const shortcuts = roles.flatMap((r) => ROLE_HOME[r] ?? []);
+  // Profil / Můj klub / Mapa jsou v horní liště — na /domu je NEopakujeme. /domu = čistě Služby.
   const isConsumer = roles.some((r) => ["rodic", "sparring", "hrac"].includes(r));
   const isProvider = roles.some((r) => ["trener", "vyplet", "fyzio", "fitness"].includes(r));
-  const middleTile = roles.includes("trener")
-    ? { href: "/klub", label: "Můj klub", desc: "Klub, svěřenci, hra", Icon: School, cls: "dh-klub" }
-    : isConsumer
-      ? { href: "/deti", label: "Můj klub", desc: "Děti, trenér, pokrok", Icon: School, cls: "dh-klub" }
-      : { href: "/ucet?tab=profil", label: "Moje karta", desc: "Váš profil pro klienty", Icon: IdCard, cls: "dh-klub" };
-  const topTiles = [
-    { href: "/ucet?tab=profil", label: "Profil", desc: "Údaje, role, členství", Icon: UserRound, cls: "dh-profil" },
-    middleTile,
-    { href: "/mapa", label: "Mapa služeb", desc: "Najdi trenéra i kurt", Icon: MapPin, cls: "dh-mapa" },
-  ];
 
   if (!ready) return <div className="acct-loading">Načítám…</div>;
 
@@ -88,31 +64,7 @@ export default function DomuClient() {
       <SiteHeader />
       <div className="wrap acct-wrap" style={{ maxWidth: 1100 }}>
         <h1 className="acct-h1">{name ? `Ahoj, ${name}!` : "Vítej!"}</h1>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Tvůj tenisový klub na jednom místě.</p>
-
-        <div className="dh-top">
-          {topTiles.map((t) => (
-            <Link href={t.href} key={t.href} className={`dh-tile ${t.cls}`}>
-              <span className="dh-ic"><t.Icon size={26} /></span>
-              <span className="dh-tx"><b>{t.label}</b><span>{t.desc}</span></span>
-              <ArrowRight size={18} className="dh-arr" />
-            </Link>
-          ))}
-        </div>
-
-        {shortcuts.length > 0 && (<>
-          <h2 className="dh-h2" style={{ marginTop: "1.4rem" }}>Tvoje role</h2>
-          <p className="member-note" style={{ marginTop: "-0.5rem" }}>Podle rolí zapnutých v Profilu. Funkce každé role najdeš na její stránce.</p>
-          <div className="dh-roles">
-            {shortcuts.map((s) => (
-              <Link href={s.href} key={s.label} className="dh-role">
-                <span className="dh-role-ic"><s.Icon size={18} /></span>
-                <b>{s.label}</b>
-                <ArrowRight size={15} className="dh-arr" />
-              </Link>
-            ))}
-          </div>
-        </>)}
+        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Co dnes chceš dělat? Vyber si službu.</p>
 
         <div style={{ margin: "1.2rem 0" }}><WeatherWeek /></div>
 
