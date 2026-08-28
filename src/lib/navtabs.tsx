@@ -10,12 +10,13 @@ export type NavTab = { label: string; href?: string; Icon: LucideIcon; accent: T
 const PROFIL: NavTab = { label: "Profil", href: "/ucet?tab=profil", Icon: UserRound, accent: "profil" };
 const SLUZBY: NavTab = { label: "Služby", href: "/domu", Icon: LayoutGrid, accent: "sluzby" };
 const NAJDI: NavTab = { label: "Najdi", href: "/mapa", Icon: MapPin, accent: "najdi" };
-const KLUB: NavTab = { label: "Můj klub", href: "/klub", Icon: School, accent: "klub" };
+const KLUB_TRENER: NavTab = { label: "Můj klub", href: "/klub", Icon: School, accent: "klub" };
+const KLUB_RODIC: NavTab = { label: "Můj klub", href: "/deti", Icon: School, accent: "klub" };
 
 export const ROLE_TABS: Record<string, NavTab[]> = {
-  // Pozn.: „Můj klub" pro rodiče (pohled na klub trenéra dítěte) = samostatná stránka, zatím se staví.
-  rodic: [PROFIL, SLUZBY, NAJDI],
-  trener: [PROFIL, KLUB, SLUZBY, NAJDI],
+  // Rodičův „Můj klub" = /deti (klub trenéra dítěte: nástěnka, napojení kódem, pokrok).
+  rodic: [PROFIL, KLUB_RODIC, SLUZBY, NAJDI],
+  trener: [PROFIL, KLUB_TRENER, SLUZBY, NAJDI],
   vyplet: [PROFIL, SLUZBY, NAJDI],
   // Hráč (dospělý/amatér) — sparring je jedna z jeho funkcí, ne samostatná role.
   hrac: [PROFIL, SLUZBY, NAJDI],
@@ -27,8 +28,8 @@ export const ROLE_TABS: Record<string, NavTab[]> = {
 
 // Je záložka aktivní podle aktuální cesty? (jedna identita může pokrývat víc cest)
 export function tabActive(accent: TabAccent, pathname: string): boolean {
-  if (accent === "profil") return pathname.startsWith("/ucet") || pathname.startsWith("/deti") || pathname.startsWith("/moje-cesta");
-  if (accent === "klub") return pathname.startsWith("/klub");
+  if (accent === "profil") return pathname.startsWith("/ucet") || pathname.startsWith("/moje-cesta");
+  if (accent === "klub") return pathname.startsWith("/klub") || pathname.startsWith("/deti");
   if (accent === "sluzby") return pathname.startsWith("/domu") || pathname.startsWith("/sluzby") || pathname.startsWith("/pro-koho");
   if (accent === "najdi") return pathname.startsWith("/mapa") || pathname.startsWith("/tenis");
   return false;

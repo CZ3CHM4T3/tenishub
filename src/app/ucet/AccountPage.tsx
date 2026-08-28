@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus } from "lucide-react";
+import { BadgeCheck, CalendarCheck, LogOut, UserRound, GraduationCap, Check, ImagePlus, Baby } from "lucide-react";
 import ProviderCard from "./ProviderCard";
 import Kalendar from "./Kalendar";
+import MojeDeti from "./MojeDeti";
 import { BuyMembership, TrialButton } from "@/components/BuyMembership";
 import { WeatherWeek } from "@/components/WeatherWeek";
 import { getViewAs, type ViewAs } from "@/lib/viewAs";
@@ -16,6 +17,7 @@ import { isHiddenRole } from "@/lib/simplify";
 const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
   { k: "clenstvi", label: "Členství", Icon: BadgeCheck },
   { k: "profil", label: "Osobní údaje", Icon: UserRound },
+  { k: "deti", label: "Moje děti", Icon: Baby },
   { k: "rezervace", label: "Kalendář", Icon: CalendarCheck },
 ];
 
@@ -60,7 +62,7 @@ export default function AccountPage() {
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("tab");
     if (t === "karta") setAtab("profil"); // karta se sloučila do profilu
-    else if (t && ["clenstvi", "profil", "rezervace"].includes(t)) setAtab(t);
+    else if (t && ["clenstvi", "profil", "deti", "rezervace"].includes(t)) setAtab(t);
   }, []);
 
   const load = useCallback(async () => {
@@ -312,6 +314,9 @@ export default function AccountPage() {
 
         <button className="btn btn-out acct-logout" onClick={logout}><LogOut size={16} /> Odhlásit se</button>
         </>)}
+
+        {/* MOJE DĚTI — vlastní záložka, odtud se načítají do všeho */}
+        {atab === "deti" && <MojeDeti userId={profile.id} />}
 
         {/* KALENDÁŘ (rezervace + vlastní barevné akce) */}
         {atab === "rezervace" && <Kalendar userId={profile.id} />}
