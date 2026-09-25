@@ -61,7 +61,7 @@ export default function AuthForm() {
       router.push("/klub"); return;
     }
     const next = params.get("next");
-    router.push(next && next.startsWith("/") ? next : "/ucet?tab=profil");
+    router.push(next && next.startsWith("/") ? next : "/sluzby");
   };
 
   const submit = async (e: React.FormEvent) => {

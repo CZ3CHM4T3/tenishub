@@ -1,6 +1,9 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import SluzbyRozcestnik from "./SluzbyRozcestnik";
 
-// Zjednodušený web — /sluzby je skryté (viz lib/simplify). Přesměrování na rozcestník rolí.
+export const metadata: Metadata = { title: "Vaše služby | TenisHub", robots: { index: false } };
+
+// Členský rozcestník všech služeb (přistání po přihlášení).
 export default function SluzbyPage() {
-  redirect("/pro-koho");
+  return <SluzbyRozcestnik />;
 }

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-// „/domu" (starý členský rozcestník) zrušen — členský domov je Profil.
+// „/domu" (starý členský rozcestník) sloučen do JEDNÉ „Služby" (rozcestník všech služeb).
 export default function DomuPage() {
-  redirect("/ucet?tab=profil");
+  redirect("/sluzby");
 }

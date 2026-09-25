@@ -987,6 +987,23 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .help-ic { width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--gc) 14%, #fff); color: var(--gc); }
 .help-arr { color: var(--gc); flex: none; opacity: 0.5; }
 @media (max-width: 820px) { .help-groups { grid-template-columns: 1fr; } }
+/* Členský rozcestník služeb (/sluzby) — barevné oddíly podle rolí */
+.roz-sections { display: flex; flex-direction: column; gap: 1.2rem; }
+.roz-sec { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--gc); border-radius: 16px; padding: 1rem 1.1rem; box-shadow: var(--shadow-s); }
+.roz-head { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--gc); font-size: 1.05rem; margin-bottom: 0.8rem; }
+.roz-head-ic { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: color-mix(in srgb, var(--gc) 14%, #fff); }
+.roz-enable { margin-left: auto; font-size: 0.82rem; font-weight: 800; color: var(--gc); text-decoration: underline; }
+.roz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.6rem; }
+.roz-card { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-decoration: none; color: var(--green-d); transition: 0.14s; }
+.roz-card:hover { border-color: var(--gc); transform: translateY(-2px); box-shadow: var(--shadow-s); }
+.roz-ic { flex: none; width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: color-mix(in srgb, var(--gc) 14%, #fff); color: var(--gc); }
+.roz-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+.roz-tx b { font-size: 0.95rem; }
+.roz-tx span { font-size: 0.76rem; color: var(--muted); }
+.roz-arr { color: var(--gc); flex: none; opacity: 0.5; }
+.roz-locked { opacity: 0.78; background: #faf9f4; }
+.roz-locked .roz-ic { filter: grayscale(0.35); }
+.roz-lock { flex: none; display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 800; color: var(--muted); background: #efece2; border-radius: 6px; padding: 0.16rem 0.42rem; }
 /* statistiky po straně */
 .statbar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#faf7ef;padding:.9rem 0}
 .hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem 2.6rem;margin:0 auto}
