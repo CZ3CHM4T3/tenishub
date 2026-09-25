@@ -12,6 +12,7 @@ import { MetaPixel } from "@/components/MetaPixel";
 import { Chatbot } from "@/components/Chatbot";
 import { AdminBar } from "@/components/AdminBar";
 import { Footer } from "@/components/Footer";
+import { MemberBar } from "@/components/MemberBar";
 
 export const metadata: Metadata = {
   title: {
@@ -66,6 +67,7 @@ export default function RootLayout({
         />
         {children}
         <Footer />
+        <MemberBar />
         <ScrollReveal />
         <SiteFeedback />
         <MetaPixel />

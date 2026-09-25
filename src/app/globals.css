@@ -1004,6 +1004,23 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .roz-locked { opacity: 0.78; background: #faf9f4; }
 .roz-locked .roz-ic { filter: grayscale(0.35); }
 .roz-lock { flex: none; display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; font-weight: 800; color: var(--muted); background: #efece2; border-radius: 6px; padding: 0.16rem 0.42rem; }
+/* Mobilní spodní lišta člena — jen mobil, jen přihlášený */
+.mobar { display: none; }
+.mobar-sheet-ov { position: fixed; inset: 0; background: rgba(10,20,15,0.42); z-index: 1250; display: flex; align-items: flex-end; }
+.mobar-sheet { background: #fff; width: 100%; border-radius: 18px 18px 0 0; padding: 1.3rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); position: relative; }
+.mobar-sheet-x { position: absolute; top: 0.7rem; right: 0.8rem; background: none; border: none; color: var(--muted); cursor: pointer; }
+.mobar-sheet-item { display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.9rem 0.5rem; font-weight: 700; font-size: 1rem; color: var(--green-d); text-decoration: none; background: none; border: none; border-bottom: 1px solid var(--line); cursor: pointer; text-align: left; }
+.mobar-sheet-item:last-child { border-bottom: none; }
+.mobar-logout { color: #b0433a; }
+@media (max-width: 760px) {
+  .mobar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1200; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -6px 20px -12px rgba(0,0,0,0.28); justify-content: space-around; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body.has-mobar { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  .mobar-i { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0.5rem 0 0.45rem; background: none; border: none; color: var(--muted); font-size: 0.66rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .mobar-i svg { color: var(--muted); }
+  .mobar-i.on, .mobar-i.on svg { color: var(--green); }
+  .mobar-badge-wrap { position: relative; display: inline-flex; }
+  .mobar-badge { position: absolute; top: -5px; right: -9px; background: var(--gold); color: #1c2a16; font-size: 0.6rem; font-weight: 800; border-radius: 100px; padding: 0 4px; min-width: 15px; text-align: center; line-height: 1.5; }
+}
 /* statistiky po straně */
 .statbar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#faf7ef;padding:.9rem 0}
 .hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem 2.6rem;margin:0 auto}
