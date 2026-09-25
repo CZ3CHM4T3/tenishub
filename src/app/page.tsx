@@ -108,6 +108,27 @@ function Counter({ to, suffix }: { to: number; suffix?: string }) {
   return <span ref={ref}>0{suffix ?? ""}</span>;
 }
 
+// „S čím pomůžeme" = skupiny podle rolí (barevně odlišené), každá dlaždice = odkaz na službu.
+const HELP_GROUPS: { title: string; c: string; Icon: LucideIcon; items: { href: string; Icon: LucideIcon; t: string }[] }[] = [
+  { title: "Rodič & dítě", c: "#2f7d54", Icon: Users, items: [
+    { href: "/mapa", Icon: Search, t: "Najít trenéra pro dítě" },
+    { href: "/videorozbor", Icon: Video, t: "Dítě ztrácí radost / něco nejde" },
+    { href: "/moje-cesta", Icon: CalendarCheck, t: "Sledovat pokrok — Moje cesta" },
+    { href: "/poradna", Icon: MessageCircle, t: "Poradit se s odborníkem" },
+    { href: "/clanky", Icon: Star, t: "Knihovna rad a návodů" },
+  ] },
+  { title: "Hráč & sparring", c: "#3670a8", Icon: Handshake, items: [
+    { href: "/sparring", Icon: Handshake, t: "Najít sparring partnera" },
+    { href: "/mapa", Icon: MapPin, t: "Najít kurt nebo klub poblíž" },
+    { href: "/turnaje", Icon: Trophy, t: "Turnaje v okolí" },
+  ] },
+  { title: "Jsi profík?", c: "#b0862c", Icon: GraduationCap, items: [
+    { href: "/pro-trenery", Icon: GraduationCap, t: "Jsem trenér — chci klienty" },
+    { href: "/pro-trenery", Icon: HeartPulse, t: "Jsem fyzio / kondiční trenér" },
+    { href: "/pro-trenery", Icon: Building2, t: "Jsem vyplétač / mám areál" },
+  ] },
+];
+
 export default function Home() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -314,25 +335,22 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* JAK VÁM MŮŽEME POMOCI — naváděcí podpora pro rodiče */}
+            {/* S ČÍM POMŮŽEME — organizováno podle rolí, barevně odlišené, odkaz na službu */}
             <div className="help rv d3">
-              <h2 className="help-title">Jak vám můžeme pomoci?</h2>
-              <div className="help-opts">
-                <Link href="/mapa" className="help-opt"><span className="help-ic"><Search size={20} /></span><span>Najít trenéra pro dítě</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/mapa" className="help-opt"><span className="help-ic"><MapPin size={20} /></span><span>Najít kurt nebo klub poblíž</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/videorozbor" className="help-opt"><span className="help-ic"><Video size={20} /></span><span>Dítě ztrácí radost / něco mu nejde</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/moje-cesta" className="help-opt"><span className="help-ic"><CalendarCheck size={20} /></span><span>Sledovat pokrok (Moje cesta)</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/sparring" className="help-opt"><span className="help-ic"><Handshake size={20} /></span><span>Najít sparring partnera</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/poradna" className="help-opt"><span className="help-ic"><MessageCircle size={20} /></span><span>Poradit se s odborníkem</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/turnaje" className="help-opt"><span className="help-ic"><Trophy size={20} /></span><span>Turnaje v okolí</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/forum" className="help-opt"><span className="help-ic"><Users size={20} /></span><span>Komunita rodičů</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/clanky" className="help-opt"><span className="help-ic"><Star size={20} /></span><span>Rady a návody (knihovna)</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/bazar" className="help-opt"><span className="help-ic"><Award size={20} /></span><span>Bazar vybavení z druhé ruky</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><GraduationCap size={20} /></span><span>Jsem trenér — chci klienty</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><HeartPulse size={20} /></span><span>Jsem fyzioterapeut</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><Dumbbell size={20} /></span><span>Jsem kondiční trenér</span><ArrowRight size={16} className="help-arr" /></Link>
-                <Link href="/pro-trenery" className="help-opt"><span className="help-ic"><Building2 size={20} /></span><span>Jsem vyplétač / mám areál</span><ArrowRight size={16} className="help-arr" /></Link>
-                <a href="mailto:info@tenishub.cz?subject=Dotaz" className="help-opt"><span className="help-ic"><MessageCircle size={20} /></span><span>Mám dotaz — poradíte mi?</span><ArrowRight size={16} className="help-arr" /></a>
+              <h2 className="help-title">S čím vám pomůžeme?</h2>
+              <div className="help-groups">
+                {HELP_GROUPS.map((g) => (
+                  <div className="help-group" key={g.title} style={{ ["--gc" as string]: g.c }}>
+                    <div className="help-ghead"><g.Icon size={17} /> {g.title}</div>
+                    {g.items.map((it) => (
+                      <Link href={it.href} className="help-opt" key={it.t}>
+                        <span className="help-ic"><it.Icon size={18} /></span>
+                        <span>{it.t}</span>
+                        <ArrowRight size={15} className="help-arr" />
+                      </Link>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
