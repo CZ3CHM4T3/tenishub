@@ -601,11 +601,15 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .freply-ta { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.7rem; font: inherit; margin-bottom: 0.6rem; }
 
 /* Knihovna článků */
-.clanky-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-.clanek-card { display: flex; flex-direction: column; gap: 0.4rem; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem; text-decoration: none; color: inherit; transition: transform 0.15s, box-shadow 0.2s; }
+.clanky-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; grid-auto-rows: 1fr; }
+.clanek-card { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: var(--shadow-s); transition: transform 0.15s, box-shadow 0.2s; }
 .clanek-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.3); }
+.clanek-cover { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 16 / 9; background-size: cover; background-position: center; background-color: #f0ece2; flex: none; }
+.clanek-cbody { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.85rem 1rem 1rem; flex: 1; }
+.clanek-card b { font-size: 1.02rem; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.clanek-card .clanek-perex { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.clanek-card .clanek-meta { margin-top: auto; padding-top: 0.3rem; }
 .clanek-cat { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold-l); }
-.clanek-card b { font-size: 1.05rem; line-height: 1.25; }
 .clanek-perex { font-size: 0.86rem; color: var(--green-2); }
 .clanek-meta { font-size: 0.74rem; color: var(--muted); margin-top: auto; }
 /* Článek = bílý „papír", ať se text netopí v krémovém pozadí a čte se sám */

@@ -8,7 +8,7 @@ import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brai
 import { useMe } from "@/lib/useMe";
 import { RichEditor } from "@/components/RichEditor";
 
-type Article = { id: string; slug: string; title: string; perex: string | null; category: string; author_name: string | null; created_at: string; is_sample: boolean };
+type Article = { id: string; slug: string; title: string; perex: string | null; category: string; author_name: string | null; created_at: string; is_sample: boolean; cover_url: string | null };
 
 // Kategorie: barva + jednoduchá ikonka (aby šly články rozeznat na první pohled).
 const CATS: { k: string; l: string; c: string; Icon: LucideIcon }[] = [
@@ -38,7 +38,7 @@ export default function ClankyClient() {
   };
 
   const load = useCallback(async () => {
-    const { data } = await supabase.from("articles").select("id,slug,title,perex,category,author_name,created_at,is_sample").order("created_at", { ascending: false }).limit(200);
+    const { data } = await supabase.from("articles").select("id,slug,title,perex,category,author_name,created_at,is_sample,cover_url").order("created_at", { ascending: false }).limit(200);
     setItems((data as Article[]) ?? []);
     setLoading(false);
   }, [supabase]);
@@ -101,13 +101,18 @@ export default function ClankyClient() {
               return (
                 <div key={a.id} className="clanek-card-wrap">
                   <Link href={`/clanky/${a.slug}`} className="clanek-card" style={{ borderTop: `3px solid ${m.c}` }}>
-                    <span className="clanek-cardtop">
-                      <span className="clanek-cat" style={{ color: m.c }}><m.Icon size={12} style={{ verticalAlign: "-2px" }} /> {m.l}</span>
-                      {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
+                    <span className="clanek-cover" style={a.cover_url ? { backgroundImage: `url(${a.cover_url})` } : { background: `color-mix(in srgb, ${m.c} 12%, #fff)` }}>
+                      {!a.cover_url && <m.Icon size={30} style={{ color: m.c, opacity: 0.55 }} />}
                     </span>
-                    <b>{a.title}</b>
-                    {a.perex && <span className="clanek-perex">{a.perex}</span>}
-                    <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
+                    <span className="clanek-cbody">
+                      <span className="clanek-cardtop">
+                        <span className="clanek-cat" style={{ color: m.c }}><m.Icon size={12} style={{ verticalAlign: "-2px" }} /> {m.l}</span>
+                        {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
+                      </span>
+                      <b>{a.title}</b>
+                      {a.perex && <span className="clanek-perex">{a.perex}</span>}
+                      <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
+                    </span>
                   </Link>
                   {isAdmin && <button className="clanek-edit" title="Upravit článek" onClick={() => editArticle(a.id)}><Pencil size={14} /></button>}
                 </div>
