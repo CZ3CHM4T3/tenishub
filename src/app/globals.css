@@ -608,9 +608,12 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .clanek-card b { font-size: 1.05rem; line-height: 1.25; }
 .clanek-perex { font-size: 0.86rem; color: var(--green-2); }
 .clanek-meta { font-size: 0.74rem; color: var(--muted); margin-top: auto; }
-.clanek h1 { margin-bottom: 0.3rem; }
-.clanek-lead { font-size: 1.05rem; font-weight: 600; color: var(--green-2); margin: 0.6rem 0 1rem; }
-.clanek p { line-height: 1.7; margin: 0 0 1rem; }
+/* Článek = bílý „papír", ať se text netopí v krémovém pozadí a čte se sám */
+.clanek { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-s); padding: clamp(1.4rem, 4vw, 2.7rem); }
+.clanek h1 { margin-bottom: 0.3rem; color: var(--green-d); font-size: clamp(1.6rem, 3.6vw, 2.25rem); line-height: 1.12; }
+.clanek-lead { font-size: 1.14rem; font-weight: 600; color: var(--green-2); margin: 0.8rem 0 1.3rem; line-height: 1.5; border-left: 4px solid var(--gold); padding-left: 1rem; }
+.clanek p { line-height: 1.78; margin: 0 0 1.05rem; color: var(--ink); font-size: 1.03rem; }
+.clanek .clanek-meta { font-size: 0.82rem; color: var(--muted); margin-top: 0; }
 
 /* Poradna */
 .pora-item { padding: 1rem 1.1rem; }
@@ -3088,9 +3091,9 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .clanek-sample{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(47,125,84,.14);color:#2f7d54;border-radius:6px;padding:.14rem .5rem;margin-bottom:.5rem}
 .clanek-body-locked p:last-child{-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
 /* Importované články jako HTML (nadpisy, seznamy, tabulky, obrázky) */
-.clanek-html{color:var(--ink);font-size:1rem}
-.clanek-html h3{font-size:1.25rem;color:var(--green-d);margin:1.5rem 0 .5rem;line-height:1.25}
-.clanek-html h5,.clanek-html h6{font-size:1.02rem;color:var(--green-d);margin:1.1rem 0 .4rem}
+.clanek-html{color:var(--ink);font-size:1.03rem}
+.clanek-html h3{font-size:1.32rem;font-weight:800;color:var(--green-d);margin:1.7rem 0 .55rem;line-height:1.22;padding-left:.7rem;border-left:4px solid var(--gold)}
+.clanek-html h5,.clanek-html h6{font-size:1.05rem;font-weight:800;color:var(--green-d);margin:1.2rem 0 .4rem}
 .clanek-html p{line-height:1.75;margin:0 0 1rem}
 .clanek-html ul,.clanek-html ol{margin:0 0 1rem;padding-left:1.4rem}
 .clanek-html li{line-height:1.7;margin:.25rem 0}
