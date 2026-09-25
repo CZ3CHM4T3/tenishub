@@ -1033,7 +1033,7 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .videonudge b { display: block; font-size: 0.95rem; }
 .videonudge span { font-size: 0.8rem; color: rgba(255,255,255,0.85); }
 .videonudge-x { position: absolute; top: 4px; right: 7px; background: none; border: 0; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.05rem; line-height: 1; }
-@media (max-width: 640px) { .videonudge.left { left: 10px; right: 10px; max-width: none; } .videonudge.right { display: none; } }
+@media (max-width: 760px) { .videonudge { display: none !important; } }
 /* NAJDI karta (hero) */
 .najdi-card { display: flex; align-items: center; gap: 1rem; width: 100%; max-width: 640px; margin: 1.6rem auto 0; padding: 1rem 1.3rem; background: #fff; border: 1.5px solid var(--gold); border-radius: 16px; text-decoration: none; box-shadow: 0 10px 30px rgba(40,50,30,0.08); transition: 0.18s; }
 .najdi-card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(40,50,30,0.13); }
@@ -1373,8 +1373,12 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .hcaro-track::-webkit-scrollbar { display: none; }
 .hcaro-track:active { cursor: grabbing; }
 .hcaro-ic { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 13px; background: rgba(200,162,76,0.14); color: var(--gold); margin-bottom: 0.7rem; }
-.hcaro-slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center; min-height: clamp(240px, 32vh, 320px); justify-content: center; padding: 0 0.5rem; }
+.hcaro-slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center; min-height: clamp(240px, 32vh, 320px); justify-content: center; padding: 0 1rem; box-sizing: border-box; }
+.hcaro-slide > * { max-width: 100%; }
 .hcaro-slide h1, .hcaro-slide p, .hcaro-slide .hcaro-who { user-select: none; }
+.hcaro-slide h1 { max-width: min(24ch, 100%); text-align: center; }
+.hcaro-slide p.sub { max-width: min(48ch, 100%); text-align: center; }
+.hcaro-slide .hcaro-who { max-width: 100%; white-space: normal; text-align: center; }
 @keyframes hcaroIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .hcaro-who { display: inline-block; background: rgba(200,162,76,0.16); border: 1px solid rgba(200,162,76,0.5); color: var(--gold-l); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.4rem 0.95rem; border-radius: 100px; }
 .hcaro-slide h1 { margin: 1rem 0 0.9rem; }
