@@ -3065,6 +3065,23 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .clanek-badge.lock{background:var(--mist,#f1efe6);color:var(--muted)}
 .clanek-sample{display:inline-block;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(47,125,84,.14);color:#2f7d54;border-radius:6px;padding:.14rem .5rem;margin-bottom:.5rem}
 .clanek-body-locked p:last-child{-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+/* Importované články jako HTML (nadpisy, seznamy, tabulky, obrázky) */
+.clanek-html{color:var(--ink);font-size:1rem}
+.clanek-html h3{font-size:1.25rem;color:var(--green-d);margin:1.5rem 0 .5rem;line-height:1.25}
+.clanek-html h5,.clanek-html h6{font-size:1.02rem;color:var(--green-d);margin:1.1rem 0 .4rem}
+.clanek-html p{line-height:1.75;margin:0 0 1rem}
+.clanek-html ul,.clanek-html ol{margin:0 0 1rem;padding-left:1.4rem}
+.clanek-html li{line-height:1.7;margin:.25rem 0}
+.clanek-html li>ul,.clanek-html li>ol{margin:.3rem 0}
+.clanek-html strong,.clanek-html b{font-weight:800;color:var(--green-d)}
+.clanek-html a{color:var(--gold);font-weight:700;text-decoration:underline}
+.clanek-html img{border-radius:12px;margin:1rem auto;box-shadow:var(--shadow-s)}
+.clanek-html blockquote{margin:1rem 0;padding:.6rem 1rem;border-left:4px solid var(--gold);background:#faf6ea;border-radius:0 10px 10px 0;color:var(--green-2)}
+.clanek-html hr{border:none;border-top:1px solid var(--line);margin:1.4rem 0}
+.clanek-html table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.94rem;display:block;overflow-x:auto}
+.clanek-html th,.clanek-html td{border:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+.clanek-html thead th{background:#f2efe4;color:var(--green-d);font-weight:800}
+.clanek-html.clanek-body-locked{max-height:360px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
 .clanek-gate{margin-top:1.2rem;text-align:center;background:var(--soft,#faf7ef);border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.4rem}
 .clanek-gate-ic{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;background:rgba(191,154,71,.14);color:#9a7527;margin-bottom:.4rem}
 .clanek-gate h3{margin:.2rem 0 .3rem;color:var(--green)}

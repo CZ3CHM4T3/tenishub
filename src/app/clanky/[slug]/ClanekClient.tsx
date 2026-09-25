@@ -26,8 +26,12 @@ export default function ClanekClient({ slug }: { slug: string }) {
   }, [supabase, slug]);
 
   const locked = !!a && !a.is_sample && ready && !canPost;
-  const paras = a ? a.body.split(/\n{2,}/) : [];
+  // Obsah může být bohaté HTML (import ze starého webu) NEBO prostý text (nové články z modalu).
+  const isHtml = !!a && /<(?:p|h[1-6]|ul|ol|li|table|blockquote|img|strong|em|br|hr|a)\b/i.test(a.body);
+  const paras = a && !isHtml ? a.body.split(/\n{2,}/) : [];
   const shown = locked ? paras.slice(0, 1) : paras; // nečlen: první odstavec jako ochutnávka
+  // lehká sanitizace (obsah píše jen admin, ale ať se nedostane skript/handler)
+  const safeHtml = (h: string) => h.replace(/<\/?(?:script|style|iframe)[^>]*>/gi, "").replace(/\son\w+\s*=\s*"[^"]*"/gi, "").replace(/\son\w+\s*=\s*'[^']*'/gi, "");
 
   return (
     <div className="acct-page">
@@ -43,9 +47,13 @@ export default function ClanekClient({ slug }: { slug: string }) {
             <h1>{a.title}</h1>
             <p className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</p>
             {a.perex && <p className="clanek-lead">{a.perex}</p>}
-            <div className={locked ? "clanek-body-locked" : ""}>
-              {shown.map((p, i) => <p key={i}>{p}</p>)}
-            </div>
+            {isHtml ? (
+              <div className={"clanek-html" + (locked ? " clanek-body-locked" : "")} dangerouslySetInnerHTML={{ __html: safeHtml(a.body) }} />
+            ) : (
+              <div className={locked ? "clanek-body-locked" : ""}>
+                {shown.map((p, i) => <p key={i}>{p}</p>)}
+              </div>
+            )}
             {locked && (
               <div className="clanek-gate">
                 <span className="clanek-gate-ic"><Lock size={26} /></span>
