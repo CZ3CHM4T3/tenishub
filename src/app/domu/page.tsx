@@ -1,8 +1,6 @@
-import type { Metadata } from "next";
-import DomuClient from "./DomuClient";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Můj TenisHub", robots: { index: false } };
-
+// „/domu" (starý členský rozcestník) zrušen — členský domov je Profil.
 export default function DomuPage() {
-  return <DomuClient />;
+  redirect("/ucet?tab=profil");
 }
