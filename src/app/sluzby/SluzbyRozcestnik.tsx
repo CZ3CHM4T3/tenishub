@@ -18,17 +18,17 @@ type Section = { key: string; title: string; c: string; Icon: LucideIcon; items:
 
 const SECTIONS: Section[] = [
   { key: "rodic", title: "Rodič & dítě", c: "#2f7d54", Icon: Users, items: [
-    { href: "/ucet?tab=deti", Icon: Baby, t: "Moje děti", need: "free", sub: "profily, avatary, pokrok" },
+    { href: "/ucet?tab=deti", Icon: Baby, t: "Moje děti", need: "hub", sub: "profily, avatary, pokrok" },
     { href: "/moje-cesta", Icon: Route, t: "Moje cesta", need: "hub", sub: "celá sezóna dítěte" },
-    { href: "/mapa", Icon: Search, t: "Najít trenéra", need: "free", sub: "mapa a katalog" },
+    { href: "/mapa", Icon: Search, t: "Najít trenéra", need: "hub", sub: "mapa a katalog" },
     { href: "/poradna", Icon: MessageCircle, t: "Poradna", need: "hub", sub: "zeptej se odborníka" },
-    { href: "/clanky", Icon: BookOpen, t: "Knihovna", need: "free", sub: "rady a návody" },
-    { href: "/videorozbor", Icon: Video, t: "Videorozbor", need: "free", sub: "1:1 rozbor hry" },
+    { href: "/clanky", Icon: BookOpen, t: "Knihovna", need: "hub", sub: "rady a návody" },
+    { href: "/videorozbor", Icon: Video, t: "Videorozbor", need: "hub", sub: "1:1 rozbor hry" },
   ] },
   { key: "hrac", title: "Hráč & sparring", c: "#3670a8", Icon: Handshake, items: [
-    { href: "/sparring", Icon: Handshake, t: "Sparring", need: "free", sub: "najdi parťáka" },
-    { href: "/mapa", Icon: MapPin, t: "Najít kurt / klub", need: "free", sub: "poblíž tebe" },
-    { href: "/turnaje", Icon: Trophy, t: "Turnaje", need: "free", sub: "kalendář v okolí" },
+    { href: "/sparring", Icon: Handshake, t: "Sparring", need: "hub", sub: "najdi parťáka" },
+    { href: "/mapa", Icon: MapPin, t: "Najít kurt / klub", need: "hub", sub: "poblíž tebe" },
+    { href: "/turnaje", Icon: Trophy, t: "Turnaje", need: "hub", sub: "kalendář v okolí" },
   ] },
   { key: "trener", title: "Trenér / profík", c: "#b0862c", Icon: GraduationCap, items: [
     { href: "/klub", Icon: School, t: "Můj klub", need: "trener", sub: "svěřenci, nástroje" },
