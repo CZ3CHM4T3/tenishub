@@ -565,6 +565,23 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 /* čitelný intro text Knihovny (nezapadá do pozadí) */
 .clanky-intro { color: var(--ink); font-size: 0.98rem; line-height: 1.6; max-width: 62ch; margin: -0.2rem 0 1.1rem; }
 .clanky-intro-link { color: var(--gold); font-weight: 800; text-decoration: underline; }
+/* edit tlačítko na kartě (admin) */
+.clanek-card-wrap { position: relative; }
+.clanek-edit { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--line); background: #fff; border-radius: 8px; cursor: pointer; color: var(--green-2); box-shadow: var(--shadow-s); opacity: .55; transition: opacity .14s, transform .12s; }
+.clanek-card-wrap:hover .clanek-edit { opacity: 1; }
+.clanek-edit:hover { transform: translateY(-1px); color: var(--green-d); }
+/* WYSIWYG editor článků */
+.re { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; margin-top: 4px; }
+.re-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: .4rem; background: #f6f3ea; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 1; }
+.re-btn { width: 30px; height: 30px; display: grid; place-items: center; border: none; background: none; border-radius: 7px; cursor: pointer; color: var(--green-d); }
+.re-btn:hover { background: #e7e0cf; }
+.re-sep { width: 1px; height: 20px; background: var(--line); margin: 0 3px; }
+.re-lbl { font-size: .72rem; font-weight: 800; color: var(--muted); margin: 0 2px 0 6px; }
+.re-uploading { padding: .4rem 1rem; font-size: .82rem; color: #9a7527; background: #faf5e6; }
+.re-body { min-height: 280px; max-height: 58vh; overflow: auto; padding: 1rem 1.1rem; outline: none; font-size: 1rem; }
+.re-body:empty::before { content: attr(data-ph); color: var(--muted); opacity: .7; }
+.re-body img { cursor: pointer; max-width: 100%; }
+.re-body img.sel { outline: 3px solid var(--gold); outline-offset: 2px; }
 .fthreads { display: flex; flex-direction: column; gap: 0.5rem; }
 .fthread { display: flex; align-items: center; gap: 0.7rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem 1rem; text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; }
 .fthread:hover { border-color: var(--gold); transform: translateY(-1px); }

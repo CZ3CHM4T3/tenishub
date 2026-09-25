@@ -4,8 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brain, Tag, type LucideIcon } from "lucide-react";
+import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brain, Tag, Pencil, type LucideIcon } from "lucide-react";
 import { useMe } from "@/lib/useMe";
+import { RichEditor } from "@/components/RichEditor";
 
 type Article = { id: string; slug: string; title: string; perex: string | null; category: string; author_name: string | null; created_at: string; is_sample: boolean };
 
@@ -28,8 +29,13 @@ export default function ClankyClient() {
   const [items, setItems] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [cat, setCat] = useState("");
-  const [form, setForm] = useState<{ open: boolean; title: string; category: string; perex: string; body: string; sample: boolean }>({ open: false, title: "", category: "navody", perex: "", body: "", sample: false });
+  const [form, setForm] = useState<{ open: boolean; id?: string; title: string; category: string; perex: string; body: string; sample: boolean }>({ open: false, title: "", category: "navody", perex: "", body: "", sample: false });
   const [busy, setBusy] = useState(false);
+  const newArticle = () => setForm({ open: true, id: undefined, title: "", category: "navody", perex: "", body: "", sample: false });
+  const editArticle = async (id: string) => {
+    const { data } = await supabase.from("articles").select("id,slug,title,category,perex,body,is_sample").eq("id", id).single();
+    if (data) setForm({ open: true, id: data.id, title: data.title, category: data.category, perex: data.perex ?? "", body: data.body ?? "", sample: data.is_sample });
+  };
 
   const load = useCallback(async () => {
     const { data } = await supabase.from("articles").select("id,slug,title,perex,category,author_name,created_at,is_sample").order("created_at", { ascending: false }).limit(200);
@@ -41,9 +47,19 @@ export default function ClankyClient() {
   const submit = async () => {
     if (!me || !form.title.trim() || !form.body.trim()) return;
     setBusy(true);
+    if (form.id) {
+      // úprava existujícího
+      const { error } = await supabase.from("articles").update({
+        title: form.title.trim(), category: form.category, perex: form.perex || null, body: form.body, is_sample: form.sample,
+      }).eq("id", form.id);
+      setBusy(false);
+      if (error) { alert("Nepodařilo se uložit: " + error.message); return; }
+      setForm({ ...form, open: false }); load();
+      return;
+    }
     const slug = `${slugify(form.title)}-${Math.random().toString(36).slice(2, 6)}`;
     const { data, error } = await supabase.from("articles").insert({
-      slug, title: form.title.trim(), category: form.category, perex: form.perex || null, body: form.body.trim(), author_name: me.name, is_sample: form.sample,
+      slug, title: form.title.trim(), category: form.category, perex: form.perex || null, body: form.body, author_name: me.name, is_sample: form.sample,
     }).select("slug").single();
     setBusy(false);
     if (error) { alert("Nepodařilo se uložit: " + error.message); return; }
@@ -59,7 +75,7 @@ export default function ClankyClient() {
       <div className="wrap acct-wrap">
         <div className="mc-head">
           <h1 className="acct-h1"><Library size={26} style={{ verticalAlign: "-4px" }} /> Knihovna</h1>
-          {isAdmin && <button className="btn btn-green" onClick={() => setForm({ open: true, title: "", category: "navody", perex: "", body: "", sample: false })}><Plus size={16} /> Nový článek</button>}
+          {isAdmin && <button className="btn btn-green" onClick={newArticle}><Plus size={16} /> Nový článek</button>}
         </div>
         <p className="clanky-intro">Praktické návody a rady pro tenisové rodiče i trenéry. Ukázky jsou zdarma, celá knihovna pro členy. A protože nejsme jediný chytrý zdroj — mrkni i na <Link href="/zdroje" className="clanky-intro-link">Zdroje →</Link></p>
 
@@ -83,15 +99,18 @@ export default function ClankyClient() {
             {shown.map((a) => {
               const m = catMeta(a.category);
               return (
-                <Link key={a.id} href={`/clanky/${a.slug}`} className="clanek-card" style={{ borderTop: `3px solid ${m.c}` }}>
-                  <span className="clanek-cardtop">
-                    <span className="clanek-cat" style={{ color: m.c }}><m.Icon size={12} style={{ verticalAlign: "-2px" }} /> {m.l}</span>
-                    {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
-                  </span>
-                  <b>{a.title}</b>
-                  {a.perex && <span className="clanek-perex">{a.perex}</span>}
-                  <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
-                </Link>
+                <div key={a.id} className="clanek-card-wrap">
+                  <Link href={`/clanky/${a.slug}`} className="clanek-card" style={{ borderTop: `3px solid ${m.c}` }}>
+                    <span className="clanek-cardtop">
+                      <span className="clanek-cat" style={{ color: m.c }}><m.Icon size={12} style={{ verticalAlign: "-2px" }} /> {m.l}</span>
+                      {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
+                    </span>
+                    <b>{a.title}</b>
+                    {a.perex && <span className="clanek-perex">{a.perex}</span>}
+                    <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
+                  </Link>
+                  {isAdmin && <button className="clanek-edit" title="Upravit článek" onClick={() => editArticle(a.id)}><Pencil size={14} /></button>}
+                </div>
               );
             })}
           </div>
@@ -102,13 +121,14 @@ export default function ClankyClient() {
         <div className="mc-modal" onClick={() => setForm({ ...form, open: false })}>
           <div className="mc-modal-in mc-modal-wide" onClick={(e) => e.stopPropagation()}>
             <button className="mc-x" onClick={() => setForm({ ...form, open: false })}><X size={18} /></button>
-            <h3>Nový článek</h3>
+            <h3>{form.id ? "Upravit článek" : "Nový článek"}</h3>
             <label>Nadpis<input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></label>
             <label>Kategorie<select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{CATS.map((x) => <option key={x.k} value={x.k}>{x.l}</option>)}</select></label>
             <label>Perex (krátké shrnutí)<input value={form.perex} onChange={(e) => setForm({ ...form, perex: e.target.value })} /></label>
-            <label>Text článku<textarea rows={10} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Odstavce oddělte prázdným řádkem." /></label>
+            <label>Text článku</label>
+            <RichEditor value={form.body} resetKey={form.id ?? "new"} onChange={(html) => setForm((f) => ({ ...f, body: html }))} />
             <label className="clanek-samplechk"><input type="checkbox" checked={form.sample} onChange={(e) => setForm({ ...form, sample: e.target.checked })} /> Ukázka zdarma (celý článek uvidí i nečlenové)</label>
-            <button className="btn btn-green" disabled={busy} onClick={submit}>Publikovat</button>
+            <button className="btn btn-green" disabled={busy} onClick={submit}>{form.id ? "Uložit změny" : "Publikovat"}</button>
           </div>
         </div>
       )}
