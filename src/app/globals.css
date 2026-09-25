@@ -557,8 +557,14 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 
 /* ===== FÓRUM ===== */
 .fcats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 1.2rem; }
-.fcat { padding: 0.4rem 0.85rem; border: 1px solid var(--line); background: #fff; border-radius: 100px; font-weight: 600; font-size: 0.84rem; color: var(--green-2); cursor: pointer; }
+.fcat { padding: 0.4rem 0.85rem; border: 1px solid var(--line); background: #fff; border-radius: 100px; font-weight: 700; font-size: 0.84rem; color: var(--green-2); cursor: pointer; transition: transform .12s, box-shadow .14s; }
 .fcat.on { background: var(--green); color: #fff; border-color: var(--green); }
+.fcat-c { display: inline-flex; align-items: center; gap: .35rem; background: #fff; }
+.fcat-c:hover { transform: translateY(-1px); box-shadow: var(--shadow-s); }
+.fcat-c.on { box-shadow: var(--shadow-s); }
+/* čitelný intro text Knihovny (nezapadá do pozadí) */
+.clanky-intro { color: var(--ink); font-size: 0.98rem; line-height: 1.6; max-width: 62ch; margin: -0.2rem 0 1.1rem; }
+.clanky-intro-link { color: var(--gold); font-weight: 800; text-decoration: underline; }
 .fthreads { display: flex; flex-direction: column; gap: 0.5rem; }
 .fthread { display: flex; align-items: center; gap: 0.7rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem 1rem; text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; }
 .fthread:hover { border-color: var(--gold); transform: translateY(-1px); }

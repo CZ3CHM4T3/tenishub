@@ -4,16 +4,21 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { BookOpen, Plus, X } from "lucide-react";
+import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brain, Tag, type LucideIcon } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 
 type Article = { id: string; slug: string; title: string; perex: string | null; category: string; author_name: string | null; created_at: string; is_sample: boolean };
 
-const CATS: [string, string][] = [
-  ["navody", "Návody"], ["vyber", "Jak vybrat"], ["turnaje", "Turnaje"],
-  ["zdravi", "Zdraví a kondice"], ["hlava", "Psychika a motivace"], ["ostatni", "Ostatní"],
+// Kategorie: barva + jednoduchá ikonka (aby šly články rozeznat na první pohled).
+const CATS: { k: string; l: string; c: string; Icon: LucideIcon }[] = [
+  { k: "navody", l: "Návody", c: "#2f7d54", Icon: BookOpen },
+  { k: "vyber", l: "Jak vybrat", c: "#3670a8", Icon: SlidersHorizontal },
+  { k: "turnaje", l: "Turnaje", c: "#b0862c", Icon: Trophy },
+  { k: "zdravi", l: "Zdraví a kondice", c: "#2f8f7a", Icon: HeartPulse },
+  { k: "hlava", l: "Psychika a motivace", c: "#6a52c8", Icon: Brain },
+  { k: "ostatni", l: "Ostatní", c: "#5a6470", Icon: Tag },
 ];
-const catLabel = (k: string) => CATS.find(([v]) => v === k)?.[1] ?? "Ostatní";
+const catMeta = (k: string) => CATS.find((x) => x.k === k) ?? CATS[CATS.length - 1];
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "clanek";
 
@@ -53,31 +58,42 @@ export default function ClankyClient() {
 
       <div className="wrap acct-wrap">
         <div className="mc-head">
-          <h1 className="acct-h1"><BookOpen size={26} style={{ verticalAlign: "-4px" }} /> Vědět víc</h1>
+          <h1 className="acct-h1"><Library size={26} style={{ verticalAlign: "-4px" }} /> Knihovna</h1>
           {isAdmin && <button className="btn btn-green" onClick={() => setForm({ open: true, title: "", category: "navody", perex: "", body: "", sample: false })}><Plus size={16} /> Nový článek</button>}
         </div>
-        <p className="member-note" style={{ marginTop: "-0.4rem" }}>Praktické návody a rady pro tenisové rodiče i trenéry. Ukázky jsou zdarma, celá knihovna pro členy. A protože nejsme jediný chytrý zdroj — mrkni i na <Link href="/zdroje" style={{ color: "var(--gold-l, #bf9a47)", fontWeight: 600 }}>Zdroje →</Link></p>
+        <p className="clanky-intro">Praktické návody a rady pro tenisové rodiče i trenéry. Ukázky jsou zdarma, celá knihovna pro členy. A protože nejsme jediný chytrý zdroj — mrkni i na <Link href="/zdroje" className="clanky-intro-link">Zdroje →</Link></p>
 
         <div className="fcats">
           <button className={`fcat${cat === "" ? " on" : ""}`} onClick={() => setCat("")}>Vše</button>
-          {CATS.map(([k, l]) => <button key={k} className={`fcat${cat === k ? " on" : ""}`} onClick={() => setCat(k)}>{l}</button>)}
+          {CATS.map((x) => {
+            const on = cat === x.k;
+            return (
+              <button key={x.k} className={`fcat fcat-c${on ? " on" : ""}`} onClick={() => setCat(x.k)}
+                style={on ? { background: x.c, borderColor: x.c, color: "#fff" } : { color: x.c, borderColor: "#e4dfd1" }}>
+                <x.Icon size={14} /> {x.l}
+              </button>
+            );
+          })}
         </div>
 
         {loading ? <p className="member-note">Načítám…</p> : shown.length === 0 ? (
-          <div className="acct-card mc-gate"><BookOpen size={30} /><h2>Vědět víc se plní</h2><p>Brzy tu najdete návody a rady. {isAdmin && "Přidejte první článek."}</p></div>
+          <div className="acct-card mc-gate"><Library size={30} /><h2>Knihovna se plní</h2><p>Brzy tu najdete návody a rady. {isAdmin && "Přidejte první článek."}</p></div>
         ) : (
           <div className="clanky-grid">
-            {shown.map((a) => (
-              <Link key={a.id} href={`/clanky/${a.slug}`} className="clanek-card">
-                <span className="clanek-cardtop">
-                  <span className="clanek-cat">{catLabel(a.category)}</span>
-                  {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
-                </span>
-                <b>{a.title}</b>
-                {a.perex && <span className="clanek-perex">{a.perex}</span>}
-                <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
-              </Link>
-            ))}
+            {shown.map((a) => {
+              const m = catMeta(a.category);
+              return (
+                <Link key={a.id} href={`/clanky/${a.slug}`} className="clanek-card" style={{ borderTop: `3px solid ${m.c}` }}>
+                  <span className="clanek-cardtop">
+                    <span className="clanek-cat" style={{ color: m.c }}><m.Icon size={12} style={{ verticalAlign: "-2px" }} /> {m.l}</span>
+                    {a.is_sample ? <span className="clanek-badge free">Ukázka zdarma</span> : (!canPost ? <span className="clanek-badge lock">Pro členy</span> : null)}
+                  </span>
+                  <b>{a.title}</b>
+                  {a.perex && <span className="clanek-perex">{a.perex}</span>}
+                  <span className="clanek-meta">{a.author_name || "TenisHub"} · {fmt(a.created_at)}</span>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
@@ -88,7 +104,7 @@ export default function ClankyClient() {
             <button className="mc-x" onClick={() => setForm({ ...form, open: false })}><X size={18} /></button>
             <h3>Nový článek</h3>
             <label>Nadpis<input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></label>
-            <label>Kategorie<select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{CATS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
+            <label>Kategorie<select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{CATS.map((x) => <option key={x.k} value={x.k}>{x.l}</option>)}</select></label>
             <label>Perex (krátké shrnutí)<input value={form.perex} onChange={(e) => setForm({ ...form, perex: e.target.value })} /></label>
             <label>Text článku<textarea rows={10} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="Odstavce oddělte prázdným řádkem." /></label>
             <label className="clanek-samplechk"><input type="checkbox" checked={form.sample} onChange={(e) => setForm({ ...form, sample: e.target.checked })} /> Ukázka zdarma (celý článek uvidí i nečlenové)</label>
