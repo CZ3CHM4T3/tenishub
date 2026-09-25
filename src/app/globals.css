@@ -3606,6 +3606,10 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .shtab-sluzby.on{background:#6a52c8;border-color:#5a45ac;box-shadow:0 6px 16px -8px rgba(106,82,200,.7)}
 .shtab-najdi.on{background:#3670a8;border-color:#2c5c8c;box-shadow:0 6px 16px -8px rgba(54,112,168,.7)}
 .shtab.open{filter:brightness(.96)}
+/* Víc ⋯ dropdown (roh přihlášené lišty) */
+.drop-r{left:auto;right:0}
+button.drop-card{background:none;border:none;width:100%;text-align:left;font:inherit;cursor:pointer}
+.drop-logout,.drop-logout b{color:#b0433a}
 /* ČLENSKÉ patro — druhá řada pod outer menu, jen po přihlášení */
 .shmember{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;padding:.5rem 0 .1rem;margin-top:.35rem;border-top:1px solid #e6ddc9}
 /* locked/neaktivní záložka — jednotný „zamčený" look (zámek), napříč webem stejný */

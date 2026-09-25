@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { isHiddenRole } from "@/lib/simplify";
-import { ChevronDown, Mail, ShieldCheck, LogOut, Lock } from "lucide-react";
+import { ChevronDown, Mail, LogOut, LayoutGrid, UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { getViewAs } from "@/lib/viewAs";
 import { tabsForRoles, tabActive, type NavTab } from "@/lib/navtabs";
@@ -94,27 +94,39 @@ export function SiteHeader() {
             <img src="/logo-tenishub.png" alt="TenisHub" className="brand-img" />
           </Link>
 
-          {/* OUTER MENU — veřejné, vždy (i nepřihlášený) */}
-          <nav className="menu">
-            <div className="nav-item">
-              <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
-              <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
-                {MARKETING_ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
-                  <Link key={k} className="drop-card" href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
-                ))}
-              </div></div>
-            </div>
-            <Link className="nav-link" href="/mapa">Mapa služeb</Link>
-            <Link className="nav-link" href="/clenstvi">Členství</Link>
-            <Link className="nav-link" href="/o-nas">O nás</Link>
-          </nav>
+          {/* MENU — přihlášený: čisté členské (Služby/Profil/Zprávy); odhlášený: marketing */}
+          {ready && logged ? (
+            <nav className="menu shmenu">
+              <Link className={`shtab shtab-sluzby${tabActive("sluzby", pathname) ? " on" : ""}`} href="/sluzby"><LayoutGrid size={16} /> Služby</Link>
+              <Link className={`shtab shtab-profil${tabActive("profil", pathname) ? " on" : ""}`} href="/ucet?tab=profil"><UserRound size={16} /> Profil</Link>
+              <Link className={`shtab shtab-najdi${pathname.startsWith("/zpravy") ? " on" : ""}`} href="/zpravy"><Mail size={16} /> Zprávy{unread > 0 && <span className="authr-dot">{unread}</span>}</Link>
+            </nav>
+          ) : (
+            <nav className="menu">
+              <div className="nav-item">
+                <button className={`nav-link${openMenu === "koho" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "koho" ? null : "koho"))}>Pro koho <ChevronDown size={15} /></button>
+                <div className={`drop${openMenu === "koho" ? " open" : ""}`}><div className="drop-inner">
+                  {MARKETING_ROLES.filter(([k]) => !isHiddenRole(k)).map(([k, t, s]) => (
+                    <Link key={k} className="drop-card" href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`}><b>{t}</b><span>{s}</span></Link>
+                  ))}
+                </div></div>
+              </div>
+              <Link className="nav-link" href="/mapa">Mapa služeb</Link>
+              <Link className="nav-link" href="/clenstvi">Členství</Link>
+              <Link className="nav-link" href="/o-nas">O nás</Link>
+            </nav>
+          )}
 
           <div className="nav-r">
             {ready && logged ? (
-              <div className="shu">
-                <Link href="/zpravy" className="shu-mail" aria-label="Zprávy" title="Zprávy"><Mail size={18} /> <span className="shu-lbl">Zprávy</span>{unread > 0 && <span className="authr-dot">{unread}</span>}</Link>
-                {isAdmin && <Link href="/admin" className="shu-btn" aria-label="Administrace" title="Administrace"><ShieldCheck size={18} /></Link>}
-                <button type="button" className="shu-btn shu-logout" onClick={logout} aria-label="Odhlásit se" title="Odhlásit se"><LogOut size={17} /> <span className="shu-lbl">Odhlásit</span></button>
+              <div className="nav-item vic-item">
+                <button className={`nav-link${openMenu === "vic" ? " open" : ""}`} type="button" onClick={() => setOpenMenu((m) => (m === "vic" ? null : "vic"))}>Víc <ChevronDown size={15} /></button>
+                <div className={`drop drop-r${openMenu === "vic" ? " open" : ""}`}><div className="drop-inner">
+                  <Link className="drop-card" href="/clenstvi"><b>Členství</b></Link>
+                  <Link className="drop-card" href="/o-nas"><b>O nás</b></Link>
+                  {isAdmin && <Link className="drop-card" href="/admin"><b>Administrace</b></Link>}
+                  <button type="button" className="drop-card drop-logout" onClick={logout}><b>Odhlásit se</b></button>
+                </div></div>
               </div>
             ) : ready ? (
               <Link href="/prihlaseni" className="btn btn-gold">Přihlásit se</Link>
@@ -122,21 +134,6 @@ export function SiteHeader() {
             <button className="burger" aria-label="Menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen((o) => !o)}>{mobileOpen ? "✕" : "☰"}</button>
           </div>
         </div>
-
-        {/* ČLENSKÉ patro — vyjede pod outer menu jen po přihlášení */}
-        {ready && logged && tabs.length > 0 && (
-          <div className="shmember">
-            {tabs.map((t) => t.locked ? (
-              <span key={t.label} className={`shtab shtab-${t.accent} shtab-locked`} title="Připravujeme">
-                <t.Icon size={16} /> {t.label} <Lock size={12} />
-              </span>
-            ) : (
-              <Link key={t.label} className={`shtab shtab-${t.accent}${tabActive(t.accent, pathname) ? " on" : ""}`} href={t.href}>
-                <t.Icon size={16} /> {t.label}
-              </Link>
-            ))}
-          </div>
-        )}
 
         {mobileOpen && (
           <nav className="mnav" onClick={() => setMobileOpen(false)}>
