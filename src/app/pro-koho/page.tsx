@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteHeader } from "@/components/SiteHeader";
+import { RolePage } from "@/components/RolePage";
 import { WhistleIcon } from "@/components/icons";
 import { IconRun } from "@tabler/icons-react";
-import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, type LucideIcon } from "lucide-react";
+import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, ArrowRight, type LucideIcon } from "lucide-react";
 import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
 import { isHiddenRole } from "@/lib/simplify";
 
@@ -12,7 +13,7 @@ const VISIBLE_ROLE_ORDER = ROLE_ORDER.filter((k) => !isHiddenRole(k));
 
 export const metadata: Metadata = {
   title: "Pro koho je TenisHub — rodiče, hráči, trenéři, kluby",
-  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá a co získáte s členstvím HUB+.",
+  description: "Vyberte svou roli a uvidíte přesně, co pro vás TenisHub dělá a co získáte s členstvím.",
 };
 
 const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconRun> = {
@@ -23,82 +24,34 @@ const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconR
 export default async function ProKohoPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) {
   const { role } = await searchParams;
   if (role === "rodic") redirect("/rodic"); // rodič má vlastní hub
-  if (role === "trener") redirect("/pro-trenery"); // trenér má jeden vstup
+  if (role === "trener") redirect("/pro-trenery"); // trenér má vlastní vstup
   if (role && isHiddenRole(role)) redirect("/"); // zjednodušený web — skryté role
   const r = role ? ROLES[role] : null;
 
+  // Detail role = jednotná stránka ve stylu /rodic
+  if (r) return <RolePage role={r} />;
+
+  // Rozcestník rolí
   return (
     <div className="sluzby-page">
       <SiteHeader />
-
       <div className="wrap sluzby-wrap">
-        {r ? <RoleDetail r={r} /> : (<>
-          <span className="eyebrow rv">Pro koho je TenisHub</span>
-          <h1 className="rv d1">Vyberte, kdo jste</h1>
-          <p className="lead rv d1">Klikněte na svou roli — uvidíte přesně, co pro vás v klubu děláme.</p>
-          <div className="rolepick-grid">
-            {VISIBLE_ROLE_ORDER.map((k) => {
-              const x = ROLES[k]; const I = ICONS[x.icon];
-              return (
-                <Link key={k} href={`/pro-koho?role=${k}`} className={`rolepick rv z d${Math.min((ROLE_ORDER.indexOf(k) % 4) + 1, 4)}`} style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
-                  <span className="rolepick-ic" style={{ color: x.color }}><I size={22} /></span>
-                  <span className="rolepick-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
-                  <span className="rolepick-arr"><ArrowRight size={18} /></span>
-                </Link>
-              );
-            })}
-          </div>
-        </>)}
+        <span className="eyebrow rv">Pro koho je TenisHub</span>
+        <h1 className="rv d1">Vyberte, kdo jste</h1>
+        <p className="lead rv d1">Klikněte na svou roli — uvidíte přesně, co pro vás v klubu děláme.</p>
+        <div className="rolepick-grid">
+          {VISIBLE_ROLE_ORDER.map((k) => {
+            const x = ROLES[k]; const Icn = ICONS[x.icon];
+            return (
+              <Link key={k} href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`} className={`rolepick rv z d${Math.min((ROLE_ORDER.indexOf(k) % 4) + 1, 4)}`} style={{ backgroundColor: x.fill, backgroundImage: `url(${x.photo})` }}>
+                <span className="rolepick-ic" style={{ color: x.color }}><Icn size={22} /></span>
+                <span className="rolepick-txt"><b>{x.label}</b><span>{x.tagline}</span></span>
+                <span className="rolepick-arr"><ArrowRight size={18} /></span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
-  );
-}
-
-function RoleDetail({ r }: { r: Role }) {
-  const I = ICONS[r.icon];
-  return (
-    <>
-      <Link href="/pro-koho" className="role-back">← Všechny role</Link>
-      <div className="role-banner rv z" style={{ backgroundImage: `url(${r.photo})` }}>
-        <div className="role-banner-in">
-          <span className="role-hero-ic" style={{ background: r.fill, color: r.color }}><I size={30} /></span>
-          <div>
-            <h1 style={{ margin: 0, color: "#fff" }}>{r.label}</h1>
-            <p style={{ margin: "0.2rem 0 0", color: "rgba(255,255,255,0.95)" }}>{r.tagline}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="rodic-plan-cols" style={{ marginTop: "1.4rem" }}>
-        <div className="rp-col rv l d1">
-          <div className="rp-col-head"><h3>Ukázka</h3><span className="rp-tag rp-tag-free">náhled</span></div>
-          <ul className="rp-list">
-            {r.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
-          </ul>
-          <Link href={r.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {r.find.label}</Link>
-        </div>
-        <div className="rp-col rp-col-hub rv r d2">
-          <div className="rp-col-head"><h3>{r.provider ? "PROFI+" : "HUB+"}</h3><span className="rp-tag rp-tag-hub">{r.provider ? "299" : "99"} Kč/měs</span></div>
-          <ul className="rp-list rp-list-locked">
-            {r.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
-          </ul>
-          {r.provider && <p className="member-note" style={{ fontSize: ".82rem" }}>Základ (pin + jméno + web) zdarma. PROFI+ odemkne vše — nebo se vysloužit renomé.</p>}
-          <Link href={r.provider ? "/pro-trenery" : "/pristup"} className="btn btn-gold" style={{ width: "100%" }}>Chci {r.provider ? "PROFI+" : "HUB+"}</Link>
-        </div>
-      </div>
-
-      <div className="role-cta">
-        {r.provider
-          ? <Link href="/prihlaseni?tab=reg" className="btn btn-out">Vytvořit profil zdarma</Link>
-          : <Link href="/pristup" className="btn btn-out">Chci členství</Link>}
-      </div>
-
-      <div className="role-others">
-        <span>Jiná role:</span>
-        {VISIBLE_ROLE_ORDER.filter((k) => k !== r.key).map((k) => (
-          <Link key={k} href={`/pro-koho?role=${k}`} className="role-chip">{ROLES[k].label}</Link>
-        ))}
-      </div>
-    </>
   );
 }

@@ -1,0 +1,91 @@
+import Link from "next/link";
+import { SiteHeader } from "@/components/SiteHeader";
+import { WhistleIcon } from "@/components/icons";
+import { IconRun } from "@tabler/icons-react";
+import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, BadgeCheck, type LucideIcon } from "lucide-react";
+import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
+import { isHiddenRole } from "@/lib/simplify";
+
+// Jednotná stránka role — VŽDY stejný styl jako /rodic (eyebrow → h1 → lead → „proč" karty →
+// cenový pruh → zdarma vs placené → další role). Použito pro /pro-koho i /pro-trenery.
+const ICONS: Record<Role["icon"], LucideIcon | typeof WhistleIcon | typeof IconRun> = {
+  trener: WhistleIcon, rodic: Users, hrac: IconRun, sparring: Handshake,
+  areal: Building2, fyzio: HeartPulse, fitness: Dumbbell, vyplet: Grid3x3,
+};
+const VISIBLE = ROLE_ORDER.filter((k) => !isHiddenRole(k));
+
+export function RolePage({ role, back = true }: { role: Role; back?: boolean }) {
+  const I = ICONS[role.icon];
+  const price = role.provider ? "PROFI+" : "HUB+";
+  const priceKc = role.provider ? "299" : "99";
+  const cta = role.provider ? "/pro-trenery" : "/pristup";
+  const why = role.plus.slice(0, 4);
+
+  return (
+    <div className="sluzby-page">
+      <SiteHeader />
+      <div className="wrap sluzby-wrap">
+        {back && <Link href="/pro-koho" className="role-back">← Všechny role</Link>}
+        <span className="eyebrow rv" style={{ color: role.color }}>{role.label}</span>
+        <h1 className="rv d1">{role.provider ? "Buďte vidět — klienti si vás najdou" : "Všechno na jednom místě"}</h1>
+        <p className="lead rv d1">{role.tagline.charAt(0).toUpperCase() + role.tagline.slice(1)}. {role.provider
+          ? <>Profil na mapě máte <b>zdarma</b>; plný profil, rezervace a ověření odemkne <b>PROFI+</b> — nebo si je vyslužte růstem a renomé.</>
+          : <>Kontakt, nástroje a celý klub odemyká <b>HUB+</b>. Bez něj si web prohlédnete jako ochutnávku.</>}</p>
+
+        {/* PROČ — karty (v barvě role) */}
+        <div className="rodic-why rv d1" style={{ ["--rc" as string]: role.color }}>
+          <span className="cena-eyebrow">Co získáte s {price}</span>
+          <h2>Co pro vás {role.provider ? "jako profíka" : ""} děláme</h2>
+          <div className="rodic-why-grid four">
+            {why.map((f, i) => (
+              <div className="rodic-why-card" key={i}>
+                <span className="rww-ic" style={{ background: role.fill, color: role.color }}><Check size={20} /></span>
+                <b>{f.label}{f.soon && <em className="soon"> brzy</em>}</b>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CENOVÝ PRUH */}
+        <div className="rodic-price rv d1">
+          <div className="rodic-price-in">
+            <span className="rodic-price-tag">{role.provider ? "Základ zdarma" : "Zakládající cena"}</span>
+            <div className="rodic-price-txt">
+              {role.provider
+                ? <><b>Profil zdarma — trenéři do konce roku i základ klubu zdarma.</b><span>Plný profil a nástroje = PROFI+ 299 Kč/měs (nebo vyslužit renomé).</span></>
+                : <><b>Přidejte se letos = 99 Kč / měsíc napořád.</b><span>Od Nového roku 199 Kč/měs. Vyzkoušejte týden zdarma (bez karty).</span></>}
+            </div>
+            <Link href={cta} className="btn btn-gold">Chci {price} <ArrowRight size={16} /></Link>
+          </div>
+        </div>
+
+        {/* ZDARMA vs PLACENÉ */}
+        <div className="rodic-plan-cols rv d1" style={{ marginTop: "1.4rem" }}>
+          <div className="rp-col">
+            <div className="rp-col-head"><h3>Zdarma</h3><span className="rp-tag rp-tag-free">ochutnávka</span></div>
+            <ul className="rp-list">
+              {role.free.map((f, i) => <li key={i}><Check size={16} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
+            </ul>
+            <Link href={role.find.href} className="btn btn-green" style={{ width: "100%" }}><Search size={16} /> {role.find.label}</Link>
+          </div>
+          <div className="rp-col rp-col-hub">
+            <div className="rp-col-head"><h3>{price}</h3><span className="rp-tag rp-tag-hub">{priceKc} Kč/měs</span></div>
+            <ul className="rp-list rp-list-locked">
+              {role.plus.map((f, i) => <li key={i}><Lock size={15} /> {f.label}{f.soon && <em className="soon"> brzy</em>}</li>)}
+              {role.provider && <li><BadgeCheck size={15} /> Renomé — vyslužené nástroje zdarma</li>}
+            </ul>
+            <Link href={cta} className="btn btn-gold" style={{ width: "100%" }}>Chci {price}</Link>
+          </div>
+        </div>
+
+        {/* DALŠÍ ROLE */}
+        <div className="role-others rv">
+          <span>Jiná role:</span>
+          {VISIBLE.filter((k) => k !== role.key).map((k) => (
+            <Link key={k} href={k === "trener" ? "/pro-trenery" : k === "rodic" ? "/rodic" : `/pro-koho?role=${k}`} className="role-chip">{ROLES[k].label}</Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
