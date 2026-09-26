@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
+import ZapasTracker from "./ZapasTracker";
+import { Swords } from "lucide-react";
 import {
   Route, Plus, ChevronLeft, ChevronRight, Target, Trash2, Pencil,
   CalendarDays, CalendarRange, Grid3x3, TrendingUp, Lock, X,
@@ -32,7 +34,7 @@ type Metrics = {
 type Goal = { id: string; player_id: string; title: string; target: string | null; progress: number; done: boolean; locked: boolean };
 type MyType = { id: string; label: string; color: string };
 type Seg = PhaseT & { s: Date; e: Date };
-type View = "month" | "week" | "year" | "load" | "reflect";
+type View = "month" | "week" | "year" | "load" | "reflect" | "zapasy";
 type PForm = { open: boolean; id?: string; name: string; level: "hobby" | "competitive"; year: string; category: string; ranking: string; cts: string };
 
 /* ---------- pomocné ---------- */
@@ -595,6 +597,7 @@ export default function MojeCesta() {
     ["year", "Rok", <Grid3x3 key="y" size={15} />],
     ["load", "Zátěž", <TrendingUp key="l" size={15} />],
     ["reflect", "Ohlédnutí", <History key="r" size={15} />],
+    ["zapasy", "Zápasy", <Swords key="z" size={15} />],
   ];
   const maxTj = Math.max(3, ...loadWeeks.map((w) => w.tj));
 
@@ -673,6 +676,9 @@ export default function MojeCesta() {
             ))}
             <button className="mc-vbtn mc-vcat" onClick={() => setCatOpen(true)}><Palette size={15} /> Kategorie</button>
           </div>
+
+          {/* ZÁPASY — živé počítadlo bodů */}
+          {view === "zapasy" && <ZapasTracker playerId={player.id} playerName={player.name} />}
 
           {/* MĚSÍC */}
           {view === "month" && (<>
