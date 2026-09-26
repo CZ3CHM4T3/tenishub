@@ -3189,7 +3189,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 .wt-pin-tick{fill:none;stroke:#1c2a16;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 /* Jirka — mírně doleva, před mapou */
 /* Vějíř karet profíků (Jirka uprostřed) — ilustrace před mapou */
-.wt-fan{position:absolute;left:44%;bottom:3%;width:344px;height:264px;z-index:3;pointer-events:none;transition:transform .3s ease}
+.wt-fan{position:absolute;right:0.6rem;left:auto;bottom:3%;width:344px;height:264px;z-index:3;pointer-events:none;transition:transform .3s ease;transform-origin:bottom right;transform:scale(.9)}
 .wt-fan-card{position:absolute;display:block;background:#fff;border-radius:15px;overflow:hidden;border:1px solid #e6ddca}
 .wt-fan-l,.wt-fan-r{width:150px;height:196px;top:40px;box-shadow:0 14px 26px -16px rgba(0,0,0,.5);opacity:.7;filter:blur(.5px);transition:transform .3s ease;display:grid;grid-template-rows:1fr auto}
 .wt-fan-l{left:0;transform:rotate(-13deg)}
@@ -3214,7 +3214,7 @@ img.xpc{width:22px;height:22px;vertical-align:-6px}
 /* obecný text — vpravo dole (tmavá plocha, zrcadlově k „Rodič"), bílý se silným halo-stínem */
 /* Oba texty absolutně, zrcadlově, čudlíky ve STEJNÉ výšce (bottom 1.7rem) */
 .world-rodic .world-in{position:absolute;z-index:4;left:1.9rem;bottom:1.7rem;padding:0;max-width:46%;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:.4rem;text-shadow:0 1px 3px rgba(0,0,0,.85),0 2px 12px rgba(0,0,0,.55)}
-.wt-in{position:absolute;z-index:4;right:1.9rem;bottom:1.7rem;padding:0;max-width:46%;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:.4rem;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(0,0,0,.6)}
+.wt-in{position:absolute;z-index:4;right:1.9rem;top:1.5rem;bottom:auto;padding:0;max-width:52%;display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:.4rem;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(0,0,0,.6)}
 .world-trainer .world-tag{font-size:clamp(1.3rem,2.8vw,2.1rem);line-height:1.05;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-head{font-weight:800;font-size:clamp(1rem,1.55vw,1.35rem);color:#fff;line-height:1.15;text-wrap:balance;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 16px rgba(0,0,0,.7)}
 .wt-sub{color:#e2ece5;font-size:.82rem;line-height:1.4;margin-top:-.1rem;text-shadow:0 1px 6px rgba(0,0,0,.55);max-width:26ch}
