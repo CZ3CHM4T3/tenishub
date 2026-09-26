@@ -91,7 +91,7 @@
   .d4 { transition-delay: 0.4s; } .d5 { transition-delay: 0.5s; }
 
   /* buttons */
-  .btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sora), "Sora", sans-serif; font-weight: 600; font-size: 0.98rem; padding: 0.9rem 1.7rem; border-radius: 12px; transition: 0.28s cubic-bezier(0.3, 1.1, 0.5, 1); cursor: pointer; border: 0; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-family: var(--font-sora), "Sora", sans-serif; font-weight: 700; font-size: 0.94rem; padding: 0.72rem 1.45rem; border-radius: 12px; transition: 0.28s cubic-bezier(0.3, 1.1, 0.5, 1); cursor: pointer; border: 0; line-height: 1.1; }
   .btn svg { width: 1.1em; height: 1.1em; stroke-width: 2; }
   .btn-gold { background: linear-gradient(135deg, var(--gold-l), var(--gold)); color: #22150a; }
   .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 16px 30px -12px rgba(200, 162, 76, 0.7); }
@@ -845,7 +845,7 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 /* ═══════════ Profil trenéra (/trener) ═══════════ */
 .profile-page { background: var(--soft); min-height: 100vh; }
 .profile-page .wrap { width: min(1100px, 92%); }
-.profile-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
+/* .btn velikost sjednocena globálně (viz base .btn) — bez per-stránkových override */
 /* Moderní role-hero (sladěný napříč rolemi) — malý ikonový čip + čistý text */
 .rolehero { background: linear-gradient(150deg, var(--green), var(--green-d, #16271f)); color: #fff; padding: 2.2rem 0 2rem; position: relative; overflow: hidden; }
 .rolehero::before { content: ""; position: absolute; right: -4%; top: -50%; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(200,162,76,0.16), transparent 60%); }
@@ -1244,7 +1244,7 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 /* ═══════════ Dashboard areálu (/areal) ═══════════ */
 .areal-page { --book: #2c4a39; --train: #c8a24c; --block: #d8ddd8; background: var(--soft); min-height: 100vh; }
 .areal-page .wrap { width: min(1180px, 94%); }
-.areal-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
+/* .btn velikost sjednocena globálně */
 .areal-page .head { padding: 1.8rem 0 1rem; }
 .areal-page .head h1 { font-size: 1.7rem; color: var(--green); }
 .areal-page .head .sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
@@ -1489,7 +1489,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .member-note { font-size: 0.9rem; color: #4d5c53; line-height: 1.6; margin: 0.7rem 0 1rem; }
 .acct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
 .acct-logout { margin-top: 0.4rem; }
-.acct-page .btn { padding: 0.72rem 1.3rem; font-size: 0.92rem; border-radius: 12px; }
+/* .btn velikost sjednocena globálně */
 .acct-page .fld input:disabled { opacity: 0.6; cursor: not-allowed; }
 @media (max-width: 620px) { .acct-grid { grid-template-columns: 1fr; } }
 
