@@ -2,9 +2,16 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { WhistleIcon } from "@/components/icons";
 import { IconRun } from "@tabler/icons-react";
-import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, BadgeCheck, type LucideIcon } from "lucide-react";
+import { Users, Handshake, Building2, HeartPulse, Dumbbell, Grid3x3, Check, Lock, ArrowRight, Search, BadgeCheck, BookOpen, ShieldCheck, Gauge, Heart, CalendarDays, Trophy, MapPin, Star, Zap, type LucideIcon } from "lucide-react";
 import { ROLES, ROLE_ORDER, type Role } from "@/lib/roles";
 import { isHiddenRole } from "@/lib/simplify";
+
+// ikony pro „proč" karty (klíč z roles.ts → lucide)
+const WHY_ICONS: Record<string, LucideIcon> = {
+  book: BookOpen, shield: ShieldCheck, gauge: Gauge, heart: Heart, users: Users,
+  calendar: CalendarDays, badge: BadgeCheck, trophy: Trophy, handshake: Handshake,
+  map: MapPin, star: Star, search: Search, zap: Zap, check: Check,
+};
 
 // Jednotná stránka role — VŽDY stejný styl jako /rodic (eyebrow → h1 → lead → „proč" karty →
 // cenový pruh → zdarma vs placené → další role). Použito pro /pro-koho i /pro-trenery.
@@ -19,7 +26,7 @@ export function RolePage({ role, back = true }: { role: Role; back?: boolean }) 
   const price = role.provider ? "PROFI+" : "HUB+";
   const priceKc = role.provider ? "299" : "99";
   const cta = role.provider ? "/pro-trenery" : "/pristup";
-  const why = role.plus.slice(0, 4);
+  const why = role.why ?? role.plus.slice(0, 4).map((f) => ({ icon: "check", title: f.label, desc: "" }));
 
   return (
     <div className="sluzby-page">
@@ -37,12 +44,16 @@ export function RolePage({ role, back = true }: { role: Role; back?: boolean }) 
           <span className="cena-eyebrow">Co získáte s {price}</span>
           <h2>Co pro vás {role.provider ? "jako profíka" : ""} děláme</h2>
           <div className="rodic-why-grid four">
-            {why.map((f, i) => (
-              <div className="rodic-why-card" key={i}>
-                <span className="rww-ic" style={{ background: role.fill, color: role.color }}><Check size={20} /></span>
-                <b>{f.label}{f.soon && <em className="soon"> brzy</em>}</b>
-              </div>
-            ))}
+            {why.map((w, i) => {
+              const WI = WHY_ICONS[w.icon] ?? Check;
+              return (
+                <div className="rodic-why-card" key={i}>
+                  <span className="rww-ic" style={{ background: role.fill, color: role.color }}><WI size={20} /></span>
+                  <b>{w.title}</b>
+                  {w.desc && <span>{w.desc}</span>}
+                </div>
+              );
+            })}
           </div>
         </div>
 

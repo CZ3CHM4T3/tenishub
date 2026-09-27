@@ -1,5 +1,7 @@
 // Obsah pro jednotlivé role — použito na /pro-koho?role=KEY (role-specifická stránka).
 export type RoleFeat = { label: string; soon?: boolean };
+// „Proč se to vyplatí" — karty s ikonou, nadpisem a popisem (stejný styl jako /rodic).
+export type RoleWhy = { icon: string; title: string; desc: string };
 export type Role = {
   key: string;
   label: string;
@@ -10,6 +12,7 @@ export type Role = {
   photo: string;                // fotka do hlavičky role
   provider: boolean;            // poskytovatel služby (jinak spotřebitel)
   find: { label: string; href: string };
+  why?: RoleWhy[];              // 4 karty „proč" (ikona + nadpis + popis)
   free: RoleFeat[];
   plus: RoleFeat[];
 };
@@ -38,6 +41,12 @@ export const ROLES: Record<string, Role> = {
   hrac: {
     key: "hrac", label: "Hráč", tagline: "hraj, zlepšuj se, sparring", color: "#3b5666", fill: "#E5ECF1", icon: "hrac", photo: "/role-hrac.png", provider: false,
     find: { label: "Najít s kým hrát", href: "/sparring" },
+    why: [
+      { icon: "search", title: "Najdi kurt i trenéra", desc: "Mapa kurtů, klubů a trenérů poblíž — profily, ceny a recenze na jednom místě." },
+      { icon: "handshake", title: "Sparring", desc: "Parťáci podle úrovně a matchmaking — vždy máš s kým hrát." },
+      { icon: "gauge", title: "Moje cesta", desc: "Statistiky zápasů, forma a plán sezóny — vidíš, kam se posouváš." },
+      { icon: "trophy", title: "Turnaje a ligy", desc: "Přehled turnajů a žebříčků, ať víš, kde nastoupit." },
+    ],
     free: [
       { label: "Mapa kurtů a trenérů" },
       { label: "Prohlížet sparring nabídky" },
@@ -55,6 +64,12 @@ export const ROLES: Record<string, Role> = {
   trener: {
     key: "trener", label: "Trenér", tagline: "klienti a méně administrativy", color: "#7C4DD6", fill: "#EEEDFE", icon: "trener", photo: "/role-trener.png", provider: true,
     find: { label: "Najít trenéra na mapě", href: "/mapa?type=coach" },
+    why: [
+      { icon: "users", title: "Klienti vás najdou", desc: "Profil na mapě i v katalogu — rodiče a hráči vás vyhledají podle místa a recenzí." },
+      { icon: "calendar", title: "Míň administrativy", desc: "Kalendář, online rezervace a platby předem — konec domlouvání přes SMS." },
+      { icon: "badge", title: "Renomé a důvěra", desc: "Ověřený odznak a renomé, které si vyslužíte růstem klubu — rodiče podle něj filtrují." },
+      { icon: "trophy", title: "Nástroje pro klub", desc: "Nástěnka, akce, svěřenci i herní vrstva (strom dovedností, Sparring Cup) na jednom místě." },
+    ],
     free: [
       { label: "Vizitka v katalogu" },
       { label: "Být k nalezení na mapě" },
@@ -70,6 +85,12 @@ export const ROLES: Record<string, Role> = {
   sparring: {
     key: "sparring", label: "Sparring partner", tagline: "najdi, s kým si zahrát", color: "#8a5640", fill: "#F2E6DF", icon: "sparring", photo: "/role-sparring.png", provider: false,
     find: { label: "Najít parťáka / přidat inzerát", href: "/sparring" },
+    why: [
+      { icon: "handshake", title: "Najdi parťáka", desc: "Hráči podle úrovně, místa i stylu hry — domluva zápasu přímo přes web." },
+      { icon: "map", title: "Ve tvém okolí", desc: "Nabídky i piny na mapě poblíž tebe, ať nejezdíš přes půl republiky." },
+      { icon: "gauge", title: "Podle úrovně", desc: "Matchmaking spáruje vyrovnané soupeře — zápas, co má smysl." },
+      { icon: "star", title: "Hodnocení po zápase", desc: "Zpětná vazba buduje důvěru v komunitě." },
+    ],
     free: [
       { label: "Prohlížet sparring nabídky" },
       { label: "Vidět úroveň, místo a styl hry" },
@@ -84,6 +105,12 @@ export const ROLES: Record<string, Role> = {
   areal: {
     key: "areal", label: "Areály & kluby", tagline: "obsazenost kurtů + viditelnost", color: "#2f5d57", fill: "#E0EBE9", icon: "areal", photo: "/role-areal.png", provider: true,
     find: { label: "Najít kurt na mapě", href: "/mapa?type=club" },
+    why: [
+      { icon: "calendar", title: "Rezervační systém", desc: "Online rezervace kurtů i platby na jednom místě — bez telefonování." },
+      { icon: "zap", title: "Obsaď kurt teď", desc: "Vyplňte volná okna a zvyšte vytíženost areálu." },
+      { icon: "map", title: "Viditelnost", desc: "Profil areálu na mapě, kontakty, otevírací doba — lidé vás najdou." },
+      { icon: "users", title: "Napojení trenérů", desc: "Trenéři u vás = víc lidí na kurtech a stabilní příjem." },
+    ],
     free: [
       { label: "Profil areálu na mapě" },
       { label: "Kontakty a otevírací doba" },
