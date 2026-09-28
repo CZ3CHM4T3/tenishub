@@ -17,7 +17,7 @@ import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
   Dumbbell, GraduationCap, Video, MessageCircle, type LucideIcon,
-  CalendarDays, Target, BarChart3, History,
+  CalendarDays, Target, BarChart3, History, Activity,
 } from "lucide-react";
 
 
@@ -132,8 +132,8 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null }[]>([]);
-  const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; rvText: string | null; rvAuthor: string | null }[]>([]);
+  const [featured, setFeatured] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; renome_level: number | null }[]>([]);
+  const [stripData, setStripData] = useState<{ id: string; name: string; kind: string; city: string | null; rating: number | null; photo_url: string | null; renome_level: number | null; rvText: string | null; rvAuthor: string | null }[]>([]);
   const [rodice, setRodice] = useState(0);
   const [deti, setDeti] = useState(0);
   const [profici, setProfici] = useState(0);
@@ -165,7 +165,7 @@ export default function Home() {
   useEffect(() => {
     const supabase = createClient();
     (async () => {
-      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating,photo_url").eq("verified", true).order("rating", { ascending: false, nullsFirst: false }).limit(14);
+      const { data } = await supabase.from("specialists").select("id,name,kind,city,rating,photo_url,renome_level").eq("verified", true).order("renome_level", { ascending: false }).order("rating", { ascending: false, nullsFirst: false }).limit(14);
       if (data) setFeatured(data as typeof featured);
       // pás: ověřené profily, které mají recenzi (klik → profil)
       const ids = (data ?? []).map((d: { id: string }) => d.id);
@@ -267,7 +267,7 @@ export default function Home() {
                       {!f.photo_url && (f.name || "?").trim().charAt(0).toUpperCase()}
                     </span>
                     <span className="tsp-txt">
-                      <b>{f.name} <span className="tsp-verif"><Check size={11} /> Ověřeno</span></b>
+                      <b>{f.name} <span className={`tsp-verif${(f.renome_level ?? 0) >= 2 ? " tsp-verif-top" : ""}`}><Check size={11} /> {["Ověřeno", "Ověřený", "Doporučený", "TOP trenér"][f.renome_level ?? 0]}</span></b>
                       {f.rvText
                         ? <span className="tsp-rv">„{f.rvText}"{f.rvAuthor ? <em> — {f.rvAuthor}</em> : null}</span>
                         : <span className="tsp-rv">{(KIND_META[f.kind]?.label ?? "Trenér")}{f.city ? ` · ${f.city}` : ""}</span>}
@@ -395,6 +395,7 @@ export default function Home() {
                 {[
                   { Icon: CalendarDays, t: "Kalendář", s: "tréninky · turnaje · volno", c: "#7C4DD6", b: "#EEEDFE" },
                   { Icon: Target, t: "Cíle sezóny", s: "závazek → splněno", c: "#2f5d57", b: "#E0EBE9" },
+                  { Icon: Activity, t: "Živé skóre", s: "počítej zápas u kurtu", c: "#2f7d54", b: "#E2EFE9" },
                   { Icon: BarChart3, t: "Statistiky", s: "výhry, dotahování", c: "#4a5b86", b: "#E8ECF4" },
                   { Icon: CalendarCheck, t: "Termíny", s: "zápasy se vyplní samy", c: "#864a59", b: "#F2E5E9" },
                   { Icon: History, t: "Ohlédnutí", s: "kdy a proč vyhráváš", c: "#8a5640", b: "#F2E6DF" },

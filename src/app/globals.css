@@ -1597,6 +1597,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .phero .rate-none a:hover { text-decoration: underline; }
 .tsp-verif { display: inline-flex; align-items: center; gap: 0.2rem; font-size: 0.66rem; font-weight: 700; color: #2f5d57; background: #e2efe9; border-radius: 100px; padding: 0.06rem 0.4rem; }
 .tsp-verif svg { flex: none; }
+.tsp-verif.tsp-verif-top { color: #7a5a12; background: linear-gradient(135deg, #f3e2b6, #e9c877); }
 
 /* ═══════════ Tabulka Zdarma vs HUB+ (persony) ═══════════ */
 .plan-table { width: 100%; border-collapse: collapse; margin: 0.3rem 0 0.4rem; }
