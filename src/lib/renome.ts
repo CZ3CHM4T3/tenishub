@@ -1,5 +1,5 @@
 // Renomé trenéra — jedna osa (4 úrovně). Vydělá se metrikami, nedá se koupit.
-// Prahy (dolaďujeme): Ověřený = ověření + 10 rodičů + recenze; Doporučený = 25 + ≥4,5;
+// Prahy (dolaďujeme): Ověřený = ověření + 5 rodičů + recenze; Doporučený = 25 + ≥4,5;
 // TOP = 40 + ≥4,8 + aktivita.
 
 export type RenomeKey = "neovereny" | "overeny" | "doporuceny" | "top";
@@ -13,7 +13,7 @@ export type RenomeMetrics = {
 };
 
 export const RENOME_THRESHOLDS = {
-  overeny: { members: 10, reviews: 1 },
+  overeny: { members: 5, reviews: 1 },
   doporuceny: { members: 25, rating: 4.5, reviews: 5 },
   top: { members: 40, rating: 4.8, reviews: 15 },
 };
