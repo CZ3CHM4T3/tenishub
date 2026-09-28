@@ -7,7 +7,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeCheck, Search, ExternalLink, X } from "lucide-react";
 
-type Spec = { id: string; name: string; kind: string; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; license_declared: boolean | null; owner_id: string | null };
+type Spec = { id: string; name: string; kind: string; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; renome_level: number | null; license_declared: boolean | null; owner_id: string | null };
 
 const KIND: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Fitness", academy: "Škola", stringer: "Vyplétač" };
 
@@ -22,7 +22,7 @@ export default function AdminVerify() {
 
   const load = useCallback(async () => {
     const sb = createClient();
-    const { data: sp } = await sb.from("specialists").select("id,name,kind,city,phone,website,photo_url,verified,license_declared,owner_id").order("verified", { ascending: true }).order("name");
+    const { data: sp } = await sb.from("specialists").select("id,name,kind,city,phone,website,photo_url,verified,renome_level,license_declared,owner_id").order("verified", { ascending: true }).order("name");
     const list = (sp as Spec[]) ?? [];
     setSpecs(list);
     const ownerOf: Record<string, string | null> = {}; list.forEach((s) => { ownerOf[s.id] = s.owner_id; });
@@ -50,19 +50,31 @@ export default function AdminVerify() {
 
   const condOf = useCallback((s: Spec) => {
     const members = s.owner_id ? (payingByCoach[s.owner_id] ?? 0) : 0;
-    const checks = [
-      !!(s.name && s.name.trim() && s.name !== "Nový trenér"),
-      !!s.photo_url, !!(s.city && s.city.trim()), !!(s.phone && s.phone.trim()), !!(s.website && s.website.trim()),
-      (reviewCount[s.id] ?? 0) >= 1, members >= 10, !!s.license_declared,
+    const items = [
+      { label: "Jméno", ok: !!(s.name && s.name.trim() && s.name !== "Nový trenér") },
+      { label: "Foto", ok: !!s.photo_url },
+      { label: "Město", ok: !!(s.city && s.city.trim()) },
+      { label: "Telefon", ok: !!(s.phone && s.phone.trim()) },
+      { label: "Web", ok: !!(s.website && s.website.trim()) },
+      { label: "Recenze", ok: (reviewCount[s.id] ?? 0) >= 1 },
+      { label: "5 členů", ok: members >= 5 },
+      { label: "Licence", ok: !!s.license_declared },
     ];
-    const met = checks.filter(Boolean).length;
-    return { met, total: checks.length, allMet: met === checks.length, members };
+    const met = items.filter((i) => i.ok).length;
+    return { met, total: items.length, allMet: met === items.length, members, items };
   }, [reviewCount, payingByCoach]);
 
   const setVerified = async (id: string, v: boolean) => {
     setBusy(id);
     const sb = createClient();
     await sb.from("specialists").update({ verified: v }).eq("id", id);
+    await load(); setBusy(null);
+  };
+
+  const setRenome = async (id: string, level: number) => {
+    setBusy(id);
+    const sb = createClient();
+    await sb.from("specialists").update({ renome_level: level }).eq("id", id);
     await load(); setBusy(null);
   };
 
@@ -96,7 +108,7 @@ export default function AdminVerify() {
       {loading ? <p className="member-note">Načítám…</p> : (
         <div className="admin-scroll">
           <table className="admin-table">
-            <thead><tr><th>Poskytovatel</th><th>Typ</th><th>Město</th><th>Podmínky</th><th>Členů</th><th>Stav</th><th>Akce</th></tr></thead>
+            <thead><tr><th>Poskytovatel</th><th>Typ</th><th>Město</th><th>Podmínky</th><th>Členů</th><th>Stav</th><th>Renomé</th><th>Akce</th></tr></thead>
             <tbody>
               {shown.map((s) => {
                 const c = condOf(s);
@@ -105,9 +117,17 @@ export default function AdminVerify() {
                     <td><b>{s.name || "—"}</b></td>
                     <td>{KIND[s.kind] ?? s.kind}</td>
                     <td>{s.city || "—"}</td>
-                    <td><span className={`cond${c.allMet ? " ok" : ""}`}>{c.met}/{c.total}</span></td>
-                    <td className={c.members >= 10 ? "" : "nomember"}>{c.members}</td>
+                    <td><span className={`cond${c.allMet ? " ok" : ""}`} title={c.items.map((i) => `${i.ok ? "✓" : "✗"} ${i.label}`).join("\n")}>{c.met}/{c.total}</span></td>
+                    <td className={c.members >= 5 ? "" : "nomember"}>{c.members}</td>
                     <td>{s.verified ? <span className="member-badge">OVĚŘENO</span> : c.allMet ? <span className="cond ok">připraven</span> : <span className="nomember">nesplňuje</span>}</td>
+                    <td>
+                      <select className="admin-renome" value={s.renome_level ?? 0} onChange={(e) => setRenome(s.id, Number(e.target.value))} disabled={busy === s.id}>
+                        <option value={0}>0 — nic</option>
+                        <option value={1}>1 — Ověřený</option>
+                        <option value={2}>2 — Doporučený</option>
+                        <option value={3}>3 — TOP</option>
+                      </select>
+                    </td>
                     <td className="admin-actions">
                       <Link href={`/trener/${s.id}`} className="admin-linkbtn" target="_blank"><ExternalLink size={13} /> Profil</Link>
                       {s.verified
@@ -117,7 +137,7 @@ export default function AdminVerify() {
                   </tr>
                 );
               })}
-              {shown.length === 0 && <tr><td colSpan={7} className="member-note">Nikdo neodpovídá filtru.</td></tr>}
+              {shown.length === 0 && <tr><td colSpan={8} className="member-note">Nikdo neodpovídá filtru.</td></tr>}
             </tbody>
           </table>
         </div>

@@ -1601,6 +1601,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .astat span { font-size: 0.78rem; color: var(--muted); }
 .admin-scroll { overflow-x: auto; }
 .admin-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 760px; }
+.admin-renome { font: inherit; font-size: 0.78rem; padding: 0.2rem 0.3rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
 .admin-table th { text-align: left; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); }
 .admin-table td { padding: 0.6rem; border-bottom: 1px solid var(--soft); color: #3c4a42; }
 .admin-table td b { color: var(--green-d); }
