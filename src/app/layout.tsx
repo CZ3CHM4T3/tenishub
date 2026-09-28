@@ -7,7 +7,6 @@ import "@fontsource/montserrat/700.css";
 import "@fontsource/montserrat/800.css";
 import "./globals.css";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { SiteFeedback } from "@/components/SiteFeedback";
 import { MetaPixel } from "@/components/MetaPixel";
 import { Chatbot } from "@/components/Chatbot";
 import { AdminBar } from "@/components/AdminBar";
@@ -69,7 +68,6 @@ export default function RootLayout({
         <Footer />
         <MemberBar />
         <ScrollReveal />
-        <SiteFeedback />
         <MetaPixel />
         <Chatbot />
         <AdminBar />

@@ -13,7 +13,6 @@ import { AuthNav } from "@/components/AuthNav";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { CenaClenstvi } from "@/components/CenaClenstvi";
 import { useMe } from "@/lib/useMe";
-import { VideoNudge } from "@/components/VideoNudge";
 import {
   Search, CalendarCheck, ArrowRight, ChevronDown, Check, MapPin, Star,
   Users, Trophy, Handshake, Building2, HeartPulse, Award,
@@ -108,10 +107,10 @@ function Counter({ to, suffix }: { to: number; suffix?: string }) {
 }
 
 // „S čím pomůžeme" = skupiny podle rolí (barevně odlišené), každá dlaždice = odkaz na službu.
-const HELP_GROUPS: { title: string; c: string; Icon: LucideIcon; items: { href: string; Icon: LucideIcon; t: string }[] }[] = [
+const HELP_GROUPS: { title: string; c: string; Icon: LucideIcon; items: { href: string; Icon: LucideIcon; t: string; paid?: boolean }[] }[] = [
   { title: "Rodič & dítě", c: "#2f7d54", Icon: Users, items: [
     { href: "/mapa", Icon: Search, t: "Najít trenéra pro dítě" },
-    { href: "/videorozbor", Icon: Video, t: "Dítě ztrácí radost / něco nejde" },
+    { href: "/videorozbor", Icon: Video, t: "Videorozbor — dítě ztrácí radost", paid: true },
     { href: "/moje-cesta", Icon: CalendarCheck, t: "Sledovat pokrok — Moje cesta" },
     { href: "/poradna", Icon: MessageCircle, t: "Poradit se s odborníkem" },
     { href: "/clanky", Icon: Star, t: "Knihovna rad a návodů" },
@@ -345,9 +344,10 @@ export default function Home() {
                   <div className="help-group" key={g.title} style={{ ["--gc" as string]: g.c }}>
                     <div className="help-ghead"><g.Icon size={17} /> {g.title}</div>
                     {g.items.map((it) => (
-                      <Link href={it.href} className="help-opt" key={it.t}>
+                      <Link href={it.href} className={`help-opt${it.paid ? " help-opt-paid" : ""}`} key={it.t}>
                         <span className="help-ic"><it.Icon size={18} /></span>
                         <span>{it.t}</span>
+                        {it.paid && <span className="help-paid">placené</span>}
                         <ArrowRight size={15} className="help-arr" />
                       </Link>
                     ))}
@@ -431,12 +431,6 @@ export default function Home() {
       </section>
 
       <AskUs />
-
-
-      <VideoNudge side="left" bottom={18} delay={1200} photo="/videorozbor-1.png"
-        title="Nebaví vaše dítě tenis?" sub={"Poradíme proč — videorozbor & konzultace →"} />
-      <VideoNudge side="right" bottom={108} delay={3200} photo="/videorozbor-2.png"
-        title={"Videorozbor & konzultace"} sub={"Placená služba: rozbor techniky, pohybu i hlavy →"} />
     </>
   );
 }
