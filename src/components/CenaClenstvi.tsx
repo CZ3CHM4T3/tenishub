@@ -8,7 +8,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
     <section className="sec cena-sec" id="cena">
       <div className="wrap">
         <span className="cena-eyebrow">Členství</span>
-        <h2 className="cena-h">Za cenu jedné lekce měsíčně — <span className="g">celý tenisový klub</span></h2>
+        <h2 className="cena-h">Za cenu jedné kávy měsíčně — <span className="g">celý tenisový klub</span></h2>
         <p className="cena-sub">Jedno rozhodnutí: na které straně kurtu stojíš. Vyber si.</p>
 
         <div className="cena-grid two">
@@ -25,7 +25,7 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
               <li><Check size={16} /> <span>Poradna, komunita, turnaje, knihovna, bazar, spolujízda.</span></li>
               <li><Check size={16} /> <span><b>Sparring</b> + brzy appka, co vám zápas povede sudí a dá rozbor.</span></li>
             </ul>
-            <p className="cena-value">Za <b>zlomek ceny jedné lekce</b> měsíčně.</p>
+            <p className="cena-value">Za <b>cenu jedné kávy</b> měsíčně.</p>
             {member
               ? <Link href="/moje-cesta" className="btn btn-green cena-cta">Máš aktivní — otevřít Moji cestu <ArrowRight size={16} /></Link>
               : <Link href="/pristup" className="btn btn-green cena-cta">Chci HUB+ <ArrowRight size={16} /></Link>}
