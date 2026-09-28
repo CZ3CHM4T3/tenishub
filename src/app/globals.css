@@ -599,6 +599,22 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .fpost p { margin: 0; line-height: 1.55; white-space: pre-wrap; }
 .freply { margin-top: 1rem; }
 .freply-ta { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.7rem; font: inherit; margin-bottom: 0.6rem; }
+.freply-ctx { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--muted); background: var(--soft, #f4efe2); border-radius: 100px; padding: 0.2rem 0.6rem; margin-bottom: 0.5rem; }
+.freply-ctx button { background: none; border: none; cursor: pointer; color: var(--muted); display: inline-flex; padding: 0; }
+/* štítky rolí na fóru */
+.rbadge { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em; padding: 0.08rem 0.45rem; border-radius: 100px; flex: none; }
+.rbadge-rodic { color: #2f5d57; background: #e2efe9; }
+.rbadge-trener { color: #9a5a12; background: #f4d9b0; }
+.rbadge-mix { color: #3a4a2e; background: linear-gradient(90deg, #dcebe1, #f4d9b0); }
+.rbadge-admin { color: #fff; background: var(--green, #2c4a3b); box-shadow: inset 0 0 0 1.5px var(--gold, #bf9a47); }
+/* akce u příspěvku: lajk + reakce */
+.fpost-nested { margin-left: 1.5rem; border-left: 2px solid var(--line); border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-top: 0.5rem; }
+.fpost-acts { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.5rem; }
+.fpost-like, .fpost-reply { display: inline-flex; align-items: center; gap: 0.3rem; background: none; border: none; cursor: pointer; font: inherit; font-size: 0.8rem; font-weight: 700; color: var(--muted); padding: 0.2rem 0.3rem; border-radius: 8px; }
+.fpost-like:hover, .fpost-reply:hover { background: var(--soft, #f4efe2); }
+.fpost-like.on { color: var(--green, #2c4a3b); }
+.fpost-like.on svg { fill: currentColor; }
+.fpost-like:disabled { cursor: default; opacity: 0.6; }
 
 /* Knihovna článků */
 .clanky-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; grid-auto-rows: 1fr; }
