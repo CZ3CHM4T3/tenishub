@@ -177,14 +177,17 @@ export default function Home() {
         const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
+      // Startovní „podlaha" počtů (Jan 2026-09-28), ať web na startu nevypadá prázdný.
+      // Reálné registrace ji přepíšou nahoru (Math.max) → číslo roste, ale neklesne pod baseline.
+      const BASE = { rodice: 32, deti: 22, profici: 2 };
       // reálná čísla (RPC public_stats obejde RLS a umí distinct rodiče); fallback: count dotazy přes anon
       let gotStats = false;
       try {
         const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
         if (!statsErr && stats) {
-          setRodice((stats as { rodice?: number }).rodice ?? 0);
-          setDeti((stats as { deti?: number }).deti ?? 0);
-          setProfici((stats as { profici?: number }).profici ?? 0);
+          setRodice(Math.max((stats as { rodice?: number }).rodice ?? 0, BASE.rodice));
+          setDeti(Math.max((stats as { deti?: number }).deti ?? 0, BASE.deti));
+          setProfici(Math.max((stats as { profici?: number }).profici ?? 0, BASE.profici));
           gotStats = true;
         }
       } catch { /* RPC ještě není nasazená — jedeme fallback */ }
@@ -193,8 +196,9 @@ export default function Home() {
           supabase.from("specialists").select("*", { count: "exact", head: true }),
           supabase.from("deti").select("*", { count: "exact", head: true }),
         ]);
-        setProfici(sr.count ?? 0);
-        setDeti(dr.count ?? 0);
+        setRodice(BASE.rodice);
+        setProfici(Math.max(sr.count ?? 0, BASE.profici));
+        setDeti(Math.max(dr.count ?? 0, BASE.deti));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -20,6 +20,13 @@ const CATS: { k: string; l: string; c: string; Icon: LucideIcon }[] = [
   { k: "ostatni", l: "Ostatní", c: "#5a6470", Icon: Tag },
 ];
 const catMeta = (k: string) => CATS.find((x) => x.k === k) ?? CATS[CATS.length - 1];
+// Náhledy ze starého WordPressu (tenishub.cz/wp-content/uploads/…) už doména neservíruje
+// (přepnuto na nový web). Obrázky jsme zahostovali lokálně v /public/clanky/ — přepiš adresu.
+const coverSrc = (u: string | null): string | null => {
+  if (!u) return null;
+  const m = u.match(/\/wp-content\/uploads\/.*\/([^/?#]+)$/);
+  return m ? `/clanky/${m[1]}` : u;
+};
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "clanek";
 
@@ -98,11 +105,12 @@ export default function ClankyClient() {
           <div className="clanky-grid">
             {shown.map((a) => {
               const m = catMeta(a.category);
+              const cover = coverSrc(a.cover_url);
               return (
                 <div key={a.id} className="clanek-card-wrap">
                   <Link href={`/clanky/${a.slug}`} className="clanek-card" style={{ borderTop: `3px solid ${m.c}` }}>
-                    <span className="clanek-cover" style={a.cover_url ? { backgroundImage: `url(${a.cover_url})` } : { background: `color-mix(in srgb, ${m.c} 12%, #fff)` }}>
-                      {!a.cover_url && <m.Icon size={30} style={{ color: m.c, opacity: 0.55 }} />}
+                    <span className="clanek-cover" style={cover ? { backgroundImage: `url(${cover})` } : { background: `color-mix(in srgb, ${m.c} 12%, #fff)` }}>
+                      {!cover && <m.Icon size={30} style={{ color: m.c, opacity: 0.55 }} />}
                     </span>
                     <span className="clanek-cbody">
                       <span className="clanek-cardtop">
