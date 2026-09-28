@@ -122,7 +122,7 @@ const HELP_GROUPS: { title: string; c: string; Icon: LucideIcon; items: { href: 
     { href: "/mapa", Icon: MapPin, t: "Najít kurt nebo klub poblíž" },
     { href: "/turnaje", Icon: Trophy, t: "Turnaje v okolí" },
   ] },
-  { title: "Jsi profík?", c: "#b0862c", Icon: GraduationCap, items: [
+  { title: "Jsi odborník?", c: "#b0862c", Icon: GraduationCap, items: [
     { href: "/pro-trenery", Icon: GraduationCap, t: "Jsem trenér — chci klienty" },
     { href: "/pro-trenery", Icon: HeartPulse, t: "Jsem fyzio / kondiční trenér" },
     { href: "/pro-trenery", Icon: Building2, t: "Jsem vyplétač / mám areál" },
@@ -177,29 +177,27 @@ export default function Home() {
         const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
-      // Startovní „podlaha" počtů (Jan 2026-09-28), ať web na startu nevypadá prázdný.
-      // Reálné registrace ji přepíšou nahoru (Math.max) → číslo roste, ale neklesne pod baseline.
-      const BASE = { rodice: 32, deti: 22, profici: 2 };
-      // reálná čísla (RPC public_stats obejde RLS a umí distinct rodiče); fallback: count dotazy přes anon
+      // Startovní „podlaha" počtů rodičů/dětí, ať web nevypadá prázdný. Odborníci = REÁLNÝ počet.
+      const BASE = { rodice: 32, deti: 22 };
       let gotStats = false;
       try {
         const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
         if (!statsErr && stats) {
           setRodice(Math.max((stats as { rodice?: number }).rodice ?? 0, BASE.rodice));
           setDeti(Math.max((stats as { deti?: number }).deti ?? 0, BASE.deti));
-          setProfici(Math.max((stats as { profici?: number }).profici ?? 0, BASE.profici));
           gotStats = true;
         }
       } catch { /* RPC ještě není nasazená — jedeme fallback */ }
       if (!gotStats) {
-        const [sr, dr] = await Promise.all([
-          supabase.from("specialists").select("*", { count: "exact", head: true }),
-          supabase.from("deti").select("*", { count: "exact", head: true }),
-        ]);
+        const dr = await supabase.from("deti").select("*", { count: "exact", head: true });
         setRodice(BASE.rodice);
-        setProfici(Math.max(sr.count ?? 0, BASE.profici));
         setDeti(Math.max(dr.count ?? 0, BASE.deti));
       }
+      // Odborníci = reálný počet OVĚŘENÝCH trenérů (bez akademií) — zatím 2 (Jan + Jirka).
+      try {
+        const { count } = await supabase.from("specialists").select("*", { count: "exact", head: true }).eq("verified", true).neq("kind", "academy");
+        setProfici(count ?? 0);
+      } catch { setProfici(0); }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -332,8 +330,8 @@ export default function Home() {
                 </span>
                 {/* obecné info — vlevo dole */}
                 <span className="world-in wt-in">
-                  <span className="world-tag">Trenéři a profíci</span>
-                  <span className="world-sub">Trenéři, vyplétači, fyzio i areály — vyber si ověřeného profíka.</span>
+                  <span className="world-tag">Trenéři a odborníci</span>
+                  <span className="world-sub">Tenisoví a fitness trenéři — vyber si ověřeného odborníka.</span>
                   <span className="world-go">Vstoupit <ArrowRight size={16} /></span>
                 </span>
               </Link>
@@ -368,7 +366,7 @@ export default function Home() {
         <div className="wrap hero-stats">
           <span className="hstat"><b><Counter to={rodice} /></b><i>rodičů</i></span>
           <span className="hstat"><b><Counter to={deti} /></b><i>dětí</i></span>
-          <span className="hstat" title="Trenéři, fitness, fyzio, vyplétači, hráči"><b><Counter to={profici} /></b><i>profíků</i></span>
+          <span className="hstat" title="Ověření tenisoví a fitness trenéři"><b><Counter to={profici} /></b><i>odborníků</i></span>
           <span className="hstat"><b>{CITIES.length}</b><i>měst</i></span>
         </div>
       </section>

@@ -43,7 +43,7 @@ export function RolePage({ role, back = true }: { role: Role; back?: boolean }) 
         {/* PROČ — karty (v barvě role) */}
         <div className="rodic-why rv d1" style={{ ["--rc" as string]: role.color }}>
           <span className="cena-eyebrow">{role.provider ? "Co roste s ověřením a renomé" : "Co získáte s HUB+"}</span>
-          <h2>Co pro vás {role.provider ? "jako profíka" : ""} děláme</h2>
+          <h2>Co pro vás {role.provider ? "jako odborníka" : ""} děláme</h2>
           <div className="rodic-why-grid four">
             {why.map((w, i) => {
               const WI = WHY_ICONS[w.icon] ?? Check;

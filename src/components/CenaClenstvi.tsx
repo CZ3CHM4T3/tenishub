@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Check, Flame, Users, Briefcase, ArrowRight } from "lucide-react";
+import { Check, Users, Briefcase, ArrowRight } from "lucide-react";
 
-// Homepage infografika členství: 2 karty — HUB+ (poptávka: rodič/hráč) a PROFI+ (nabídka: profíci).
-// + BOOST (jednorázový doplněk, hra pro děti). Renomé = vydělaná vrstva důvěry navrch.
+// Homepage infografika členství: 2 karty — HUB+ (poptávka: rodič/hráč, 99 Kč) a Odborníci
+// (nabídka: tenisoví a fitness trenéři = ZDARMA). Renomé = vydělaná vrstva funkcí navrch.
 export function CenaClenstvi({ member = false }: { member?: boolean }) {
   return (
     <section className="sec cena-sec" id="cena">
@@ -32,31 +32,21 @@ export function CenaClenstvi({ member = false }: { member?: boolean }) {
             <p className="cena-note">Zakládající 99 Kč napořád (od Nového roku 199).</p>
           </div>
 
-          {/* PROFI+ — nabídka (všichni profíci) */}
+          {/* ODBORNÍCI — nabídka (tenisoví a fitness trenéři) */}
           <div className="cena-card cena-pro">
             <div className="cena-top">
-              <span className="cena-badge prop"><Briefcase size={15} /> PROFI+</span>
-              <div className="cena-price"><b>299 Kč</b><span>/ měs</span></div>
+              <span className="cena-badge prop"><Briefcase size={15} /> Odborníci</span>
+              <div className="cena-price"><b>Zdarma</b></div>
             </div>
-            <p className="cena-for">Pro <b>trenéry, fyzio, fitness, vyplétače a areály</b> — kdo tenisem vydělává.</p>
+            <p className="cena-for">Pro <b>tenisové a fitness trenéry</b> — kdo tenisem žije.</p>
             <ul className="cena-list">
-              <li><Check size={16} /> <span><b>Základní profil na mapě zdarma</b> (pin + jméno + web). PROFI+ odemkne <b>plné nástroje</b>: foto, ceník, bio, leady, online rezervace a platby.</span></li>
-              <li><Check size={16} /> <span><b>Trenér navíc:</b> vlastní klub — svěřenci, skupiny, nástěnka, kalendář, docházka.</span></li>
-              <li><Check size={16} /> <span><b>Ověření a top pozice</b> se <b>vydělají renomé</b> (růstem klubu a recenzemi) — nedají se koupit.</span></li>
+              <li><Check size={16} /> <span><b>Profil na mapě i základní nástroje zdarma</b> — pin, profil, svěřenci, zvací odkaz.</span></li>
+              <li><Check size={16} /> <span><b>Vlastní klub:</b> svěřenci, skupiny, nástěnka, kalendář, docházka.</span></li>
+              <li><Check size={16} /> <span><b>Ověření a další funkce</b> rostou s <b>renomé</b> (přivedení členové a recenze) — nedají se koupit.</span></li>
             </ul>
-            <p className="cena-value"><b>Vyděláš to na jediné lekci</b> — zbytek je zisk.</p>
-            <Link href="/pro-trenery" className="btn btn-gold cena-cta">Chci PROFI+ <ArrowRight size={16} /></Link>
-            <p className="cena-note"><b>Předplať si ho (299) = vše hned — nebo se k funkcím propracuj renomé</b> (přiveď klienty a rodiče, roste ti důvěra i funkce zdarma).</p>
+            <p className="cena-value"><b>Buďte vidět zadarmo</b> — čím víc renomé, tím víc funkcí.</p>
+            <Link href="/pro-trenery" className="btn btn-gold cena-cta">Pro odborníky <ArrowRight size={16} /></Link>
           </div>
-        </div>
-
-        <div className="cena-boost">
-          <span className="cena-boost-ic"><Flame size={22} /></span>
-          <div className="cena-boost-tx">
-            <b>BOOST — volitelný doplněk pro trenéry (kupuje se zvlášť)</b>
-            <span>Herní vrstva pro děti: strom dovedností + Sparring Cup. Děti sbírají odznaky, levelují a soupeří, rodiče vidí pokrok — nefér výhoda, kterou konkurence nemá. Jednorázově.</span>
-          </div>
-          <Link href="/pro-trenery" className="cena-boost-link">Jak to funguje <ArrowRight size={15} /></Link>
         </div>
       </div>
     </section>

@@ -15,7 +15,6 @@ import { Nastenka } from "./Nastenka";
 import { Akce } from "./Akce";
 import { Skupiny } from "./Skupiny";
 import { DEFAULT_KURIKULA, type Kurikula } from "@/lib/kariera";
-import { BuyMembership } from "@/components/BuyMembership";
 import { renomeLevel, nextRenomeHint, type Renome } from "@/lib/renome";
 import { RenomeBadge } from "@/components/RenomeBadge";
 
@@ -23,8 +22,8 @@ type Member = { id: string; member_name: string | null; kind: string; status: st
 
 // Moduly trenérského rozhraní — trenér si vybere, co používá.
 const MODULES: { k: string; label: string; Icon: typeof Users; desc: string }[] = [
-  { k: "nastenka", label: "Nástěnka", Icon: Megaphone, desc: "Oznámení a novinky celé komunitě rodičů (PROFI+)." },
-  { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním / RSVP (PROFI+)." },
+  { k: "nastenka", label: "Nástěnka", Icon: Megaphone, desc: "Oznámení a novinky celé komunitě rodičů (s ověřením a renomé)." },
+  { k: "kalendar", label: "Akce", Icon: CalendarDays, desc: "Akce a termíny s přihlašováním / RSVP (s ověřením a renomé)." },
   { k: "komunita", label: "Komunita", Icon: Users, desc: "Pozvánky, žádosti o vstup, svěřenci a kolegové (zdarma)." },
   { k: "deti", label: "Děti", Icon: Baby, desc: "Děti v klubu — odemykání dovedností ve stromě." },
   { k: "strom", label: "Strom dovedností", Icon: GitBranch, desc: "Vaše metoda jako herní strom (Boost — jednorázově)." },
@@ -146,10 +145,9 @@ export default function KlubClient() {
   // Zamykací karta pro TRENÉR+ modul (prodejní náhled pro trenéra bez TRENÉR+).
   const plusLock = (title: string, desc: string) => (
     <div className="acct-card">
-      <div className="acct-card-head"><Lock size={20} /><h2>{title}</h2><span className="member-badge">PROFI+</span></div>
+      <div className="acct-card-head"><Lock size={20} /><h2>{title}</h2><span className="member-badge">renomé</span></div>
       <p className="member-note">{desc}</p>
-      <p className="member-note">Součást <b>PROFI+</b> (299 Kč/měs) — provoz klubu na jednom místě: rezervace 24/7, platby předem, docházka, oznámení i akce. Zdarma zůstává být vidět na mapě a sbírat svěřence. <b>Nebo si to vysluž růstem klubu</b> — od 10 platících členů zdarma.</p>
-      <BuyMembership plan="profi_plus" label="Chci PROFI+ · 299 Kč" />
+      <p className="member-note"><b>Odemkne se ověřením a renomé — zdarma.</b> Provoz klubu na jednom místě: rezervace 24/7, docházka, oznámení i akce. Být vidět na mapě a sbírat svěřence máš hned; další nástroje přibývají, jak roste tvá důvěra (přivedení členové a recenze).</p>
     </div>
   );
 

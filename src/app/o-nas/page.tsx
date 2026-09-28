@@ -36,7 +36,7 @@ export default function ONasPage() {
         <div className="onas-grid rv d1">
           <div className="onas-card"><span className="onas-ic"><ShieldCheck size={22} /></span><b>Ověřeno</b><p>Profily prověřujeme podle recenzí a aktivity. „Ověřeno TenisHubem" znamená důvěru.</p></div>
           <div className="onas-card"><span className="onas-ic"><RefreshCw size={22} /></span><b>Stále aktuální</b><p>Síť žije — data spravují sami trenéři a kluby, doplňujeme je průběžně.</p></div>
-          <div className="onas-card"><span className="onas-ic"><Users size={22} /></span><b>Komunita</b><p>Od lidí pro lidi. Rodiče, hráči i profíci na jednom místě, kteří si pomáhají.</p></div>
+          <div className="onas-card"><span className="onas-ic"><Users size={22} /></span><b>Komunita</b><p>Od lidí pro lidi. Rodiče, hráči i odborníci na jednom místě, kteří si pomáhají.</p></div>
           <div className="onas-card"><span className="onas-ic"><HeartHandshake size={22} /></span><b>Péče</b><p>Nejen „najdi službu" — provázíme na cestě dítěte a hráče, i lidsky.</p></div>
         </div>
 

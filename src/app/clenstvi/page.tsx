@@ -6,8 +6,8 @@ import { CoJeVCene } from "@/components/CoJeVCene";
 import { CenaClenstvi } from "@/components/CenaClenstvi";
 
 export const metadata: Metadata = {
-  title: "Členství — HUB+ a PROFI+",
-  description: "Dvě členství: HUB+ (99 Kč/měs) pro rodiče a hráče, PROFI+ (299 Kč/měs) pro profíky. Základní profil zdarma, funkce přes členství nebo vydělané renomé.",
+  title: "Členství — HUB+",
+  description: "HUB+ (99 Kč/měs) pro rodiče a hráče odemyká celý klub. Trenéři a odborníci mají profil i nástroje zdarma — funkce rostou s ověřením a renomé.",
 };
 
 export default function ClenstviPage() {
@@ -17,7 +17,7 @@ export default function ClenstviPage() {
 
       <div className="wrap sluzby-wrap">
         <h1 className="rv">Členství</h1>
-        <p className="lead rv d1">Podle toho, na které straně kurtu stojíš: <b>HUB+</b> pro rodiče a hráče, <b>PROFI+</b> pro profíky. Přehled hned níž, detail HUB+ dál.</p>
+        <p className="lead rv d1"><b>HUB+</b> pro rodiče a hráče odemyká celý klub. <b>Trenéři a odborníci</b> mají profil i nástroje <b>zdarma</b> — funkce rostou s ověřením a renomé. Přehled hned níž.</p>
 
         {/* DVĚ ČLENSTVÍ + BOOST */}
         <div className="rv d1"><CenaClenstvi /></div>

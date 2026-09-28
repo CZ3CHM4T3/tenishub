@@ -4,7 +4,7 @@ import { ROLES } from "@/lib/roles";
 
 export const metadata: Metadata = {
   title: "Pro trenéry — buďte vidět, klienti si vás najdou",
-  description: "Profil na mapě zdarma, plný profil a rezervace s PROFI+ — nebo si nástroje vyslužte růstem klubu a renomé. Trenéři do konce roku mají základ zdarma.",
+  description: "Profil i základní nástroje zdarma. Ověření a další funkce rostou s renomé (přivedení členové a recenze) — nedají se koupit.",
 };
 
 export default function ProTreneryPage() {

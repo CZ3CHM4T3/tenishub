@@ -7,8 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES } from "@/lib/cities";
-import { BuyMembership } from "@/components/BuyMembership";
-import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck, Lock } from "lucide-react";
+import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck } from "lucide-react";
 
 // Souřadnice z názvu města (kvůli pinu na mapě — bez lat/lng se pin nezobrazí).
 // Hledá přesnou shodu, jinak město, kterým text začíná (např. „Praha 6" → Praha).
@@ -42,7 +41,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 const minToStr = (m: number) => `${pad2(Math.floor(m / 60))}:${pad2(m % 60)}`;
 const strToMin = (s: string) => { const [h, m] = s.split(":").map(Number); return (h || 0) * 60 + (m || 0); };
 
-export default function RoleSection({ userId, role, identity, canPro }: { userId: string; role: string; identity: Identity; canPro: boolean }) {
+export default function RoleSection({ userId, role, identity }: { userId: string; role: string; identity: Identity; canPro?: boolean }) {
   const isVenue = role === "areal";
   const kind = ROLE_KIND[role];
   const [loading, setLoading] = useState(true);
@@ -155,7 +154,7 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
             <button className="btn btn-green" disabled={busy} onClick={createVenue}><Building2 size={15} /> Vytvořit oddíl areálu</button>
           </div>
         ) : (<>
-          {canPro && (
+          {(
             <div className="card-photo">
               <div className="card-photo-prev" style={venue.photo_url ? { backgroundImage: `url(${venue.photo_url})` } : undefined}>{!venue.photo_url && <ImagePlus size={26} />}</div>
               <div>
@@ -169,13 +168,11 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
             <div className="fld"><label>Město</label><input list="cities-dl-rs" value={venue.city ?? ""} onChange={(e) => setVenue({ ...venue, city: e.target.value })} placeholder="Praha" /><datalist id="cities-dl-rs">{CITIES.map((c) => <option key={c[0]} value={c[0]} />)}</datalist></div>
             <div className="fld"><label>Odkaz na web</label><input value={venue.website ?? ""} onChange={(e) => setVenue({ ...venue, website: e.target.value })} placeholder="www.areal.cz" /></div>
           </div>
-          {canPro ? (<>
+          <>
             <div className="fld"><label>Odkaz na rezervační systém</label><input value={venue.reservation_url ?? ""} onChange={(e) => setVenue({ ...venue, reservation_url: e.target.value })} placeholder="https://rezervace…" /></div>
             <div className="fld"><label>Popis</label><textarea rows={4} value={venue.description ?? ""} onChange={(e) => setVenue({ ...venue, description: e.target.value })} placeholder="Počet kurtů, povrch, hala, zázemí…" /></div>
             <div className="fld"><label>Vybavení (oddělené čárkou)</label><input value={(venue.amenities ?? []).join(", ")} onChange={(e) => setVenue({ ...venue, amenities: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="antuka, hala, šatny, bistro" /></div>
-          </>) : (
-            <div className="pc-lock"><div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil areálu</b></div><p>Zdarma máš <b>pin na mapě + název a odkaz na web</b>. Fotku, popis, vybavení, rezervační systém i <b>ověření</b> odemkne <b>PROFI+</b>.</p><BuyMembership plan="profi_plus" label="Chci PROFI+ · 299 Kč" /></div>
-          )}
+          </>
           <div className="card-actions">
             <button className="btn btn-green" onClick={saveVenue} disabled={busy}>{saved || "Uložit oddíl"}</button>
             <Link href={`/areal/${venue.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>
@@ -204,7 +201,7 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
           </div>
         </div>
         <div className="fld"><label>Odkaz na web</label><input value={spec.website ?? ""} onChange={(e) => setSpec({ ...spec, website: e.target.value })} placeholder="www.tvujweb.cz" /></div>
-        {canPro ? (<>
+        <>
           <div className="acct-grid"><div className="fld"><label>Cena od (Kč / lekce)</label><input type="number" value={spec.price_from ?? ""} onChange={(e) => setSpec({ ...spec, price_from: e.target.value ? Number(e.target.value) : null })} placeholder="500" /></div></div>
           <div className="fld"><label>O mně (bio)</label><textarea rows={4} value={spec.bio ?? ""} onChange={(e) => setSpec({ ...spec, bio: e.target.value })} placeholder="Čemu se věnuješ, pro koho, zkušenosti…" /></div>
           <div className="cenik">
@@ -232,9 +229,7 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
             ))}
             <button className="btn btn-out cenik-add" onClick={() => setAvail([...avail, { weekday: 1, from: "16:00", to: "20:00", slot: 60 }])}><Plus size={14} /> Přidat čas</button>
           </div>
-        </>) : (
-          <div className="pc-lock"><div className="pc-lock-head"><Lock size={17} /> <b>Odemkni plný profil</b></div><p>Zdarma máš <b>pin na mapě + jméno a odkaz na web</b>. Fotku, bio, ceník, dostupnost, rezervace i <b>ověření</b> odemkne <b>PROFI+</b> — vyladěný profil přiláká víc lidí.</p><BuyMembership plan="profi_plus" label="Chci PROFI+ · 299 Kč" /></div>
-        )}
+        </>
         <div className="card-actions">
           <button className="btn btn-green" onClick={saveSpec} disabled={busy}>{saved || "Uložit oddíl"}</button>
           <Link href={`/trener/${spec.id}`} className="btn btn-out">Zobrazit veřejný profil <ExternalLink size={14} /></Link>

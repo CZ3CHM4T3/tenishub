@@ -23,10 +23,10 @@ const ATABS: { k: string; label: string; Icon: typeof BadgeCheck }[] = [
 
 // Role = „klobouky". Trenér zdarma (návnada); spotřebitel = HUB+, poskytovatel = Trenér+/Expert+.
 const ACCOUNT_ROLES: { k: string; label: string; desc: string; free: boolean; badge?: string; cls?: string; soon?: boolean }[] = [
-  { k: "trener", label: "Trenér", desc: "Profil zdarma (pin, svěřenci, zvací odkaz). Rezervace, kalendář a ověření s PROFI+ nebo renomé.", free: true, badge: "zdarma", cls: "rp-free" },
+  { k: "trener", label: "Trenér", desc: "Profil zdarma (pin, svěřenci, zvací odkaz). Rezervace, kalendář i ověření rostou s renomé — zdarma.", free: true, badge: "zdarma", cls: "rp-free" },
   { k: "rodic", label: "Rodič", desc: "Moje cesta a nástroje pro dítě.", free: false, badge: "HUB+", cls: "rp-hub" },
   { k: "hrac", label: "Hráč", desc: "Rezervace kurtů, statistiky zápasů — a sparring: najdi si parťáka.", free: false, badge: "HUB+", cls: "rp-hub" },
-  { k: "vyplet", label: "Vyplétač", desc: "Neověřený profil zdarma (pin + web). Objednávky a ověření s PROFI+ nebo renomé.", free: true, badge: "PROFI+", cls: "rp-exp" },
+  { k: "vyplet", label: "Vyplétač", desc: "Neověřený profil zdarma (pin + web). Objednávky a ověření rostou s renomé — zdarma.", free: true, badge: "zdarma", cls: "rp-exp" },
   { k: "fyzio", label: "Fyzioterapeut", desc: "Klienti z tenisu.", free: false, soon: true },
   { k: "fitness", label: "Fitness trenér", desc: "Kondiční příprava tenistů.", free: false, soon: true },
   { k: "areal", label: "Areál / klub", desc: "Kurty, rezervace, tým trenérů.", free: false, soon: true },
