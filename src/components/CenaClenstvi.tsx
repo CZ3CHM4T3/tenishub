@@ -1,52 +1,70 @@
 import Link from "next/link";
-import { Check, Users, Briefcase, ArrowRight } from "lucide-react";
+import { Search, Route, Handshake, MessagesSquare, BookOpen, Trophy, Flame, Gamepad2, ArrowRight, Users } from "lucide-react";
 
-// Homepage infografika členství: 2 karty — HUB+ (poptávka: rodič/hráč, 99 Kč) a Odborníci
-// (nabídka: tenisoví a fitness trenéři = ZDARMA). Renomé = vydělaná vrstva funkcí navrch.
+// Homepage: NAHOŘE členství HUB+ pro RODIČE (co dostanou za 99, s ikonami),
+// POD tím oranžové JEDNORÁZOVÉ balíčky pro TRENÉRY (BOOST + herní strom).
+const HUB_BENEFITS = [
+  { Icon: Search, t: "Najdi a oslov trenéra i klub", d: "Ověření odborníci na mapě — konec hledání po Facebooku." },
+  { Icon: Route, t: "Moje cesta", d: "Celá sezóna dítěte: tréninky, zápasy, výsledky i volno — bez vyhoření." },
+  { Icon: Handshake, t: "Sparring", d: "Najdi, s kým si zahrát, podle úrovně a okolí." },
+  { Icon: MessagesSquare, t: "Poradna a komunita", d: "Zeptej se zkušených rodičů i odborníků." },
+  { Icon: BookOpen, t: "Knihovna a návody", d: "Články a rady pro rodiče malých tenistů." },
+  { Icon: Trophy, t: "Turnaje a kalendář", d: "Přehled turnajů a plán celé sezóny." },
+];
+
+const PKGS = [
+  { Icon: Flame, t: "BOOST", d: "Dočasná TOP pozice — tvůj pin i profil výš a zvýrazněný, ať tě víc lidí najde.", },
+  { Icon: Gamepad2, t: "Herní strom dovedností", d: "Gamifikace pokroku dětí: strom dovedností, odznaky a levely. Trénink a růst zábavnější — děti chtějí víc.", },
+];
+
 export function CenaClenstvi({ member = false }: { member?: boolean }) {
   return (
     <section className="sec cena-sec" id="cena">
       <div className="wrap">
-        <span className="cena-eyebrow">Členství</span>
-        <h2 className="cena-h">Za cenu jedné kávy měsíčně — <span className="g">celý tenisový klub</span></h2>
-        <p className="cena-sub">Jedno rozhodnutí: na které straně kurtu stojíš. Vyber si.</p>
+        <span className="cena-eyebrow">Členství pro rodiče</span>
+        <h2 className="cena-h">Celý tenisový klub <span className="g">za cenu jedné kávy měsíčně</span></h2>
+        <p className="cena-sub">Jedno členství <b>HUB+</b>. Všechno, co rodič a hráč potřebuje, na jednom místě.</p>
 
-        <div className="cena-grid two">
-          {/* HUB+ — poptávka */}
-          <div className="cena-card">
-            <div className="cena-top">
-              <span className="cena-badge hubp"><Users size={15} /> HUB+</span>
-              <div className="cena-price"><b>99 Kč</b><span>/ měs</span></div>
-            </div>
-            <p className="cena-for">Pro <b>rodiče a hráče</b>.</p>
-            <ul className="cena-list">
-              <li><Check size={16} /> <span><b>Najdi a oslov ověřeného trenéra i klub</b> — konec hledání po Facebooku.</span></li>
-              <li><Check size={16} /> <span><b>Moje cesta</b> — celá sezóna dítěte, výsledky a volno, bez vyhoření.</span></li>
-              <li><Check size={16} /> <span>Poradna, komunita, turnaje, knihovna, bazar, spolujízda.</span></li>
-              <li><Check size={16} /> <span><b>Sparring</b> + brzy appka, co vám zápas povede sudí a dá rozbor.</span></li>
-            </ul>
-            <p className="cena-value">Za <b>cenu jedné kávy</b> měsíčně.</p>
+        {/* HUB+ pro rodiče */}
+        <div className="cena-hub">
+          <div className="cena-hub-top">
+            <span className="cena-badge hubp"><Users size={16} /> HUB+</span>
+            <div className="cena-price"><b>99 Kč</b><span>/ měsíc</span></div>
+          </div>
+          <div className="cena-benefits">
+            {HUB_BENEFITS.map((b) => (
+              <div className="cena-ben" key={b.t}>
+                <span className="cena-ben-ic"><b.Icon size={20} /></span>
+                <div className="cena-ben-tx"><b>{b.t}</b><span>{b.d}</span></div>
+              </div>
+            ))}
+          </div>
+          <div className="cena-hub-foot">
             {member
               ? <Link href="/moje-cesta" className="btn btn-green cena-cta">Máš aktivní — otevřít Moji cestu <ArrowRight size={16} /></Link>
               : <Link href="/pristup" className="btn btn-green cena-cta">Chci HUB+ <ArrowRight size={16} /></Link>}
-            <p className="cena-note">Zakládající 99 Kč napořád (od Nového roku 199).</p>
+            <span className="cena-note">Zakládající cena <b>99 Kč napořád</b> (od Nového roku 199). Kdykoli zrušíš.</span>
           </div>
+        </div>
 
-          {/* ODBORNÍCI — nabídka (tenisoví a fitness trenéři) */}
-          <div className="cena-card cena-pro">
-            <div className="cena-top">
-              <span className="cena-badge prop"><Briefcase size={15} /> Odborníci</span>
-              <div className="cena-price"><b>Zdarma</b></div>
-            </div>
-            <p className="cena-for">Pro <b>tenisové a fitness trenéry</b> — kdo tenisem žije.</p>
-            <ul className="cena-list">
-              <li><Check size={16} /> <span><b>Profil na mapě i základní nástroje zdarma</b> — pin, profil, svěřenci, zvací odkaz.</span></li>
-              <li><Check size={16} /> <span><b>Vlastní klub:</b> svěřenci, skupiny, nástěnka, kalendář, docházka.</span></li>
-              <li><Check size={16} /> <span><b>Ověření a další funkce</b> rostou s <b>renomé</b> (přivedení členové a recenze) — nedají se koupit.</span></li>
-            </ul>
-            <p className="cena-value"><b>Buďte vidět zadarmo</b> — čím víc renomé, tím víc funkcí.</p>
-            <Link href="/pro-trenery" className="btn btn-gold cena-cta">Pro odborníky <ArrowRight size={16} /></Link>
+        {/* TRENÉŘI — jednorázové balíčky (oranžová) */}
+        <div className="cena-trainer">
+          <span className="cena-eyebrow orange">Pro trenéry</span>
+          <h3 className="cena-th">Profil máš <b>zdarma</b>. Chceš vyniknout? Přidej si balíček.</h3>
+          <div className="cena-pkg-grid">
+            {PKGS.map((p) => (
+              <div className="cena-pkg" key={p.t}>
+                <div className="cena-pkg-head">
+                  <span className="cena-pkg-ic"><p.Icon size={22} /></span>
+                  <b>{p.t}</b>
+                  <span className="cena-pkg-tag">jednorázově</span>
+                </div>
+                <p>{p.d}</p>
+                <span className="cena-pkg-soon">Brzy</span>
+              </div>
+            ))}
           </div>
+          <p className="cena-trainer-note">Základ — profil, mapa, svěřenci — je vždy <b>zdarma</b>. Balíčky jsou volitelné a kupují se jednorázově.</p>
         </div>
       </div>
     </section>
