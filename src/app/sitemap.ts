@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { headers } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { CITIES, citySlug } from "@/lib/cities";
 
@@ -9,7 +10,10 @@ export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://tenishub.cz";
+  // Doménu bereme z hostitele požadavku (tenishub.cz / www) — sitemapa tak vždy
+  // odkazuje na stejnou doménu, na které ji čte Google (jinak GSC hlásí „Nelze načíst").
+  const host = (await headers()).get("host");
+  const base = host ? `https://${host}` : (process.env.NEXT_PUBLIC_SITE_URL || "https://tenishub.cz");
   const now = new Date();
 
   const routes: MetadataRoute.Sitemap = [

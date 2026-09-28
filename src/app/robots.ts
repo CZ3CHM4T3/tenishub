@@ -10,7 +10,8 @@ const PROD_HOSTS = ["tenishub.cz", "www.tenishub.cz"];
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const host = ((await headers()).get("host") || "").toLowerCase();
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://tenishub.cz";
+  // Odkaz na sitemapu vede na stejný hostitel, na kterém se robots.txt čte.
+  const base = host ? `https://${host}` : (process.env.NEXT_PUBLIC_SITE_URL || "https://tenishub.cz");
   const allow = PROD_HOSTS.includes(host) || process.env.NEXT_PUBLIC_ALLOW_INDEX === "true";
 
   if (!allow) {
