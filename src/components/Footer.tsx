@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/Wordmark";
-import { CITIES, citySlug } from "@/lib/cities";
+import { FooterCities } from "@/components/FooterCities";
 
 // Globální patička — na všech stránkách (přes layout).
 export function Footer() {
@@ -17,11 +17,7 @@ export function Footer() {
         </div>
         <div className="foot-cities">
           <h4>Tenis ve městech</h4>
-          <div className="foot-city-links">
-            {CITIES.map((c) => (
-              <Link key={c[0]} href={`/tenis/${citySlug(c[0])}`}>{c[0]}</Link>
-            ))}
-          </div>
+          <FooterCities />
         </div>
         <div className="copy"><span>© 2026 TenisHub.cz</span><span>tenishub.cz</span></div>
       </div>
