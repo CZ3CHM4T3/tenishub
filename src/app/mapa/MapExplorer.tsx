@@ -7,6 +7,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { CITIES } from "@/lib/cities";
 import { isHiddenMapType } from "@/lib/simplify";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 type TypeKey = "coach" | "club" | "fitness" | "physio" | "academy" | "buddy" | "stringer";
 
@@ -105,6 +107,7 @@ export default function MapExplorer() {
     let cancelled = false;
     (async () => {
       const L = (await import("leaflet")).default;
+      await import("leaflet.markercluster"); // rozšíří L o markerClusterGroup
       if (cancelled || !mapEl.current || mapRef.current) return;
       Lref.current = L;
       const map = L.map(mapEl.current, { scrollWheelZoom: true, zoomControl: true }).setView([49.82, 15.47], 7);
@@ -114,7 +117,8 @@ export default function MapExplorer() {
         subdomains: "abc",
         attribution: "© OpenStreetMap",
       }).addTo(map);
-      layerRef.current = L.layerGroup().addTo(map);
+      // shlukování: z dálky bublina s počtem, po přiblížení / kliku se rozskočí na piny
+      layerRef.current = L.markerClusterGroup({ maxClusterRadius: 45, showCoverageOnHover: false, spiderfyOnMaxZoom: true, spiderfyDistanceMultiplier: 1.6 }).addTo(map);
       circleRef.current = L.circle([CITIES[0][1], CITIES[0][2]], {
         radius: 25000, color: "#c8a24c", weight: 1.5, fillColor: "#c8a24c", fillOpacity: 0.07,
       }).addTo(map);
@@ -155,26 +159,13 @@ export default function MapExplorer() {
         iconSize: [34, 34], iconAnchor: [7, 32], popupAnchor: [10, -30],
       });
 
-    // Viditelné body + seskupení podle (přibližné) polohy → překrývající piny rozvějíříme do kruhu.
+    // Viditelné body → do cluster vrstvy (shlukování řeší překryv i „3 na jednom místě").
     const visible = points.filter((p) =>
       !isHiddenMapType(p.type) && active[p.type] &&
       (!q || p.name.toLowerCase().includes(q.toLowerCase())) &&
       c.distanceTo([p.lat, p.lng]) / 1000 <= radiusKm,
     );
-    const groups = new Map<string, Point[]>();
     visible.forEach((p) => {
-      const k = `${p.lat.toFixed(4)},${p.lng.toFixed(4)}`;
-      const g = groups.get(k) ?? []; g.push(p); groups.set(k, g);
-    });
-    visible.forEach((p) => {
-      const g = groups.get(`${p.lat.toFixed(4)},${p.lng.toFixed(4)}`)!;
-      let lat = p.lat, lng = p.lng;
-      if (g.length > 1) {
-        const ang = (2 * Math.PI * g.indexOf(p)) / g.length;
-        const r = 0.00024; // ~26 m rozvějíření, ať jsou i 3+ piny na jednom místě vidět
-        lat += r * Math.cos(ang);
-        lng += (r * Math.sin(ang)) / Math.cos((p.lat * Math.PI) / 180);
-      }
       const pop =
         `<div class="pop"><div class="ph"><div class="badge" style="background:${TYPES[p.type].color}">` +
         `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.type]}</svg>` +
@@ -187,7 +178,7 @@ export default function MapExplorer() {
           : p.type === "club"
             ? `<a href="/areal/${p.id ?? ""}" class="open">Otevřít profil →</a></div></div>`
             : `<div class="pop-acts"><a href="/trener/${p.id ?? ""}" class="open">Profil →</a><a href="/trener/${p.id ?? ""}?napsat=1" class="open open-msg">Napsat →</a></div></div></div>`);
-      L.marker([lat, lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
+      L.marker([p.lat, p.lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
     });
     setCount(visible.length);
   }, [ready, cityIndex, mode, val, active, radiusKm, points, q]);
