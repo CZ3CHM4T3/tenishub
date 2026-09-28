@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 const FAQ = [
   { q: "Jak vybrat prvního trenéra pro dítě?", a: "Hledejte podle místa a recenzí na mapě, mrkněte na ceník a přístup k dětem. U ověřených profilů máte jistotu, že subjekt prověřil TenisHub. S členstvím pak napíšete víc trenérům přímo v aplikaci." },
-  { q: "Co všechno je v členství HUB+?", a: "Členství HUB+ (99 Kč/měsíc, zakládající cena napořád) odemyká úplně vše: najít a kontaktovat trenéra i klub na mapě, Moje cesta, poradnu, sparring, komunitu, knihovnu, bazar i spolujízdu. Bez členství si web prohlédnete jako ochutnávku, ale kontakt a nástroje jsou v HUB+." },
+  { q: "Co všechno je v členství HUB+?", a: "Členství HUB+ (99 Kč/měsíc, zakládající cena napořád) odemyká úplně vše: najít a kontaktovat trenéra i klub na mapě, Moje cesta, poradnu, sparring, komunitu, knihovnu i bazar. Bez členství si web prohlédnete jako ochutnávku, ale kontakt a nástroje jsou v HUB+." },
   { q: "Od kolika let má smysl začít?", a: "Babytenis a minitenis zvládnou děti už od 4–5 let formou hry. Důležitější než věk je radost a pravidelnost — s tím pomáhá i Moje cesta (hlídá poměr tréninku a volna, aby dítě nevyhořelo)." },
   { q: "Kolikrát týdně trénovat?", a: "Hobby stačí 1–2× týdně, u závodního se objem zvyšuje postupně podle fáze sezóny. V Moji cestě vidíte křivku zátěže, ať to nepřeženete." },
   { q: "Co když dítě začíná ztrácet radost?", a: "Je to častější, než si rodiče myslí — většinou za tím není talent, ale frustrace. Pomůže nezávislý videorozbor a konzultace: objektivně řekneme, v čem je problém a jak dál." },
-  { q: "Můžu členství kdykoli zrušit?", a: "Ano. Žádný závazek, žádné skryté platby. Vyzkoušej týden zdarma (bez karty) a uvidíš — když ti to nesedne, nic neplatíš." },
+  { q: "Můžu členství kdykoli zrušit?", a: "Ano. Žádný závazek, žádné skryté platby — členství zrušíš jedním kliknutím, kdykoli budeš chtít." },
 ];
 
 export default function RodicPage() {
@@ -49,7 +49,7 @@ export default function RodicPage() {
             <span className="rodic-price-tag">Zakládající cena</span>
             <div className="rodic-price-txt">
               <b>Přidejte se letos = 99 Kč / měsíc napořád.</b>
-              <span>Kdo se přidá od Nového roku, platí 199 Kč / měsíc. Vyzkoušejte týden zdarma (bez karty).</span>
+              <span>Kdo se přidá letos, drží si 99 Kč/měsíc napořád. Od Nového roku 199 Kč / měsíc.</span>
             </div>
             <Link href="/pristup" className="btn btn-gold">Chci HUB+ <ArrowRight size={16} /></Link>
           </div>

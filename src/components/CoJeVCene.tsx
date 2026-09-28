@@ -20,7 +20,6 @@ const INCLUDED = [
   { Icon: MessagesSquare,     c: "#2f5d57", t: "Fórum rodičů",         s: "Zkušenosti a doporučení trenérů od ostatních." },
   { Icon: CalendarDays,       c: "#3b8a5a", t: "Kalendář turnajů",     s: "Termíny i přihlášky v okolí na jednom místě." },
   { Icon: Repeat,             c: "#8a5640", t: "Bazar vybavení",       s: "Rakety, boty a oblečení z druhé ruky." },
-  { Icon: Car,                c: "#3b8a5a", t: "Spolujízda",           s: "Odvoz na trénink i turnaj v rámci komunity." },
   { Icon: Bell,               c: "#7C4DD6", t: "Připomínky",           s: "Upozornění na lekce a platby.", soon: true },
 ];
 

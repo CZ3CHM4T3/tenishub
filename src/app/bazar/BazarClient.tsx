@@ -67,13 +67,7 @@ export default function BazarClient({ only }: { only?: Kind }) {
           <button className="btn btn-green" onClick={add}><Plus size={16} /> {isBazar ? "Přidat inzerát" : "Nabídnout odvoz"}</button>
         </div>
 
-        {!only && (
-          <div className="fcats">
-            <button className={`fcat${isBazar ? " on" : ""}`} onClick={() => setTab("bazar")}>Bazar vybavení</button>
-            <button className={`fcat${!isBazar ? " on" : ""}`} onClick={() => setTab("spolujizda")}>Spolujízda</button>
-          </div>
-        )}
-        <p className="member-note" style={{ marginTop: only ? 0 : "-0.6rem" }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUB+." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUB+."}</p>
+        <p className="member-note" style={{ marginTop: 0 }}>{isBazar ? "Vybavení z druhé ruky mezi rodiči. Přidávat můžou členové HUB+." : "Nabídněte nebo najděte odvoz na trénink či turnaj. Přidávat můžou členové HUB+."}</p>
 
         {loading ? <p className="member-note">Načítám…</p> : shown.length === 0 ? (
           <div className="acct-card mc-gate"><Repeat size={30} /><h2>Zatím tu nic není</h2><p>Buďte první.</p></div>

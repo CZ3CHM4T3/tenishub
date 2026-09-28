@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
-import BazarClient from "../bazar/BazarClient";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Spolujízda na tréninky a turnaje | TenisHub",
-  description: "Domluvte si odvoz dítěte na trénink i turnaj s ostatními rodiči z klubu — ušetříte čas i palivo.",
-};
-
+// Spolujízda je zatím deaktivovaná (málo lidí) — přesměrování na bazar.
 export default function Page() {
-  return <BazarClient only="spolujizda" />;
+  redirect("/bazar");
 }

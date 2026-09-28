@@ -29,7 +29,6 @@ const SERVICES = [
   { href: "/poradna", label: "Poradna", desc: "Zeptej se odborníka", Icon: HelpCircle },
   { href: "/clanky", label: "Knihovna", desc: "Články a návody", Icon: BookOpen },
   { href: "/bazar", label: "Bazar", desc: "Vybavení z druhé ruky", Icon: ShoppingBag },
-  { href: "/spolujizda", label: "Spolujízda", desc: "Sdílená doprava na akce", Icon: Car },
   { href: "/pocasi", label: "Počasí", desc: "Na týden ve tvém okolí", Icon: CloudSun },
 ];
 

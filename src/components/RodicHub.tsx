@@ -24,7 +24,6 @@ const TOOLS = [
   { Icon: BookOpen, c: "#7c6018", t: "Knihovna", d: "Ověřené návody a články: jak vybrat raketu i trenéra, výživa malého sportovce, prevence zranění.", href: "/clanky" },
   { Icon: CalendarDays, c: "#3b5666", t: "Kalendář turnajů", d: "Turnaje ve tvém okolí i s přihláškami na jednom místě. Už nezmeškáš termín ani uzávěrku.", href: "/turnaje" },
   { Icon: Repeat, c: "#8a5640", t: "Bazar vybavení", d: "Rakety, boty a oblečení z druhé ruky mezi rodiči. Děti rostou rychle — ušetři.", href: "/bazar" },
-  { Icon: Car, c: "#3b8a5a", t: "Spolujízda", d: "Domluv odvoz na trénink i turnaj s rodiči z klubu. Ušetříš čas, nervy i palivo.", href: "/spolujizda" },
 ];
 
 export function RodicHub() {
@@ -38,7 +37,7 @@ export function RodicHub() {
           {member ? <><Sparkles size={14} /> Máš HUB+ — vše odemčené</> : <><Lock size={13} /> Vše ve členství HUB+ · 99 Kč/měsíc</>}
         </span>
         {!member && (
-          <p className="rhub-sell">Celý tenisový klub pro vaše dítě na jednom místě. Vyzkoušej <b>týden zdarma</b> — bez karty, kdykoli zrušíš.</p>
+          <p className="rhub-sell">Celý tenisový klub pro vaše dítě na jednom místě — za <b>99 Kč/měsíc</b>, kdykoli zrušíš.</p>
         )}
         <div className="rhub-grid">
           {TOOLS.map((tl, i) => {
@@ -60,8 +59,8 @@ export function RodicHub() {
       {!member && (
         <div className="rhub-cta">
           <div className="rhub-cta-txt">
-            <b>Vyzkoušej celý klub na týden zdarma</b>
-            <span>Všechny funkce výš, jedno členství. <b>Týden zdarma</b>, pak 99 Kč/měsíc — bez karty, kdykoli zrušíš.</span>
+            <b>Odemkni celý klub — HUB+</b>
+            <span>Všechny funkce výš, jedno členství za <b>99 Kč/měsíc</b> (zakládající cena napořád) — kdykoli zrušíš.</span>
           </div>
           <Link href="/pristup" className="btn btn-gold rhub-cta-btn">Chci předběžný přístup <ArrowRight size={18} /></Link>
         </div>
