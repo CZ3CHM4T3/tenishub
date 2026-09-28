@@ -78,7 +78,9 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
     const supabase = createClient();
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      // příchod z mapy „Napsat" (?napsat=1) → rovnou otevři modal zpráv
+      const wantMsg = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("napsat") === "1";
+      if (!user) { if (wantMsg) setModal("auth"); return; }
       setUserId(user.id);
       const [{ data: p }, { data: m }] = await Promise.all([
         supabase.from("profiles").select("full_name,is_admin").eq("id", user.id).single(),
@@ -86,7 +88,9 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
           .eq("status", "active").gt("expires_at", new Date().toISOString()).limit(1).maybeSingle(),
       ]);
       setUserName(p?.full_name ?? "");
-      setHasMember(!!m || !!p?.is_admin);
+      const member = !!m || !!p?.is_admin;
+      setHasMember(member);
+      if (wantMsg) setModal(member ? "msg" : "member");
     })();
   }, []);
 

@@ -170,7 +170,9 @@ export default function MapExplorer() {
         (p.rate && p.rate !== "—" ? `<div class="stars">★★★★★ <span>${p.rate}</span></div>` : `<div class="stars stars-none">zatím bez recenzí</div>`) +
         (p.type === "buddy"
           ? `<a href="/sparring" class="open">Sparring nabídky →</a></div></div>`
-          : `<a href="${p.type === "club" ? `/areal/${p.id ?? ""}` : `/trener/${p.id ?? ""}`}" class="open">Otevřít profil →</a></div></div>`);
+          : p.type === "club"
+            ? `<a href="/areal/${p.id ?? ""}" class="open">Otevřít profil →</a></div></div>`
+            : `<div class="pop-acts"><a href="/trener/${p.id ?? ""}" class="open">Profil →</a><a href="/trener/${p.id ?? ""}?napsat=1" class="open open-msg">Napsat →</a></div></div></div>`);
       L.marker([p.lat, p.lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
       n++;
     });

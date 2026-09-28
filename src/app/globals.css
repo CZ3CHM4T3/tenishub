@@ -822,6 +822,9 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .pop .stars { color: var(--gold); font-size: 0.85rem; }
 .pop .stars span { color: var(--muted); }
 .pop .open { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 0.8rem; background: linear-gradient(135deg, var(--gold-l), var(--gold)); color: #22150a; font-family: var(--font-jakarta), sans-serif; font-weight: 600; font-size: 0.86rem; padding: 0.6rem; border-radius: 10px; }
+.pop-acts { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+.pop-acts .open { margin-top: 0; flex: 1; }
+.pop .open.open-msg { background: linear-gradient(135deg, #3b8a5a, #2c4a3b); color: #fff; }
 
 /* ═══════════ HERO logo (centerpiece napravo od nadpisu) ═══════════ */
 .hero-top { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 2.5rem; align-items: center; }
