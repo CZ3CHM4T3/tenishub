@@ -30,7 +30,7 @@ const SECTIONS: Section[] = [
     { href: "/mapa", Icon: MapPin, t: "Najít kurt / klub", need: "hub", sub: "poblíž tebe" },
     { href: "/turnaje", Icon: Trophy, t: "Turnaje", need: "hub", sub: "kalendář v okolí" },
   ] },
-  { key: "trener", title: "Trenér / odborník", c: "#b0862c", Icon: GraduationCap, items: [
+  { key: "trener", title: "Trenér / odborník", c: "#d9822b", Icon: GraduationCap, items: [
     { href: "/klub", Icon: School, t: "Můj klub", need: "trener", sub: "svěřenci, nástroje" },
     { href: "/ucet?tab=profil", Icon: BadgeCheck, t: "Můj profil & renomé", need: "trener", sub: "veřejná karta" },
   ] },

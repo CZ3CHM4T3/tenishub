@@ -120,7 +120,7 @@ const HELP_GROUPS: { title: string; c: string; Icon: LucideIcon; items: { href: 
     { href: "/mapa", Icon: MapPin, t: "Najít kurt nebo klub poblíž" },
     { href: "/turnaje", Icon: Trophy, t: "Turnaje v okolí" },
   ] },
-  { title: "Jsi odborník?", c: "#b0862c", Icon: GraduationCap, items: [
+  { title: "Jsi odborník?", c: "#d9822b", Icon: GraduationCap, items: [
     { href: "/pro-trenery", Icon: GraduationCap, t: "Jsem trenér — chci klienty" },
     { href: "/pro-trenery", Icon: HeartPulse, t: "Jsem fyzio / kondiční trenér" },
     { href: "/pro-trenery", Icon: Building2, t: "Jsem vyplétač / mám areál" },

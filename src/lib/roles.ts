@@ -62,7 +62,7 @@ export const ROLES: Record<string, Role> = {
     ],
   },
   trener: {
-    key: "trener", label: "Trenér", tagline: "klienti a méně administrativy", color: "#7C4DD6", fill: "#EEEDFE", icon: "trener", photo: "/role-trener.png", provider: true,
+    key: "trener", label: "Trenér", tagline: "klienti a méně administrativy", color: "#d9822b", fill: "#FBEEDD", icon: "trener", photo: "/role-trener.png", provider: true,
     find: { label: "Najít trenéra na mapě", href: "/mapa?type=coach" },
     why: [
       { icon: "users", title: "Klienti vás najdou", desc: "Profil na mapě i v katalogu — rodiče a hráči vás vyhledají podle místa a recenzí." },
