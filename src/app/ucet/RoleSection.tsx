@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { CITIES } from "@/lib/cities";
-import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck } from "lucide-react";
+import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck, Clock } from "lucide-react";
 
 // Souřadnice z názvu města (kvůli pinu na mapě — bez lat/lng se pin nezobrazí).
 // Hledá přesnou shodu, jinak město, kterým text začíná (např. „Praha 6" → Praha).
@@ -91,7 +91,7 @@ export default function RoleSection({ userId, role, identity }: { userId: string
     setBusy(true);
     const sb = createClient();
     await sb.from("specialists").insert({
-      owner_id: userId, kind, status: "claimed",
+      owner_id: userId, kind, status: "pending",
       name: identity.fullName || ROLE_LABEL[role], city: identity.city || null,
       phone: identity.phone || null, email: identity.email, photo_url: identity.photoUrl,
       ...(geoOf(identity.city) ?? {}),
@@ -101,7 +101,7 @@ export default function RoleSection({ userId, role, identity }: { userId: string
   const createVenue = async () => {
     setBusy(true);
     const sb = createClient();
-    await sb.from("venues").insert({ owner_id: userId, name: identity.fullName ? `Areál ${identity.fullName}` : "Nový areál", city: identity.city || null, status: "claimed", ...(geoOf(identity.city) ?? {}) });
+    await sb.from("venues").insert({ owner_id: userId, name: identity.fullName ? `Areál ${identity.fullName}` : "Nový areál", city: identity.city || null, status: "pending", ...(geoOf(identity.city) ?? {}) });
     await load(); setBusy(false);
   };
   const uploadVenuePhoto = async (file: File) => {
@@ -154,6 +154,9 @@ export default function RoleSection({ userId, role, identity }: { userId: string
             <button className="btn btn-green" disabled={busy} onClick={createVenue}><Building2 size={15} /> Vytvořit oddíl areálu</button>
           </div>
         ) : (<>
+          {venue.status === "pending" && (
+            <div className="pending-note"><Clock size={16} /> <span><b>Areál čeká na schválení.</b> Vyplň profil (foto, adresa, web) — po schválení se objevíš na mapě.</span></div>
+          )}
           {(
             <div className="card-photo">
               <div className="card-photo-prev" style={venue.photo_url ? { backgroundImage: `url(${venue.photo_url})` } : undefined}>{!venue.photo_url && <ImagePlus size={26} />}</div>
@@ -200,6 +203,9 @@ export default function RoleSection({ userId, role, identity }: { userId: string
             <p className="hint">Jméno, město, telefon i fotka jsou z <b>Osobních údajů</b> nahoře — uprav je jednou tam.</p>
           </div>
         </div>
+        {spec.status === "pending" && (
+          <div className="pending-note"><Clock size={16} /> <span><b>Účet čeká na schválení.</b> Vyplň profil (foto, telefon, adresa, web) — jakmile je kompletní, schválíme ho a objevíš se na mapě jako neověřený. Ověření (✓) přijde po splnění podmínek.</span></div>
+        )}
         <div className="fld"><label>Odkaz na web</label><input value={spec.website ?? ""} onChange={(e) => setSpec({ ...spec, website: e.target.value })} placeholder="www.tvujweb.cz" /></div>
         <>
           <div className="acct-grid"><div className="fld"><label>Cena od (Kč / lekce)</label><input type="number" value={spec.price_from ?? ""} onChange={(e) => setSpec({ ...spec, price_from: e.target.value ? Number(e.target.value) : null })} placeholder="500" /></div></div>

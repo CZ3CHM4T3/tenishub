@@ -52,8 +52,8 @@ export default function MapExplorer() {
     const supabase = createClient();
     (async () => {
       const [specs, vens, spar] = await Promise.all([
-        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id,verified").eq("verified", true),
-        supabase.from("venues").select("id,name,city,lat,lng,rating,verified").eq("verified", true),
+        supabase.from("specialists").select("id,kind,name,city,lat,lng,rating,venue_id,verified").eq("status", "claimed"),
+        supabase.from("venues").select("id,name,city,lat,lng,rating,verified").eq("status", "claimed"),
         supabase.from("sparring_offers").select("city,lat,lng,note,level").eq("active", true),
       ]);
       const pts: Point[] = [];
@@ -151,7 +151,7 @@ export default function MapExplorer() {
     const pinIcon = (t: TypeKey, verified?: boolean) =>
       L.divIcon({
         className: "",
-        html: `<div class="pin${verified ? " pin-verified" : ""}" style="background:${TYPES[t].color}"><svg viewBox="0 0 24 24">${ICONS[t]}</svg>${verified ? '<span class="pin-check">✓</span>' : ""}</div>`,
+        html: `<div class="pin${verified ? " pin-verified" : " pin-gray"}" style="background:${verified ? TYPES[t].color : "#9aa0a6"}"><svg viewBox="0 0 24 24">${ICONS[t]}</svg>${verified ? '<span class="pin-check">✓</span>' : ""}</div>`,
         iconSize: [34, 34], iconAnchor: [7, 32], popupAnchor: [10, -30],
       });
 

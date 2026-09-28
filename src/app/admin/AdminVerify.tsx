@@ -7,7 +7,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeCheck, Search, ExternalLink, X } from "lucide-react";
 
-type Spec = { id: string; name: string; kind: string; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; renome_level: number | null; license_declared: boolean | null; owner_id: string | null };
+type Spec = { id: string; name: string; kind: string; city: string | null; phone: string | null; website: string | null; photo_url: string | null; verified: boolean; renome_level: number | null; license_declared: boolean | null; owner_id: string | null; status: string | null };
 
 const KIND: Record<string, string> = { coach: "Trenér", physio: "Fyzio", fitness: "Fitness", academy: "Škola", stringer: "Vyplétač" };
 
@@ -17,12 +17,12 @@ export default function AdminVerify() {
   const [payingByCoach, setPayingByCoach] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
-  const [filter, setFilter] = useState<"all" | "verified" | "ready" | "notready">("all");
+  const [filter, setFilter] = useState<"all" | "pending" | "verified" | "ready" | "notready">("all");
   const [q, setQ] = useState("");
 
   const load = useCallback(async () => {
     const sb = createClient();
-    const { data: sp } = await sb.from("specialists").select("id,name,kind,city,phone,website,photo_url,verified,renome_level,license_declared,owner_id").order("verified", { ascending: true }).order("name");
+    const { data: sp } = await sb.from("specialists").select("id,name,kind,city,phone,website,photo_url,verified,renome_level,license_declared,owner_id,status").order("verified", { ascending: true }).order("name");
     const list = (sp as Spec[]) ?? [];
     setSpecs(list);
     const ownerOf: Record<string, string | null> = {}; list.forEach((s) => { ownerOf[s.id] = s.owner_id; });
@@ -50,6 +50,8 @@ export default function AdminVerify() {
 
   const condOf = useCallback((s: Spec) => {
     const members = s.owner_id ? (payingByCoach[s.owner_id] ?? 0) : 0;
+    // „5 přivedených členů" jen u tenisového trenéra/školy — fitness/fyzio/vyplétač nemají tenisty.
+    const isTennis = s.kind === "coach" || s.kind === "academy";
     const items = [
       { label: "Jméno", ok: !!(s.name && s.name.trim() && s.name !== "Nový trenér") },
       { label: "Foto", ok: !!s.photo_url },
@@ -57,7 +59,7 @@ export default function AdminVerify() {
       { label: "Telefon", ok: !!(s.phone && s.phone.trim()) },
       { label: "Web", ok: !!(s.website && s.website.trim()) },
       { label: "Recenze", ok: (reviewCount[s.id] ?? 0) >= 1 },
-      { label: "5 členů", ok: members >= 5 },
+      ...(isTennis ? [{ label: "5 členů", ok: members >= 5 }] : []),
       { label: "Licence", ok: !!s.license_declared },
     ];
     const met = items.filter((i) => i.ok).length;
@@ -78,28 +80,39 @@ export default function AdminVerify() {
     await load(); setBusy(null);
   };
 
+  const approve = async (id: string) => {
+    setBusy(id);
+    const sb = createClient();
+    await sb.from("specialists").update({ status: "claimed" }).eq("id", id);
+    await load(); setBusy(null);
+  };
+
   const shown = useMemo(() => specs.filter((s) => {
     if (q && !(`${s.name} ${s.city ?? ""}`.toLowerCase().includes(q.toLowerCase()))) return false;
     const c = condOf(s);
+    if (filter === "pending") return s.status === "pending";
     if (filter === "verified") return s.verified;
-    if (filter === "ready") return !s.verified && c.allMet;
-    if (filter === "notready") return !s.verified && !c.allMet;
+    if (filter === "ready") return s.status !== "pending" && !s.verified && c.allMet;
+    if (filter === "notready") return s.status !== "pending" && !s.verified && !c.allMet;
     return true;
   }), [specs, q, filter, condOf]);
 
   const counts = useMemo(() => {
-    let verified = 0, ready = 0, notready = 0;
-    specs.forEach((s) => { if (s.verified) verified++; else if (condOf(s).allMet) ready++; else notready++; });
-    return { verified, ready, notready, all: specs.length };
+    let verified = 0, ready = 0, notready = 0, pending = 0;
+    specs.forEach((s) => {
+      if (s.status === "pending") { pending++; return; }
+      if (s.verified) verified++; else if (condOf(s).allMet) ready++; else notready++;
+    });
+    return { verified, ready, notready, pending, all: specs.length };
   }, [specs, condOf]);
 
   return (
     <div className="acct-card">
       <div className="acct-card-head"><BadgeCheck size={20} /><h2>Členové a ověření ({specs.length})</h2></div>
-      <p className="member-note" style={{ marginTop: "-0.3rem" }}>Ověřeno = známka důvěry, na mapě se ukazují jen ověření. Uděluj jen reálným a aktivně spravovaným.</p>
+      <p className="member-note" style={{ marginTop: "-0.3rem" }}>Nové účty nejdřív <b>Schválit</b> (→ šedý neověřený pin na mapě). <b>Ověřeno ✓</b> uděl až po splnění podmínek (→ barevný pin). U tenisu je podmínka i „5 členů", u fitness/fyzia ne.</p>
 
       <div className="admin-filters">
-        {([["all", `Vše (${counts.all})`], ["ready", `Splňuje podmínky (${counts.ready})`], ["notready", `Nesplňuje (${counts.notready})`], ["verified", `Ověřeno (${counts.verified})`]] as const).map(([k, l]) => (
+        {([["all", `Vše (${counts.all})`], ["pending", `Čeká na schválení (${counts.pending})`], ["ready", `Splňuje podmínky (${counts.ready})`], ["notready", `Nesplňuje (${counts.notready})`], ["verified", `Ověřeno (${counts.verified})`]] as const).map(([k, l]) => (
           <button key={k} className={`afbtn${filter === k ? " on" : ""}`} onClick={() => setFilter(k)}>{l}</button>
         ))}
         <span className="afsearch"><Search size={14} /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Hledat jméno / město" />{q && <button onClick={() => setQ("")}><X size={13} /></button>}</span>
@@ -119,7 +132,7 @@ export default function AdminVerify() {
                     <td>{s.city || "—"}</td>
                     <td><span className={`cond${c.allMet ? " ok" : ""}`} title={c.items.map((i) => `${i.ok ? "✓" : "✗"} ${i.label}`).join("\n")}>{c.met}/{c.total}</span></td>
                     <td className={c.members >= 5 ? "" : "nomember"}>{c.members}</td>
-                    <td>{s.verified ? <span className="member-badge">OVĚŘENO</span> : c.allMet ? <span className="cond ok">připraven</span> : <span className="nomember">nesplňuje</span>}</td>
+                    <td>{s.status === "pending" ? <span className="nomember">čeká na schválení</span> : s.verified ? <span className="member-badge">OVĚŘENO</span> : c.allMet ? <span className="cond ok">připraven</span> : <span className="nomember">nesplňuje</span>}</td>
                     <td>
                       <select className="admin-renome" value={s.renome_level ?? 0} onChange={(e) => setRenome(s.id, Number(e.target.value))} disabled={busy === s.id}>
                         <option value={0}>0 — nic</option>
@@ -130,9 +143,11 @@ export default function AdminVerify() {
                     </td>
                     <td className="admin-actions">
                       <Link href={`/trener/${s.id}`} className="admin-linkbtn" target="_blank"><ExternalLink size={13} /> Profil</Link>
-                      {s.verified
-                        ? <button className="danger" onClick={() => setVerified(s.id, false)} disabled={busy === s.id}>Zrušit</button>
-                        : <button onClick={() => setVerified(s.id, true)} disabled={busy === s.id}><BadgeCheck size={13} /> Ověřit</button>}
+                      {s.status === "pending"
+                        ? <button onClick={() => approve(s.id)} disabled={busy === s.id}><BadgeCheck size={13} /> Schválit</button>
+                        : s.verified
+                          ? <button className="danger" onClick={() => setVerified(s.id, false)} disabled={busy === s.id}>Zrušit</button>
+                          : <button onClick={() => setVerified(s.id, true)} disabled={busy === s.id}><BadgeCheck size={13} /> Ověřit</button>}
                     </td>
                   </tr>
                 );
