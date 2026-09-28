@@ -10,6 +10,16 @@ import { CITIES } from "@/lib/cities";
 import { BuyMembership } from "@/components/BuyMembership";
 import { UserCog, Building2, ImagePlus, Plus, Trash2, ExternalLink, BadgeCheck, Lock } from "lucide-react";
 
+// Souřadnice z názvu města (kvůli pinu na mapě — bez lat/lng se pin nezobrazí).
+// Hledá přesnou shodu, jinak město, kterým text začíná (např. „Praha 6" → Praha).
+function geoOf(city: string | null | undefined): { lat: number; lng: number } | null {
+  if (!city) return null;
+  const q = city.trim().toLowerCase();
+  const exact = CITIES.find((c) => c[0].toLowerCase() === q);
+  const hit = exact ?? CITIES.find((c) => q.startsWith(c[0].toLowerCase()));
+  return hit ? { lat: hit[1], lng: hit[2] } : null;
+}
+
 type Spec = {
   id: string; kind: string; name: string; bio: string | null; city: string | null;
   phone: string | null; email: string | null; website: string | null;
@@ -49,12 +59,21 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
     const sb = createClient();
     if (isVenue) {
       const { data } = await sb.from("venues").select("*").eq("owner_id", userId).order("created_at", { ascending: true }).limit(1).maybeSingle();
-      setVenue((data as Venue) ?? null);
+      const v = (data as Venue) ?? null;
+      if (v && (v as { lat?: number | null }).lat == null) {
+        const g = geoOf(v.city);
+        if (g) { await sb.from("venues").update(g).eq("id", (v as { id: string }).id); Object.assign(v, g); }
+      }
+      setVenue(v);
       setLoading(false);
       return;
     }
     const { data: sps } = await sb.from("specialists").select("*").eq("owner_id", userId).eq("kind", kind).order("created_at", { ascending: true }).limit(1).maybeSingle();
     const sp = (sps as Spec) ?? null;
+    if (sp && (sp as { lat?: number | null }).lat == null) {
+      const g = geoOf(sp.city);
+      if (g) { await sb.from("specialists").update(g).eq("id", sp.id); Object.assign(sp, g); }
+    }
     setSpec(sp);
     if (sp) {
       const [{ data: svc }, { data: av }] = await Promise.all([
@@ -76,13 +95,14 @@ export default function RoleSection({ userId, role, identity, canPro }: { userId
       owner_id: userId, kind, status: "claimed",
       name: identity.fullName || ROLE_LABEL[role], city: identity.city || null,
       phone: identity.phone || null, email: identity.email, photo_url: identity.photoUrl,
+      ...(geoOf(identity.city) ?? {}),
     });
     await load(); setBusy(false);
   };
   const createVenue = async () => {
     setBusy(true);
     const sb = createClient();
-    await sb.from("venues").insert({ owner_id: userId, name: identity.fullName ? `Areál ${identity.fullName}` : "Nový areál", city: identity.city || null, status: "claimed" });
+    await sb.from("venues").insert({ owner_id: userId, name: identity.fullName ? `Areál ${identity.fullName}` : "Nový areál", city: identity.city || null, status: "claimed", ...(geoOf(identity.city) ?? {}) });
     await load(); setBusy(false);
   };
   const uploadVenuePhoto = async (file: File) => {
