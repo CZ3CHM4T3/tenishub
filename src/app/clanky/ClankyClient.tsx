@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brain, Tag, Pencil, type LucideIcon } from "lucide-react";
+import { Library, Plus, X, BookOpen, SlidersHorizontal, Trophy, HeartPulse, Brain, Tag, Pencil, Search, type LucideIcon } from "lucide-react";
 import { useMe } from "@/lib/useMe";
 import { RichEditor } from "@/components/RichEditor";
 
@@ -36,6 +36,7 @@ export default function ClankyClient() {
   const [items, setItems] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [cat, setCat] = useState("");
+  const [q, setQ] = useState("");
   const [form, setForm] = useState<{ open: boolean; id?: string; title: string; category: string; perex: string; body: string; sample: boolean }>({ open: false, title: "", category: "navody", perex: "", body: "", sample: false });
   const [busy, setBusy] = useState(false);
   const newArticle = () => setForm({ open: true, id: undefined, title: "", category: "navody", perex: "", body: "", sample: false });
@@ -73,7 +74,17 @@ export default function ClankyClient() {
     if (data) window.location.href = `/clanky/${data.slug}`;
   };
 
-  const shown = cat ? items.filter((a) => a.category === cat) : items;
+  // našeptávač: významná slova z názvů článků
+  const suggestions = useMemo(() => {
+    const set = new Set<string>();
+    items.forEach((a) => a.title.split(/\s+/).forEach((w) => { const c = w.replace(/[^\p{L}0-9]/gu, ""); if (c.length >= 4) set.add(c); }));
+    return [...set].sort((a, b) => a.localeCompare(b, "cs")).slice(0, 80);
+  }, [items]);
+  const nq = q.trim().toLowerCase();
+  const shown = items.filter((a) =>
+    (!cat || a.category === cat) &&
+    (!nq || `${a.title} ${a.perex ?? ""} ${a.author_name ?? ""}`.toLowerCase().includes(nq)),
+  );
 
   return (
     <div className="acct-page">
@@ -85,6 +96,13 @@ export default function ClankyClient() {
           {isAdmin && <button className="btn btn-green" onClick={newArticle}><Plus size={16} /> Nový článek</button>}
         </div>
         <p className="clanky-intro">Praktické návody a rady pro tenisové rodiče i trenéry. Ukázky jsou zdarma, celá knihovna pro členy. A protože nejsme jediný chytrý zdroj — mrkni i na <Link href="/zdroje" className="clanky-intro-link">Zdroje →</Link></p>
+
+        <div className="clanky-search">
+          <Search size={17} />
+          <input list="clanky-suggest" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Hledat v knihovně… (např. raketa, turnaj, minitenis)" />
+          {q && <button onClick={() => setQ("")} aria-label="Vymazat"><X size={15} /></button>}
+          <datalist id="clanky-suggest">{suggestions.map((s) => <option key={s} value={s} />)}</datalist>
+        </div>
 
         <div className="fcats">
           <button className={`fcat${cat === "" ? " on" : ""}`} onClick={() => setCat("")}>Vše</button>

@@ -564,6 +564,10 @@ details.mc-sync[open] > summary { margin-bottom: 0.5rem; }
 .fcat-c.on { box-shadow: var(--shadow-s); }
 /* čitelný intro text Knihovny (nezapadá do pozadí) */
 .clanky-intro { color: var(--ink); font-size: 0.98rem; line-height: 1.6; max-width: 62ch; margin: -0.2rem 0 1.1rem; }
+.clanky-search { display: flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 0.55rem 0.8rem; margin: 0 0 0.8rem; max-width: 520px; box-shadow: 0 2px 10px -8px rgba(20,40,28,.4); }
+.clanky-search svg { color: var(--muted); flex: none; }
+.clanky-search input { flex: 1; min-width: 0; border: none; outline: none; font: inherit; background: none; color: var(--ink); }
+.clanky-search button { background: none; border: none; cursor: pointer; color: var(--muted); display: inline-flex; padding: 0; flex: none; }
 .clanky-intro-link { color: var(--gold); font-weight: 800; text-decoration: underline; }
 /* edit tlačítko na kartě (admin) */
 .clanek-card-wrap { position: relative; }
@@ -1802,6 +1806,7 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .ap-q { align-self: flex-end; background: var(--green); color: #fff; padding: 8px 11px; border-radius: 12px 12px 3px 12px; max-width: 90%; font-weight: 600; }
 .ap-a { background: #fff; border: 1px solid var(--line); padding: 8px 11px; border-radius: 12px 12px 12px 3px; max-width: 92%; }
 .ap-a b { display: block; color: var(--green); font-size: 0.68rem; margin-bottom: 2px; } .ap-a span { color: var(--ink); }
+.ap-role { display: inline-block; margin-left: 4px; font-size: 0.6rem; font-weight: 800; color: #9a5a12; background: #f4d9b0; border-radius: 100px; padding: 0 5px; vertical-align: 1px; }
 .ap-a-tag { align-self: flex-start; font-size: 0.64rem; font-weight: 700; color: #3f7d4e; background: #e8f1e5; padding: 2px 7px; border-radius: 100px; }
 .ap-ui-stats { width: 100%; } .ap-bars { display: flex; align-items: flex-end; gap: 6px; height: 90px; padding: 0 4px; }
 .ap-bars span { flex: 1; background: linear-gradient(#3b8a5a, #2c4a3b); border-radius: 4px 4px 0 0; } .ap-bars span.hi { background: linear-gradient(#d8b86a, #bf9a47); }

@@ -4,7 +4,7 @@
 // + hook „kompletní klub za 99 Kč měsíčně". Žádné „zdarma" — registrace = rovnou členství.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, Activity, MessageSquareHeart, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
+import { CalendarDays, Activity, MessageSquareHeart, MessagesSquare, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
 
 // Faux-UI „screenshoty" (stylizované náhledy, ne skutečné obrázky — vypadají nativně a jdou vyměnit).
 const MockCesta = () => (
@@ -27,6 +27,13 @@ const MockPoradna = () => (
     <div className="ap-q">Má jet dcera (9) na krajský turnaj, nebo je brzy?</div>
     <div className="ap-a"><b>Trenér Jiří</b><span>Klidně jeďte — v tomhle věku jde o zkušenost, ne o výsledek. Před turnajem doporučuju…</span></div>
     <div className="ap-a-tag">odpověď do 48 h</div>
+  </div>
+);
+const MockForum = () => (
+  <div className="ap-ui ap-ui-chat">
+    <div className="ap-q">Od kolika let má smysl jezdit s dítětem na turnaje?</div>
+    <div className="ap-a"><b>Jiří <span className="ap-role">Trenér</span></b><span>Klidně od 6–7 v minitenisu — jde o zkušenost, ne o výsledek. Hlavně ať to dítě baví…</span></div>
+    <div className="ap-a-tag">4 reakce · 12× 👍</div>
   </div>
 );
 const MockOhlednuti = () => (
@@ -54,6 +61,7 @@ const SLIDES = [
   { Icon: CalendarDays, tag: "Moje cesta", title: "Celá sezóna dítěte přehledně", why: "Kalendář tréninků, turnajů i volna. Rodič konečně vidí, kam to celé směřuje — bez chaosu v hlavě.", Mock: MockCesta },
   { Icon: Activity, tag: "Živé skóre", title: "Počítej zápas jedním ťuknutím — a máš data", why: "Skóruj zápas po fiftýnech přímo u kurtu. Z každého bodu vzniká statistika pro rozbor: esa, brejky, dotahování, otočky.", Mock: MockSkore },
   { Icon: MessageSquareHeart, tag: "Poradna", title: "Kdykoli si nejste jistí, tým odpoví", why: "Výběr trenéra, turnaj, výbava, bolest lokte… Zeptáte se a odborník odpoví do 48 hodin. Klid místo googlení.", Mock: MockPoradna },
+  { Icon: MessagesSquare, tag: "Fórum", title: "Nejste v tom sami — zeptejte se komunity", why: "Rodiče i trenéři na jednom místě. Zeptáte se, dostanete zkušenosti z první ruky, u každé odpovědi vidíte, kdo ji píše (rodič, trenér, náš tým).", Mock: MockForum },
   { Icon: LineChart, tag: "Ohlédnutí", title: "Kdy a proč vaše dítě vyhrává", why: "Rozbor zápasů ze setů: úspěšnost, dotahování, otočky. Uvidíte pokrok černé na bílém.", Mock: MockOhlednuti },
   { Icon: Swords, tag: "Sparring", title: "Parťák na úrovni vašeho dítěte", why: "Najděte spoluhráče podle věku, úrovně i lokality. Víc zápasů = rychlejší růst.", Mock: MockSparring },
   { Icon: BookOpen, tag: "Knihovna & komunita", title: "Návody, fórum i bazar pohromadě", why: "Ověřené návody, zkušenosti ostatních rodičů a bazar vybavení. Vše, na co jinde bloudíte hodiny.", Mock: MockKnihovna },
