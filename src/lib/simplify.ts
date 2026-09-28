@@ -8,26 +8,27 @@
 // níže (nic se nemazalo — kód, data i stránky zůstávají).
 // ─────────────────────────────────────────────────────────────
 
-// Role/persony schované z rozcestníků, menu, homepage.
-export const HIDDEN_ROLES = new Set<string>(["hrac", "fyzio", "fitness", "vyplet"]);
+// Role/persony schované z rozcestníků, menu, homepage. (Fitness = ODKRYTO: tenisoví
+// i fitness trenéři jsou viditelní „odborníci". Skryté zůstávají hráč, fyzio, vyplétač.)
+export const HIDDEN_ROLES = new Set<string>(["hrac", "fyzio", "vyplet"]);
 export const isHiddenRole = (key: string): boolean => HIDDEN_ROLES.has(key);
 
-// Typy služeb schované na MAPĚ i v kartách služeb (necháváme trenér, areál/klub, sparring).
-export const HIDDEN_SERVICE_TYPES = new Set<string>(["fyzio", "fitness"]);
+// Typy služeb schované na MAPĚ i v kartách služeb (necháváme trenér, fitness, areál/klub, sparring).
+export const HIDDEN_SERVICE_TYPES = new Set<string>(["fyzio"]);
 export const isHiddenServiceType = (key: string): boolean => HIDDEN_SERVICE_TYPES.has(key);
 
-// Mapové piny dle indexu (REAL_POINTS/ServiceMap): 5 = fyzio, 6 = fitness.
-export const HIDDEN_MAP_IDX = new Set<number>([5, 6]);
+// Mapové piny dle indexu (REAL_POINTS/ServiceMap): 5 = fyzio (fitness=6 odkryto).
+export const HIDDEN_MAP_IDX = new Set<number>([5]);
 export const isHiddenMapIdx = (idx: number): boolean => HIDDEN_MAP_IDX.has(idx);
 
-// Typy na velké mapě /mapa (MapExplorer klíče): fitness, fyzio (physio), vyplétač (stringer).
-export const HIDDEN_MAP_TYPEKEYS = new Set<string>(["fitness", "physio", "stringer"]);
+// Typy na velké mapě /mapa (MapExplorer klíče): fyzio (physio), vyplétač (stringer). Fitness odkryto.
+export const HIDDEN_MAP_TYPEKEYS = new Set<string>(["physio", "stringer"]);
 export const isHiddenMapType = (key: string): boolean => HIDDEN_MAP_TYPEKEYS.has(key);
 
 // Cesty schované z navigace, patičky a sitemapy (neindexovat).
 export const HIDDEN_PATHS = new Set<string>(["/sluzby", "/vypletac"]);
 export const isHiddenPath = (path: string): boolean => HIDDEN_PATHS.has(path);
 
-// Městské SEO landingy /tenis/[mesto]/[sluzba] — skryté slugy (fyzio, kondice).
-export const HIDDEN_CITY_SERVICE_SLUGS = new Set<string>(["fyzio", "kondice"]);
+// Městské SEO landingy /tenis/[mesto]/[sluzba] — skrytý slug fyzio (kondice = fitness odkryto).
+export const HIDDEN_CITY_SERVICE_SLUGS = new Set<string>(["fyzio"]);
 export const isHiddenCityService = (slug: string): boolean => HIDDEN_CITY_SERVICE_SLUGS.has(slug);
