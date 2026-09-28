@@ -177,7 +177,7 @@ export default function MapExplorer() {
       let lat = p.lat, lng = p.lng;
       if (g.length > 1) {
         const ang = (2 * Math.PI * g.indexOf(p)) / g.length;
-        const r = 0.0003; // ~33 m: po přiblížení jasně vedle sebe, z dálky je cluster stejně sloučí
+        const r = 0.0002; // ~22 m: po přiblížení vedle sebe, ale blízko reálného místa
         lat += r * Math.cos(ang);
         lng += (r * Math.sin(ang)) / Math.cos((p.lat * Math.PI) / 180);
       }
