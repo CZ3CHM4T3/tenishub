@@ -276,11 +276,13 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
                   : <span className="verif unverif">Čeká na ověření</span>}
               <h1>{name}</h1>
               <div className="typ">{typLine}</div>
-              {showRate && (
+              {showRate ? (
                 <div className="rate">
                   <span className="stars">★★★★★</span> <b>{rating}</b> <span>({reviews} hodnocení)</span>
                 </div>
-              )}
+              ) : spec ? (
+                <div className="rate rate-none"><span>Zatím bez recenzí</span> <a href="#recenze">— buď první, kdo ohodnotí →</a></div>
+              ) : null}
             </div>
             <div className="acts">
               {unclaimed ? (
@@ -400,7 +402,7 @@ export default function TrenerProfile({ spec }: { spec?: Spec }) {
               </div>
             )}
 
-            <div className="card">
+            <div className="card" id="recenze">
               <h2>Recenze {spec ? `(${dbReviews.length})` : "(37)"}</h2>
 
               {!spec ? (

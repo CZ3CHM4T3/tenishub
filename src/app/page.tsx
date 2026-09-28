@@ -273,7 +273,7 @@ export default function Home() {
                         ? <span className="tsp-rv">„{f.rvText}"{f.rvAuthor ? <em> — {f.rvAuthor}</em> : null}</span>
                         : <span className="tsp-rv">{(KIND_META[f.kind]?.label ?? "Trenér")}{f.city ? ` · ${f.city}` : ""}</span>}
                     </span>
-                    {f.rating != null && <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span>}
+                    {f.rating ? <span className="tsp-rate"><Star size={12} /> {Number(f.rating).toFixed(1)}</span> : <span className="tsp-rate tsp-new">zatím bez recenzí</span>}
                   </Link>
                 ))}
               </div>

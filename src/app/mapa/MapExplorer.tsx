@@ -167,7 +167,7 @@ export default function MapExplorer() {
         `</div></div><div class="body"><b class="nm">${p.name}</b>` +
         `<div class="meta">${TYPES[p.type].label} · ${p.city}</div>` +
         (p.verified ? `<div class="pop-verif">✓ Ověřeno TenisHubem</div>` : "") +
-        `<div class="stars">★★★★★ <span>${p.rate}</span></div>` +
+        (p.rate && p.rate !== "—" ? `<div class="stars">★★★★★ <span>${p.rate}</span></div>` : `<div class="stars stars-none">zatím bez recenzí</div>`) +
         (p.type === "buddy"
           ? `<a href="/sparring" class="open">Sparring nabídky →</a></div></div>`
           : `<a href="${p.type === "club" ? `/areal/${p.id ?? ""}` : `/trener/${p.id ?? ""}`}" class="open">Otevřít profil →</a></div></div>`);

@@ -1589,6 +1589,10 @@ a.hm-item.hm-member:hover { background: #f6efdd; }
 .tsp-rv em { font-style: normal; color: var(--green-2, #2c4a3b); font-weight: 600; }
 .tsp-rate { display: inline-flex; align-items: center; gap: 0.2rem; font-weight: 800; font-size: 0.84rem; color: #7a5a12; flex: none; }
 .tsp-rate svg { color: var(--gold); fill: var(--gold); }
+.tsp-rate.tsp-new { color: var(--muted, #6b7167); font-weight: 700; font-size: 0.78rem; }
+.phero .rate-none { color: #a7b6ab; font-size: 0.9rem; }
+.phero .rate-none a { color: var(--gold, #bf9a47); font-weight: 700; text-decoration: none; }
+.phero .rate-none a:hover { text-decoration: underline; }
 .tsp-verif { display: inline-flex; align-items: center; gap: 0.2rem; font-size: 0.66rem; font-weight: 700; color: #2f5d57; background: #e2efe9; border-radius: 100px; padding: 0.06rem 0.4rem; }
 .tsp-verif svg { flex: none; }
 
