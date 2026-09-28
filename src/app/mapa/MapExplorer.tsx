@@ -155,12 +155,26 @@ export default function MapExplorer() {
         iconSize: [34, 34], iconAnchor: [7, 32], popupAnchor: [10, -30],
       });
 
-    let n = 0;
-    points.forEach((p) => {
-      if (isHiddenMapType(p.type)) return;
-      if (!active[p.type]) return;
-      if (q && !p.name.toLowerCase().includes(q.toLowerCase())) return;
-      if (c.distanceTo([p.lat, p.lng]) / 1000 > radiusKm) return;
+    // Viditelné body + seskupení podle (přibližné) polohy → překrývající piny rozvějíříme do kruhu.
+    const visible = points.filter((p) =>
+      !isHiddenMapType(p.type) && active[p.type] &&
+      (!q || p.name.toLowerCase().includes(q.toLowerCase())) &&
+      c.distanceTo([p.lat, p.lng]) / 1000 <= radiusKm,
+    );
+    const groups = new Map<string, Point[]>();
+    visible.forEach((p) => {
+      const k = `${p.lat.toFixed(4)},${p.lng.toFixed(4)}`;
+      const g = groups.get(k) ?? []; g.push(p); groups.set(k, g);
+    });
+    visible.forEach((p) => {
+      const g = groups.get(`${p.lat.toFixed(4)},${p.lng.toFixed(4)}`)!;
+      let lat = p.lat, lng = p.lng;
+      if (g.length > 1) {
+        const ang = (2 * Math.PI * g.indexOf(p)) / g.length;
+        const r = 0.00024; // ~26 m rozvějíření, ať jsou i 3+ piny na jednom místě vidět
+        lat += r * Math.cos(ang);
+        lng += (r * Math.sin(ang)) / Math.cos((p.lat * Math.PI) / 180);
+      }
       const pop =
         `<div class="pop"><div class="ph"><div class="badge" style="background:${TYPES[p.type].color}">` +
         `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.type]}</svg>` +
@@ -173,10 +187,9 @@ export default function MapExplorer() {
           : p.type === "club"
             ? `<a href="/areal/${p.id ?? ""}" class="open">Otevřít profil →</a></div></div>`
             : `<div class="pop-acts"><a href="/trener/${p.id ?? ""}" class="open">Profil →</a><a href="/trener/${p.id ?? ""}?napsat=1" class="open open-msg">Napsat →</a></div></div></div>`);
-      L.marker([p.lat, p.lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
-      n++;
+      L.marker([lat, lng], { icon: pinIcon(p.type, p.verified) }).bindPopup(pop, { closeButton: false }).addTo(layer);
     });
-    setCount(n);
+    setCount(visible.length);
   }, [ready, cityIndex, mode, val, active, radiusKm, points, q]);
 
   // recenter map when city changes
