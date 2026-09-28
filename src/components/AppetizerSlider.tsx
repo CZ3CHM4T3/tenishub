@@ -4,7 +4,7 @@
 // + hook „kompletní klub za 99 Kč měsíčně". Žádné „zdarma" — registrace = rovnou členství.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, Trophy, MessageSquareHeart, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
+import { CalendarDays, Activity, MessageSquareHeart, LineChart, Swords, BookOpen, ChevronLeft, ChevronRight, Sparkles, ArrowRight } from "lucide-react";
 
 // Faux-UI „screenshoty" (stylizované náhledy, ne skutečné obrázky — vypadají nativně a jdou vyměnit).
 const MockCesta = () => (
@@ -14,12 +14,12 @@ const MockCesta = () => (
     <div className="ap-legend"><span><i className="t" />trénink</span><span><i className="m" />turnaj</span><span><i className="r" />volno</span></div>
   </div>
 );
-const MockZebricek = () => (
+const MockSkore = () => (
   <div className="ap-ui ap-ui-list">
-    {[["1.", "Adam N.", "1 240", ""], ["2.", "Vaše dítě", "1 180", "me"], ["3.", "Tomáš K.", "1 095", ""], ["4.", "Eliška P.", "1 010", ""]].map(([p, n, b, c]) => (
-      <div className={`ap-row ${c}`} key={n}><span className="ap-pos">{p}</span><span className="ap-nm">{n}</span><span className="ap-pts">{b}</span></div>
-    ))}
-    <div className="ap-badge-live"><Sparkles size={12} /> aktualizuje se samo</div>
+    <div className="ap-row"><span className="ap-pos">6:4</span><span className="ap-nm">1. set — vyhráno</span><span className="ap-pts">✓</span></div>
+    <div className="ap-row me"><span className="ap-pos">3:2</span><span className="ap-nm">2. set · právě teď</span><span className="ap-pts">40:30</span></div>
+    <div className="ap-row"><span className="ap-pos">▲</span><span className="ap-nm">Esa 4 · Brejky 2 · Dotažení</span><span className="ap-pts">72 %</span></div>
+    <div className="ap-badge-live"><Sparkles size={12} /> statistika vzniká sama</div>
   </div>
 );
 const MockPoradna = () => (
@@ -52,7 +52,7 @@ const MockKnihovna = () => (
 
 const SLIDES = [
   { Icon: CalendarDays, tag: "Moje cesta", title: "Celá sezóna dítěte přehledně", why: "Kalendář tréninků, turnajů i volna. Rodič konečně vidí, kam to celé směřuje — bez chaosu v hlavě.", Mock: MockCesta },
-  { Icon: Trophy, tag: "Žebříček", title: "Automaticky aktualizované postavení a výsledky", why: "Postavení i odehrané zápasy se aktualizují samy. Máte je vždy po ruce na jednom místě.", Mock: MockZebricek },
+  { Icon: Activity, tag: "Živé skóre", title: "Počítej zápas jedním ťuknutím — a máš data", why: "Skóruj zápas po fiftýnech přímo u kurtu. Z každého bodu vzniká statistika pro rozbor: esa, brejky, dotahování, otočky.", Mock: MockSkore },
   { Icon: MessageSquareHeart, tag: "Poradna", title: "Kdykoli si nejste jistí, tým odpoví", why: "Výběr trenéra, turnaj, výbava, bolest lokte… Zeptáte se a odborník odpoví do 48 hodin. Klid místo googlení.", Mock: MockPoradna },
   { Icon: LineChart, tag: "Ohlédnutí", title: "Kdy a proč vaše dítě vyhrává", why: "Rozbor zápasů ze setů: úspěšnost, dotahování, otočky. Uvidíte pokrok černé na bílém.", Mock: MockOhlednuti },
   { Icon: Swords, tag: "Sparring", title: "Parťák na úrovni vašeho dítěte", why: "Najděte spoluhráče podle věku, úrovně i lokality. Víc zápasů = rychlejší růst.", Mock: MockSparring },

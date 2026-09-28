@@ -5,7 +5,6 @@ import Link from "next/link";
 import { IconRun } from "@tabler/icons-react";
 import { WhistleIcon } from "@/components/icons";
 import { createClient } from "@/lib/supabase/client";
-import { CITIES, citySlug } from "@/lib/cities";
 import { isHiddenRole } from "@/lib/simplify";
 import { AppetizerSlider } from "@/components/AppetizerSlider";
 import { AskUs } from "@/components/AskUs";
@@ -139,6 +138,7 @@ export default function Home() {
   const [rodice, setRodice] = useState(0);
   const [deti, setDeti] = useState(0);
   const [profici, setProfici] = useState(0);
+  const [mesta, setMesta] = useState(0);
   const { canPost: isMemberHome } = useMe(); // člen HUB+/admin → neukazovat „Chci HUB+"
 
   useEffect(() => {
@@ -177,27 +177,27 @@ export default function Home() {
         const sd = (data as typeof featured).map((d) => ({ ...d, rvText: byId[d.id]?.body ?? null, rvAuthor: byId[d.id]?.author_name ?? null }));
         setStripData(sd);
       }
-      // Startovní „podlaha" počtů rodičů/dětí, ať web nevypadá prázdný. Odborníci = REÁLNÝ počet.
-      const BASE = { rodice: 32, deti: 22 };
-      let gotStats = false;
+      // ŽIVÁ reálná čísla — žádné vymyšlené „podlahy" (transparentnost).
       try {
-        const { data: stats, error: statsErr } = await supabase.rpc("public_stats");
-        if (!statsErr && stats) {
-          setRodice(Math.max((stats as { rodice?: number }).rodice ?? 0, BASE.rodice));
-          setDeti(Math.max((stats as { deti?: number }).deti ?? 0, BASE.deti));
-          gotStats = true;
+        const { data: stats } = await supabase.rpc("public_stats");
+        if (stats) {
+          setRodice((stats as { rodice?: number }).rodice ?? 0);
+          setDeti((stats as { deti?: number }).deti ?? 0);
         }
-      } catch { /* RPC ještě není nasazená — jedeme fallback */ }
-      if (!gotStats) {
-        const dr = await supabase.from("deti").select("*", { count: "exact", head: true });
-        setRodice(BASE.rodice);
-        setDeti(Math.max(dr.count ?? 0, BASE.deti));
-      }
-      // Odborníci = reálný počet OVĚŘENÝCH trenérů (bez akademií) — zatím 2 (Jan + Jirka).
+      } catch { /* RPC nedostupná → zůstane 0 */ }
+      // Odborníci = ověření trenéři (bez akademií); města = počet měst s ověřeným pinem.
       try {
-        const { count } = await supabase.from("specialists").select("*", { count: "exact", head: true }).eq("verified", true).neq("kind", "academy");
-        setProfici(count ?? 0);
-      } catch { setProfici(0); }
+        const [sp, ve] = await Promise.all([
+          supabase.from("specialists").select("city,kind").eq("verified", true),
+          supabase.from("venues").select("city").eq("verified", true),
+        ]);
+        const specs = (sp.data ?? []) as { city: string | null; kind: string }[];
+        setProfici(specs.filter((s) => s.kind !== "academy").length);
+        const cities = new Set<string>();
+        specs.forEach((s) => s.city && cities.add(s.city.trim()));
+        ((ve.data ?? []) as { city: string | null }[]).forEach((v) => v.city && cities.add(v.city.trim()));
+        setMesta(cities.size);
+      } catch { /* ponech 0 */ }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -367,7 +367,7 @@ export default function Home() {
           <span className="hstat"><b><Counter to={rodice} /></b><i>rodičů</i></span>
           <span className="hstat"><b><Counter to={deti} /></b><i>dětí</i></span>
           <span className="hstat" title="Ověření tenisoví a fitness trenéři"><b><Counter to={profici} /></b><i>odborníků</i></span>
-          <span className="hstat"><b>{CITIES.length}</b><i>měst</i></span>
+          <span className="hstat" title="Města s ověřeným pinem na mapě"><b><Counter to={mesta} /></b><i>měst</i></span>
         </div>
       </section>
 
@@ -396,7 +396,6 @@ export default function Home() {
                   { Icon: CalendarDays, t: "Kalendář", s: "tréninky · turnaje · volno", c: "#7C4DD6", b: "#EEEDFE" },
                   { Icon: Target, t: "Cíle sezóny", s: "závazek → splněno", c: "#2f5d57", b: "#E0EBE9" },
                   { Icon: BarChart3, t: "Statistiky", s: "výhry, dotahování", c: "#4a5b86", b: "#E8ECF4" },
-                  { Icon: Trophy, t: "Žebříček", s: "aktualizuje se samo", c: "#7c6018", b: "#F2EAD6" },
                   { Icon: CalendarCheck, t: "Termíny", s: "zápasy se vyplní samy", c: "#864a59", b: "#F2E5E9" },
                   { Icon: History, t: "Ohlédnutí", s: "kdy a proč vyhráváš", c: "#8a5640", b: "#F2E6DF" },
                 ].map((f, i) => (
