@@ -11,7 +11,7 @@ const SLIDES: Slide[] = [
     Icon: Sparkles,
     who: "Rodiče i tenisoví odborníci — na jednom místě",
     title: <>První online <span className="g">tenisový klub</span></>,
-    sub: "Ověření trenéři, kluby a odborníci, chytré nástroje a komunita — se vším všudy. Vyzkoušejte týden zdarma; zakládající cenu si udrží jen členové, kteří se přidají letos.",
+    sub: "Ověření trenéři, kluby a odborníci, chytré nástroje a komunita — se vším všudy. Zakládající cenu 99 Kč/měsíc si udrží jen členové, kteří se přidají letos.",
   },
   {
     Icon: Users,
